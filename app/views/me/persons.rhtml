@@ -1,0 +1,7 @@
+<h1>Mes usagers</h1>
+<%= link_to "Créer un nouvel usager", :action=>:new_person -%>
+<div class="article-list">
+<%for person in @persons %>
+<div class="article-item"><div class="article-ext"><h2><%=h person.user_name%></h2> <%=h person.first_name%> <%=h person.second_name%> (<%=h person.family_name%>) <%=h person.patronymic_name%></div><div class="article-act"><%=image_tag "country/"+person.country.iso3166.downcase+".png"-%> <span class="separator">&bull;</span> Créé&nbsp;le <%=person.created_at.to_formatted_s :default %> <span class="separator">&bull;</span> Mis&nbsp;à&nbsp;jour&nbsp;le <%=person.updated_at.to_formatted_s :default %> <span class="separator">&bull;</span> <%=link_to "Fiche détaillée", :action=>:show_person, :id=>person -%> <span class="separator">&bull;</span> <%=link_to "Modifier", :action=>:edit_person, :id=>person -%></div></div>
+<%end%>
+</div>

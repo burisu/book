@@ -1,0 +1,137 @@
+h1,h2,h3,p,div,li,td,th,a{
+  color:#ffd;
+  font-family: sans-serif;
+}
+
+body {
+  margin:0;
+  background:#2e558a;
+}
+
+#logo {
+  width: 140px;
+  height: 140px;
+  background : url(/images/rye_140_1.gif) center no-repeat;
+}
+
+a.current_action {
+/*  font-weight: bold;*/
+  background: #CE1 !important;
+  border : 1px solid #690;
+  text-decoration : none;
+  height : 29px;
+  color: #690 !important;
+/*  color: #DFD !important;*/
+}
+
+td.label {
+  width : 200px;
+}
+
+
+.menu {
+  background : #f2d25c;
+  height : 29px;
+}
+
+.menu ul li{
+  display: inline;
+ }
+ 
+.menu ul li a{
+  padding: 4px;
+  color: #55F;
+//  background: #EC1;
+  /*
+  color: #fcff00;
+  background-color: #05C;
+  */
+ }
+ 
+#title h1{
+  text-align: center;
+  color: #f2d25c;
+  font-variant: small-caps ;
+  margin: 12px;
+}
+
+#main {
+  border-collapse: collapse;
+}
+
+.menu_right {
+  width: 140px;
+}
+
+table.form {
+  width:100%;
+}
+.menu ul { padding : 1px; margin:0px; text-align:center;}
+li { padding : 0px;}
+
+p {
+  text-align : justify;
+  text-indent : 2em;
+  margin : 6px 0px;
+}
+textarea, input[type="password"], input[type="text"], select {
+  border : 1px solid #00A;//#2e558a;
+  background : #DDDFFF;
+  font-family : sans-serif;
+  color : #00A;
+}
+
+textarea, input[type="password"], input[type="text"]{
+  width:100%;
+}
+
+.invalid {
+  border : 1px solid #A00 !important;//#2e558a;
+  background : #FBA !important;
+  color : #A00 !important;
+}
+
+.article-item {
+  margin: 5px 0px 10px 0px;
+}
+
+.article-ext {
+  padding : 6px 10px;
+  -moz-border-radius-topleft : 10px;
+  -moz-border-radius-topright : 10px;
+  background: #007;
+}
+
+.article-ext h2{
+  margin : 0px 0px 4px 0px;
+  font-size : 120%;
+  color : #BBE;
+}  
+
+
+.article-act {
+  padding : 6px 10px;
+  -moz-border-radius-bottomleft : 10px;
+  -moz-border-radius-bottomright : 10px;
+  background: #128;
+}
+
+span.separator {
+  color :#Da3;
+  padding : 0 5px;
+}
+
+a:link {
+  color : #CCF;
+}
+
+#errorExplanation {
+  background : #900;
+  padding : 5px;
+  border : 2px solid white;
+  margin-bottom : 20px;
+}
+
+#errorExplanation h2 {
+  margin : 1px 3px; 
+}

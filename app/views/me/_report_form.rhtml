@@ -1,0 +1,8 @@
+<%= error_messages_for "article"%>
+<table class="form">
+<tr><td>Titre</td><td><%=text_field(:article, :title) %></td></tr>
+<tr><td>Langue</td><td><%=select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] }) %></td></tr>
+<tr><td colspan="2"><div>Introduction&nbsp;:</div><%=text_area( :article, :intro, {:rows=>5, :maxlength=>255})%></td></tr>
+<tr><td colspan="2"><div>Contenu&nbsp;:</div><%=text_area( :article, :content, {:rows=>11})%></td></tr>
+<tr><td colspan="2"><div>Résumé&nbsp;:</div><%=text_area( :article, :summary, {:rows=>5, :maxlength=>512})%></td></tr>
+</table>

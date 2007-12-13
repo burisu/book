@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Bienvenue au Rotex1690</title>
+<%= stylesheet_link_tag "application"%> 
+</head>
+<bdy>
+<table id="main" style="width:100%;">
+<tr>
+  <td id="logo" rowspan="3"></td>
+  <td class="menu">
+  <ul>
+    <li> <%= link_to 'Accueil', {:controller=>:multy, :action => :home}-%> </li>
+    <% if @current_person -%>
+       <%if @current_person.role.restriction_level==0%>
+         <li> <%= link_to 'Administration', {:controller=>:crud, :action => :index}-%> </li>
+       <%end%>
+      <li> <%= link_to 'Se deconnecter', {:controller=>:auth, :action => :logout}-%> </li>
+    <%else-%> 
+      <li> <%= link_to 'Espace Membres', {:controller=>:auth, :action => :login}-%> </li>
+    <%end-%>
+    <li> <%= link_to 'Contact', {:controller=>:multy, :action => :contact}-%> </li>
+    <li> <%= link_to 'Présentation', {:controller=>:multy, :action => :about_us}-%> </li>
+  </ul>
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="title" colspan="1"><h1>Rotex 1690</h1></td><td></td>
+</tr>
+<tr>
+  <td class="menu" colspan="1">
+  <% if @current_person %>
+   <ul>
+    <li> <%= link_to 'Mon profil', {:controller=>:me, :action => :profile}, {:class=>(@action_name=='profile'?'current_action':'other_action')}-%> </li>
+    <li> <%= link_to 'Mes messages', {:controller=>:me, :action => :messenger}, {:class=>(@action_name=='messenger'?'current_action':'other_action')}-%> </li>
+    <li> <%= link_to 'Mes Amis', {:controller=>:me, :action => :friends}, {:class=>(@action_name=='friends'?'current_action':'other_action')}-%> </li>
+    <li> <%= link_to 'Mon journal de bord', {:controller=>:me, :action => :reporting}, {:class=>(@action_name=='reporting'?'current_action':'other_action')}-%> </li>
+    <%if @current_person.can_create_persons? -%><li> <%= link_to 'Mes usagers', {:controller=>:me, :action => :persons}, {:class=>(@action_name=='persons'?'current_action':'other_action')}-%> </li><%end-%>
+ </ul>
+  <%end%>
+  </td><td><%= @current_person.user_name%></td>
+</tr>
+<% if flash[:warning]%>
+<tr>
+  <td id="warning" colspan="3"><%=flash[:warning]%></td>
+</tr>
+<%end%>
+<tr>
+  <td></td> <td> <%=yield-%> </td>  <td class="menu_right" ></td>
+</tr>
+<tr>
+  <td></td>
+  <td colspan="1" style="height:64px"></td>
+</tr>
+
+</table>
+</body>
+</html>

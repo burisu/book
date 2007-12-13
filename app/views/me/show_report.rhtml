@@ -1,0 +1,7 @@
+<%=link_to "Modifier l'article", :action=>:edit_report, :id=>@article%>
+
+<h1><%=h @article.title%></h1> 
+<%=@article.html_intro%>
+<%=@article.html_content-%>
+<%=link_to "Retour à liste des articles", :action=>:reporting%>
+

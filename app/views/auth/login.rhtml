@@ -1,0 +1,10 @@
+
+
+<h1>Connectez-vous</h1>
+<% form_tag do -%>
+<table id="auth">
+<tr><td>Login</td><td><%=text_field :person, :user_name-%></td></tr>
+<tr><td>Mot de passe</td><td><%=password_field :person, :password-%></td></tr>
+<tr><td colspan="2"><%=submit_tag "Se connecter"%></td></tr>
+</table>
+<%end-%>
