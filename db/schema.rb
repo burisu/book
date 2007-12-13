@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 4) do
 
   create_table "article_natures", :force => true do |t|
     t.column "name",         :string,                               :null => false
@@ -39,6 +39,29 @@ ActiveRecord::Schema.define(:version => 3) do
   end
 
   add_index "countries", ["name"], :name => "index_countries_on_name", :unique => true
+
+  create_table "emails", :force => true do |t|
+    t.column "arrived_at",     :datetime,                    :null => false
+    t.column "sent_on",        :date,                        :null => false
+    t.column "subject",        :string,                      :null => false
+    t.column "charset",        :string,                      :null => false
+    t.column "header",         :text,                        :null => false
+    t.column "unvalid",        :boolean,  :default => false, :null => false
+    t.column "from",           :text,                        :null => false
+    t.column "from_valid",     :boolean,  :default => false, :null => false
+    t.column "from_ids",       :text,                        :null => false
+    t.column "recipients",     :text,                        :null => false
+    t.column "cc",             :text
+    t.column "bcc",            :text
+    t.column "receivers_good", :text
+    t.column "receivers_bad",  :text
+    t.column "receivers_ids",  :text
+    t.column "manual_sent",    :boolean,  :default => false, :null => false
+    t.column "sent_at",        :datetime
+    t.column "created_at",     :datetime,                    :null => false
+    t.column "updated_at",     :datetime,                    :null => false
+    t.column "lock_version",   :integer,  :default => 0,     :null => false
+  end
 
   create_table "families", :force => true do |t|
     t.column "code",         :integer,                 :null => false
@@ -241,45 +264,45 @@ ActiveRecord::Schema.define(:version => 3) do
   add_index "zones", ["name"], :name => "index_zones_on_name", :unique => true
   add_index "zones", ["number", "parent_id"], :name => "index_zones_on_number_and_parent_id", :unique => true
 
-  add_foreign_key "articles", ["language_id"], "languages", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "articles_language_id_fkey"
-  add_foreign_key "articles", ["author_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "articles_author_id_fkey"
   add_foreign_key "articles", ["nature_id"], "article_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "articles_nature_id_fkey"
+  add_foreign_key "articles", ["author_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "articles_author_id_fkey"
+  add_foreign_key "articles", ["language_id"], "languages", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "articles_language_id_fkey"
 
   add_foreign_key "countries", ["language_id"], "languages", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "countries_language_id_fkey"
 
-  add_foreign_key "families_people", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "families_people_family_id_fkey"
   add_foreign_key "families_people", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "families_people_person_id_fkey"
+  add_foreign_key "families_people", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "families_people_family_id_fkey"
 
-  add_foreign_key "folders", ["departure_person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_departure_person_id_fkey"
-  add_foreign_key "folders", ["arrival_person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_arrival_person_id_fkey"
-  add_foreign_key "folders", ["proposer_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_proposer_zone_id_fkey"
-  add_foreign_key "folders", ["sponsor_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_sponsor_zone_id_fkey"
-  add_foreign_key "folders", ["host_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_host_zone_id_fkey"
-  add_foreign_key "folders", ["promotion_id"], "promotions", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_promotion_id_fkey"
-  add_foreign_key "folders", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_person_id_fkey"
-  add_foreign_key "folders", ["arrival_country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_arrival_country_id_fkey"
   add_foreign_key "folders", ["departure_country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_departure_country_id_fkey"
+  add_foreign_key "folders", ["arrival_country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_arrival_country_id_fkey"
+  add_foreign_key "folders", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_person_id_fkey"
+  add_foreign_key "folders", ["promotion_id"], "promotions", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_promotion_id_fkey"
+  add_foreign_key "folders", ["host_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_host_zone_id_fkey"
+  add_foreign_key "folders", ["sponsor_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_sponsor_zone_id_fkey"
+  add_foreign_key "folders", ["proposer_zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_proposer_zone_id_fkey"
+  add_foreign_key "folders", ["arrival_person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_arrival_person_id_fkey"
+  add_foreign_key "folders", ["departure_person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "folders_departure_person_id_fkey"
 
   add_foreign_key "mandate_natures", ["parent_id"], "mandate_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandate_natures_parent_id_fkey"
 
-  add_foreign_key "mandates", ["zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandates_zone_id_fkey"
-  add_foreign_key "mandates", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandates_person_id_fkey"
   add_foreign_key "mandates", ["nature_id"], "mandate_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandates_nature_id_fkey"
+  add_foreign_key "mandates", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandates_person_id_fkey"
+  add_foreign_key "mandates", ["zone_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "mandates_zone_id_fkey"
 
-  add_foreign_key "people", ["role_id"], "roles", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "people_role_id_fkey"
   add_foreign_key "people", ["country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "people_country_id_fkey"
+  add_foreign_key "people", ["role_id"], "roles", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "people_role_id_fkey"
 
-  add_foreign_key "periods", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_family_id_fkey"
   add_foreign_key "periods", ["folder_id"], "folders", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_folder_id_fkey"
+  add_foreign_key "periods", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_family_id_fkey"
 
-  add_foreign_key "person_versions", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "person_versions_person_id_fkey"
-  add_foreign_key "person_versions", ["role_id"], "roles", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "person_versions_role_id_fkey"
   add_foreign_key "person_versions", ["country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "person_versions_country_id_fkey"
+  add_foreign_key "person_versions", ["role_id"], "roles", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "person_versions_role_id_fkey"
+  add_foreign_key "person_versions", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "person_versions_person_id_fkey"
 
   add_foreign_key "zone_natures", ["parent_id"], "zone_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zone_natures_parent_id_fkey"
 
-  add_foreign_key "zones", ["country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zones_country_id_fkey"
-  add_foreign_key "zones", ["parent_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zones_parent_id_fkey"
   add_foreign_key "zones", ["nature_id"], "zone_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zones_nature_id_fkey"
+  add_foreign_key "zones", ["parent_id"], "zones", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zones_parent_id_fkey"
+  add_foreign_key "zones", ["country_id"], "countries", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zones_country_id_fkey"
 
 end
