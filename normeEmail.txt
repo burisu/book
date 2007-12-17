@@ -1,20 +1,27 @@
 Personnel
-	aschieber@rotex1690.org #antoine SCHIEBER
-	abriand@rotex1690.org #anselme BRIAND
-	mgilantoli@rotex1690.org #michel GIL ANTOLI
-	crshieber2006@rotex1690.org #coraline SCHIEBER
-	alevorato2004@rotex1690.org #allan LEVORATO
-	aarnaud2006@rotex1690.org # Alice Arnaud
 
-Lettre1 du prenom(pour Jean François on utilse jfxxxxNN@rotex.org) + nom +Année de départ si Rotex sinon rien si Rotarien ou autres + @rotex1690.org
-	ensuite redirection sur adresse réelle contenu dans la base.
+info
+webmaster
+
+
+	an.schieber@rotex1690.org #antoine SCHIEBER
+	an.briand@rotex1690.org #anselme BRIAND
+	mi.gilantoli@rotex1690.org #michel GIL ANTOLI
+	co.schieber@rotex1690.org #coraline SCHIEBER
+	al.levorato@rotex1690.org #allan LEVORATO
+	al.arnaud@rotex1690.org # Alice Arnaud
+
+#Ambiguité sur l'adresse : les 2 premieres lettre du prenom
+#sauf pour les noms composés : Jean françois => jfr.xxxx
+#En cas d'homonymie parfaite on rajoute un 1
+
 
 GROUPES
 
 LANGUES
 	français@rotex1690.org #Tous les présents dans la base de langue maternelle d'origine Française
-	english@rotex1690.org  # idem pour les anglophones 
-	espagnol@rotex1690.org
+	anglais / english@rotex1690.org  # idem pour les anglophones 
+	espagnol / spanish@rotex1690.org
 
 ANNEES	
 	2000@rotex1690.org #Tous les entrants et sortants pour l'année 2000
@@ -27,17 +34,21 @@ RESPONSABLES
 	yeo@rotex1690.org
 	inbound@rotex1690.org
 	outbound@rotex1690.org
-	inbound2005@rotex1690.org
-	outbound2005@rotex1690.org
+	inbound-2005@rotex1690.org
+	outbound-2005@rotex1690.org
+	bureau@rotex1690.org
+	conseil-administration@rotex1690.org
+	ca@rotex1690.org
 	
 ZONES CLUB/DISTRICT
       district@rotex1690.org  # Tous les membres nonAncienStudentExchange
       gouverneur@rotex1690.org # Tous les gouverneurs dans la base
-      gouverneur07@rotex1690.org # Le seul gouverneur 2007 présent dans la base
-      clubNNNNN@rotex1690.org # Club par son Numero
-      stmedardenjalles@rotex1690.org # Tous les membres NonStudExch du club de St Medard
-      stmedardenjalles.SE@rotex1690.org
-      stmedardenjalles.ALL@rotex1690.org
+      gouverneur-all@rotex1690.org # Tous les gouverneurs dans la base
+      gouverneur-2007@rotex1690.org # Le seul gouverneur 2007 présent dans la base
+      club-NNNNN@rotex1690.org # Club par son Numero
+      club-stmedardenjalles@rotex1690.org # Tous les membres NonStudExch du club de St Medard
+      club-stmedardenjalles-SE@rotex1690.org
+      club-stmedardenjalles-ALL@rotex1690.org
 
 ZONES RESPONSABLES
       rpz@rotex1690.org # Tous les responsables de zone du district
@@ -63,3 +74,26 @@ BILATERAUX
 
 
 Les combinaisons ne sont pas infinies mais nombreuses et seront pour une bonne part construites a la volée.
+
+
+CODE MAIL
+
+[Code_Mail Mandat] (responsable|resp|gouverneur|inbound|outbound|yeo)
+                  [-Code_Mail Zone] (zone|club|district|multidistrict|bordeaux-sud|bordeaux-entre-deux-mer|mx|fr)
+                                   [-Id?] (1-13|xxxxx|1690)
+                                        [-(all|se)]
+                                                  [-année]
+                                                         {@rotex1690.org} 
+                                                         
+                                                         
+
+
+
+
+
+
+
+
+
+
+
