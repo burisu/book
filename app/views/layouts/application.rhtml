@@ -38,7 +38,7 @@
     <%if @current_person.can_create_persons? -%><li> <%= link_to 'Mes usagers', {:controller=>:me, :action => :persons}, {:class=>(@action_name=='persons'?'current_action':'other_action')}-%> </li><%end-%>
  </ul>
   <%end%>
-  </td><td><%= @current_person.user_name%></td>
+  </td>
 </tr>
 <% if flash[:warning]%>
 <tr>
