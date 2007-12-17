@@ -1,0 +1,65 @@
+Personnel
+	aschieber@rotex1690.org #antoine SCHIEBER
+	abriand@rotex1690.org #anselme BRIAND
+	mgilantoli@rotex1690.org #michel GIL ANTOLI
+	crshieber2006@rotex1690.org #coraline SCHIEBER
+	alevorato2004@rotex1690.org #allan LEVORATO
+	aarnaud2006@rotex1690.org # Alice Arnaud
+
+Lettre1 du prenom(pour Jean François on utilse jfxxxxNN@rotex.org) + nom +Année de départ si Rotex sinon rien si Rotarien ou autres + @rotex1690.org
+	ensuite redirection sur adresse réelle contenu dans la base.
+
+GROUPES
+
+LANGUES
+	français@rotex1690.org #Tous les présents dans la base de langue maternelle d'origine Française
+	english@rotex1690.org  # idem pour les anglophones 
+	espagnol@rotex1690.org
+
+ANNEES	
+	2000@rotex1690.org #Tous les entrants et sortants pour l'année 2000
+
+TOUS
+	all@rotex1690.org
+	tous@rotex1690.org
+
+RESPONSABLES
+	yeo@rotex1690.org
+	inbound@rotex1690.org
+	outbound@rotex1690.org
+	inbound2005@rotex1690.org
+	outbound2005@rotex1690.org
+	
+ZONES CLUB/DISTRICT
+      district@rotex1690.org  # Tous les membres nonAncienStudentExchange
+      gouverneur@rotex1690.org # Tous les gouverneurs dans la base
+      gouverneur07@rotex1690.org # Le seul gouverneur 2007 présent dans la base
+      clubNNNNN@rotex1690.org # Club par son Numero
+      stmedardenjalles@rotex1690.org # Tous les membres NonStudExch du club de St Medard
+      stmedardenjalles.SE@rotex1690.org
+      stmedardenjalles.ALL@rotex1690.org
+
+ZONES RESPONSABLES
+      rpz@rotex1690.org # Tous les responsables de zone du district
+      rpz1@rotex1690.org # Responsable de la zone 1
+      rpz2@rotex1690.org # Responsable de la zone 2
+      etc ...
+      
+PAYS
+     france2007@rotex1690.org # Tous les Student Exchange 2007 partit de France
+     mexique@rotex1690.org # Tous les SE présent dans la base venus du mexique
+
+UNILATERAUX
+     fr@rotex1690.org # Ensemble des SE Français présent dans la base
+		      # idem que france@rotex1690.org
+     fr2006@rotex1690.org # Ensemble des SE Français présent dans la base étant partis en 2006
+			  # idem que france 2006@rotex1690.org
+     mx2003@rotex1690.org # Ensemble des SE Mexicains présent dans la base étant partis en 2003
+
+BILATERAUX
+     fr-mx2005@rotex1690.org # Ensemble des SE Français qui ont séjourné au mexique en 2005
+     mx-fr2004@rotex1690.org # Ensemble des SE Mexicains qui ont séjourné en France en 2004
+     us-fr2003@rotex1690.org # Ensemble des SE des Etats Unis qui ont séjourné en France en 2003
+
+
+Les combinaisons ne sont pas infinies mais nombreuses et seront pour une bonne part construites a la volée.
