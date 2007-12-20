@@ -11,6 +11,8 @@ class Maily < ActionMailer::Base
   def receive(email)
 #    Ticket.create!(:mail=>email.to.first, :subject=>email.subject, :message=>email.body)
     # Verification de l'identite de l'expediteur
+    # verification d'adresse unique
+
     mail = Email.new
     mail.arrived_at = Time.now
     mail.sent_on = Date.today
