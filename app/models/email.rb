@@ -31,8 +31,8 @@ class Email < ActiveRecord::Base
   def load(zail)
     self.arrived_at = Time.now
     self.sent_on = Date.today
-    self.subject = zail.subject
-    self.charset = zail.charset
+    self.subject = zail.subject || ''
+    self.charset = zail.charset || 'UNKNOWN'
     self.header  = 'Headers' #zail.header.collect{|x| x[0]+':"'+x[1]+'"'}.join(",")
     self.unvalid = false
     self.from_valid  = true
