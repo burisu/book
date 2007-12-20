@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 4) do
     t.column "from",           :text,                        :null => false
     t.column "from_valid",     :boolean,  :default => false, :null => false
     t.column "from_person_id", :integer
-    t.column "to",             :text,                        :null => false
+    t.column "to",             :text
     t.column "cc",             :text
     t.column "bcc",            :text
     t.column "manual_sent",    :boolean,  :default => false, :null => false

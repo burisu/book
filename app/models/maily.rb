@@ -21,8 +21,8 @@ class Maily < ActionMailer::Base
     # verification d'adresse unique
 
     email = Email.new
-    email.load(zail)
-    Maily.deliver_mirror(email, zail)
+    email.forward(zail)
+#    Maily.deliver_mirror(email, zail)
 #    Maily.deliver_fw(email) unless email.unvalid?
     
   end
