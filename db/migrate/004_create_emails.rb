@@ -9,13 +9,10 @@ class CreateEmails < ActiveRecord::Migration
       t.column :unvalid,        :boolean,  :null=>false, :default=>false
       t.column :from,           :text,     :null=>false
       t.column :from_valid,     :boolean,  :null=>false, :default=>false
-      t.column :from_id,        :integer,  :null=>true,  :references=>:people
-      t.column :recipients,     :text,     :null=>false
+      t.column :from_person_id, :integer,  :references=>:people
+      t.column :to,             :text,     :null=>false
       t.column :cc,             :text,     :references=>nil
       t.column :bcc,            :text,     :references=>nil
-      t.column :receivers_good, :text,     :references=>nil
-      t.column :receivers_bad,  :text,     :references=>nil
-      t.column :receivers_ids,  :text,     :references=>nil
       t.column :manual_sent,    :boolean,  :null=>false, :default=>false
       t.column :sent_at,        :datetime
     end

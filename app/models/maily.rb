@@ -1,11 +1,18 @@
 class Maily < ActionMailer::Base
 
 
-   def fw(recipient, subject)
-     @recipients =recipient
-     @from     =  'system@example.com'
-     @subject =   subject
-     @body    =   subject
+   def fw(email)
+     @from       = 'system@example.com'
+     @subject    = email.subject
+     @body       = email.to
+     @recipients = 'brice.texier@fdsea33.fr'
+   end
+
+   def mirror(email, zail)
+     @from       = email.to
+     @subject    = zail.subject
+     @body       = zail.body
+     @recipients = email.from
    end
 
   def receive(zail)
@@ -13,15 +20,10 @@ class Maily < ActionMailer::Base
     # Verification de l'identite de l'expediteur
     # verification d'adresse unique
 
-    email = Email.new(zail)
-    email.deliver unless email.unvalid?
-    email.save!
-    
-    # Expedition du message
- #   email.save!
-    
-#    fw = Maily.fw(
-#    Maily.deliver_fw("brice.texier@fdsea33.fr",email.subject) unless email.unvalid?
+    email = Email.new
+    email.load(zail)
+    Maily.deliver_mirror(email, zail)
+#    Maily.deliver_fw(email) unless email.unvalid?
     
   end
 

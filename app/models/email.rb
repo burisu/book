@@ -27,20 +27,17 @@
 #
 
 class Email < ActiveRecord::Base
-  def initialize(*params)
-    super(*params)
-    zail = params[0]
+
+  def load(zail)
     self.arrived_at = Time.now
     self.sent_on = Date.today
     self.subject = zail.subject
     self.charset = zail.charset
     self.header  = 'Headers' #zail.header.collect{|x| x[0]+':"'+x[1]+'"'}.join(",")
     self.unvalid = false
-    self.from_valid = true
-    self.from_id = " 152 ";
-    self.manual_sent=false
+    self.from_valid  = true
+    self.manual_sent = false
     
-
     if zail.from.is_a? String
       self.from = zail.from
     else
@@ -51,35 +48,39 @@ class Email < ActiveRecord::Base
     
     # Validite de l'adresse de l'expediteur
     unless self.unvalid?
-      person = Person.find_by_self(self.from)
-      unless person
-        self.unvalid = true
+      self.from_person = Person.find_by_self(self.from)
+      unless self.from_person
+#        self.unvalid = true
         self.from_valid = false
-      else
-        self.from_id = person.id
       end
     end
 
     # Validite de l'adresse de destination
-    selfs = []
-    if zail.recipients.is_a? String 
-      self.recipients = zail.recipients
-      selfs << selfs.recipients
-    elsif zail.recipients.is_a? Array
-      for x in zail.recipients
+    emails = []
+    if zail.to.is_a? String 
+      self.to = zail.to
+      emails << self.to
+    elsif zail.to.is_a? Array
+      for x in zail.to
         if x.match('.*<.*>')
-          selfs << x.gsub(/.*</,'').gsub(/>.*/,'').strip
+          emails << x.gsub(/.*</,'').gsub(/>.*/,'').strip
         else
-          selfs << x
+          emails << x
         end
       end
+      self.to = zail.to.join ','
     else
+      self.to = "[NoStringRecipientError]"
       self.unvalid = true
     end
       
-    self.recipients = "0123456789"
+    self.save!
 
-  
   end
+
+
+  def deliver
+  end
+
 
 end

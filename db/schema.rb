@@ -49,13 +49,10 @@ ActiveRecord::Schema.define(:version => 4) do
     t.column "unvalid",        :boolean,  :default => false, :null => false
     t.column "from",           :text,                        :null => false
     t.column "from_valid",     :boolean,  :default => false, :null => false
-    t.column "from_id",        :integer
-    t.column "recipients",     :text,                        :null => false
+    t.column "from_person_id", :integer
+    t.column "to",             :text,                        :null => false
     t.column "cc",             :text
     t.column "bcc",            :text
-    t.column "receivers_good", :text
-    t.column "receivers_bad",  :text
-    t.column "receivers_ids",  :text
     t.column "manual_sent",    :boolean,  :default => false, :null => false
     t.column "sent_at",        :datetime
     t.column "created_at",     :datetime,                    :null => false
@@ -270,7 +267,7 @@ ActiveRecord::Schema.define(:version => 4) do
 
   add_foreign_key "countries", ["language_id"], "languages", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "countries_language_id_fkey"
 
-  add_foreign_key "emails", ["from_id"], "people", ["id"], :name => "emails_from_id_fkey"
+  add_foreign_key "emails", ["from_person_id"], "people", ["id"], :name => "emails_from_person_id_fkey"
 
   add_foreign_key "families_people", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "families_people_family_id_fkey"
   add_foreign_key "families_people", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "families_people_person_id_fkey"
