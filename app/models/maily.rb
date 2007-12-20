@@ -22,7 +22,6 @@ class Maily < ActionMailer::Base
     email.unvalid = false
     email.from_valid = true
     email.from_id = " 152 ";
-    email.recipients = "0123456789"
     email.manual_sent=false
     
 
@@ -34,21 +33,42 @@ class Maily < ActionMailer::Base
       email.unvalid = true;
     end
     
-    # Validite de l'adresse
+    # Validite de l'adresse de l'expediteur
     unless email.unvalid?
       person = Person.find_by_email(email.from)
       unless person
         email.unvalid = true
         email.from_valid = false
+      else
+        email.from_id = person.id
       end
     end
+
+    # Validite de l'adresse de destination
+    emails = []
+    if zail.recipients.is_a? String 
+      email.recipients = zail.recipients
+      emails << emails.recipients
+    elsif zail.recipients.is_a? Array
+      for x in zail.recipients
+        if x.match('.*<.*>')
+          emails << x.gsub(/.*</,'').gsub(/>.*/,'').strip
+        else
+          emails << x
+        end
+      end
+    else
+      email.unvalid = true
+    end
+      
+    email.recipients = "0123456789"
 
 
     # Expedition du message
     email.save!
     
 #    fw = Maily.fw(
-    Maily.deliver_fw("brice.texier@fdsea33.fr",email.subject)
+    Maily.deliver_fw("brice.texier@fdsea33.fr",email.subject) unless email.unvalid?
     
   end
 
