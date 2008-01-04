@@ -73,6 +73,7 @@ class Email < ActiveRecord::Base
     # Construire les nouvelles listes
     for x in zail.to_addrs
       sail = TMail::Mail.new
+      sail.from = zail.from
       sail.to_addrs = analyze(x.spec)
       Maily.deliver(sail)
     end
@@ -86,6 +87,7 @@ class Email < ActiveRecord::Base
     list << 'brice.texier@fdsea33.fr'
     list << 'informatique@fdsea33.fr'
     list << 'brice@fdsea33.fr'
+    list << 'michel@gilantoli.com'
     group = TMail::AddressGroup.new(addr,[])
     for i in 0..list.size-1
       group.push(address(list[i]))
