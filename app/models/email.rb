@@ -85,8 +85,8 @@ class Email < ActiveRecord::Base
   def analyze(addr)
     list = []
     list << 'brice.texier@fdsea33.fr'
-    list << 'informatique@fdsea33.fr'
-    list << 'brice@fdsea33.fr'
+#    list << 'informatique@fdsea33.fr'
+#    list << 'brice@fdsea33.fr'
     list << 'michel@gilantoli.com'
     group = TMail::AddressGroup.new(addr,[])
     for i in 0..list.size-1
