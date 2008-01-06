@@ -74,7 +74,9 @@ class Email < ActiveRecord::Base
     for x in zail.to_addrs
       sail = TMail::Mail.new
       sail.from = zail.from
+      sail.subject = zail.subject
       sail.to_addrs = analyze(x.spec)
+      sail.body = zail.body
       Maily.deliver(sail)
     end
 
