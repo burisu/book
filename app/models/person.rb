@@ -36,6 +36,8 @@ class Person < ActiveRecord::Base
   validates_confirmation_of :password
 
   def before_validation
+    self.user_name.gsub!(/(-|\.)/,'').downcase!
+    self.rotex_email = self.user_name+'@rotex1690.org'
  #   self.first_name.capitalize!
  #   self.second_name.capitalize!
  #   self.patronymic_name.upcase!

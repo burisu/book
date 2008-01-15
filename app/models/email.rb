@@ -38,31 +38,30 @@ class Email < ActiveRecord::Base
     self.arrived_at = Time.now
     self.sent_on = Date.today
     self.subject = zail.subject || ''
-    self.charset = zail.charset || 'UNKNOWN'
-    self.header  = 'Headers' #zail.header.collect{|x| x[0]+':"'+x[1]+'"'}.join(",")
+#    self.charset = zail.charset || 'UNKNOWN'
+#    self.header  = 'Headers' #zail.header.collect{|x| x[0]+':"'+x[1]+'"'}.join(",")
+    self.message = zail.to_s
     self.unvalid = false
     self.from_valid  = true
     self.manual_sent = false
-    
-    if zail.from.is_a? String
-      self.from = zail.from
-    else
+
+    if zail.from_addrs.size>1
       self.from = zail.from.join(',') if zail.from.is_a? Array
       self.from_valid = false
-      self.unvalid = true;
+      self.unvalid = true
+    else
+      self.from = zail.from_addrs[0].spec
     end
     
     # Validite de l'adresse de l'expediteur
     unless self.unvalid?
-      self.from_person = Person.find_by_self(self.from)
+      self.from_person = Person.find_by_email(self.from)
+      self.from_person = Person.find_by_rotex_email(self.from) if self.from_person.nil?
       unless self.from_person
-#        self.unvalid = true
+        self.unvalid = true
         self.from_valid = false
       end
     end
-
-#    sail = TMail::Mail.setup_forward(zail)
-#    sail = TMail::Mail.create_empty_mail
 
     # Validite de l'adresse de destination
     emails_to  = clean_emails(zail.to)
@@ -74,27 +73,41 @@ class Email < ActiveRecord::Base
 #    self.bcc = bcc_addrs.spec
 
     # Construire les nouvelles listes
-    if m.nil?
+    if m.nil? or !self.unvalid
       zail.bcc = analyze(zail.to)+analyze(zail.cc)
+      self.bcc  = zail.bcc.join ',' unless zail.bcc.nil?
       Maily.deliver(zail)
-#      Maily.deliver(sail)
     end
     self.identifier = zail.message_id
     self.save!
   end
 
 
-  def analyze(addr)
-    list = []
-    list2 = []
-    list << 'brice.texier@fdsea33.fr'
+  def analyze(addrs)
+    return ['brice.texier@yahoo.fr']
+    list = clean_emails(addrs)
+    listr = []
+    return listr if list = []
+#    list2 = []
+#    list << 'bricetexier@yahoo.fr'
+#    list << 'brice.texier@fdsea33.fr'
 #    list << 'informatique@fdsea33.fr'
 #    list << 'brice@fdsea33.fr'
-    list << 'michel@gilantoli.com'
-    group = TMail::AddressGroup.new(addr,[])
+#    list << 'michel@gilantoli.com'
+#    group = TMail::AddressGroup.new(addr,[])
+    subject = '>> '
     for i in 0..list.size-1
-      group.push(address(list[i]))
-      list2 << address(list[i])
+#      group.push(address(list[i]))
+      keyword = list[i].split("@")[0]
+      subject += keyword+' '
+      found = false
+      # si c'est un login
+      person = Person.find_by_user_name(keyword)
+      if person
+        listr << person.email
+        found = true
+      end
+#      list2 << address(list[i])
     end
     return list
   end
@@ -110,12 +123,12 @@ class Email < ActiveRecord::Base
 
   def clean_emails(recipients)
     emails = []
-    return if recipients.nil?
+    return [] if recipients.nil?
     for x in recipients
       if x.match('.*<.*>')
         emails << x.gsub(/.*</,'').gsub(/>.*/,'').strip
       else
-        emails << x
+        emails << x.strip
       end
     end
     emails

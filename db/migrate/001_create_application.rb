@@ -86,6 +86,7 @@ class CreateApplication < ActiveRecord::Migration
       t.column :role_id, :integer, :null=>false, :references=>:roles, :on_delete=>:restrict, :on_update=>:restrict
     end
     add_index :people, :rotex_email, :unique=>true
+    add_index :people, :email, :unique=>true
     add_index :people, :hashed_password, :unique=>true
 
     create_table :person_versions do |t|
@@ -185,9 +186,7 @@ class CreateApplication < ActiveRecord::Migration
       t.column :arrived_at,     :datetime, :null=>false
       t.column :sent_on,        :date,     :null=>false      
       t.column :subject,        :string,   :null=>false
-      t.column :charset,        :string,   :null=>false
-      t.column :header,         :text,     :null=>false
-      t.column :echo,           :boolean,  :null=>false, :default=>false
+#      t.column :echo,           :boolean,  :null=>false, :default=>false
       t.column :unvalid,        :boolean,  :null=>false, :default=>false
       t.column :from,           :text,     :null=>false
       t.column :from_valid,     :boolean,  :null=>false, :default=>false
@@ -198,7 +197,9 @@ class CreateApplication < ActiveRecord::Migration
       t.column :bcc,            :text,     :references=>nil
       t.column :manual_sent,    :boolean,  :null=>false, :default=>false
       t.column :sent_at,        :datetime
+      t.column :message,        :text
     end
+    add_index :emails, :identifier
 
   end
 

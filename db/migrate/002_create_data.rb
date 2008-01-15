@@ -20,7 +20,10 @@ class CreateData < ActiveRecord::Migration
     params[:country]=pays
     params[:role]=role
     personne=Person.create(params)
-    
+
+    Person.create(:patronymic_name=>'TEXIER', :first_name=>'Brice', :born_on=>Date.new(1983,12,12), :home_address=>'FRANCE', :user_name=>'brice', :email=>'bricetexier@yahoo.fr', :password=>'turion41', :password_confirmation=>'turion41',:role=>role,:country=>pays)
+    Person.create(:patronymic_name=>'TEXIER', :first_name=>'Brice', :born_on=>Date.new(1983,12,12), :home_address=>'FRANCE', :user_name=>'brice2', :email=>'brice.texier@fdsea33.fr', :password=>'turion41', :password_confirmation=>'turion41',:role=>role,:country=>pays)
+
     ArticleNature.create(:name=>'Article de carnet de bord', :code=>'BLOG')
     art_nat=ArticleNature.create(:name=>'Page accueil', :code=>'HOME')
     
@@ -46,6 +49,7 @@ class CreateData < ActiveRecord::Migration
     params[:language]=langue
     params[:nature]=art_nat
     article=Article.create(params)
+
   end
 
   def self.down
