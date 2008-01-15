@@ -10,12 +10,15 @@ class CreateEmails < ActiveRecord::Migration
       t.column :from,           :text,     :null=>false
       t.column :from_valid,     :boolean,  :null=>false, :default=>false
       t.column :from_person_id, :integer,  :references=>:people
+      t.column :identifier,     :text,     :null=>false, :references=>nil
       t.column :to,             :text,     :references=>nil
       t.column :cc,             :text,     :references=>nil
       t.column :bcc,            :text,     :references=>nil
       t.column :manual_sent,    :boolean,  :null=>false, :default=>false
       t.column :sent_at,        :datetime
     end
+
+
   end
 
   def self.down

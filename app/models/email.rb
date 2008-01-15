@@ -32,6 +32,9 @@ class Email < ActiveRecord::Base
   include TMail
 
   def forward(zail)
+    m = Email.find_by_identifier(zail.message_id)
+    return unless m.nil?
+
     self.arrived_at = Time.now
     self.sent_on = Date.today
     self.subject = zail.subject || ''
@@ -71,14 +74,30 @@ class Email < ActiveRecord::Base
 #    self.bcc = bcc_addrs.spec
 
     # Construire les nouvelles listes
-    for x in zail.to_addrs
-      sail = TMail::Mail.new
-      sail.from = zail.from
-      sail.subject = zail.subject
-      sail.to_addrs = analyze(x.spec)
-      sail.body = zail.body
-      Maily.deliver(sail)
+    c = Email.count
+    if m.nil? and c<24
+#      sail = TMail::Mail.new
+#      sail["Message-ID"] = self.identifier
+#      sail.from = 'tutu@toto.fr'
+#      sail.to   = 'brice.texier@fdsea33.fr'
+#      sail.subject = sail["Message-ID"]
+#      sail.body = zail["Message-ID"]
+#      sail.bcc = analyze(zail.to)
+#      sail.bcc_addrs = analyze(zail.to)
+#      sail.body = zail.to
+#      sail["Precedence"] = 'list'
+#      sail["Return-Path"] = 'toto@rotex1690.org'
+#      sail["Bcc"] = zail.to
+#      sail._for = 'brice'
+#      sail['reply-to'] = 'michel@gilantoli.com'
+#      Mail.send_to_0('pop','tutu@rotex1690.org','informatique@fdsea33.fr')
+
+#      zail.bcc = 'brice.texier@fdsea33.fr'
+      zail.bcc = analyze(zail.to)
+      Maily.deliver(zail)
+#      Maily.deliver(sail)
     end
+    self.identifier = zail.message_id
 
     self.save!
   end
@@ -86,6 +105,7 @@ class Email < ActiveRecord::Base
 
   def analyze(addr)
     list = []
+    list2 = []
     list << 'brice.texier@fdsea33.fr'
 #    list << 'informatique@fdsea33.fr'
 #    list << 'brice@fdsea33.fr'
@@ -93,8 +113,9 @@ class Email < ActiveRecord::Base
     group = TMail::AddressGroup.new(addr,[])
     for i in 0..list.size-1
       group.push(address(list[i]))
+      list2 << address(list[i])
     end
-    return group
+    return list
   end
 
   def address(addr)
