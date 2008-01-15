@@ -1,5 +1,14 @@
 class CreateApplication < ActiveRecord::Migration
   def self.up
+    create_table :sessions,:row_version => false do |t|
+      t.column :session_id, :string, :references => nil
+      t.column :data, :text
+      t.column :updated_at, :datetime
+    end
+
+    add_index :sessions, :session_id
+    add_index :sessions, :updated_at
+
     create_table :promotions do |t|
       t.column :name, :string, :null=>false #" 2005 Hemisphere Nord"
       t.column :is_outbound, :boolean, :null=>false, :default=>true # sortant
@@ -171,9 +180,30 @@ class CreateApplication < ActiveRecord::Migration
       t.column :language_id, :integer, :null=>false, :references=>:languages, :on_delete=>:restrict, :on_update=>:restrict
     end
 
+
+    create_table :emails do |t|
+      t.column :arrived_at,     :datetime, :null=>false
+      t.column :sent_on,        :date,     :null=>false      
+      t.column :subject,        :string,   :null=>false
+      t.column :charset,        :string,   :null=>false
+      t.column :header,         :text,     :null=>false
+      t.column :echo,           :boolean,  :null=>false, :default=>false
+      t.column :unvalid,        :boolean,  :null=>false, :default=>false
+      t.column :from,           :text,     :null=>false
+      t.column :from_valid,     :boolean,  :null=>false, :default=>false
+      t.column :from_person_id, :integer,  :references=>:people
+      t.column :identifier,     :text,     :null=>false, :references=>nil
+      t.column :to,             :text,     :references=>nil
+      t.column :cc,             :text,     :references=>nil
+      t.column :bcc,            :text,     :references=>nil
+      t.column :manual_sent,    :boolean,  :null=>false, :default=>false
+      t.column :sent_at,        :datetime
+    end
+
   end
 
   def self.down
+    drop_table :emails
     drop_table :articles
     drop_table :article_natures
     drop_table :periods
@@ -190,6 +220,7 @@ class CreateApplication < ActiveRecord::Migration
     drop_table :mandate_natures
     drop_table :roles
     drop_table :promotions
+    drop_table :sessions
   end
 
 end

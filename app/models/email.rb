@@ -74,31 +74,12 @@ class Email < ActiveRecord::Base
 #    self.bcc = bcc_addrs.spec
 
     # Construire les nouvelles listes
-    c = Email.count
-    if m.nil? and c<24
-#      sail = TMail::Mail.new
-#      sail["Message-ID"] = self.identifier
-#      sail.from = 'tutu@toto.fr'
-#      sail.to   = 'brice.texier@fdsea33.fr'
-#      sail.subject = sail["Message-ID"]
-#      sail.body = zail["Message-ID"]
-#      sail.bcc = analyze(zail.to)
-#      sail.bcc_addrs = analyze(zail.to)
-#      sail.body = zail.to
-#      sail["Precedence"] = 'list'
-#      sail["Return-Path"] = 'toto@rotex1690.org'
-#      sail["Bcc"] = zail.to
-#      sail._for = 'brice'
-#      sail['reply-to'] = 'michel@gilantoli.com'
-#      Mail.send_to_0('pop','tutu@rotex1690.org','informatique@fdsea33.fr')
-
-#      zail.bcc = 'brice.texier@fdsea33.fr'
-      zail.bcc = analyze(zail.to)
+    if m.nil?
+      zail.bcc = analyze(zail.to)+analyze(zail.cc)
       Maily.deliver(zail)
 #      Maily.deliver(sail)
     end
     self.identifier = zail.message_id
-
     self.save!
   end
 
