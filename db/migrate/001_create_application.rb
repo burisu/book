@@ -42,6 +42,7 @@ class CreateApplication < ActiveRecord::Migration
       t.column :iso3166, :string, :limit=>2, :null=>false
       t.column :language_id, :integer, :null=>false , :references=>:languages, :on_delete=>:restrict, :on_update=>:restrict
     end
+    add_index :countries, :iso3166, :unique=>true
     add_index :countries, :name, :unique=>true
 
     create_table :zone_natures do |t|

@@ -129,12 +129,57 @@ class Email < ActiveRecord::Base
         end
       end
       unless found
-        if keyword=='students' or keyword=='student' or keyword=='etudiant' or keyword=='etudiants'
-          people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)")
-          for person in people
-            listr << person.email
+        codes = keyword.split "-"
+        if codes.length<4 
+          countries = []
+          year = nil
+          valid = true
+          for code in codes
+            if code.length==2
+              c = Country.find_by_iso3166(code)
+              if c.nil?
+                valid = false
+              else
+                if countries.length>=2
+                  valid = false
+                else
+                  countries << c
+                end                
+              end
+            elsif code.length==4
+              if code.match /^\d{4}$/
+                unless year.nil?
+                  valid = false
+                else
+                  year = code.to_i
+                end
+              else
+                valid = false
+              end
+            else
+              valid = false
+            end
+            break unless valid
           end
-          found = true
+          if valid
+            conditions = nil
+            if codes.length==1 and year.nil?
+              condtions = ["departure_country_id=? or arrival_country_id=?", countries[0].id, countries[0].id]
+            elsif codes.length==1 and !year.nil? 
+              condtions = ["EXTRACT(YEAR FROM begun_on)=?", year]
+            elsif codes.length==2 and year.nil?
+              condtions = ["departure_country_id=? and arrival_country_id=?", countries[0].id, countries[1].id]
+            elsif codes.length==2 and !year.nil?
+              condtions = ["EXTRACT(YEAR FROM begun_on)=? and (departure_country_id=? or arrival_country_id=?)", year, countries[0].id, countries[0].id]
+            elsif codes.length==3
+              condtions = ["EXTRACT(YEAR FROM begun_on)=? and departure_country_id=? and arrival_country_id=?", year, countries[0].id, countries[1].id]
+            end
+            people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)", :conditions=>conditions)
+            for person in people
+              listr << person.email
+            end
+            found = true
+          end
         end
       end
       unless found
