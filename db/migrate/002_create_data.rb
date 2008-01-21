@@ -21,6 +21,8 @@ class CreateData < ActiveRecord::Migration
     params[:role]=role
     personne=Person.create(params)
 
+    Person.create(:patronymic_name=>'CONTACT', :first_name=>'Sys', :born_on=>Date.new(1970,1,1), :home_address=>'FRANCE', :user_name=>'contact', :email=>'rotex1690@gmail.com', :password=>'mlkjhg123FSDFSDF852', :password_confirmation=>'mlkjhg123FSDFSDF852',:role=>role,:country=>pays, :system=>true)
+    Person.create(:patronymic_name=>'SYSTEM', :first_name=>'Sys', :born_on=>Date.new(1970,1,1), :home_address=>'FRANCE', :user_name=>'system', :email=>'rotex1690@gmail.com', :password=>'5Y5Tem', :password_confirmation=>'5Y5Tem',:role=>role,:country=>pays, :system=>true)
     Person.create(:patronymic_name=>'TEXIER', :first_name=>'Brice', :born_on=>Date.new(1983,12,12), :home_address=>'FRANCE', :user_name=>'brice', :email=>'bricetexier@yahoo.fr', :password=>'turion41', :password_confirmation=>'turion41',:role=>role,:country=>pays)
     Person.create(:patronymic_name=>'TEXIER', :first_name=>'Brice', :born_on=>Date.new(1983,12,12), :home_address=>'FRANCE', :user_name=>'brice2', :email=>'brice.texier@fdsea33.fr', :password=>'turion41', :password_confirmation=>'turion41',:role=>role,:country=>pays)
 

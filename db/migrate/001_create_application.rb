@@ -66,6 +66,7 @@ class CreateApplication < ActiveRecord::Migration
       t.column :family_name, :string  #Nom épouse
       t.column :first_name, :string, :null=>false
       t.column :second_name, :string
+      t.column :system, :boolean, :null=>false, :default=>false
       t.column :is_female, :boolean, :null=>false, :default=>true #false="male", true="femelle"
       t.column :born_on, :date, :null=>false
       t.column :home_address, :text, :null=>false
@@ -85,8 +86,9 @@ class CreateApplication < ActiveRecord::Migration
       t.column :country_id, :integer, :null=>false, :references=>:countries, :on_delete=>:restrict, :on_update=>:restrict
       t.column :role_id, :integer, :null=>false, :references=>:roles, :on_delete=>:restrict, :on_update=>:restrict
     end
+    add_index :people, :user_name, :unique=>true
     add_index :people, :rotex_email, :unique=>true
-    add_index :people, :email, :unique=>true
+#    add_index :people, :email, :unique=>true
     add_index :people, :hashed_password, :unique=>true
 
     create_table :person_versions do |t|

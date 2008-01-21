@@ -34,9 +34,10 @@
 class Person < ActiveRecord::Base
   attr_accessor :password_confirmation
   validates_confirmation_of :password
+  validates_uniqueness_of :email, :if=>Proc.new {|p| !p.system }
 
   def before_validation
-    self.user_name.gsub!(/(-|\.)/,'').downcase!
+    self.user_name.gsub!(/(-|\.)/,'')
     self.rotex_email = self.user_name+'@rotex1690.org'
  #   self.first_name.capitalize!
  #   self.second_name.capitalize!

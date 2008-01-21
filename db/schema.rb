@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(:version => 2) do
     t.column "family_name",      :string
     t.column "first_name",       :string,                                    :null => false
     t.column "second_name",      :string
+    t.column "system",           :boolean,                :default => false, :null => false
     t.column "is_female",        :boolean,                :default => true,  :null => false
     t.column "born_on",          :date,                                      :null => false
     t.column "home_address",     :text,                                      :null => false
@@ -162,9 +163,9 @@ ActiveRecord::Schema.define(:version => 2) do
     t.column "lock_version",     :integer,                :default => 0,     :null => false
   end
 
-  add_index "people", ["email"], :name => "index_people_on_email"
   add_index "people", ["hashed_password"], :name => "index_people_on_hashed_password", :unique => true
   add_index "people", ["rotex_email"], :name => "index_people_on_rotex_email", :unique => true
+  add_index "people", ["user_name"], :name => "index_people_on_user_name", :unique => true
 
   create_table "periods", :force => true do |t|
     t.column "begun_on",     :date,                    :null => false

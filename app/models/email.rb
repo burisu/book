@@ -78,6 +78,7 @@ class Email < ActiveRecord::Base
     if m.nil? or !self.unvalid
 #      zail.bcc, zail.subject = analyze(zail.to)
       zail.bcc = analyze(zail.to)+analyze(zail.cc)
+      zail['Return-Path'] = 'system@'+'rotex1690.org'
       self.bcc  = zail.bcc.join ',' unless zail.bcc.nil?
       Maily.deliver(zail)
     else
@@ -117,9 +118,6 @@ class Email < ActiveRecord::Base
 #      list2 << address(list[i])
     end
     return listr
-#    return ['brice.texier@fdsea33.fr'], subject
-#    return ['brice.texier@fdsea33.fr'] if listr.empty?
-#    return listr
   end
 
   def address(addr)
