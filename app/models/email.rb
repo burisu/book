@@ -31,6 +31,8 @@ class Email < ActiveRecord::Base
 #  include ActionMailer
   include TMail
 
+  domain = 'rotex1690.org'
+
   def forward(zail)
     m = Email.find_by_identifier(zail.message_id)
     return unless m.nil?
@@ -74,20 +76,25 @@ class Email < ActiveRecord::Base
 
     # Construire les nouvelles listes
     if m.nil? or !self.unvalid
+#      zail.bcc, zail.subject = analyze(zail.to)
       zail.bcc = analyze(zail.to)+analyze(zail.cc)
       self.bcc  = zail.bcc.join ',' unless zail.bcc.nil?
       Maily.deliver(zail)
+    else
+       zail.subject = '[NOT SENT]'+zail.subject
     end
+#    zail.subject = '#'+zail.subject
     self.identifier = zail.message_id
     self.save!
   end
 
 
   def analyze(addrs)
-    return ['brice.texier@yahoo.fr']
+#    return ['brice.texier@fdsea33.fr'], 'totot'
+#    list = addrs;
     list = clean_emails(addrs)
     listr = []
-    return listr if list = []
+#    return listr if list.empty?
 #    list2 = []
 #    list << 'bricetexier@yahoo.fr'
 #    list << 'brice.texier@fdsea33.fr'
@@ -109,7 +116,10 @@ class Email < ActiveRecord::Base
       end
 #      list2 << address(list[i])
     end
-    return list
+    return listr
+#    return ['brice.texier@fdsea33.fr'], subject
+#    return ['brice.texier@fdsea33.fr'] if listr.empty?
+#    return listr
   end
 
   def address(addr)
@@ -121,15 +131,18 @@ class Email < ActiveRecord::Base
     return TMail::Address.new(l,d)
   end
 
+
   def clean_emails(recipients)
     emails = []
+    email = nil
     return [] if recipients.nil?
     for x in recipients
       if x.match('.*<.*>')
-        emails << x.gsub(/.*</,'').gsub(/>.*/,'').strip
+        email = x.gsub(/.*</,'').gsub(/>.*/,'').strip
       else
-        emails << x.strip
+        email = x.strip
       end
+      emails << email if email.split("@")[1].downcase=='rotex1690.org'
     end
     emails
   end
