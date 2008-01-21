@@ -92,30 +92,58 @@ class Email < ActiveRecord::Base
 
   def analyze(addrs)
 #    return ['brice.texier@fdsea33.fr'], 'totot'
-#    list = addrs;
     list = clean_emails(addrs)
     listr = []
-#    return listr if list.empty?
-#    list2 = []
-#    list << 'bricetexier@yahoo.fr'
-#    list << 'brice.texier@fdsea33.fr'
-#    list << 'informatique@fdsea33.fr'
-#    list << 'brice@fdsea33.fr'
-#    list << 'michel@gilantoli.com'
-#    group = TMail::AddressGroup.new(addr,[])
     subject = '>> '
     for i in 0..list.size-1
-#      group.push(address(list[i]))
-      keyword = list[i].split("@")[0]
+      keyword = list[i].split("@")[0].downcase
       subject += keyword+' '
       found = false
       # si c'est un login
-      person = Person.find_by_user_name(keyword)
-      if person
-        listr << person.email
-        found = true
+      unless found
+        if keyword=='rotex'
+          people = Person.find(:all, :conditions=>{:is_locked=>false, :system=>false})
+          for person in people
+            listr << person.email
+          end
+          found = true
+        end
       end
-#      list2 << address(list[i])
+      unless found
+        if keyword=='students' or keyword=='student' or keyword=='etudiant' or keyword=='etudiants'
+          people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)")
+          for person in people
+            listr << person.email
+          end
+          found = true
+        end
+      end
+      unless found
+        mn = MandateNature.find_by_code(keyword)
+        unless mn.nil?
+          people = Person.find(:all, :join=>"join mandates on (mandates.person_id=people.id)", :condition=>["mandates.nature_id=? AND current_date BETWEEN begun_on AND finished_on",mn.id])
+          for person in people
+            listr << person.email
+          end
+          found = true
+        end
+      end
+      unless found
+        if keyword=='students' or keyword=='student' or keyword=='etudiant' or keyword=='etudiants'
+          people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)")
+          for person in people
+            listr << person.email
+          end
+          found = true
+        end
+      end
+      unless found
+        person = Person.find_by_user_name(keyword)
+        if person
+          listr << person.email
+          found = true
+        end
+      end
     end
     return listr
   end
