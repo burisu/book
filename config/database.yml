@@ -44,5 +44,5 @@ production:
   adapter: postgresql
   encoding: unicode
   database: rotex_production
-  username: rotex
-  password:
+  username: rails
+  password: R4|L5
