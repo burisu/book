@@ -1,3 +1,5 @@
+require 'scaffolding_extensions'
+
 class CrudController < ApplicationController
   scaffold_all_models
   before_filter :authorize
