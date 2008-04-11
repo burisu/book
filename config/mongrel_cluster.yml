@@ -1,5 +1,5 @@
 --- 
-cwd: /var/www/www.rotex1690.org/rotex/current
+cwd: /var/www/www.rotex1690.org/current
 log_file: log/mongrel.log
 port: "11000"
 environment: production
