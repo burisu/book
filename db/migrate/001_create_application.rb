@@ -138,7 +138,7 @@ class CreateApplication < ActiveRecord::Migration
       t.column :host_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
       t.column :sponsor_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
       t.column :proposer_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :arrival_person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict #YEO D'arrive
+      t.column :arrival_person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict #YEO D'arrivee
       t.column :departure_person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict  #YEO depart
       t.column :begun_on, :date, :null=>false
       t.column :finished_on, :date, :null=>false
