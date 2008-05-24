@@ -35,10 +35,11 @@ class Person < ActiveRecord::Base
   attr_accessor :password_confirmation
   validates_confirmation_of :password
   validates_uniqueness_of :email, :if=>Proc.new {|p| !p.system }
+  apply_simple_captcha :message => " image and text were different", :add_to_base => true
 
   def before_validation
     self.user_name.gsub!(/(-|\.)/,'')
-    self.rotex_email = self.user_name+'@rotex1690.org'
+    self.rotex_email = rand.to_s[2..16]
  #   self.first_name.capitalize!
  #   self.second_name.capitalize!
  #   self.patronymic_name.upcase!
@@ -48,6 +49,10 @@ class Person < ActiveRecord::Base
   def validate
     error.add_to_base("Mot de passe manquant") if hashed_password.blank?
   end
+  
+  def before_save
+    self.rotex_email = self.user_name+'@rotex1690.org'
+  end
 
   def password
     @password
@@ -55,8 +60,10 @@ class Person < ActiveRecord::Base
 
   def password=(password)
     @password=password
-    self.salt=self.object_id.to_s[1..16] + rand.to_s[2..16]
-    self.hashed_password=Person.encrypt(self.password,self.salt)
+    if password!=''
+      self.salt=self.object_id.to_s[1..16] + rand.to_s[2..16]
+      self.hashed_password=Person.encrypt(self.password,self.salt)
+    end
   end
   
   def can_create_persons?
@@ -78,6 +85,6 @@ class Person < ActiveRecord::Base
 
 private
   def self.encrypt(password,salt)
-    Digest::MD5.hexdigest(password+'password'+salt+password)
+    Digest::MD5.hexdigest('<'+salt+':'+password+password+'/>')
   end
 end

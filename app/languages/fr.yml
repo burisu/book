@@ -68,8 +68,10 @@ countries:
 helpers:
   error_messages_for:
     heading:
-      1: '1 erreur a empêché ce %2$s d''être enregistré'
-      n: '%d erreurs ont empêché ce %s d''être enregistré'
+      1: 'Une erreur a empêché l''enregistrement'
+      n: '%d erreurs ont empêché l''enregistrement'
+      1o: '1 erreur a empêché ce %2$s d''être enregistré'
+      no: '%d erreurs ont empêché ce %s d''être enregistré'
     description: 'Il y a eu des problèmes avec les champs suivants&nbsp;:'
   number_to_currency:
     precision: 2
@@ -112,6 +114,32 @@ helpers:
 #       description: Localized description
 
 models:
-
+  person:
+    name: Personne
+    attributes:
+      patronymic_name: Nom patronymique
+      family_name: Nom de famille
+      first_name: Prénom
+      second_name: Deuxième prénom
+      system: Compte système
+      is_female: Sexe
+      born_on: Date de naissance
+      home_address: Adresse
+      aligned_to_right: RTL
+      home_phone: Téléphone (domicile)
+      work_phone: Téléphone (travail)
+      fax: Fax
+      mobile: Mobile
+      messenger_email: Adresse Messenger
+      user_name: Nom d'utilisateur
+      email: E-mail
+      hashed_password: Mot de passe crypté
+      salt: Grain de sel
+      rotex_email: E-mail Rotex
+      is_locked: Compte verrouillé
+      photo: Photo
+      country_id: Nationalité
+      role_id: Rôle
+      
 
 app:

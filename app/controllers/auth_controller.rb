@@ -23,7 +23,16 @@ class AuthController < ApplicationController
   end
 
   def subscribe
-    
+    if request.post?
+      role = Role.find_or_create('role')
+      params[:person][:role_id] = role.id
+      @person = Person.new params[:person]
+      if @person.save
+        redirect_to :controller=>:multy, :action=>:index
+      end
+    else
+      @person = Person.new
+    end
   end
 
   def lost_password

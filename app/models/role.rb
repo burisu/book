@@ -12,4 +12,11 @@
 #
 
 class Role < ActiveRecord::Base
+
+  def self.find_or_create(name)
+    r = Role.find_by_name(name)
+    r = Role.create(:name=>name, :restriction_level=>1000) if r.nil?
+    r
+  end
+  
 end

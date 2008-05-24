@@ -1,6 +1,6 @@
-* {padding:0; margin:0}
-h1,h2,h3,p,div,li,td,th,a{ color:#ffd; font-family: sans-serif; }
-p,a,div,ul,li {font-size:12px;}
+* {padding:0; margin:0; font-family: sans-serif; }
+h1,h2,h3,p,div,li,td,th,a{ color:#ffd;}
+p,a,div,ul,li,input,textarea,select {font-size:12px;}
 body { background:#0567ff;}
 .column {margin-left:auto; margin-right:auto; width:990px;}
 .column > div {margin-left:auto; margin-right:auto; width:774px;}
@@ -9,15 +9,14 @@ body { background:#0567ff;}
 #footer {background: url(/images/background_footer.png) no-repeat bottom center; height:190px;}
 #bodier > div > div {padding:1px;}
 #mainbody {padding:4px;}
-input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer;}
-a:link, input[type="submit"] { color : white; text-decoration:underline;}
+input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer; padding: 8px;}
+a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
 a:visited { color : white;}
 a:hover, input[type="submit"]:hover { text-decoration:none;}
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
 td.label { text-align:right; padding :1px 4px;}
-
-
+td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 .menu {
   background : white;
 }
@@ -124,15 +123,8 @@ span.separator {
   padding : 0 5px;
 }
 
-#errorExplanation {
-  background : #900;
-  padding : 5px;
-  border : 2px solid white;
-  margin-bottom : 20px;
-}
-
-#errorExplanation h2 {
-  margin : 1px 3px; 
-}
+#errorExplanation { background : #B32; padding : 5px; margin: 20px; border : 2px solid white;}
+#errorExplanation h2 { margin : 1px 3px; }
+#errorExplanation ul {padding : 2px 20px; list-style-type :square;}
 
 
