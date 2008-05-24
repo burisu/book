@@ -1,20 +1,48 @@
-h1,h2,h3,p,div,li,td,th,a{
-  color:#ffd;
-  font-family: sans-serif;
+* {padding:0; margin:0}
+h1,h2,h3,p,div,li,td,th,a{ color:#ffd; font-family: sans-serif; }
+p,a,div,ul,li {font-size:12px;}
+body { background:#0567ff;}
+.column {margin-left:auto; margin-right:auto; width:990px;}
+.column > div {margin-left:auto; margin-right:auto; width:774px;}
+#header {background: url(/images/background_header.png) no-repeat bottom center; height:150px;}
+#bodier {background: url(/images/background_bodier.png) repeat-y top center;}
+#footer {background: url(/images/background_footer.png) no-repeat bottom center; height:190px;}
+#bodier > div > div {padding:1px;}
+#mainbody {padding:4px;}
+input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer;}
+a:link, input[type="submit"] { color : white; text-decoration:underline;}
+a:visited { color : white;}
+a:hover, input[type="submit"]:hover { text-decoration:none;}
+table.formu {margin-left:auto; margin-right:auto;}
+.formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
+td.label { text-align:right; padding :1px 4px;}
+
+
+.menu {
+  background : white;
 }
 
-body {
-  margin:0;
-  background:#2e558a;
+.menu ul {
+  padding: 5px 0px;
 }
 
-#logo {
-  width: 140px;
-  height: 140px;
-  background : url(/images/rye_140_1.gif) center no-repeat;
-}
+.menu ul li{
+  display: inline;
+ }
+ 
+.menu ul li a{
+  padding: 3px;
+  color: #0567ff;
+  border : 1px solid transparent;
+ }
+ 
+.menu ul li a:hover{
+  background: #CDF;
+  border : 1px solid #0567ff;;
+  text-decoration : none;  
+ }
 
-a.current_action {
+.menu ul li a.current_action {
 /*  font-weight: bold;*/
   background: #CE1 !important;
   border : 1px solid #690;
@@ -24,30 +52,7 @@ a.current_action {
 /*  color: #DFD !important;*/
 }
 
-td.label {
-  width : 200px;
-}
 
-
-.menu {
-  background : #f2d25c;
-  height : 29px;
-}
-
-.menu ul li{
-  display: inline;
- }
- 
-.menu ul li a{
-  padding: 4px;
-  color: #55F;
-//  background: #EC1;
-  /*
-  color: #fcff00;
-  background-color: #05C;
-  */
- }
- 
 #title h1{
   text-align: center;
   color: #f2d25c;
@@ -66,8 +71,6 @@ td.label {
 table.form {
   width:100%;
 }
-.menu ul { padding : 1px; margin:0px; text-align:center;}
-li { padding : 0px;}
 
 p {
   text-align : justify;
@@ -75,8 +78,8 @@ p {
   margin : 6px 0px;
 }
 textarea, input[type="password"], input[type="text"], select {
-  border : 1px solid #00A;//#2e558a;
-  background : #DDDFFF;
+  border : 1px solid #55F;
+  background : white;
   font-family : sans-serif;
   color : #00A;
 }
@@ -121,10 +124,6 @@ span.separator {
   padding : 0 5px;
 }
 
-a:link {
-  color : #CCF;
-}
-
 #errorExplanation {
   background : #900;
   padding : 5px;
@@ -135,3 +134,5 @@ a:link {
 #errorExplanation h2 {
   margin : 1px 3px; 
 }
+
+

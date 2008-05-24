@@ -1,10 +1,13 @@
 
 
 <h1>Connectez-vous</h1>
+<div align="center">
 <% form_tag do -%>
-<table id="auth">
-<tr><td>Login</td><td><%=text_field :person, :user_name-%></td></tr>
-<tr><td>Mot de passe</td><td><%=password_field :person, :password-%></td></tr>
-<tr><td colspan="2"><%=submit_tag "Se connecter"%></td></tr>
+<table class="formu" id="auth">
+<tr><td class="label">Nom d'utilisateur</td><td><%=text_field :person, :user_name-%></td></tr>
+<tr><td class="label">Mot de passe</td><td><%=password_field :person, :password-%></td></tr>
+<tr><td colspan="2" align="center"><%=submit_tag "Se connecter"%></td></tr>
+<tr><td colspan="2" align="center"><%=link_to 'Mot de passe perdu ?', :action=>:lost_password-%> &bull; <%=link_to 'Login perdu ?', :action=>:lost_login-%> &bull; <%=link_to 'S\'inscrire', :action=>:subscribe-%></td></tr>
 </table>
 <%end-%>
+</div>

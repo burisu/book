@@ -28,6 +28,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "multy"
 
   # See how all your routes lay out with "rake routes"
+  map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
 
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'

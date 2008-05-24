@@ -1,5 +1,6 @@
 class MultyController < ApplicationController
 
+
   def index
     home
     render :action=> :home
@@ -11,6 +12,10 @@ class MultyController < ApplicationController
     @article=Article.find_by_language_id_and_nature_id(language.id,nature.id)
   end
 
+  def new_folder
+    authorize
+  end
+  
   def contact
   end
 

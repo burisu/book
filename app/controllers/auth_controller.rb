@@ -22,6 +22,10 @@ class AuthController < ApplicationController
     redirect_to :controller=>:auth, :action=>:login
   end
 
+  def subscribe
+    
+  end
+
   def lost_password
   end
 end
