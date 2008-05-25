@@ -64,7 +64,7 @@ table.form {
 
 p {
   text-align : justify;
-  text-indent : 1em;
+  text-indent : 0em;
   padding : 3px 0px;
 }
 textarea, input[type="password"], input[type="text"], select {

@@ -70,9 +70,9 @@ module ArkanisDevelopment::SimpleLocalization #:nodoc:
           end
           
           pn = Pathname.new(template_file_name)
-          dir, filename = pn.dirname, pn.basename('.' + template_extension)
+          dir, filename = pn.dirname, pn.basename('.' + template_extension.to_s)
           
-          localized_path = dir + "#{filename}.#{current_language}.#{template_extension}"
+          localized_path = dir + "#{filename}.#{current_language}.#{template_extension.to_s}"
           
           unless localized_path.exist?
             localized_path = template_file_name
