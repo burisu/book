@@ -9,7 +9,7 @@ class MultyController < ApplicationController
   def home
     language=Language.find_by_iso639('FR')
     nature=ArticleNature.find_by_code('HOME')
-    @article=Article.find_by_language_id_and_nature_id(language.id,nature.id)
+    @articles=Article.find(:all, :conditions=>{:language_id=>language.id, :nature_id=>nature.id}, :order=>"created_at DESC")
   end
 
   def new_folder

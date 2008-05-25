@@ -79,9 +79,12 @@ class CreateApplication < ActiveRecord::Migration
       t.column :messenger_email, :string
       t.column :user_name, :string, :null=>false, :limit=>32
       t.column :email, :string, :null=>false
-      t.column :hashed_password, :string, :null=>false
-      t.column :salt, :string, :null=>false
+      t.column :replacement_email, :string
+      t.column :hashed_password, :string
+      t.column :salt, :string
       t.column :rotex_email, :string
+      t.column :validation, :string
+      t.column :is_validated, :boolean, :null=>false, :default=>false 
       t.column :is_locked, :boolean, :null=>false, :default=>false 
       t.column :photo, :string
       t.column :country_id, :integer, :null=>false, :references=>:countries, :on_delete=>:restrict, :on_update=>:restrict
@@ -91,6 +94,8 @@ class CreateApplication < ActiveRecord::Migration
     add_index :people, :rotex_email, :unique=>true
 #    add_index :people, :email, :unique=>true
     add_index :people, :hashed_password, :unique=>true
+    add_index :people, :is_validated
+    add_index :people, :validation, :unique=>true
 
     create_table :person_versions do |t|
       t.column :patronymic_name, :string, :null=>false
@@ -108,8 +113,8 @@ class CreateApplication < ActiveRecord::Migration
       t.column :messenger_email, :string
       t.column :user_name, :string, :null=>false, :limit=>32
       t.column :email, :string, :null=>false
-      t.column :hashed_password, :string, :null=>false
-      t.column :salt, :string, :null=>false
+      t.column :hashed_password, :string
+      t.column :salt, :string
       t.column :rotex_email, :string
       t.column :is_locked, :boolean, :null=>false, :default=>false 
       t.column :photo, :string
@@ -130,21 +135,24 @@ class CreateApplication < ActiveRecord::Migration
     end
 
     create_table :folders do |t| # dossier S_Exch de départ ou de retour
-      t.column :name, :string, :null=>false
-      t.column :departure_country_id, :integer, :null=>false, :references=>:countries, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :arrival_country_id, :integer, :null=>false, :references=>:countries, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :promotion_id, :integer, :null=>false, :references=>:promotions, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :host_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :sponsor_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :proposer_zone_id, :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
-      t.column :arrival_person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict #YEO D'arrivee
-      t.column :departure_person_id, :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict  #YEO depart
-      t.column :begun_on, :date, :null=>false
-      t.column :finished_on, :date, :null=>false
+#      t.column :name,                 :string,  :null=>false
+      t.column :is_given,             :boolean, :null=>false, :default=>false
+      t.column :is_accepted,          :boolean, :null=>false, :default=>false
+      t.column :departure_country_id, :integer, :null=>false, :references=>:countries,  :on_delete=>:restrict, :on_update=>:restrict
+      t.column :arrival_country_id,   :integer, :null=>false, :references=>:countries,  :on_delete=>:restrict, :on_update=>:restrict
+      t.column :person_id,            :integer, :null=>false, :references=>:people,     :on_delete=>:restrict, :on_update=>:restrict
+      t.column :promotion_id,         :integer, :null=>false, :references=>:promotions, :on_delete=>:restrict, :on_update=>:restrict
+      t.column :host_zone_id,         :integer, :null=>false, :references=>:zones,  :on_delete=>:restrict, :on_update=>:restrict
+      t.column :sponsor_zone_id,      :integer, :null=>false, :references=>:zones,  :on_delete=>:restrict, :on_update=>:restrict
+      t.column :proposer_zone_id,     :integer, :null=>false, :references=>:zones,  :on_delete=>:restrict, :on_update=>:restrict
+      t.column :arrival_person_id,    :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict #YEO D'arrivee
+      t.column :departure_person_id,  :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict  #YEO depart
+      t.column :begun_on,             :date,    :null=>false
+      t.column :finished_on,          :date,    :null=>false
       t.column :comment, :text
     end
-    add_index :folders, :name, :unique=>true
+    add_index :folders, :is_given
+    add_index :folders, :is_accepted
 
     create_table :families do |t|
       t.column :code, :integer, :null=>false
@@ -204,9 +212,15 @@ class CreateApplication < ActiveRecord::Migration
     end
     add_index :emails, :identifier
 
+    create_table :simple_captcha_data do |t|
+      t.string :key, :limit => 40
+      t.string :value, :limit => 6
+    end
+
   end
 
   def self.down
+    drop_table :simple_captcha_data
     drop_table :emails
     drop_table :articles
     drop_table :article_natures

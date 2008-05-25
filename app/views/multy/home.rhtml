@@ -1,5 +1,8 @@
-<% if @article%>
-<h1><%=@article.title-%></h1>
-<%=@article.html_intro%>
-<%=@article.html_content-%>
+<%for article in @articles-%>
+<div class="article">
+<h2><%=article.title-%></h2>
+<%=article.html_intro%>
+<%=article.html_content-%>
+<div class="author">&Eacute;crit par <%=article.author.label-%> le <%=article.created_at.to_formatted_s :long-%> et mis à jour le <%=article.updated_at.to_formatted_s :long-%></div>
+</div>
 <%end%>

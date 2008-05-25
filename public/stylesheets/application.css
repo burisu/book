@@ -1,14 +1,15 @@
 * {padding:0; margin:0; font-family: sans-serif; }
-h1,h2,h3,p,div,li,td,th,a{ color:#ffd;}
-p,a,div,ul,li,input,textarea,select {font-size:12px;}
+h1,h2,h3,p,div,li,td,th,a,span{ color:#def;}
+span,p,a,div,ul,li,input,textarea,select {font-size:12px;}
+ul {padding-left: 15px;}
 body { background:#0567ff;}
 .column {margin-left:auto; margin-right:auto; width:990px;}
 .column > div {margin-left:auto; margin-right:auto; width:774px;}
 #header {background: url(/images/background_header.png) no-repeat bottom center; height:150px;}
 #bodier {background: url(/images/background_bodier.png) repeat-y top center;}
-#footer {background: url(/images/background_footer.png) no-repeat bottom center; height:190px;}
-#bodier > div > div {padding:1px;}
-#mainbody {padding:4px;}
+#footer {background: url(/images/background_footer.png) no-repeat bottom center; height:160px; text-align:center;}
+#bodier > div > div {padding:0px 1px;}
+#mainbody {padding: 0px; }
 input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer; padding: 8px;}
 a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
 a:visited { color : white;}
@@ -17,40 +18,30 @@ table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
 td.label { text-align:right; padding :1px 4px;}
 td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
-.menu {
-  background : white;
-}
 
-.menu ul {
-  padding: 5px 0px;
-}
+#notice {border:none; background: #CF9; color: #180; text-align:center; padding : 8px;}
 
-.menu ul li{
-  display: inline;
- }
- 
-.menu ul li a{
-  padding: 3px;
-  color: #0567ff;
-  border : 1px solid transparent;
- }
- 
-.menu ul li a:hover{
-  background: #CDF;
-  border : 1px solid #0567ff;;
-  text-decoration : none;  
- }
+.menu { background : url(/images/background_menu.png) repeat-y top center;}
+.menu ul { padding: 5px 1px; }
+.menu ul li{ display: inline; }
+.menu ul li a{ padding: 3px; color: #0567ff; border : 1px solid transparent;}
+.menu ul li a:hover{ background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
+.menu ul li a.current_action { background: #F98; border : 1px solid #C22; text-decoration : none; height : 29px; color: #C22;}
 
-.menu ul li a.current_action {
-/*  font-weight: bold;*/
-  background: #CE1 !important;
-  border : 1px solid #690;
-  text-decoration : none;
-  height : 29px;
-  color: #690 !important;
-/*  color: #DFD !important;*/
-}
+#maintable {border-collapse: collapse; width:100%;}
+#maintable td {vertical-align : top;}
+#maintable .submenu {width : 160px; background: url(/images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}
+#maintable .submenu h3 {padding:3px; background: url(/images/background_subtitle.png) repeat-y top left; font-size: 13px; text-align:center; color: #04E;}
+#maintable .submenu ul {padding:1px;background: url(/images/background_submenu.png) repeat-y top left;}
+#maintable .submenu ul li {list-style-type:none;}
+#maintable .submenu ul li a {padding: 2px; border : 1px solid transparent; display:block;}
+#maintable .submenu ul li a:hover{color: #0567ff; background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
+#maintable .subbody {padding:4px;}
+#maintable .subend {background: url(/images/background_subend.png) repeat-y top left; height:2px;}
 
+.article {padding: 4px; margin-bottom: 12px;}
+.article h2 {color: #FD7;}
+.article .author {color: #8AF;}
 
 #title h1{
   text-align: center;
@@ -73,8 +64,8 @@ table.form {
 
 p {
   text-align : justify;
-  text-indent : 2em;
-  margin : 6px 0px;
+  text-indent : 1em;
+  padding : 3px 0px;
 }
 textarea, input[type="password"], input[type="text"], select {
   border : 1px solid #55F;

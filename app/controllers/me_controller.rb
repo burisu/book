@@ -2,6 +2,11 @@ class MeController < ApplicationController
 
 	before_filter :authorize
   
+  def index
+    profile
+    render :action=>:profile
+  end
+  
   def profile
     @person=Person.find(session[:current_person_id])
   end
@@ -16,10 +21,19 @@ class MeController < ApplicationController
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
   
+  def new_folder
+    if Folder.count(:conditions=>{:person_id=>@current_person.id, :is_accepted=>true})>0
+      flash.now["warning"] = 'Vous avez déjà effectué une demande de dossier.'
+      redirect_to :back
+    else
+      
+    end
+  end
+  
   def new_report
     if request.post?
       params[:article][:author_id] = session[:current_person_id]
-      params[:article][:nature_id] = ArticleNature.find_by_code('BLOG')
+      params[:article][:nature_id] = ArticleNature.find_by_code(@current_person.role.restriction_level==0 ? 'HOME' : 'BLOG').id
       @article = Article.new(params[:article])
       if @article.save
         redirect_to :action=>:reporting

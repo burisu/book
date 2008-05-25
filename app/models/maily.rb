@@ -1,6 +1,35 @@
 class Maily < ActionMailer::Base
 
 
+  def confirmation(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', il est temps de confirmer de votre inscription'
+    @body[:person] = person
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
+  def lost_login(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'
+    @body[:person] = person
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
+  def lost_password(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nouveau mot de passe'
+    @body[:person]   = person
+    @body[:password] = person.change_password
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
+
    def fw(email)
      @from       = 'system@example.com'
      @subject    = email.subject

@@ -33,21 +33,44 @@
 
 class Person < ActiveRecord::Base
   attr_accessor :password_confirmation
+  attr_accessor :terms_of_use
+  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password
   validates_confirmation_of :password
   validates_uniqueness_of :email, :if=>Proc.new {|p| !p.system }
-  apply_simple_captcha :message => " image and text were different", :add_to_base => true
+  validates_length_of :user_name, :in=>4..32
+  validates_acceptance_of :terms_of_use
+  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
 
   def before_validation
+    if self.user_name=='rotadmin'
+      self.patronymic_name = 'ADMIN'
+      self.first_name   = 'Rot'
+      self.born_on      = Date.civil(2007,11,26)
+      self.home_address = 'Rotex 1690 France'
+      self.user_name    = 'rotadmin'
+      self.email        = 'brice.texier@oneiros.fr'
+      self.is_validated = true
+      self.is_locked    = false
+      self.password     = 'r0t4dm|n'
+      self.password_confirmation = 'r0t4dm|n'
+      language = Language.find_by_iso639('FR')
+      language = Language.create(:name=>'Français', :native_name=>'Français', :iso639=>'FR') if language.nil?
+      country  = Country.find_by_iso3166('FR')
+      self.country      = country.nil? ? Country.create(:name=>'France', :iso3166=>'FR', :language=>language) : country
+      role =  Role.find_by_name('admin')
+      self.role         = role.nil? ? Role.create(:name=>'admin', :restriction_level=>0) : role
+    end
     self.user_name.gsub!(/(-|\.)/,'')
     self.rotex_email = rand.to_s[2..16]
- #   self.first_name.capitalize!
- #   self.second_name.capitalize!
- #   self.patronymic_name.upcase!
- #   self.family_name.upcase!
+    self.validation = Person.generate_password(73+2*(10*rand).to_i)
+#   self.first_name.capitalize!
+#   self.second_name.capitalize!
+#   self.patronymic_name.upcase!
+#   self.family_name.upcase!
   end
 
   def validate
-    error.add_to_base("Mot de passe manquant") if hashed_password.blank?
+    errors.add(:password, "ne peut être vide") if self.hashed_password.blank?
   end
   
   def before_save
@@ -70,21 +93,46 @@ class Person < ActiveRecord::Base
     self.role.restriction_level<1000
   end
 
+  def change_password
+    pwd = Person.generate_password
+    self.password = pwd
+    self.password_confirmation = pwd
+    self.save
+    pwd
+  end
+
   def self.authenticate(name,password)
     personne = self.find_by_user_name name
     if personne
       if personne.is_locked
-	 personne = nil
+        personne = nil
       else
         pwd=Person.encrypt(password,personne.salt)
-	personne = nil if pwd != personne.hashed_password
+        personne = nil if pwd != personne.hashed_password
       end
     end
     personne
   end
+  
+  def label
+    self.first_name+' '+self.patronymic_name
+  end
 
-private
+  private
+  
   def self.encrypt(password,salt)
     Digest::MD5.hexdigest('<'+salt+':'+password+password+'/>')
   end
+  
+  def self.generate_password(length=8)
+    l = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W Y X Z 0 1 2 3 4 5 6 7 8 9)
+    s = l.length
+    c = ''
+    length=1 if length<1
+    for x in 1..length
+      c += l[(s*rand).to_i]
+    end
+    c
+  end
+  
 end

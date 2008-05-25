@@ -12,35 +12,25 @@
   <div class="menu">
     <ul>
       <li> <%= link_to 'Accueil', {:controller=>:multy, :action => :home}-%> </li>
-      <li> <%= link_to 'Saisir son dossier', {:controller=>:multy, :action => :new_folder}-%> </li>
       <% if @current_person -%>
          <%if @current_person.role.restriction_level==0%>
            <li> <%= link_to 'Administration', {:controller=>:crud, :action => :index}-%> </li>
          <%end%>
-        <li> <%= link_to 'Se d&eacute;connecter', {:controller=>:auth, :action => :logout}-%> </li>
+         <li> <%= link_to 'Se d&eacute;connecter', {:controller=>:auth, :action => :logout}-%> </li>
       <%else-%> 
-<!--        <li> <%= link_to 'Espace Membres', {:controller=>:auth, :action => :login}-%> </li>-->
+        <li> <%= link_to 'Espace Membres', {:controller=>:me}-%> </li>
       <%end-%>
 <!--      <li> <%= link_to 'Contact', {:controller=>:multy, :action => :contact}-%> </li>-->
 <!--      <li> <%= link_to 'Présentation', {:controller=>:multy, :action => :about_us}-%> </li>-->
     </ul>
   </div>
-  <div class="menu">
-    <% if @current_person %>
-      <ul>
-        <li> <%= link_to 'Mon profil', {:controller=>:me, :action => :profile}, {:class=>(@action_name=='profile'?'current_action':'other_action')}-%> </li>
-        <li> <%= link_to 'Mes messages', {:controller=>:me, :action => :messenger}, {:class=>(@action_name=='messenger'?'current_action':'other_action')}-%> </li>
-        <li> <%= link_to 'Mes Amis', {:controller=>:me, :action => :friends}, {:class=>(@action_name=='friends'?'current_action':'other_action')}-%> </li>
-        <li> <%= link_to 'Mon journal de bord', {:controller=>:me, :action => :reporting}, {:class=>(@action_name=='reporting'?'current_action':'other_action')}-%> </li>
-        <%if @current_person.can_create_persons? -%><li> <%= link_to 'Mes usagers', {:controller=>:me, :action => :persons}, {:class=>(@action_name=='persons'?'current_action':'other_action')}-%> </li><%end-%>
-      </ul>
-    <%end%>
-  </div>
-
   <% if flash[:warning]%><div id="warning"><%=flash[:warning]%></div><%end%>
-  <div id="mainbody"><%=yield-%></div>
+  <% if flash[:notice]%><div id="notice"><%=flash[:notice]%></div><%end%>
+  <div id="mainbody">
+    <table id="maintable"><tr><%= render(:partial=>'shared/submenu', :object=>@current_person) if @current_person -%><td class="subbody" valign="top"><%=yield-%></td></tr></table>
+  </div>
   </div></div>
 </div>
-<div class="column" id="footer"></div>
+<div class="column" id="footer"><div>[MENTIONS LEGALES]</div></div>
 </body>
 </html>

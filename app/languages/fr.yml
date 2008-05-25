@@ -133,6 +133,9 @@ models:
       messenger_email: Adresse Messenger
       user_name: Nom d'utilisateur
       email: E-mail
+      password: Mot de passe
+      password_confirmation: Confirmation du mot de passe
+      terms_of_use: L'ensemble des termes d'utilisation
       hashed_password: Mot de passe crypté
       salt: Grain de sel
       rotex_email: E-mail Rotex

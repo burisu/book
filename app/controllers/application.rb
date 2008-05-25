@@ -11,7 +11,9 @@ class ApplicationController < ActionController::Base
       @current_person=Person.find(session[:current_person_id])
       @current_person_id = @current_person.id
     end
-    @action_name=action_name
+    @controller_name  = self.controller_name
+    @action_name = action_name
+    @action = @controller_name+':'+@action_name
   end
   
   

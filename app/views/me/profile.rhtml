@@ -1,2 +1,4 @@
-<h1><%=@person.first_name+" "+@person.patronymic_name-%></h1>
-<p><%=@person.role.name-%></p>
+<h1><%=@person.first_name+" "+@person.patronymic_name-%> <%=image_tag "country/"+@person.country.iso3166.downcase+".png"-%></h1>
+
+<div><%=@person.articles.size-%> article(s)</div>
+

@@ -257,14 +257,6 @@
        y1="165.016"
        x2="516.803"
        y2="165.016" />
-    <filter
-       inkscape:collect="always"
-       id="filter3429">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="3.2581541"
-         id="feGaussianBlur3431" />
-    </filter>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3465"
@@ -334,27 +326,15 @@
        gradientUnits="userSpaceOnUse" />
     <filter
        inkscape:collect="always"
-       id="filter3726"
-       x="-0.408"
-       width="1.816"
-       y="-0.408"
-       height="1.816">
+       id="filter3266"
+       x="-0.20502771"
+       width="1.4100554"
+       y="-0.20502771"
+       height="1.4100554">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="85"
-         id="feGaussianBlur3728" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter3738"
-       x="-0.3"
-       width="1.6"
-       y="-0.3"
-       height="1.6">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="62.5"
-         id="feGaussianBlur3740" />
+         stdDeviation="42.714107"
+         id="feGaussianBlur3268" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -365,8 +345,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="456.28778"
-     inkscape:cy="558.07307"
+     inkscape:cx="480.70331"
+     inkscape:cy="287.34238"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -382,7 +362,7 @@
        id="guide2385" />
     <sodipodi:guide
        orientation="0,1"
-       position="-87,230"
+       position="649,240"
        id="guide2387" />
     <sodipodi:guide
        orientation="0,1"
@@ -486,17 +466,57 @@
            sodipodi:role="line">Rotex 1690</tspan></text>
     </g>
     <rect
-       style="opacity:0.54100000000000004;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3738)"
+       style="opacity:0.551;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3266)"
        id="rect3588"
        width="500"
        height="500"
        x="240"
        y="250"
-       transform="matrix(1.08,0,0,1.08,-39.2,-40)" />
+       transform="matrix(1.08,0,0,1.32,-39.2,-160)" />
     <path
        style="opacity:0.50000000000000000;fill:url(#radialGradient3574);fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1"
        d="M 148.89664,109 L 841.10336,109 C 863.2061,109 881,126.69377 881,148.67213 L 881,230 L 109,230 L 109,148.67213 C 109,126.69377 126.7939,109 148.89664,109 z"
        id="rect3479"
        sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans;opacity:0.33"
+       x="490.48923"
+       y="865"
+       id="text2468"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2470"
+         x="490.48923"
+         y="865"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr;text-anchor:middle;fill:#ffffff;fill-opacity:1;font-family:Qlassik Bold;-inkscape-font-specification:'Qlassik Bold, Bold'">Site réalisé par Brice TEXIER - brice.texier@oneiros.fr</tspan></text>
+    <rect
+       style="opacity:0.4;fill:#fdfdfd;fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="background_menu"
+       width="772"
+       height="8"
+       x="109"
+       y="352"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:0.2;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="background_submenu"
+       width="772"
+       height="8"
+       x="109"
+       y="332"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:0.1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="background_subtitle"
+       width="772"
+       height="8"
+       x="109"
+       y="342"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:label="#background_subtile" />
   </g>
 </svg>
