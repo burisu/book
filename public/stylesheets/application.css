@@ -1,7 +1,7 @@
 * {padding:0; margin:0; font-family: sans-serif; }
 h1,h2,h3,p,div,li,td,th,a,span{ color:#def;}
 span,p,a,div,ul,li,input,textarea,select {font-size:12px;}
-ul {padding-left: 15px;}
+ul {padding-left: 20px;}
 body { background:#0567ff;}
 .column {margin-left:auto; margin-right:auto; width:990px;}
 .column > div {margin-left:auto; margin-right:auto; width:774px;}
