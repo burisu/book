@@ -1,8 +1,14 @@
-<%if @person -%>
-<h2>Votre compte a été activé</h2>
+<%if @activation==0 -%>
+<h2>Activation déjà faite ou code d'activation erroné !</h2>
+<p>L'activation a déjà eu lieu ou ce code d'activation est faux. Pour plus de renseignements, contactez un administrateur.</p>
+<%else-%>
+<h2>Votre activation a réussi</h2>
+<%if @activation[1]==1 -%>
 <p>Bienvenue <%=@person.first_name-%>,</p>
 <p>Vous avez accès à la partie membre du site dès maintenant.</p>
-<%else-%>
-<h2>Compte déjà activé ou votre code d'activation erroné !</h2>
-<p>Ce compte est peut-être déjà activé. Si votre compte a été verrouillé, une nouvelle activation ne le déverrouillera pas. Pour plus de renseignements, contactez un administrateur.</p>
 <%end-%>
+<%if @activation[2]==1 -%>
+<p>Votre nouvelle adresse <%=@person.email-%> a été validée et prise en comtpe.</p>
+<%end-%>
+<%end-%>
+

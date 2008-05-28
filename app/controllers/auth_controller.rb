@@ -12,7 +12,7 @@ class AuthController < ApplicationController
         session[:current_person_id]=person.id
         redirect_to :controller=>:me, :action=>:profile
       else
-        flash[:warning]='Votre nom d''utilisateur ou votre mot de passe est incorrect, veuillez recommencer !'
+        flash.now[:warning]='Votre nom d\'utilisateur ou votre mot de passe est incorrect, veuillez recommencer !'
       end
     end
   end
@@ -43,11 +43,20 @@ class AuthController < ApplicationController
   def activate
     clean_people
     @person = Person.find_by_validation params[:id]
+    @person.forced = true
+    @activation = 0
     unless @person.nil?
       unless @person.is_validated
         @person.is_validated = true
         @person.is_locked = false
         @person.save!
+        @activation += 1
+      end
+      unless @person.replacement_email.blank?
+        @person.email = @person.replacement_email
+        @person.replacement_email = nil
+        @person.save!
+        @activation += 2
       end
     end
   end
@@ -72,6 +81,33 @@ class AuthController < ApplicationController
         flash.now[:notice] = 'Votre nom d\'utilisateur vous a été envoyé à l\'adresse '+@person.email
       else
         flash.now[:notice] = 'Votre e-mail est inconnu'
+      end
+    end
+  end
+  
+  def change_password
+    if request.post?
+      @person = @current_person
+      @person.test_password = params[:person][:test_password]
+      @person.password = params[:person][:password]
+      @person.password_confirmation = params[:person][:password_confirmation]
+      if @person.save
+        flash[:notice] = 'Votre mot de passe a été mis à jour avec succès !'
+        redirect_to :controller=>:me, :action=>:profile
+      end
+    end
+  end
+
+  def change_email
+    if request.post?
+      @person = @current_person
+      @person.test_password = params[:person][:test_password]
+      @person.replacement_email = params[:person][:replacement_email]
+#      @person.errors.add(:test_password, "est incorrect") unless @person.confirm(params[:person][:test_password])
+      if @person.save
+        Maily.deliver_new_mail(@person)
+        flash[:notice] = 'L\'e-mail à valider a été envoyé à l\'adresse '+@person.replacement_email
+        redirect_to :controller=>:me, :action=>:profile
       end
     end
   end

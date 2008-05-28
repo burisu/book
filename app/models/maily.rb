@@ -29,6 +29,15 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
 
+  def new_mail(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', vous pouvez activer votre nouvel adresse e-mail'
+    @body[:person]   = person
+    @recipients   = "#{person.label} <#{person.replacement_email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
 
    def fw(email)
      @from       = 'system@example.com'

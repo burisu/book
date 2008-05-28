@@ -19,7 +19,9 @@ table.formu {margin-left:auto; margin-right:auto;}
 td.label { text-align:right; padding :1px 4px;}
 td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
-#notice {border:none; background: #CF9; color: #180; text-align:center; padding : 8px;}
+#notice  {border:none; background: #CF9; color: #180; text-align:center; padding : 8px;}
+#warning {border:none; background: #FB7; color: #D50; text-align:center; padding : 8px;}
+#error   {border:none; background: #F98; color: #E00; text-align:center; padding : 8px;}
 
 .menu { background : url(/images/background_menu.png) repeat-y top center;}
 .menu ul { padding: 5px 1px; }
@@ -30,7 +32,8 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
 #maintable {border-collapse: collapse; width:100%;}
 #maintable td {vertical-align : top;}
-#maintable .submenu {width : 160px; background: url(/images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}
+/*#maintable .submenu {width : 160px; background: url(/images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
+#maintable .submenu {width : 160px; padding:0px; margin:0px; border:none;}
 #maintable .submenu h3 {padding:3px; background: url(/images/background_subtitle.png) repeat-y top left; font-size: 13px; text-align:center; color: #04E;}
 #maintable .submenu ul {padding:1px;background: url(/images/background_submenu.png) repeat-y top left;}
 #maintable .submenu ul li {list-style-type:none;}

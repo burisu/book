@@ -33,8 +33,10 @@
 
 class Person < ActiveRecord::Base
   attr_accessor :password_confirmation
+  attr_accessor :test_password
   attr_accessor :terms_of_use
-  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password
+  attr_accessor :forced
+  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced
   validates_confirmation_of :password
   validates_uniqueness_of :email, :if=>Proc.new {|p| !p.system }
   validates_length_of :user_name, :in=>4..32
@@ -60,13 +62,18 @@ class Person < ActiveRecord::Base
       role =  Role.find_by_name('admin')
       self.role         = role.nil? ? Role.create(:name=>'admin', :restriction_level=>0) : role
     end
+    self.forced = false if self.forced.nil?
     self.user_name.gsub!(/(-|\.)/,'')
     self.rotex_email = rand.to_s[2..16]
-    self.validation = Person.generate_password(73+2*(10*rand).to_i)
+    self.validation = Person.generate_password(73+2*(10*rand).to_i) unless self.is_validated or !self.replacement_email.blank?
 #   self.first_name.capitalize!
 #   self.second_name.capitalize!
 #   self.patronymic_name.upcase!
 #   self.family_name.upcase!
+  end
+
+  def validate_on_update
+    errors.add(:test_password, "est incorrect") unless self.forced or self.confirm(self.test_password)
   end
 
   def validate
@@ -95,6 +102,7 @@ class Person < ActiveRecord::Base
 
   def change_password
     pwd = Person.generate_password
+    self.forced = true
     self.password = pwd
     self.password_confirmation = pwd
     self.save
@@ -104,12 +112,7 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     personne = self.find_by_user_name name
     if personne
-      if personne.is_locked
-        personne = nil
-      else
-        pwd=Person.encrypt(password,personne.salt)
-        personne = nil if pwd != personne.hashed_password
-      end
+      personne = nil if personne.is_locked or !personne.confirm(password, personne.salt)
     end
     personne
   end
@@ -118,8 +121,12 @@ class Person < ActiveRecord::Base
     self.first_name+' '+self.patronymic_name
   end
 
+  def confirm(password)
+    return self.hashed_password==Person.encrypt(password.to_s, self.salt)
+  end
+
   private
-  
+
   def self.encrypt(password,salt)
     Digest::MD5.hexdigest('<'+salt+':'+password+password+'/>')
   end

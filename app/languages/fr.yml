@@ -133,6 +133,7 @@ models:
       messenger_email: Adresse Messenger
       user_name: Nom d'utilisateur
       email: E-mail
+      test_password: Mot de passe actuel
       password: Mot de passe
       password_confirmation: Confirmation du mot de passe
       terms_of_use: L'ensemble des termes d'utilisation

@@ -135,9 +135,6 @@ class CreateApplication < ActiveRecord::Migration
     end
 
     create_table :folders do |t| # dossier S_Exch de départ ou de retour
-#      t.column :name,                 :string,  :null=>false
-      t.column :is_given,             :boolean, :null=>false, :default=>false
-      t.column :is_accepted,          :boolean, :null=>false, :default=>false
       t.column :departure_country_id, :integer, :null=>false, :references=>:countries,  :on_delete=>:restrict, :on_update=>:restrict
       t.column :arrival_country_id,   :integer, :null=>false, :references=>:countries,  :on_delete=>:restrict, :on_update=>:restrict
       t.column :person_id,            :integer, :null=>false, :references=>:people,     :on_delete=>:restrict, :on_update=>:restrict

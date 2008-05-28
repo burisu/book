@@ -24,6 +24,7 @@
 <!--      <li> <%= link_to 'Présentation', {:controller=>:multy, :action => :about_us}-%> </li>-->
     </ul>
   </div>
+  <% if flash[:error]%><div id="error"><%=flash[:error]%></div><%end%>
   <% if flash[:warning]%><div id="warning"><%=flash[:warning]%></div><%end%>
   <% if flash[:notice]%><div id="notice"><%=flash[:notice]%></div><%end%>
   <div id="mainbody">
