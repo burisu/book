@@ -2,7 +2,7 @@
 <li><%=link_to 'Mon profil', {:controller=>:me, :action=>:profile}-%></li>
 <li><%=link_to 'Mon voyage', {:controller=>:me, :action=>:reporting}-%></li>
 </ul><%if @action=='me:profile'-%><h3>Mes infos</h3><ul>
-<li><%=link_to 'Modifier mes infos', {:controller=>:me, :action=>:update_profile}-%></li>
+<!--<li><%=link_to 'Modifier mes infos', {:controller=>:me, :action=>:update_profile}-%></li>-->
 <li><%=link_to 'Changer mon mot de passe', {:controller=>:auth, :action=>:change_password}-%></li>
 <li><%=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:auth, :action=>:change_email}-%></li>
 </ul><%end-%>

@@ -7,8 +7,9 @@ body { background:#0567ff;}
 .column > div {margin-left:auto; margin-right:auto; width:774px;}
 #header {background: url(/images/background_header.png) no-repeat bottom center; height:150px;}
 #bodier {background: url(/images/background_bodier.png) repeat-y top center;}
-#footer {background: url(/images/background_footer.png) no-repeat bottom center; height:160px; text-align:center;}
+#footer {background: url(/images/background_footer.png) no-repeat bottom center; height:160px; text-align:center; }
 #bodier > div > div {padding:0px 1px;}
+#footer > div { padding:20px; color: #BDF;}
 #mainbody {padding: 0px; }
 input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer; padding: 8px;}
 a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
@@ -45,6 +46,8 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 .article {padding: 4px; margin-bottom: 12px;}
 .article h2 {color: #FD7;}
 .article .author {color: #8AF;}
+
+/*Jaune rotex #f0d15a*/
 
 #title h1{
   text-align: center;
