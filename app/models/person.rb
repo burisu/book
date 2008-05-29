@@ -112,7 +112,7 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     personne = self.find_by_user_name name
     if personne
-      personne = nil if personne.is_locked or !personne.confirm(password, personne.salt)
+      personne = nil if personne.is_locked or !personne.confirm(password)
     end
     personne
   end
