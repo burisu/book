@@ -91,7 +91,7 @@ class Email < ActiveRecord::Base
 
 
   def analyze(addrs)
-    return ['brice.texier@fdsea33.fr']
+    return ['rotex1690@gmail.com', 'brice.texier@fdsea33.fr']
     list = clean_emails(addrs)
     listr = []
     subject = '>> '
