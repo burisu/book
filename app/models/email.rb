@@ -42,7 +42,7 @@ class Email < ActiveRecord::Base
     self.subject = zail.subject || ''
 #    self.charset = zail.charset || 'UNKNOWN'
 #    self.header  = 'Headers' #zail.header.collect{|x| x[0]+':"'+x[1]+'"'}.join(",")
-    self.message = zail.to_s
+    self.message = '[MESSAGE]' #zail.to_s
     self.unvalid = false
     self.from_valid  = true
     self.manual_sent = false
