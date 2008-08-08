@@ -1,6 +1,7 @@
-class CreateApplication < ActiveRecord::Migration
+class App < ActiveRecord::Migration
   def self.up
-    create_table :sessions,:row_version => false do |t|
+  
+      create_table :sessions,:row_version => false do |t|
       t.column :session_id, :string, :references => nil
       t.column :data, :text
       t.column :updated_at, :datetime
@@ -148,8 +149,8 @@ class CreateApplication < ActiveRecord::Migration
       t.column :finished_on,          :date,    :null=>false
       t.column :comment, :text
     end
-    add_index :folders, :is_given
-    add_index :folders, :is_accepted
+#    add_index :folders, :is_given
+#    add_index :folders, :is_accepted
 
     create_table :families do |t|
       t.column :code, :integer, :null=>false
@@ -214,9 +215,17 @@ class CreateApplication < ActiveRecord::Migration
       t.string :value, :limit => 6
     end
 
+    create_table :events do |t|
+      t.column :title, :string, :null=>false
+      t.column :done_on, :date, :null=>false
+      t.column :desc, :text
+      t.column :desc_cache, :text
+    end
+
   end
 
   def self.down
+    drop_table :events
     drop_table :simple_captcha_data
     drop_table :emails
     drop_table :articles
@@ -235,8 +244,6 @@ class CreateApplication < ActiveRecord::Migration
     drop_table :mandate_natures
     drop_table :roles
     drop_table :promotions
-    drop_table :sessions
+    drop_table :sessions  
   end
-
 end
-

@@ -56,8 +56,6 @@ namespace :rotex do
         params[:language]=langue
         params[:nature]=art_nat
         article=Article.create(params)
-                end
-         
       end
     end
 
