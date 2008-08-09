@@ -11,6 +11,7 @@
 development:
   adapter: postgresql
   encoding: unicode
+  schema_search_path: public
   database: rotex_development
   username: rails
   password: R4|L5

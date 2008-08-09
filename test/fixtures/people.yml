@@ -1,34 +1,39 @@
 # == Schema Information
-# Schema version: 4
+# Schema version: 20080808080808
 #
 # Table name: people
 #
-#  id               :integer       not null, primary key
-#  patronymic_name  :string(255)   not null
-#  family_name      :string(255)   
-#  first_name       :string(255)   not null
-#  second_name      :string(255)   
-#  is_female        :boolean       default(true), not null
-#  born_on          :date          not null
-#  home_address     :text          not null
-#  aligned_to_right :boolean       not null
-#  home_phone       :string(32)    
-#  work_phone       :string(32)    
-#  fax              :string(32)    
-#  mobile           :string(32)    
-#  messenger_email  :string(255)   
-#  user_name        :string(32)    not null
-#  email            :string(255)   not null
-#  hashed_password  :string(255)   not null
-#  salt             :string(255)   not null
-#  rotex_email      :string(255)   
-#  is_locked        :boolean       not null
-#  photo            :string(255)   
-#  country_id       :integer       not null
-#  role_id          :integer       not null
-#  created_at       :datetime      not null
-#  updated_at       :datetime      not null
-#  lock_version     :integer       default(0), not null
+#  id                :integer         not null, primary key
+#  patronymic_name   :string(255)     not null
+#  family_name       :string(255)     not null
+#  family_id         :integer         
+#  first_name        :string(255)     not null
+#  second_name       :string(255)     
+#  user_name         :string(32)      not null
+#  photo             :string(255)     
+#  country_id        :integer         not null
+#  sex               :string(1)       not null
+#  born_on           :date            not null
+#  address           :text            not null
+#  latitude          :float           
+#  longitude         :float           
+#  phone             :string(32)      
+#  phone2            :string(32)      
+#  fax               :string(32)      
+#  mobile            :string(32)      
+#  email             :string(255)     not null
+#  replacement_email :string(255)     
+#  hashed_password   :string(255)     
+#  salt              :string(255)     
+#  rotex_email       :string(255)     
+#  validation        :string(255)     
+#  is_validated      :boolean         not null
+#  is_locked         :boolean         not null
+#  is_user           :boolean         not null
+#  role_id           :integer         not null
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  lock_version      :integer         default(0), not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

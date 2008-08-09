@@ -1,34 +1,39 @@
 # == Schema Information
-# Schema version: 4
+# Schema version: 20080808080808
 #
 # Table name: people
 #
-#  id               :integer       not null, primary key
-#  patronymic_name  :string(255)   not null
-#  family_name      :string(255)   
-#  first_name       :string(255)   not null
-#  second_name      :string(255)   
-#  is_female        :boolean       default(true), not null
-#  born_on          :date          not null
-#  home_address     :text          not null
-#  aligned_to_right :boolean       not null
-#  home_phone       :string(32)    
-#  work_phone       :string(32)    
-#  fax              :string(32)    
-#  mobile           :string(32)    
-#  messenger_email  :string(255)   
-#  user_name        :string(32)    not null
-#  email            :string(255)   not null
-#  hashed_password  :string(255)   not null
-#  salt             :string(255)   not null
-#  rotex_email      :string(255)   
-#  is_locked        :boolean       not null
-#  photo            :string(255)   
-#  country_id       :integer       not null
-#  role_id          :integer       not null
-#  created_at       :datetime      not null
-#  updated_at       :datetime      not null
-#  lock_version     :integer       default(0), not null
+#  id                :integer         not null, primary key
+#  patronymic_name   :string(255)     not null
+#  family_name       :string(255)     not null
+#  family_id         :integer         
+#  first_name        :string(255)     not null
+#  second_name       :string(255)     
+#  user_name         :string(32)      not null
+#  photo             :string(255)     
+#  country_id        :integer         not null
+#  sex               :string(1)       not null
+#  born_on           :date            not null
+#  address           :text            not null
+#  latitude          :float           
+#  longitude         :float           
+#  phone             :string(32)      
+#  phone2            :string(32)      
+#  fax               :string(32)      
+#  mobile            :string(32)      
+#  email             :string(255)     not null
+#  replacement_email :string(255)     
+#  hashed_password   :string(255)     
+#  salt              :string(255)     
+#  rotex_email       :string(255)     
+#  validation        :string(255)     
+#  is_validated      :boolean         not null
+#  is_locked         :boolean         not null
+#  is_user           :boolean         not null
+#  role_id           :integer         not null
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  lock_version      :integer         default(0), not null
 #
 
 class Person < ActiveRecord::Base
@@ -36,40 +41,28 @@ class Person < ActiveRecord::Base
   attr_accessor :test_password
   attr_accessor :terms_of_use
   attr_accessor :forced
-  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced
+  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   validates_confirmation_of :password
-  validates_uniqueness_of :email, :if=>Proc.new {|p| !p.system }
+  validates_uniqueness_of :email #, :if=>Proc.new {|p| !p.system }
   validates_length_of :user_name, :in=>4..32
   validates_acceptance_of :terms_of_use
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
 
   def before_validation
-    if self.user_name=='rotadmin'
-      self.patronymic_name = 'ADMIN'
-      self.first_name   = 'Rot'
-      self.born_on      = Date.civil(2007,11,26)
-      self.home_address = 'Rotex 1690 France'
-      self.user_name    = 'rotadmin'
-      self.email        = 'brice.texier@oneiros.fr'
-      self.is_validated = true
-      self.is_locked    = false
-      self.password     = 'r0t4dm|n'
-      self.password_confirmation = 'r0t4dm|n'
-      language = Language.find_by_iso639('FR')
-      language = Language.create(:name=>'Français', :native_name=>'Français', :iso639=>'FR') if language.nil?
-      country  = Country.find_by_iso3166('FR')
-      self.country      = country.nil? ? Country.create(:name=>'France', :iso3166=>'FR', :language=>language) : country
-      role =  Role.find_by_name('admin')
-      self.role         = role.nil? ? Role.create(:name=>'admin', :restriction_level=>0) : role
-    end
+    self.family_name = self.patronymic_name if self.family_name.blank?
     self.forced = false if self.forced.nil?
     self.user_name.gsub!(/(-|\.)/,'')
-    self.rotex_email = rand.to_s[2..16]
+    self.rotex_email = self.user_name+'@rotex1690.org'
     self.validation = Person.generate_password(73+2*(10*rand).to_i) unless self.is_validated or !self.replacement_email.blank?
-#   self.first_name.capitalize!
-#   self.second_name.capitalize!
-#   self.patronymic_name.upcase!
-#   self.family_name.upcase!
+    if self.latitude.blank?
+      pm = Geocoding.get(self.address)
+      if pm.size==1
+        self.address                 = pm[0].address
+        self.latitude                = pm[0].latitude
+        self.longitude               = pm[0].longitude
+      end      
+    end
+    
   end
 
   def validate_on_update
@@ -96,9 +89,10 @@ class Person < ActiveRecord::Base
     end
   end
   
-  def can_create_persons?
-    self.role.restriction_level<1000
+  def can_manage?(level=:all)
+    self.role.can_manage?(level)
   end
+
 
   def change_password
     pwd = Person.generate_password
