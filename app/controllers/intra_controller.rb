@@ -1,4 +1,4 @@
-class MeController < ApplicationController
+class IntraController < ApplicationController
 
 	before_filter :authorize
   
@@ -11,19 +11,13 @@ class MeController < ApplicationController
     @person=Person.find(session[:current_person_id])
   end
 
-  def messenger
-  end
-
-  def friends
-  end
-
   def reporting
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
   
   def new_folder
     if Folder.count(:conditions=>{:person_id=>@current_person.id, :is_accepted=>true})>0
-      flash.now["warning"] = 'Vous avez déjà effectué une demande de dossier.'
+      flash.now["warning"] = 'Vous avez déjà effectué un dossier.'
       redirect_to :back
     else
       
