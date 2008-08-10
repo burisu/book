@@ -1,7 +1,7 @@
 class IntraController < ApplicationController
 
 	before_filter :authorize
-  
+	
   def index
     profile
     render :action=>:profile
@@ -15,6 +15,9 @@ class IntraController < ApplicationController
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
   
+  def admin
+  end
+  
   def new_folder
     if Folder.count(:conditions=>{:person_id=>@current_person.id, :is_accepted=>true})>0
       flash.now["warning"] = 'Vous avez déjà effectué un dossier.'
@@ -26,9 +29,8 @@ class IntraController < ApplicationController
   
   def new_report
     if request.post?
-      params[:article][:author_id] = session[:current_person_id]
-      params[:article][:nature_id] = ArticleNature.find_by_code(@current_person.role.restriction_level==0 ? 'HOME' : 'BLOG').id
-      @article = Article.new(params[:article])
+      @article = Article.new
+      @article.init(params[:article], @current_person)
       if @article.save
         redirect_to :action=>:reporting
       end
@@ -40,8 +42,8 @@ class IntraController < ApplicationController
   def edit_report
     @article = Article.find(params[:id])
     if request.post?
-      params[:article][:author_id] = session[:current_person_id]
-      if @article.update_attributes(params[:article])
+      @article.init(params[:article], @current_person)
+      if @article.save
         redirect_to :action=>:reporting
       end
     end
@@ -85,6 +87,39 @@ class IntraController < ApplicationController
     end
   end
 
-
+  def waiting_users
+    access :user_validation
+    @people = Person.paginate(:all, :conditions=>{:is_validated=>true, :is_locked=>true}, :page=>params[:page])
+  end
+  
+  def people_browse
+    access :users
+    @people = Person.paginate(:all, :page=>params[:page])
+  end
+  
+  def people_lock_access
+    access :users
+    p = Person.find(params[:id])
+    p.is_locked = true
+    p.forced    = true
+    p.save!
+    redirect_to :action=>:people_browse
+  end
+  
+  def people_unlock_access
+    access :users
+    p = Person.find(params[:id])
+    p.is_locked = false
+    p.forced    = true
+    p.save!
+    redirect_to :action=>:people_browse
+  end
+  
+  
+  protected
+  
+  def access(right)
+  end
+  
   
 end

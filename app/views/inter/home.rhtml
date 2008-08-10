@@ -1,8 +1,12 @@
+<%if @agenda.size>0-%><div class="agenda"><h3>Agenda</h3><table border="0"><%for article in @agenda-%><tr class="<%=cycle 'odd','even'-%>"><td class="date"><%=article.done_on.to_s-%></td><td><%= link_to article.title_h, {:controller=>:inter, :action=>:article, :id=>article.id}-%></td></tr><%end-%></table></div><%end-%>
+
 <%for article in @articles-%>
 <div class="article">
-<h2><%=article.title-%></h2>
-<%=article.html_intro%>
-<%=article.html_content-%>
+<h1><%=article.title_h-%></h1>
+<div><%=article.content_h-%></div>
 <div class="author">&Eacute;crit par <%=article.author.label-%> le <%=article.created_at.to_formatted_s :long-%> et mis à jour le <%=article.updated_at.to_formatted_s :long-%></div>
 </div>
 <%end%>
+
+<%= will_paginate @articles-%>
+

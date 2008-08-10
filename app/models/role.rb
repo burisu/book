@@ -17,12 +17,13 @@ class Role < ActiveRecord::Base
   RIGHTS = {:all=>"Administrator", 
             :home=>"Manage articles of the home page",
             :promotions=>"Manage promotions",
-            :blog=>"Can edit and publish blog articles",
+            :publishing=>"Can edit and publish blog articles",
             :users=>"Manage accounts",
             :folders=>"Manage folders",
-            :inscription_validation=>"Valid or refuse subcriptions only",
+            :user_validation=>"Valid or refuse subcriptions only",
             :mandates=>"Manage mandates of people",
-            :agenda=>"Manage articles of the agenda"}
+            :agenda=>"Manage articles of the agenda",
+            :specials=>"Manage special articles"}
 
   list_column :rights, RIGHTS
 
@@ -31,8 +32,17 @@ class Role < ActiveRecord::Base
   end
   
   def can_manage?(right=:all)
-    return self.rights_include?(right) unless self.rights_include?(:all)
-    return true
+    if self.rights_include?(:all)
+      return true
+    else
+      return self.rights_include?(right)
+    end
+  end
+  
+  def self.none
+    r = Role.find(:first, :conditions=>"LENGTH(TRIM(rights))<=0")
+    r = Role.create(:name=>'Nothing', :code=>'nothing') if r.nil?
+    r
   end
       
 end

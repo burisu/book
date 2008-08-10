@@ -5,7 +5,7 @@
 <h2>Votre activation a réussi</h2>
 <%if @activation[1]==1 -%>
 <p>Bienvenue <%=@person.first_name-%>,</p>
-<p>Vous avez accès à la partie membre du site dès maintenant.</p>
+<p>Vous aurez accès à la partie membre du site dès qu'un administrateur aura validé votre inscription.</p>
 <%end-%>
 <%if @activation[2]==1 -%>
 <p>Votre nouvelle adresse <%=@person.email-%> a été validée et prise en comtpe.</p>

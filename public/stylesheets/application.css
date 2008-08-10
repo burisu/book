@@ -32,7 +32,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 .menu ul li a.current_action { background: #F98; border : 1px solid #C22; text-decoration : none; height : 29px; color: #C22;}
 
 #maintable {border-collapse: collapse; width:100%;}
-#maintable td {vertical-align : top;}
+/*#maintable td {vertical-align : top;}*/
 /*#maintable .submenu {width : 160px; background: url(/images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
 #maintable .submenu {width : 160px; padding:0px; margin:0px; border:none;}
 #maintable .submenu h3 {padding:3px; background: url(/images/background_subtitle.png) repeat-y top left; font-size: 13px; text-align:center; color: #04E;}
@@ -123,5 +123,36 @@ span.separator {
 #errorExplanation { background : #B32; padding : 5px; margin: 20px; border : 2px solid white;}
 #errorExplanation h2 { margin : 1px 3px; }
 #errorExplanation ul {padding : 2px 20px; list-style-type :square;}
+
+
+
+h2.futo {margin:0; padding:16px 4px 4px 4px;}
+div.futo {padding:4px 2px; }
+div.futo h3 {padding:4px;color: #139; }
+div.futo > div {padding:4px;}
+div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
+/*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
+div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: white;}
+div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
+div.futo table.list th, table.formu th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
+div.futo table.list tr.odd  td {background: #E1E6FF;}
+div.futo table.list tr.even td {background: #F0F2FF;}
+div.futo table.list tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}
+div.futo table.list tr td.act {background: #FDD; width:16px;border: 1px solid #DAA;}
+
+div.pagination {text-align:center; padding:8px;}
+div.pagination * {padding:2px 3px; font-size:13px; border:1px solid #9AC; background: #EEF; color: #9AC;}
+div.pagination a:link, div.pagination a:visited { text-decoration:none; color: #12F;}
+div.pagination a:hover {border:1px solid #12F; background: #DDF; color: #AAA; text-decoration:none;}
+div.pagination span.current {font-weight:bold; color: #D30; border:1px solid #D30; background: #FED;}
+div.pagination .disabled {display:none;}
+
+div.agenda {border: 1px solid #EEF; float:right;}
+div.agenda > h3 {background:#EEF; color: #0567ff; text-align:center; padding:2px;}
+div.agenda > table {border-collapse:collapse; width: 250px;}
+div.agenda > table td {padding:2px 4px;}
+div.agenda > table td.date {text-align:center; font-weight:bold;}
+div.agenda tr.odd  td {background: url(/images/background_subtitle.png) repeat-y top left;}
+div.agenda tr.even td {background: url(/images/background_submenu.png) repeat-y top left;}
 
 

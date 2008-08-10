@@ -11,17 +11,18 @@
 
   <div class="menu">
     <ul>
-      <li> <%= link_to 'Accueil', {:controller=>:multy, :action => :home}-%> </li>
+      <li> <%= link_to 'Accueil', {:controller=>:inter, :action => :home}-%> </li>
       <% if @current_person -%>
-         <%if @current_person.role.restriction_level==0%>
-           <li> <%= link_to 'Administration', {:controller=>:crud, :action => :index}-%> </li>
+         <%if @current_person.role.can_manage? :all%>
+           <li> <%= link_to 'Administration', {:controller=>:admin, :action => :index}-%> </li>
          <%end%>
          <li> <%= link_to 'Se d&eacute;connecter', {:controller=>:auth, :action => :logout}-%> </li>
       <%else-%> 
-        <li> <%= link_to 'Espace Membres', {:controller=>:me}-%> </li>
+        <li> <%= link_to 'Espace Membres', {:controller=>:intra}-%> </li>
       <%end-%>
-<!--      <li> <%= link_to 'Contact', {:controller=>:multy, :action => :contact}-%> </li>-->
-<!--      <li> <%= link_to 'Présentation', {:controller=>:multy, :action => :about_us}-%> </li>-->
+      <li><%= link_to 'Contact', {:controller=>:inter, :action=>:special, :id=>:contact}-%></li>
+      <li><%= link_to 'A propos de nous', {:controller=>:inter, :action=>:special, :id=>:about_us}-%></li>
+      <li><%= link_to 'Mentions légales', {:controller=>:inter, :action=>:special, :id=>:legals}-%></li>
     </ul>
   </div>
   <% if flash[:error]%><div id="error"><%=flash[:error]%></div><%end%>

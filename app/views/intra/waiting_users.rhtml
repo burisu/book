@@ -1,0 +1,13 @@
+<%=
+print_table :people do |t|
+  t.datum :family_name
+  t.datum :first_name
+  t.datum :second_name
+  t.datum :user_name
+  t.datum :sex
+  t.datum :born_on
+  t.datum :address
+  t.action :action=>:categories_update, :image=>:edit
+  t.action :action=>:categories_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+end
+-%>

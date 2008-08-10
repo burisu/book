@@ -122,16 +122,16 @@ models:
       first_name: Prénom
       second_name: Deuxième prénom
       system: Compte système
-      is_female: Sexe
-      born_on: Date de naissance
-      home_address: Adresse
-      aligned_to_right: RTL
-      home_phone: Téléphone (domicile)
-      work_phone: Téléphone (travail)
+      sex: Sexe
+      born_on: Né(e) le
+      address: Adresse
+      phone: Téléphone (domicile)
+      phone2: Téléphone (travail)
       fax: Fax
       mobile: Mobile
-      messenger_email: Adresse Messenger
-      user_name: Nom d'utilisateur
+      user_name: Login
+      is_validated: Val.
+      is_locked: Verr.
       email: E-mail
       test_password: Mot de passe actuel
       password: Mot de passe
@@ -140,7 +140,6 @@ models:
       hashed_password: Mot de passe crypté
       salt: Grain de sel
       rotex_email: E-mail Rotex
-      is_locked: Compte verrouillé
       photo: Photo
       country_id: Nationalité
       role_id: Rôle

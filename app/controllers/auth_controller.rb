@@ -10,7 +10,7 @@ class AuthController < ApplicationController
       person=Person.authenticate(params[:person][:user_name],params[:person][:password])
       if person
         session[:current_person_id]=person.id
-        redirect_to :controller=>:me, :action=>:profile
+        redirect_to :controller=>:intra, :action=>:profile
       else
         flash.now[:warning]='Votre nom d\'utilisateur ou votre mot de passe est incorrect, veuillez recommencer !'
       end
@@ -19,18 +19,19 @@ class AuthController < ApplicationController
 
   def logout
     session[:current_person_id]=nil
-    redirect_to :controller=>:multy, :action=>:index
+    redirect_to :controller=>:inter, :action=>:index
   end
 
   def subscribe
     @register = true
     if request.post?
-      role = Role.find_or_create('role')
+      role = Role.none
       params[:person][:role_id] = role.id
       @person = Person.new params[:person]
       @person.email = params[:person][:email]
       @person.is_validated = false
       @person.is_locked = true
+      @person.is_user   = true
       if @person.save_with_captcha
         @register = false
         Maily.deliver_confirmation @person
@@ -48,7 +49,7 @@ class AuthController < ApplicationController
     unless @person.nil?
       unless @person.is_validated
         @person.is_validated = true
-        @person.is_locked = false
+        @person.is_locked = true
         @person.save!
         @activation += 1
       end
