@@ -10,7 +10,7 @@ namespace :rotex do
         pays=Country.create!(:name=>'Etats Unis', :iso3166=>'US', :language=>langue_en)
         pays=Country.create!(:name=>'Espagne', :iso3166=>'ES', :language=>langue_es)
         role=Role.create!(:name=>'Public', :code=>'public')
-        role=Role.create!(:name=>'Administrator', :code=>'admin', :rights=>"all")
+        role=Role.create!(:name=>'Administrator', :code=>'admin', :rights=>" all ")
 
         params={}
         params[:patronymic_name]='ADMINISTRATEUR'

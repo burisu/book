@@ -27,6 +27,9 @@ class Article < ActiveRecord::Base
   NATURES={:home=>"Article of the home page",
            :blog=>"Article of a student",
            :agenda=>"Article of the agenda (date needed)"}
+  
+  list_column :natures, NATURES
+
 
   def before_validation
     self.title_h   = textilize(self.title.to_s)
