@@ -24,14 +24,15 @@
 class Article < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
 
-  NATURES={:home=>"Article of the home page",
-           :blog=>"Article of a student folder",
-           :agenda=>"Article of the agenda (date needed)",
-           :about_us=>"Article 'About Us' (unique)",
-           :contact=>"Article 'Contact' (unique)",
-           :legals=>"Legals (unique)"}
-  
-  list_column :natures, NATURES
+  NATURES={:default=>"-",
+           :home=>"Page d'accueil",
+           :blog=>"Morceaux choisis",
+           :agenda=>"Agenda",
+           :about_us=>"A propos de nous (unique)",
+           :contact=>"Contact (unique)",
+           :legals=>"Mentions légales (unique)"}
+    
+    list_column :natures, NATURES
 
 
   def before_validation
@@ -47,14 +48,15 @@ class Article < ActiveRecord::Base
     self.intro = params[:intro]
     self.body  = params[:body]
     self.is_published = params[:is_published] if person.can_manage? :publishing
+#raise params[:agenda]+' '+params[:agenda].class.to_s
     if person.can_manage? :agenda
-      self.natures_set :agenda, params[:agenda]
+      self.natures_set :agenda, params[:agenda]=='1'
       self.done_on = params[:done_on]
     end
-    self.natures_set :home, params[:home]==1 if person.can_manage? :home
-    self.natures_set :contact, params[:contact]==1 if person.can_manage? :specials
-    self.natures_set :about_us, params[:about_us]==1 if person.can_manage? :specials
-    self.natures_set :legals, params[:legals]==1 if person.can_manage? :specials
+    self.natures_set :home, params[:home]=='1' if person.can_manage? :home
+    self.natures_set :contact, params[:contact]=='1' if person.can_manage? :specials
+    self.natures_set :about_us, params[:about_us]=='1' if person.can_manage? :specials
+    self.natures_set :legals, params[:legals]=='1' if person.can_manage? :specials
   end
   
   

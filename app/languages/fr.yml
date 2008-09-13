@@ -114,6 +114,20 @@ helpers:
 #       description: Localized description
 
 models:
+  article:
+    name: Article
+    attributes:
+      id: ID
+      author_id: Auteur
+      title: Titre
+      done_on: Fait le
+      natures: Natures
+  mandate:
+    name: Mandat
+    attributes:
+      begun_on: Du
+      finished_on: Au
+      nature_id: Nature
   person:
     name: Personne
     attributes:
@@ -143,6 +157,16 @@ models:
       photo: Photo
       country_id: Nationalité
       role_id: Rôle
+      id: ID
+  subscription:
+    name: Cotisation
+    attributes:
+      begun_on: Du
+      finished_on: Au
+      amount: Montant (€)
+      note: Note
+      payment_mode: Mode Regl.
       
 
 app:
+  'No records': 'Pas d''enregistrements'

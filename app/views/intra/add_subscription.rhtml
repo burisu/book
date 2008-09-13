@@ -1,0 +1,17 @@
+<h2>Ajouter une cotisation pour <%=@person.label-%></h2>
+
+<%form_tag({}, :multipart=>true) do -%>
+<%= error_messages_for "subscription"%>
+<table class="formu">
+
+<tr><td class="label">Du</td><td class="value"><%=date_select :subscription, :begun_on, {:order => [:day, :month, :year], :start_year=>1970}-%></td><td class="hint"></td></tr>
+<tr><td class="label">Au</td><td class="value"><%=date_select :subscription, :finished_on, {:order => [:day, :month, :year], :start_year=>1970}-%></td><td class="hint"></td></tr>
+<tr><td class="label">Montant (€)</td><td class="value"><%=text_field :subscription, :amount-%></td><td class="hint"></td></tr>
+<tr><td class="label">Mode de paiement</td><td class="value"><%=select :subscription, :payment_mode, Subscription::PAYMENT_MODES-%></td><td class="hint"></td></tr>
+<tr><td class="label">Note</td><td class="value"><%=text_area :subscription, :note, :cols=>20, :rows=>4-%></td><td class="hint"></td></tr>
+
+<tr><td colspan="3" align="center"><%=submit_tag "Enregistrer"-%></td></tr>
+</td></tr>
+</table>
+<%end-%>
+

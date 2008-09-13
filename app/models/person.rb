@@ -36,6 +36,8 @@
 #  lock_version      :integer         default(0), not null
 #
 
+require 'digest/sha2'
+
 class Person < ActiveRecord::Base
   attr_accessor :password_confirmation
   attr_accessor :test_password
@@ -77,13 +79,19 @@ class Person < ActiveRecord::Base
     self.rotex_email = self.user_name+'@rotex1690.org'
   end
 
+  def before_destroy
+    total = 0
+    Role.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
+    raise Exception.new("Vous ne pouvez pas supprimer le dernier administrateur") if total<=1 and self.can_manage?
+  end
+
   def password
     @password
   end
 
   def password=(password)
     @password=password
-    if password!=''
+    unless password.blank?
       self.salt=self.object_id.to_s[1..16] + rand.to_s[2..16]
       self.hashed_password=Person.encrypt(self.password,self.salt)
     end
@@ -106,7 +114,7 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     personne = self.find_by_user_name name
     if personne
-      personne = nil if personne.is_locked or !personne.confirm(password)
+      personne = nil if personne.is_locked or !personne.confirm(password) or (!personne.can_manage?(:all) and !personne.has_subscribed?)
     end
     personne
   end
@@ -119,12 +127,14 @@ class Person < ActiveRecord::Base
     return self.hashed_password==Person.encrypt(password.to_s, self.salt)
   end
 
-  private
-
-  def self.encrypt(password,salt)
-    Digest::MD5.hexdigest('<'+salt+':'+password+password+'/>')
+  def has_subscribed_on?(date=Date.today)
+    Subscription.count(:conditions=>["person_id=? AND ? BETWEEN begun_on AND finished_on",self.id,date])>0
   end
-  
+
+  def has_subscribed?(delay=2.months)
+    Subscription.count(:conditions=>["person_id=? AND finished_on>=?::DATE",self.id,Time.now-delay])>0
+  end
+
   def self.generate_password(length=8)
     l = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W Y X Z 0 1 2 3 4 5 6 7 8 9)
     s = l.length
@@ -135,5 +145,11 @@ class Person < ActiveRecord::Base
     end
     c
   end
-  
+
+  private
+
+  def self.encrypt(password,salt)
+    Digest::SHA256.hexdigest('<'+salt+':'+password+password+'/>')
+  end 
+
 end

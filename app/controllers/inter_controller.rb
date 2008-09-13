@@ -7,7 +7,7 @@ class InterController < ApplicationController
   
   def home
     language  = Language.find_by_iso639('FR')
-    @articles = Article.paginate(:all, :conditions=>["language_id=? AND natures ILIKE '% home %'",language.id], :order=>"created_at DESC", :page=>params[:page], :per_page=>1)||[]
+    @articles = Article.paginate(:all, :conditions=>["language_id=? AND natures ILIKE '% home %'",language.id], :order=>"created_at DESC", :page=>params[:page], :per_page=>5)||[]
     @agenda   = Article.find(:all, :conditions=>["language_id=? AND natures ILIKE '% agenda %' AND done_on>=CURRENT_DATE-'2 months'::INTERVAL",language.id], :order=>"done_on DESC")||[]
   end
   

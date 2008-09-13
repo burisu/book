@@ -1,0 +1,35 @@
+<h1><%=@person.first_name+" "+@person.patronymic_name-%> <%=image_tag "country/"+@person.country.iso3166.downcase+".png"-%></h1>
+
+<h2>Cotisations</h2>
+<%= link_to "Ajouter une cotisation",{:action=>:add_subscription, :id=>@person.id}-%>
+<%=
+print_table :subscriptions do |t|
+  t.datum :begun_on
+  t.datum :finished_on
+  t.datum :amount
+  t.action :action=>:subscription_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+end
+-%>
+
+<h2>Articles</h2>
+<%=
+print_table :articles do |t|
+  t.datum :title
+  t.datum :done_on
+  t.datum :natures
+  t.action :action=>:edit_report, :image=>:edit
+end
+-%>
+
+<h2>Mandats</h2>
+<%=
+print_table :mandates do |t|
+  t.datum :begun_on
+  t.datum :finished_on
+  t.datum :name, :through=>:nature
+  t.action :action=>:mandate_update, :image=>:edit
+  t.action :action=>:mandate_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+end
+-%>
+
+

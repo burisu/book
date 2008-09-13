@@ -15,8 +15,6 @@ class IntraController < ApplicationController
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
   
-  def admin
-  end
   
   def new_folder
     if Folder.count(:conditions=>{:person_id=>@current_person.id, :is_accepted=>true})>0
@@ -31,6 +29,7 @@ class IntraController < ApplicationController
     if request.post?
       @article = Article.new
       @article.init(params[:article], @current_person)
+      @article.natures = 'default' unless @current_person.can_manage? :publishing
       if @article.save
         redirect_to :action=>:reporting
       end
@@ -41,6 +40,7 @@ class IntraController < ApplicationController
   
   def edit_report
     @article = Article.find(params[:id])
+    redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or @current_person.can_manage? :publishing
     if request.post?
       @article.init(params[:article], @current_person)
       if @article.save
@@ -94,7 +94,56 @@ class IntraController < ApplicationController
   
   def people_browse
     access :users
-    @people = Person.paginate(:all, :page=>params[:page])
+    @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
+  end
+
+  def people_select
+    access :users
+    @person = Person.find(params[:id])
+    @subscriptions = @person.subscriptions
+    @mandates = @person.mandates
+    @articles = @person.articles
+  end
+  
+  def people_create
+    access :users
+    if request.post?
+      params[:person][:role_id] = Role.none unless @current_person.can_manage? :all
+      @person = Person.new params[:person]
+      @person.email = params[:person][:email]
+      @person.email = Digest::MD5.hexdigest(@person.label)+'@'+rand.to_s if @person.email.blank?
+      @person.user_name = @person.patronymic_name.downcase.gsub(/[^a-z0-9\_\.]/,'') if @person.user_name.blank?
+      @person.is_validated = true
+      @person.is_locked = false
+      @person.is_user   = true
+      password = Person.generate_password
+      @person.password = password
+      @person.password_confirmation = password
+      if @person.save
+        Maily.deliver_password @person, password
+        flash[:notice] = 'La personne '+@person.label+' a été créée'
+        redirect_to :action=>:people_browse
+      end
+    else
+      @person = Person.new
+    end
+  end
+  
+ def people_update
+    access :users
+    @person = Person.find(params[:id])
+    if request.post?
+      params[:person][:role_id] = @person.role_id unless @current_person.can_manage? :all 
+      params[:person][:password] = ''
+      params[:person][:password_confirmation] = ''
+      @person.attributes = params[:person]
+      @person.forced = true
+      @person.email = params[:person][:email]
+      if @person.save
+        flash[:notice] = 'La personne '+@person.label+' a été modifiée'
+        redirect_to :action=>:people_browse
+      end
+    end
   end
   
   def people_lock_access
@@ -115,10 +164,53 @@ class IntraController < ApplicationController
     redirect_to :action=>:people_browse
   end
   
+  def people_delete
+    access :users
+    Person.find(params[:id]).destroy if request.post? or request.delete?
+    redirect_to :action=>:people_browse
+  end 
+
+  def add_subscription
+    access :subscribing
+    @person = Person.find(params[:id])
+    if request.post?
+      @subscription = Subscription.new(params[:subscription])
+      @subscription.person_id = @person.id
+      if @subscription.save
+          session[:last_finished_on] = @subscription.finished_on
+         redirect_to :action=>:people_select, :id=>@person.id
+      end
+    else
+      @subscription = Subscription.new
+      @subscription.finished_on = session[:last_finished_on] if session[:last_finished_on]
+    end
+  end
+
+  def remove_subscription
+    access :subscribing
+    s = Subscription.find(params[:id])
+    s.destroy if request.post?
+    redirect_to :action=>:people_select, :id=>s.person_id
+  end
+
+  def subscribers
+    access :subscribing
+    @people = Person.find(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"])
+    render :action=>:people_browse
+  end
+
+  def articles
+    access :publishing
+    @articles = Article.paginate(:all, :page=>params[:page])
+  end
+
+  def access_denied
+  end
   
   protected
   
-  def access(right)
+  def access(right=:all)
+    redirect_to :action=>:access_denied unless @current_person.can_manage? right
   end
   
   

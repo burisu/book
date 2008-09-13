@@ -40,6 +40,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 #maintable .submenu ul li {list-style-type:none;}
 #maintable .submenu ul li a {padding: 2px; border : 1px solid transparent; display:block;}
 #maintable .submenu ul li a:hover{color: #0567ff; background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
+#maintable .submenu .label {padding:2px 4px; background: url(/images/background_submenu.png) repeat-y top left; color: #F33;}
 #maintable .subbody {padding:4px;}
 #maintable .subend {background: url(/images/background_subend.png) repeat-y top left; height:2px;}
 

@@ -1,17 +1,19 @@
-<td class="submenu" valign="top"><h3>Menu</h3><ul>
+<td class="submenu" valign="top">
+<div class="label"><%=@current_person.label-%></div>
+<h3>Menu</h3><ul>
 <li><%=link_to 'Mon profil', {:controller=>:intra, :action=>:profile}-%></li>
 <li><%=link_to 'Mes articles', {:controller=>:intra, :action=>:reporting}-%></li>
-<li><%=link_to 'Administration', {:controller=>:intra, :action=>:admin}-%></li>
+<!--<%= content_tag('li', link_to('Valider les inscriptions', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :user_validation-%>-->
+<!--<%= content_tag('li', link_to('Gérer les promos', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :promotions-%>-->
+<%= content_tag('li', link_to('Gérer les utilisateurs', {:controller=>:intra, :action=>:people_browse})) if @current_person.can_manage? :users-%>
+<%= content_tag('li', link_to('Liste des adhérents', {:controller=>:intra, :action=>:subscribers})) if @current_person.can_manage? :subscribing-%>
+<%= content_tag('li', link_to('Liste des articles', {:controller=>:intra, :action=>:articles})) if @current_person.can_manage? :publishing-%>
+<%= content_tag('li', link_to('Admin (Mode Expert)', {:controller=>:admin, :action=>:index})) if @current_person.can_manage? :all-%>
+<li><%=link_to 'Se déconnecter', {:controller=>:auth, :action=>:logout}-%></li>
 </ul><%if @action=='intra:profile'-%><h3>Mes infos</h3><ul>
 <!--<li><%=link_to 'Modifier mes infos', {:controller=>:intra, :action=>:update_profile}-%></li>-->
 <li><%=link_to 'Changer mon mot de passe', {:controller=>:auth, :action=>:change_password}-%></li>
 <li><%=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:auth, :action=>:change_email}-%></li>
-</ul><%end-%>
-<%if @action=='intra:admin'-%><h3>Mes actions</h3><ul>
-<!--<%= content_tag('li', link_to('Valider les inscriptions', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :user_validation-%>-->
-<!--<%= content_tag('li', link_to('Gérer les promos', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :promotions-%>-->
-<%= content_tag('li', link_to('Gérer les utilisateurs', {:controller=>:intra, :action=>:people_browse})) if @current_person.can_manage? :users-%>
-<%= content_tag('li', link_to('Admin (Mode Expert)', {:controller=>:admin, :action=>:index})) if @current_person.can_manage? :all-%>
 </ul><%end-%>
 <div class="subend"></div>
 </td>

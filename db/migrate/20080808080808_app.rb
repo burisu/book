@@ -176,6 +176,7 @@ class App < ActiveRecord::Migration
       t.column :content_h,         :text,    :null=>false
       t.column :done_on,           :date
       t.column :natures,           :text
+      t.column :status             :string,  :null=>false, :default=>'W'
       t.column :document,          :string
       t.column :is_published,      :boolean, :null=>false, :default=>false
       t.column :author_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
@@ -216,10 +217,20 @@ class App < ActiveRecord::Migration
       t.string :value, :limit => 6
     end
 
+    create_table :subscriptions do |t|
+      t.column :begun_on,          :date,    :null=>false
+      t.column :finished_on,       :date,    :null=>false
+      t.column :amount,            :decimal, :precision=>16, :scale=>2,  :null=>false
+      t.column :payment_mode,      :string,  :null=>false
+      t.column :note,              :text
+      t.column :person_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
+    end
+
   end
 
   def self.down
 #    drop_table :events
+    drop_table :subscriptions
     drop_table :simple_captcha_data
     drop_table :emails
     drop_table :images

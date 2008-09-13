@@ -12,7 +12,7 @@ class AuthController < ApplicationController
         session[:current_person_id]=person.id
         redirect_to :controller=>:intra, :action=>:profile
       else
-        flash.now[:warning]='Votre nom d\'utilisateur ou votre mot de passe est incorrect, veuillez recommencer !'
+        flash.now[:warning]="Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
     end
   end
@@ -38,6 +38,7 @@ class AuthController < ApplicationController
       end
     else
       @person = Person.new
+      @self_subscribing = true
     end
   end
   
@@ -115,6 +116,6 @@ class AuthController < ApplicationController
   
   private
   def clean_people
-    Person.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'24 hours'::interval"
+    Person.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'48 hours'::interval"
   end
 end

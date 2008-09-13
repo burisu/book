@@ -12,12 +12,7 @@
   <div class="menu">
     <ul>
       <li> <%= link_to 'Accueil', {:controller=>:inter, :action => :home}-%> </li>
-      <% if @current_person -%>
-         <%if @current_person.role.can_manage? :all%>
-           <li> <%= link_to 'Administration', {:controller=>:admin, :action => :index}-%> </li>
-         <%end%>
-         <li> <%= link_to 'Se d&eacute;connecter', {:controller=>:auth, :action => :logout}-%> </li>
-      <%else-%> 
+      <% unless @current_person-%>
         <li> <%= link_to 'Espace Membres', {:controller=>:intra}-%> </li>
       <%end-%>
       <li><%= link_to 'Contact', {:controller=>:inter, :action=>:special, :id=>:contact}-%></li>

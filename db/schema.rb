@@ -244,6 +244,18 @@ ActiveRecord::Schema.define(:version => 20080808080808) do
     t.integer  "lock_version",               :default => 0, :null => false
   end
 
+  create_table "subscriptions", :force => true do |t|
+    t.date     "begun_on",                                                   :null => false
+    t.date     "finished_on",                                                :null => false
+    t.decimal  "amount",       :precision => 16, :scale => 2,                :null => false
+    t.string   "payment_mode",                                               :null => false
+    t.text     "note"
+    t.integer  "person_id",                                                  :null => false
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.integer  "lock_version",                                :default => 0, :null => false
+  end
+
   create_table "zone_natures", :force => true do |t|
     t.string   "name",                        :null => false
     t.integer  "parent_id"
@@ -304,6 +316,8 @@ ActiveRecord::Schema.define(:version => 20080808080808) do
   add_foreign_key "periods", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_person_id_fkey"
   add_foreign_key "periods", ["folder_id"], "folders", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_folder_id_fkey"
   add_foreign_key "periods", ["family_id"], "families", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "periods_family_id_fkey"
+
+  add_foreign_key "subscriptions", ["person_id"], "people", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "subscriptions_person_id_fkey"
 
   add_foreign_key "zone_natures", ["parent_id"], "zone_natures", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "zone_natures_parent_id_fkey"
 

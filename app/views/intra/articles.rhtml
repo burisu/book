@@ -1,0 +1,15 @@
+<h1>Liste des articles</h1>
+<%=
+print_table :articles do |t|
+  t.datum :id
+  t.datum :title
+  t.datum :label, :through=>:author
+  t.action :use=>:is_published, :actions=>{"true"=>:article_deactivate, "false"=>:article_activate}, :prefix=>"article_", :method=>:post
+  t.action :action=>:show_report, :image=>:show
+  t.action :action=>:edit_report, :image=>:edit
+end
+-%>
+
+
+<%= will_paginate @articles-%>
+
