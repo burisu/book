@@ -120,8 +120,12 @@ models:
       id: ID
       author_id: Auteur
       title: Titre
-      done_on: Fait le
+      done_on: A lieu le
       natures: Natures
+      body: Contenu
+      intro: Introduction
+      status: S.
+      updated_at: Modifié le
   mandate:
     name: Mandat
     attributes:
@@ -170,3 +174,7 @@ models:
 
 app:
   'No records': 'Pas d''enregistrements'
+  'Article activate': 'Publier l''article'
+  'Article deactivate': 'Dépublier l''article'
+  'Article edit': 'Modifier l''article'
+  

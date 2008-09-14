@@ -12,22 +12,25 @@
 ActiveRecord::Schema.define(:version => 20080808080808) do
 
   create_table "articles", :force => true do |t|
-    t.string   "title",                                          :null => false
-    t.text     "title_h",                                        :null => false
-    t.string   "intro",        :limit => 512,                    :null => false
-    t.text     "intro_h",                                        :null => false
-    t.text     "body",                                           :null => false
-    t.text     "content_h",                                      :null => false
+    t.string   "title",                                        :null => false
+    t.text     "title_h",                                      :null => false
+    t.string   "intro",        :limit => 512,                  :null => false
+    t.text     "intro_h",                                      :null => false
+    t.text     "body",                                         :null => false
+    t.text     "content_h",                                    :null => false
     t.date     "done_on"
     t.text     "natures"
+    t.string   "status",                      :default => "W", :null => false
     t.string   "document"
-    t.boolean  "is_published",                :default => false, :null => false
-    t.integer  "author_id",                                      :null => false
-    t.integer  "language_id",                                    :null => false
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
-    t.integer  "lock_version",                :default => 0,     :null => false
+    t.integer  "author_id",                                    :null => false
+    t.integer  "language_id",                                  :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "lock_version",                :default => 0,   :null => false
   end
+
+  add_index "articles", ["author_id"], :name => "index_articles_on_author_id"
+  add_index "articles", ["status"], :name => "index_articles_on_status"
 
   create_table "countries", :force => true do |t|
     t.string   "name",                                     :null => false

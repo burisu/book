@@ -24,7 +24,7 @@
 class Article < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
 
-  NATURES={:default=>"-",
+  NATURES={:default=>"Pour les membres",
            :home=>"Page d'accueil",
            :blog=>"Morceaux choisis",
            :agenda=>"Agenda",
@@ -32,8 +32,9 @@ class Article < ActiveRecord::Base
            :contact=>"Contact (unique)",
            :legals=>"Mentions légales (unique)"}
     
-    list_column :natures, NATURES
-
+  list_column :natures, NATURES
+    
+  STATUS = {:W=>"À l'écriture", :R=>"Prêt", :P=>"Publié", :C=>"À la correction", :U=>"Dépublié"}
 
   def before_validation
     self.title_h   = textilize_without_paragraph(self.title.to_s)
@@ -47,18 +48,51 @@ class Article < ActiveRecord::Base
     self.title = params[:title]
     self.intro = params[:intro]
     self.body  = params[:body]
-    self.is_published = params[:is_published] if person.can_manage? :publishing
+    self.status = 'W' if self.new_record?
+    self.status = params[:status] if person.can_manage? :publishing
 #raise params[:agenda]+' '+params[:agenda].class.to_s
     if person.can_manage? :agenda
       self.natures_set :agenda, params[:agenda]=='1'
       self.done_on = params[:done_on]
     end
+    self.natures_set :blog, params[:blog]=='1' if person.can_manage? :blog
     self.natures_set :home, params[:home]=='1' if person.can_manage? :home
     self.natures_set :contact, params[:contact]=='1' if person.can_manage? :specials
     self.natures_set :about_us, params[:about_us]=='1' if person.can_manage? :specials
     self.natures_set :legals, params[:legals]=='1' if person.can_manage? :specials
   end
   
+  def to_correct
+    self.update_attribute(:status, 'C')
+  end
+
+  def to_publish
+    self.update_attribute(:status, 'R')
+  end
+
+  def publish
+    self.update_attribute(:status, 'P')
+  end
+  
+  def unpublish
+    self.update_attribute(:status, 'U')
+  end
+  
+  def ready?
+    status=='R'
+  end
+  
+  def locked?
+    ["R","P","U"].include? self.status
+  end  
+  
+  def human_status
+    STATUS[self.status.to_sym]
+  end
+  
+  def self.status
+    STATUS.to_a.collect{|x| [x[1],x[0].to_s]}
+  end
   
   def agenda
     self.natures_include? :agenda
@@ -74,6 +108,9 @@ class Article < ActiveRecord::Base
   end
   def legals
     self.natures_include? :legals
+  end
+  def blog
+    self.natures_include? :blog
   end
   
 end

@@ -3,8 +3,15 @@
 <div class="article-list">
 <%for article in @articles %>
 <div class="article-item"><div class="article-ext"><h2><%=h article.title%></h2> <%=article.intro_h-%></div><div class="article-act">
-<%=image_tag "country/"+article.language.iso639.downcase+".png"-%> <span class="separator">&bull;</span> Créé&nbsp;le 
-<%=article.created_at.to_formatted_s :default %> 
-<span class="separator">&bull;</span> Mis&nbsp;à&nbsp;jour&nbsp;le <%=article.updated_at.to_formatted_s :default %> <span class="separator">&bull;</span> <%=link_to "Lire tout l'article", :action=>:show_report, :id=>article-%> <span class="separator">&bull;</span> <%=link_to "Modifier", :action=>:edit_report, :id=>article-%></div></div>
-<%end%>
-</div>
+<%=image_tag "country/"+article.language.iso639.downcase+".png"-%> 
+<span class="separator">&bull;</span> <strong><%=article.human_status %></strong> 
+<span class="separator">&bull;</span> <%=link_to "Lire tout l'article", :action=>:show_report, :id=>article-%>
+<% unless article.locked? -%>
+<span class="separator">&bull;</span> <%=link_to "Modifier", :action=>:edit_report, :id=>article-%> 
+<span class="separator">&bull;</span> <%=link_to "Proposer l'article à la publication", :action=>:article_to_publish, :id=>article-%> 
+<%end-%>
+<% if article.ready? -%><span class="separator">&bull;</span> <%=link_to "Corriger", :action=>:edit_report, :id=>article-%><%end-%>
+<span class="separator">&bull;</span> Créé&nbsp;le <%=article.created_at.to_formatted_s :default %> 
+<span class="separator">&bull;</span> Mis&nbsp;à&nbsp;jour&nbsp;le <%=article.updated_at.to_formatted_s :default %> 
+
+</div></div><%end-%></div>

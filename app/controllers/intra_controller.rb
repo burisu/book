@@ -41,11 +41,31 @@ class IntraController < ApplicationController
   def edit_report
     @article = Article.find(params[:id])
     redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or @current_person.can_manage? :publishing
+    @article.to_correct if @article.ready?
+    if @article.locked? and !@current_person.can_manage? :publishing
+      flash[:warning] = "L'article a été validé par le rédacteur en chef et ne peut plus être modifié. Merci de votre compréhension."
+      redirect_to :back
+    end
     if request.post?
       @article.init(params[:article], @current_person)
       if @article.save
-        redirect_to :action=>:reporting
+        flash[:notice] = 'Vos modifications ont été enregistrées ('+Time.now.to_s+')'
+        redirect_to :back
       end
+    end
+  end
+  
+  def article_edit
+    redirect_to :action=>:edit_report, :id=>params[:id]
+  end
+  
+  def article_to_publish
+    @article = Article.find(params[:id])
+    if @article.author_id==@current_person.id or @current_person.can_manage? :publishing
+      @article.to_publish
+      redirect_to :back
+    else
+      redirect_to :action=>:access_denied 
     end
   end
 
@@ -94,6 +114,7 @@ class IntraController < ApplicationController
   
   def people_browse
     access :users
+    @title = "Liste des personnes"
     @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
@@ -129,7 +150,7 @@ class IntraController < ApplicationController
     end
   end
   
- def people_update
+  def people_update
     access :users
     @person = Person.find(params[:id])
     if request.post?
@@ -195,13 +216,83 @@ class IntraController < ApplicationController
 
   def subscribers
     access :subscribing
-    @people = Person.find(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"])
+    @title = "Liste des adhérents actuels"
+    @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :page=>params[:page], :per_page=>50)
+    render :action=>:people_browse
+  end
+
+  def non_subscribers
+    access :subscribing
+    @title = "Liste des non-adhérents actuels"
+    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :page=>params[:page], :per_page=>50)
+    render :action=>:people_browse
+  end
+
+  def new_non_subscribers
+    access :subscribing
+    @title = "Liste des futurs non-adhérents (à 2 mois)"
+    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def articles
     access :publishing
-    @articles = Article.paginate(:all, :page=>params[:page])
+    @title = "Tous les articles"
+    @articles = Article.paginate(:all, :order=>:created_at, :page=>params[:page])
+  end
+
+  def waiting_articles
+    access :publishing
+    @title = "Articles proposés à la publication"
+    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def special_articles
+    access :specials
+    @title = "Articles spéciaux"
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def agenda_articles
+    access :agenda
+    @title = "Articles de l'agenda"
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def home_articles
+    access :home
+    @title = "Articles de la page d'accueil"
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def blog_articles
+    access :home
+    @title = "Articles extraits pour la présentation"
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def other_articles
+    access :publishing
+    @title = "Autres articles (réservés aux membres)"
+    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :order=>:created_at, :page=>params[:page])
+    render :action=>:articles
+  end
+
+  def article_activate
+    access :publishing
+    Article.find(params[:id]).publish
+    redirect_to :back
+  end
+
+  def article_deactivate
+    access :publishing
+    Article.find(params[:id]).unpublish
+    redirect_to :back
   end
 
   def access_denied

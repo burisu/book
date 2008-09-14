@@ -20,7 +20,7 @@ class Role < ActiveRecord::Base
             :publishing=>"Can edit and publish blog articles",
             :users=>"Manage accounts",
             :folders=>"Manage folders",
-            :user_validation=>"Valid or refuse subcriptions only",
+            :subscribing=>"Valid or refuse subcriptions only",
             :mandates=>"Manage mandates of people",
             :agenda=>"Manage articles of the agenda",
             :specials=>"Manage special articles"}

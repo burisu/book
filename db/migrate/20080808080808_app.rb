@@ -176,12 +176,14 @@ class App < ActiveRecord::Migration
       t.column :content_h,         :text,    :null=>false
       t.column :done_on,           :date
       t.column :natures,           :text
-      t.column :status             :string,  :null=>false, :default=>'W'
+      t.column :status,            :string,  :null=>false, :default=>'W'
       t.column :document,          :string
-      t.column :is_published,      :boolean, :null=>false, :default=>false
+#      t.column :is_published,      :boolean, :null=>false, :default=>false
       t.column :author_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
       t.column :language_id,       :integer, :null=>false, :references=>:languages, :on_delete=>:restrict, :on_update=>:restrict
     end
+    add_index :articles, :status
+    add_index :articles, :author_id
 
     create_table :images do |t|
       t.column :title,             :string,  :null=>false

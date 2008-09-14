@@ -97,8 +97,21 @@ class Person < ActiveRecord::Base
     end
   end
   
-  def can_manage?(level=:all)
-    self.role.can_manage?(level)
+  def can_manage?(level=:all,mode=:or)
+    if level.is_a? Symbol
+      return self.role.can_manage?(level)
+    elsif level.is_a? Array
+      ok = false
+      if mode==:and
+        ok = true
+        level.each{|x| ok = false unless self.role.can_manage?(x)}
+      else
+        level.each{|x| ok = true if self.role.can_manage?(x)}
+      end
+      return ok
+    else
+      raise Exception.new "Bad type for right: "+level.class.to_s
+    end
   end
 
 

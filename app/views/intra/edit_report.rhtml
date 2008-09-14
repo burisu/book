@@ -1,5 +1,5 @@
 <h1>Modifier l'article <em><%=h truncate(@article.title, 56)%></em></h1>
 <%form_tag do %>
 <%=render :partial=>'report_form'-%>
-<%=submit_tag "Enregistrer les modifications"-%> <%=link_to "Annuler", :action=>:reporting-%>
+<%=submit_tag "Enregistrer les modifications"-%> <%=link_to "Annuler", :back-%>
 <%end%>

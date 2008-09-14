@@ -1,4 +1,4 @@
-* {padding:0; margin:0; font-family: sans-serif; }
+* {padding:0; margin:0; font-family: arial, sans-serif; }
 h1,h2,h3,p,div,li,td,th,a,span{ color:#def;}
 span,p,a,div,ul,li,input,textarea,select {font-size:12px;}
 ul {padding-left: 20px;}
@@ -40,7 +40,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 #maintable .submenu ul li {list-style-type:none;}
 #maintable .submenu ul li a {padding: 2px; border : 1px solid transparent; display:block;}
 #maintable .submenu ul li a:hover{color: #0567ff; background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
-#maintable .submenu .label {padding:2px 4px; background: url(/images/background_submenu.png) repeat-y top left; color: #F33;}
+#maintable .submenu .label {padding:2px 4px; color: #F33; background: #FFF;} /*background: url(/images/background_submenu.png) repeat-y top left; }*/
 #maintable .subbody {padding:4px;}
 #maintable .subend {background: url(/images/background_subend.png) repeat-y top left; height:2px;}
 
@@ -135,11 +135,15 @@ div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
 div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: white;}
 div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
-div.futo table.list th, table.formu th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
+div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}
 div.futo table.list tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}
 div.futo table.list tr td.act {background: #FDD; width:16px;border: 1px solid #DAA;}
+
+#scaffolded {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
+#scaffolded tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}
+#scaffolded tr td input {color:#007}
 
 div.pagination {text-align:center; padding:8px;}
 div.pagination * {padding:2px 3px; font-size:13px; border:1px solid #9AC; background: #EEF; color: #9AC;}
@@ -148,12 +152,21 @@ div.pagination a:hover {border:1px solid #12F; background: #DDF; color: #AAA; t
 div.pagination span.current {font-weight:bold; color: #D30; border:1px solid #D30; background: #FED;}
 div.pagination .disabled {display:none;}
 
-div.agenda {border: 1px solid #EEF; float:right;}
-div.agenda > h3 {background:#EEF; color: #0567ff; text-align:center; padding:2px;}
+div.right_menu { float:right; margin: 0px 0px 4px 8px;}
+
+div.right_menu > div.separator {margin: 10px 0px;}
+
+div.right_menu > div.frame {border: 1px solid #EEF;}
+div.right_menu > div.frame > h3 {background:#EEF; color: #0567ff; text-align:center; padding:2px;}
+
+
 div.agenda > table {border-collapse:collapse; width: 250px;}
 div.agenda > table td {padding:2px 4px;}
 div.agenda > table td.date {text-align:center; font-weight:bold;}
 div.agenda tr.odd  td {background: url(/images/background_subtitle.png) repeat-y top left;}
 div.agenda tr.even td {background: url(/images/background_submenu.png) repeat-y top left;}
 
+div.blog > div > h4 {background: #F55; color:#FFF; padding:2px; text-align:center;}
+div.blog > div > div {background: #F88; color:#FFF; padding: 2px;}
+div.blog > div > div * {color:#FFF;}
 

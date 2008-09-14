@@ -50,8 +50,8 @@ namespace :rotex do
         params[:body]='Bla Content http://www.rotex1690.org essai de *gras* essai de "guillemet" _test_ "Rotex 1690":http://www.rotex1690.org. '*10
         params[:author]=personne
         params[:language]=langue
-        params[:is_published]=true
-        params[:natures]="home"
+        params[:status]='P'
+        params[:natures]=" home "
 #        params[:nature]=art_nat
         article=Article.create!(params)
       end

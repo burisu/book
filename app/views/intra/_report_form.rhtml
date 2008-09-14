@@ -9,13 +9,16 @@
 <% if @current_person.can_manage? :home %>
 <tr><td>A mettre en page d'accueil</td><td><%=check_box(:article, :home) %></td></tr>
 <%end-%>
+<% if @current_person.can_manage? :blog %>
+<tr><td>A mettre dans les extraits</td><td><%=check_box(:article, :blog) %></td></tr>
+<%end-%>
 <% if @current_person.can_manage? :specials %>
 <tr><td>Article à afficher pour 'Contact'</td><td><%=check_box(:article, :contact) %></td></tr>
 <tr><td>Article à afficher pour 'A propos de nous'</td><td><%=check_box(:article, :about_us) %></td></tr>
 <tr><td>Article à afficher pour 'Mentions légales'</td><td><%=check_box(:article, :legals) %></td></tr>
 <%end-%>
 <% if @current_person.can_manage? :publishing %>
-<tr><td>Publié</td><td><%=check_box(:article, :is_published) %></td></tr>
+<tr><td>Statut</td><td><%=select :article, :status, Article.status %></td></tr>
 <%end-%>
 <tr><td colspan="2"><div>Introduction&nbsp;:</div><%=text_area( :article, :intro, {:rows=>5, :maxlength=>255})%></td></tr>
 <tr><td colspan="2"><div>Contenu&nbsp;:</div><%=text_area( :article, :body, {:rows=>11})%></td></tr>

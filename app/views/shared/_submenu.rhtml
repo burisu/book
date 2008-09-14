@@ -3,14 +3,33 @@
 <h3>Menu</h3><ul>
 <li><%=link_to 'Mon profil', {:controller=>:intra, :action=>:profile}-%></li>
 <li><%=link_to 'Mes articles', {:controller=>:intra, :action=>:reporting}-%></li>
-<!--<%= content_tag('li', link_to('Valider les inscriptions', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :user_validation-%>-->
-<!--<%= content_tag('li', link_to('Gérer les promos', {:controller=>:intra, :action=>:waiting_users})) if @current_person.can_manage? :promotions-%>-->
-<%= content_tag('li', link_to('Gérer les utilisateurs', {:controller=>:intra, :action=>:people_browse})) if @current_person.can_manage? :users-%>
-<%= content_tag('li', link_to('Liste des adhérents', {:controller=>:intra, :action=>:subscribers})) if @current_person.can_manage? :subscribing-%>
-<%= content_tag('li', link_to('Liste des articles', {:controller=>:intra, :action=>:articles})) if @current_person.can_manage? :publishing-%>
-<%= content_tag('li', link_to('Admin (Mode Expert)', {:controller=>:admin, :action=>:index})) if @current_person.can_manage? :all-%>
 <li><%=link_to 'Se déconnecter', {:controller=>:auth, :action=>:logout}-%></li>
-</ul><%if @action=='intra:profile'-%><h3>Mes infos</h3><ul>
+</ul>
+<%if @current_person.can_manage?(:all)-%>
+<h3>Administration</h3><ul>
+<%= content_tag('li', link_to('Admin (Mode Expert)', {:controller=>:admin, :action=>:index})) if @current_person.can_manage? :all-%>
+</ul>
+<%end-%>
+<%if @current_person.can_manage? [:publishing,:specials,:home,:agenda] -%>
+<h3>Publication</h3><ul>
+<%= content_tag('li', link_to('Articles (tous)', {:controller=>:intra, :action=>:articles})) if @current_person.can_manage? :publishing-%>
+<%= content_tag('li', link_to('Articles en attente', {:controller=>:intra, :action=>:waiting_articles})) if @current_person.can_manage? :publishing-%>
+<%= content_tag('li', link_to('Articles <em>spéciaux</em>', {:controller=>:intra, :action=>:special_articles})) if @current_person.can_manage? :specials-%>
+<%= content_tag('li', link_to('Articles <em>Agenda</em>', {:controller=>:intra, :action=>:agenda_articles})) if @current_person.can_manage? :agenda-%>
+<%= content_tag('li', link_to('Articles <em>Page d\'accueil</em>', {:controller=>:intra, :action=>:home_articles})) if @current_person.can_manage? :home-%>
+<%= content_tag('li', link_to('Articles <em>Extraits</em>', {:controller=>:intra, :action=>:blog_articles})) if @current_person.can_manage? :publishing-%>
+<%= content_tag('li', link_to('Articles restants', {:controller=>:intra, :action=>:other_articles})) if @current_person.can_manage? :publishing-%>
+</ul>
+<%end-%>
+<%if @current_person.can_manage? [:users,:subscribing]-%>
+<h3>Gestion des personnes</h3><ul>
+<%= content_tag('li', link_to('Personnes (toutes)', {:controller=>:intra, :action=>:people_browse})) if @current_person.can_manage? :users-%>
+<%= content_tag('li', link_to('Adhérents', {:controller=>:intra, :action=>:subscribers})) if @current_person.can_manage? :subscribing-%>
+<%= content_tag('li', link_to('Non-adhérents', {:controller=>:intra, :action=>:non_subscribers})) if @current_person.can_manage? :subscribing-%>
+<%= content_tag('li', link_to('Futurs non-adhérents', {:controller=>:intra, :action=>:new_non_subscribers})) if @current_person.can_manage? :subscribing-%>
+</ul>
+<%end-%>
+<%if @action=='intra:profile'-%><h3>Mes infos</h3><ul>
 <!--<li><%=link_to 'Modifier mes infos', {:controller=>:intra, :action=>:update_profile}-%></li>-->
 <li><%=link_to 'Changer mon mot de passe', {:controller=>:auth, :action=>:change_password}-%></li>
 <li><%=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:auth, :action=>:change_email}-%></li>
