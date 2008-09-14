@@ -12,8 +12,8 @@
 #  content_h    :text            not null
 #  done_on      :date            
 #  natures      :text            
+#  status       :string(255)     default("W"), not null
 #  document     :string(255)     
-#  is_published :boolean         not null
 #  author_id    :integer         not null
 #  language_id  :integer         not null
 #  created_at   :datetime        not null
