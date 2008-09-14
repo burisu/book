@@ -17,6 +17,6 @@ end
 
 <%= wp-%>
 
-<p><strong>Statut (S.)</strong>&nbsp;: <%=Article::STATUS.to_a.collect{|x| '<strong>'+x[0].to_s+'</strong>&nbsp;: '+x[1]}.join(", ")-%></p>
-<p><strong>Natures</strong>&nbsp;: <%=Article::NATURES.to_a.collect{|x| '<strong>'+x[0].to_s+'</strong>&nbsp;: '+x[1]}.join(", ")-%></p>
+<p><strong>Statut (S.)</strong>&nbsp;: <%=Article::STATUS.sort{|x,y| x.to_s<=>y.to_s}.collect{|x| '<strong>'+x[0].to_s+'</strong>&nbsp;: '+x[1]}.join(", ")-%></p>
+<p><strong>Natures</strong>&nbsp;: <%=Article::NATURES.sort{|x,y| x.to_s<=>y.to_s}.collect{|x| '<strong>'+x[0].to_s+'</strong>&nbsp;: '+x[1]}.join(", ")-%></p>
 
