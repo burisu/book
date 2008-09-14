@@ -50,7 +50,7 @@ class AuthController < ApplicationController
     unless @person.nil?
       unless @person.is_validated
         @person.is_validated = true
-        @person.is_locked = true
+        @person.is_locked = false
         @person.save!
         @activation += 1
       end
