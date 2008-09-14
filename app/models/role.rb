@@ -16,6 +16,7 @@ class Role < ActiveRecord::Base
 
   RIGHTS = {:all=>"Administrator", 
             :home=>"Manage articles of the home page",
+            :blog=>"Gérer les articles de blog",
             :promotions=>"Manage promotions",
             :publishing=>"Can edit and publish blog articles",
             :users=>"Manage accounts",
