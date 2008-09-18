@@ -51,11 +51,11 @@ class Person < ActiveRecord::Base
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
 
   def before_validation
-    self.patronymic_name = self.patronymic_name.upper
-    self.family_name = self.family_name.upper
+    self.patronymic_name = self.patronymic_name.upcase
+    self.family_name = self.family_name.upcase
     self.family_name = self.patronymic_name if self.family_name.blank?
     self.forced = false if self.forced.nil?
-    self.user_name.gsub!(/(-|\.)/,'')
+    self.user_name.gsub!(/(-|\.|\ )/,'')
     self.rotex_email = self.user_name+'@rotex1690.org'
     self.validation = Person.generate_password(73+2*(10*rand).to_i) unless self.is_validated or !self.replacement_email.blank?
     if self.latitude.blank?
