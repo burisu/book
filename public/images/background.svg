@@ -703,16 +703,16 @@
        sodipodi:nodetypes="ccccccc" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans;opacity:0.33"
-       x="490.48923"
-       y="865"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;opacity:0.33000004;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="487.48923"
+       y="982"
        id="text2468"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan2470"
-         x="490.48923"
-         y="865"
-         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr;text-anchor:middle;fill:#ffffff;fill-opacity:1;font-family:Qlassik Bold;-inkscape-font-specification:'Qlassik Bold, Bold'">Site réalisé par Brice TEXIER - brice.texier@oneiros.fr</tspan></text>
+         x="487.48923"
+         y="982"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;font-family:Qlassik Bold;-inkscape-font-specification:'Qlassik Bold, Bold'">Site réalisé par Brice TEXIER - brice.texier@oneiros.fr</tspan></text>
     <rect
        style="opacity:0.4;fill:#fdfdfd;fill-opacity:1;stroke:none;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="background_menu"

@@ -58,4 +58,6 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 end
 
+require "#{RAILS_ROOT}/lib/safe_string"
+
 simple_localization :languages => [:fr, :en, :es, :de, :nl], :lang_file_dir => "#{RAILS_ROOT}/app/languages", :debug=>false, :except=>[:localized_templates]
