@@ -21,6 +21,6 @@
 <tr><%= show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'high' ,:label => "Recopiez le code" %><td class="hint"></td></tr>
 <!--<tr><th colspan="3">Termes d'utilisation du site Rotex1690.org</th></tr>-->
 <tr><td colspan="3" align="center"><%=check_box :person, :terms_of_use-%> <span>J'accepte les termes d'utilisation du site Rotex1690.org</span></td></td>
-<%elsif @current_person.can_manage? :all-%>
-<tr><td class="label">Rôle/Niveau d'accès</td><td class="value"><%=select :person, :role_id,Role.find(:all).collect {|p| [ p.name, p.id ] }-%></td><td class="hint"></td></tr>
+<%elsif @current_person-%>
+<%if @current_person.can_manage? :all-%><tr><td class="label">Rôle/Niveau d'accès</td><td class="value"><%=select :person, :role_id,Role.find(:all).collect {|p| [ p.name, p.id ] }-%></td><td class="hint"></td></tr><%end-%>
 <%end-%>
