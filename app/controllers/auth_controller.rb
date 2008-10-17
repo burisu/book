@@ -116,6 +116,10 @@ class AuthController < ApplicationController
   
   private
   def clean_people
-    Person.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'48 hours'::interval"
+    begin
+      Person.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'48 hours'::interval"
+    rescue
+      # Rien à faire de mieux
+    end
   end
 end
