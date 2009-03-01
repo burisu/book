@@ -1,5 +1,16 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+
+
+  def flash_tag(key=:error)
+    if flash[key]
+      content_tag :div, flash[key], :id=>key
+    else
+      ''
+    end
+  end
+
+
   
   def operation(object, operation, controller_path=self.controller.controller_path)
     return "" if not operation[:condition].nil? and operation[:condition]==false

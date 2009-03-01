@@ -1,6 +1,6 @@
 class IntraController < ApplicationController
 
-	before_filter :authorize
+  before_filter :authorize
 	
   def index
     profile
@@ -8,24 +8,50 @@ class IntraController < ApplicationController
   end
   
   def profile
-    @person=Person.find(session[:current_person_id])
+    @person = Person.find(session[:current_person_id])
   end
 
   def profile_update
-    @profiling = true
+    @person = Person.find(session[:current_person_id])
+    if request.post?
+      params2 = {}
+      [:address, :phone, :phone2, :fax, :mobile].each {|x| params2[x] = params[:person][x]}
+      @person.forced = true
+      if @person.update_attributes(params2)
+        redirect_to :action=>:profile
+      end
+    end
   end
 
   def reporting
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
   
+
+  def folder
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    unless @folder
+      redirect_to :action=>:folder_edit
+    end
+  end
   
-  def new_folder
-    if Folder.count(:conditions=>{:person_id=>@current_person.id, :is_accepted=>true})>0
-      flash.now["warning"] = 'Vous avez déjà effectué un dossier.'
-      redirect_to :back
+  def folder_edit
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    if request.post?
+      if @folder
+        # Update
+        params[:folder].delete :person_id
+        @folder.attributes = params[:folder]
+      else
+        # Create
+        @folder = Folder.new(params[:folder])
+        @folder.person_id = session[:current_person_id]
+      end
+      if @folder.save
+        redirect_to :action=>:folder
+      end        
     else
-      
+      @folder ||= Folder.new
     end
   end
   
@@ -146,7 +172,7 @@ class IntraController < ApplicationController
       @person.password = password
       @person.password_confirmation = password
       if @person.save
-        Maily.deliver_password @person, password
+        Maily.deliver_password(@person, password) if RAILS_ENV != 'development'
         flash[:notice] = 'La personne '+@person.label+' a été créée'
         redirect_to :action=>:people_browse
       end
@@ -159,9 +185,11 @@ class IntraController < ApplicationController
     access :users
     @person = Person.find(params[:id])
     if request.post?
-      params[:person][:role_id] = @person.role_id unless @current_person.can_manage? :all 
-      params[:person][:password] = ''
-      params[:person][:password_confirmation] = ''
+      unless @current_person.can_manage? :all 
+        params[:person][:role_id] = @person.role_id 
+        params[:person][:password] = ''
+        params[:person][:password_confirmation] = ''
+      end
       @person.attributes = params[:person]
       @person.forced = true
       @person.email = params[:person][:email]

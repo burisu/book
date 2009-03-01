@@ -43,7 +43,7 @@ class Article < ActiveRecord::Base
   end
   
   def init(params,person)
-    self.author_id = person.id
+    self.author_id ||= person.id
     self.language_id = params[:language_id]
     self.title = params[:title]
     self.intro = params[:intro]

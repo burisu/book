@@ -1,0 +1,30 @@
+!!! XML utf-8
+!!! Strict
+%html{:xmlns=>"http://www.w3.org/1999/xhtml"}
+  %head
+  %title Rotex 1690
+  = stylesheet_link_tag "application"
+  %body
+    #header.column
+    #bodier.column
+      %div
+        %div
+          %center
+            .menu
+              %ul
+                %li=link_to 'Accueil', {:controller=>:inter, :action => :home}
+                - unless @current_person
+                  %li= link_to 'Espace Membres', {:controller=>:intra, :action=>:profile}
+                %li= link_to 'Contact', {:controller=>:inter, :action=>:special, :id=>:contact}
+                %li= link_to 'À propos de nous', {:controller=>:inter, :action=>:special, :id=>:about_us}
+                %li= link_to 'Mentions légales', {:controller=>:inter, :action=>:special, :id=>:legals}
+            =flash_tag :error
+            =flash_tag :warning
+            =flash_tag :notice
+            #mainbody
+              %table#maintable>
+                %tr
+                  = render(:partial=>'shared/submenu', :object=>@current_person) if @current_person
+                  %td.subbody{:valign=>"top"}=yield
+    #footer.column
+      .legals Rotex 1690 - Copyright 2008-2009

@@ -1,0 +1,23 @@
+%h1=@person.first_name+" "+@person.patronymic_name+' '+image_tag("country/"+@person.country.iso3166.downcase+".png")
+
+%ul.aclist
+  %li=link_to 'Modifier mon profil', :action=>:profile_update, :id=>@person.id
+  %li=link_to @person.articles.size.to_s+' article'+(@person.articles.size>1 ? 's' : ''), :action=>:reporting
+
+
+%table.infos.formu
+  %tr
+    %td.label Adresse
+    %td.value=@person.address
+  %tr
+    %td.label Téléphone (domicile)
+    %td.value=@person.phone
+  %tr
+    %td.label Téléphone (travail)
+    %td.value=@person.phone2
+  %tr
+    %td.label Téléphone (mobile)
+    %td.value=@person.mobile
+  %tr
+    %td.label Fax/Télécopie
+    %td.value=@person.fax

@@ -61,9 +61,11 @@ class Person < ActiveRecord::Base
     if self.latitude.blank?
       pm = Geocoding.get(self.address)
       if pm.size==1
-        self.address                 = pm[0].address
-        self.latitude                = pm[0].latitude
-        self.longitude               = pm[0].longitude
+        if pm[0].accuracy>=8
+          self.address                 = pm[0].address
+          self.latitude                = pm[0].latitude
+          self.longitude               = pm[0].longitude
+        end
       end      
     end
     
@@ -95,7 +97,7 @@ class Person < ActiveRecord::Base
     @password=password
     unless password.blank?
       self.salt=self.object_id.to_s[1..16] + rand.to_s[2..16]
-      self.hashed_password=Person.encrypt(self.password,self.salt)
+      self.hashed_password=Person.encrypt(@password, self.salt)
     end
   end
   
@@ -127,13 +129,11 @@ class Person < ActiveRecord::Base
   end
 
   def self.authenticate(name,password)
-    personne = self.find_by_user_name name
-    if personne
-      personne = nil if personne.is_locked
-      personne = nil unless personne.confirm(password) 
-      personne = nil unless personne.can_manage?(:all) or personne.has_subscribed?
+    person = self.find_by_user_name name
+    if person
+      person = nil if person.is_locked or !person.confirm(password) or !(person.can_manage?(:all) or person.has_subscribed?)
     end
-    personne
+    person
   end
   
   def label
@@ -141,7 +141,8 @@ class Person < ActiveRecord::Base
   end
 
   def confirm(password)
-    return self.hashed_password==Person.encrypt(password.to_s, self.salt)
+    
+    return (self.hashed_password == Person.encrypt(password.to_s, self.salt) ? true : false )
   end
 
   def has_subscribed_on?(date=Date.today)
@@ -165,7 +166,7 @@ class Person < ActiveRecord::Base
 
   private
 
-  def self.encrypt(password,salt)
+  def self.encrypt(password, salt)
     Digest::SHA256.hexdigest('<'+salt+':'+password+password+'/>')
   end 
 

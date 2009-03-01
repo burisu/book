@@ -1,0 +1,9 @@
+%h1="Modifier l'article : "+h(truncate(@article.title, 56))
+
+%ul.aclist
+  %li=link_to "Voir l'article sans sauvegarder", :action=>:show_report, :id=>@article
+
+-form_tag do
+  =render :partial=>'report_form'
+  =submit_tag "Enregistrer les modifications"
+  =link_to "Annuler", :back

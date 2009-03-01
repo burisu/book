@@ -1,0 +1,89 @@
+-@admin = (@current_person ? @current_person.can_manage?(:all) : false)
+-if @admin
+  %tr
+    %th{:colspan=>"3"} Identité
+  %tr
+    %td.label Nom patronymique
+    %td.value=text_field :person, :patronymic_name
+    %td.hint Ex.&nbsp;: MARTIN
+  %tr
+    %td.label Nom de famille
+    %td.value=text_field :person, :family_name
+    %td.hint 
+  %tr
+    %td.label Prénom
+    %td.value=text_field :person, :first_name
+    %td.hint Ex.&nbsp;: Jean
+  %tr
+    %td.label Deuxième prénom
+    %td.value=text_field :person, :second_name
+    %td.hint 
+  %tr
+    %td.label Sexe
+    %td.value=select :person, :sex, [['Homme','h'],['Femme','f']] 
+    %td.hint 
+  %tr
+    %td.label Date de naissance
+    %td.value=date_select :person, :born_on, {:order => [:day, :month, :year], :start_year=>1901}
+    %td.hint 
+  %tr
+    %td.label Pays
+    %td.value=select :person, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+    %td.hint 
+-else
+  %tr
+    %th{:colspan=>"3"} Coordonnées
+%tr
+  %td.label Adresse
+  %td.value=text_area :person, :address, :cols=>20, :rows=>4
+  %td.hint Ex.&nbsp;:<br/> 17 rue de la Révolution<br/>33000 BORDEAUX
+%tr
+  %td.label Téléphone (domicile)
+  %td.value=text_field :person, :phone
+  %td.hint 
+%tr
+  %td.label Mobile
+  %td.value=text_field :person, :mobile
+  %td.hint 
+%tr
+  %td.label Téléphone (travail)
+  %td.value=text_field :person, :phone2
+  %td.hint 
+%tr
+  %td.label Fax
+  %td.value=text_field :person, :fax
+  %td.hint
+
+-if @self_subscribing or @admin
+  %tr
+    %th{:colspan=>"3"} Compte
+  %tr
+    %td.label E-mail
+    %td.value=text_field :person, :email
+    %td.hint 
+  %tr
+    %td.label Nom d'utilisateur
+    %td.value=text_field :person, :user_name
+    %td.hint 
+  %tr
+    %td.label Mot de passe
+    %td.value=password_field :person, :password
+    %td.hint 
+  %tr
+    %td.label Confirmation du mot de passe
+    %td.value=password_field :person, :password_confirmation
+    %td.hint 
+-if @self_subscribing
+  %tr
+    %td=show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'high' ,:label => "Recopiez le code"
+    %td.hint
+  %tr
+    %td{:colspan=>"3", :align=>:center}
+      =check_box :person, :terms_of_use
+      %label{:for=>'person_terms_of_use'} J'accepte les termes d'utilisation du site Rotex1690.org
+-if @admin
+  %tr
+    %td.label Rôle/Niveau d'accès
+    %td.value=select :person, :role_id, Role.find(:all).collect {|p| [ p.name, p.id ] }
+    %td.hint
+

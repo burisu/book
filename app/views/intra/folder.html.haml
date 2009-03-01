@@ -1,0 +1,33 @@
+%h1 Voyage Student Exchange
+
+%ul.aclist
+  %li=link_to 'Modifier mon voyage', :action=>:folder_edit
+
+%table.infos.formu
+  %tr
+    %td.label Du
+    %td.value=@folder.begun_on.to_formatted_s :long
+  %tr
+    %td.label Au
+    %td.value=@folder.finished_on.to_formatted_s :long
+  %tr
+    %td.label Pays de départ
+    %td.value=@folder.departure_country.name
+  %tr
+    %td.label Pays d'accueil
+    %td.value=@folder.arrival_country.name
+  %tr
+    %td.label Promotion
+    %td.value=@folder.promotion.name
+  %tr
+    %td.label Club d'origine
+    %td.value=@folder.proposer_zone.name
+  %tr
+    %td.label Club hôte
+    %td.value=@folder.host_zone.name
+  %tr
+    %td.label Club sponsor
+    %td.value=@folder.sponsor_zone.name
+  %tr
+    %td.label Commentaire
+    %td.value=@folder.comment

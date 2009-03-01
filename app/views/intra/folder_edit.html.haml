@@ -1,0 +1,43 @@
+%h1 Voyage Student Exchange
+
+= error_messages_for "folder"
+
+-form_tag do
+  %table.formu
+    %tr
+      %td.label Du
+      %td.value=date_select :folder, :begun_on, {:order => [:day, :month, :year], :start_year=>1901}
+      %td.hint 
+    %tr
+      %td.label Au
+      %td.value=date_select :folder, :finished_on, {:order => [:day, :month, :year], :start_year=>1901}
+      %td.hint 
+    %tr
+      %td.label Pays de départ
+      %td.value=select :folder, :departure_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Pays de d'arrivée
+      %td.value=select :folder, :arrival_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Promotion
+      %td.value=select :folder, :promotion_id, Promotion.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Club d'origine
+      %td.value=select :folder, :proposer_zone_id, Zone.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Club hôte
+      %td.value=select :folder, :host_zone_id, Zone.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Club sponsor
+      %td.value=select :folder, :sponsor_zone_id, Zone.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.hint 
+    %tr
+      %td.label Commentaire
+      %td.value=text_area :folder, :comment, :cols=>20, :rows=>4
+      %td.hint
+  =submit_tag 'Enregistrer'

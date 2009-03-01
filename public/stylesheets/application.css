@@ -170,3 +170,4 @@ div.blog > div > h4 {background: #F55; color:#FFF; padding:2px; text-align:cente
 div.blog > div > div {background: #F88; color:#FFF; padding: 2px;}
 div.blog > div > div * {color:#FFF;}
 
+.content { margin: 16px 0px; }

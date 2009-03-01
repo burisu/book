@@ -30,6 +30,7 @@ dates:
     db0: '%m/%d/%Y'
     db1: '%d/%m/%Y %H:%M:%S'
     db: '%d/%m/%Y'
+    dbx: '%Y-%m-%d'
     default: '%d/%m/%Y'
     short: '%d %b %y'
     medium: '%d %B %Y'
@@ -38,6 +39,7 @@ dates:
   time_formats:
     db1: '%m/%d/%Y %H:%M:%S'
     db: '%d/%m/%Y %H:%M:%S'
+    dbx: '%Y-%m-%d %H:%M:%S'
     default: '%A %d %B %Y à %H:%M:%S'
     short: '%e %b %H:%M'
     long: '%e %B %Y à %H:%M'

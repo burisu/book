@@ -1,7 +1,16 @@
 <h1><%=@person.first_name+" "+@person.patronymic_name-%> <%=image_tag "country/"+@person.country.iso3166.downcase+".png"-%> <%=link_to 'Modifier mon profil', :action=>:profile_update, :id=>@person.id -%></h1>
 
-
-
-
 <div><%=@person.articles.size-%> article(s)</div>
+
+<div>
+<h3>Adresse</h3>
+<%=@person.address-%>
+</div>
+
+<div>
+<h3>Contact</h3>
+<table>
+<tr><td><td>
+<%=@person.-%>
+</div>
 
