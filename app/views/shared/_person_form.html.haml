@@ -75,7 +75,7 @@
     %td.hint 
 -if @self_subscribing
   %tr
-    %td=show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'high' ,:label => "Recopiez le code"
+    =show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label => "Recopiez le code"
     %td.hint
   %tr
     %td{:colspan=>"3", :align=>:center}
