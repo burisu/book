@@ -1,4 +1,6 @@
+<%@admin = (@current_person ? @current_person.can_manage?(:all) : false) -%>
 <tr><th colspan="3">Identité</th></tr>
+<%if @admin-%>
 <tr><td class="label">Nom patronymique</td><td class="value"><%=text_field :person, :patronymic_name-%></td><td class="hint">Ex.&nbsp;: MARTIN</td></tr>
 <tr><td class="label">Nom de famille</td><td class="value"><%=text_field :person, :family_name-%></td><td class="hint"></td></tr>
 <tr><td class="label">Prénom</td><td class="value"><%=text_field :person, :first_name-%></td><td class="hint">Ex.&nbsp;: Jean</td></tr>
@@ -6,21 +8,25 @@
 <tr><td class="label">Sexe</td><td class="value"><%=select :person, :sex, [['Homme','h'],['Femme','f']] -%></td><td class="hint"></td></tr>
 <tr><td class="label">Date de naissance</td><td class="value"><%=date_select :person, :born_on, {:order => [:day, :month, :year], :start_year=>1901}-%></td><td class="hint"></td></tr>
 <tr><td class="label">Pays</td><td class="value"><%=select :person, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }-%></td><td class="hint"></td></tr>
+<%end-%>
 <tr><td class="label">Adresse</td><td class="value"><%=text_area :person, :address, :cols=>20, :rows=>4-%></td><td class="hint">Ex.&nbsp;:<br/> 17 rue de la Révolution<br/>33000 BORDEAUX</td></tr>
 <tr><td class="label">Téléphone (domicile)</td><td class="value"><%=text_field :person, :phone-%></td><td class="hint"></td></tr>
 <tr><td class="label">Mobile</td><td class="value"><%=text_field :person, :mobile-%></td><td class="hint"></td></tr>
 <tr><td class="label">Téléphone (travail)</td><td class="value"><%=text_field :person, :phone2-%></td><td class="hint"></td></tr>
 <tr><td class="label">Fax</td><td class="value"><%=text_field :person, :fax-%></td><td class="hint"></td></tr>
-<tr><th colspan="3">Compte</th></tr>
 <!--<tr><td class="label">Photo</td><td class="value"><%=file_field :person, :photo-%></td><td class="hint"></td></tr>-->
+<%if @self_subscribing or @admin-%>
+<tr><th colspan="3">Compte</th></tr>
 <tr><td class="label">E-mail</td><td class="value"><%=text_field :person, :email-%></td><td class="hint"></td></tr>
 <tr><td class="label">Nom d'utilisateur</td><td class="value"><%=text_field :person, :user_name-%></td><td class="hint"></td></tr>
-<% if @self_subscribing-%>
 <tr><td class="label">Mot de passe</td><td class="value"><%=password_field :person, :password-%></td><td class="hint"></td></tr>
 <tr><td class="label">Confirmation du mot de passe</td><td class="value"><%=password_field :person, :password_confirmation-%></td><td class="hint"></td></tr>
+<%if @self_subscribing-%>
 <tr><%= show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'high' ,:label => "Recopiez le code" %><td class="hint"></td></tr>
-<!--<tr><th colspan="3">Termes d'utilisation du site Rotex1690.org</th></tr>-->
 <tr><td colspan="3" align="center"><%=check_box :person, :terms_of_use-%> <span>J'accepte les termes d'utilisation du site Rotex1690.org</span></td></td>
-<%elsif @current_person-%>
-<%if @current_person.can_manage? :all-%><tr><td class="label">Rôle/Niveau d'accès</td><td class="value"><%=select :person, :role_id,Role.find(:all).collect {|p| [ p.name, p.id ] }-%></td><td class="hint"></td></tr><%end-%>
+<%end-%>
+<%end-%>
+<!--<tr><th colspan="3">Termes d'utilisation du site Rotex1690.org</th></tr>-->
+<%if @admin-%>
+  <tr><td class="label">Rôle/Niveau d'accès</td><td class="value"><%=select :person, :role_id,Role.find(:all).collect {|p| [ p.name, p.id ] }-%></td><td class="hint"></td></tr>
 <%end-%>

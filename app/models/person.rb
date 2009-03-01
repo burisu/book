@@ -51,8 +51,8 @@ class Person < ActiveRecord::Base
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
 
   def before_validation
-    self.patronymic_name = self.patronymic_name.upcase
-    self.family_name = self.family_name.upcase
+    self.patronymic_name = self.patronymic_name.to_s.upcase
+    self.family_name = self.family_name.to_s.upcase
     self.family_name = self.patronymic_name if self.family_name.blank?
     self.forced = false if self.forced.nil?
     self.user_name.gsub!(/(-|\.|\ )/,'')
@@ -129,7 +129,9 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     personne = self.find_by_user_name name
     if personne
-      personne = nil if personne.is_locked or !personne.confirm(password) or (!personne.can_manage?(:all) and !personne.has_subscribed?)
+      personne = nil if personne.is_locked
+      personne = nil unless personne.confirm(password) 
+      personne = nil unless personne.can_manage?(:all) or pyersonne.has_subscribed?
     end
     personne
   end

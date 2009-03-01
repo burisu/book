@@ -20,10 +20,11 @@ class ApplicationController < ActionController::Base
   private
   
   def authorize
-		unless session[:current_person_id]
-			session[:original_uri] = request.request_uri
-			redirect_to :controller=>"/auth", :action=>"login"
-		end
+    unless session[:current_person_id]
+      session[:original_uri] = request.request_uri
+      session[:last_url]= request.url
+      redirect_to :controller=>"/auth", :action=>"login"
+    end
   end
 
 end

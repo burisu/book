@@ -152,7 +152,7 @@ div.pagination a:hover {border:1px solid #12F; background: #DDF; color: #AAA; t
 div.pagination span.current {font-weight:bold; color: #D30; border:1px solid #D30; background: #FED;}
 div.pagination .disabled {display:none;}
 
-div.right_menu { float:right; margin: 0px 0px 4px 8px;}
+div.right_menu { float:right; margin: 0px 0px 4px 8px; width:252px}
 
 div.right_menu > div.separator {margin: 10px 0px;}
 

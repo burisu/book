@@ -10,7 +10,11 @@ class AuthController < ApplicationController
       person=Person.authenticate(params[:person][:user_name],params[:person][:password])
       if person
         session[:current_person_id]=person.id
-        redirect_to :controller=>:intra, :action=>:profile
+        if session[:last_url].blank?
+          redirect_to :controller=>:intra, :action=>:profile
+        else
+          redirect_to session[:last_url]
+        end
       else
         flash.now[:warning]="Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
@@ -19,6 +23,7 @@ class AuthController < ApplicationController
 
   def logout
     session[:current_person_id]=nil
+    reset_session
     redirect_to :controller=>:inter, :action=>:index
   end
 

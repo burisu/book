@@ -13,7 +13,7 @@
     <ul>
       <li> <%= link_to 'Accueil', {:controller=>:inter, :action => :home}-%> </li>
       <% unless @current_person-%>
-        <li> <%= link_to 'Espace Membres', {:controller=>:intra}-%> </li>
+        <li> <%= link_to 'Espace Membres', {:controller=>:intra, :action=>:profile}-%> </li>
       <%end-%>
       <li><%= link_to 'Contact', {:controller=>:inter, :action=>:special, :id=>:contact}-%></li>
       <li><%= link_to 'A propos de nous', {:controller=>:inter, :action=>:special, :id=>:about_us}-%></li>

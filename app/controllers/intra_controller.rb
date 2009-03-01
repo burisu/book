@@ -11,6 +11,10 @@ class IntraController < ApplicationController
     @person=Person.find(session[:current_person_id])
   end
 
+  def profile_update
+    @profiling = true
+  end
+
   def reporting
     @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
   end
@@ -70,6 +74,7 @@ class IntraController < ApplicationController
   end
 
   def show_report
+    
     @article = Article.find(params[:id])
   end  
   

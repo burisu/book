@@ -7,7 +7,7 @@ print_table :subscriptions do |t|
   t.datum :begun_on
   t.datum :finished_on
   t.datum :amount
-  t.action :action=>:subscription_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+  t.action :action=>:remove_subscription, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
 end
 -%>
 
