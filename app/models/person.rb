@@ -131,7 +131,7 @@ class Person < ActiveRecord::Base
     if personne
       personne = nil if personne.is_locked
       personne = nil unless personne.confirm(password) 
-      personne = nil unless personne.can_manage?(:all) or pyersonne.has_subscribed?
+      personne = nil unless personne.can_manage?(:all) or personne.has_subscribed?
     end
     personne
   end
