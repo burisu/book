@@ -61,3 +61,5 @@ end
 require "#{RAILS_ROOT}/lib/safe_string"
 
 simple_localization :languages => [:fr, :en, :es, :de, :nl], :lang_file_dir => "#{RAILS_ROOT}/app/languages", :debug=>false, :except=>[:localized_templates]
+
+Haml::Template.options[:preserve] = ['textarea','pre','code']

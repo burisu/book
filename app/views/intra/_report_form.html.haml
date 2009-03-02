@@ -1,0 +1,46 @@
+= error_messages_for "article"
+%table.form
+  %tr
+    %td Titre
+    %td=text_field(:article, :title)
+  %tr
+    %td Langue
+    %td=select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] })
+  -if @current_person.can_manage? :agenda
+    %tr
+      %td A mettre dans l'agenda
+      %td=check_box(:article, :agenda)
+    %tr
+      %td Date pour l'agenda
+      %td=text_field(:article, :done_on)
+  -if @current_person.can_manage? :home
+    %tr
+      %td A mettre en page d'accueil
+      %td=check_box(:article, :home)
+  -if @current_person.can_manage? :blog
+    %tr
+      %td A mettre dans les extraits
+      %td=check_box(:article, :blog)
+  -if @current_person.can_manage? :specials
+    %tr
+      %td Article à afficher pour 'Contact'
+      %td=check_box(:article, :contact)
+    %tr
+      %td Article à afficher pour 'A propos de nous'
+      %td=check_box(:article, :about_us)
+    %tr
+      %td Article à afficher pour 'Mentions légales'
+      %td=check_box(:article, :legals)
+  -if @current_person.can_manage? :publishing
+    %tr
+      %td Statut
+      %td=select :article, :status, Article.status
+  %tr
+    %td{:colspan=>"2"}
+      .label='Introduction ('+link_to('Mise en forme avec Textile', 'http://hobix.com/textile/')+')&nbsp;:'
+      =text_area(:article, :intro, {:rows=>5, :maxlength=>255})
+  %tr
+    %td{:colspan=>"2"}
+      .label="Corps de l'article ("+link_to('Mise en forme avec Textile', 'http://hobix.com/textile/')+")&nbsp;:"
+      =text_area(:article, :body, {:rows=>11})
+
