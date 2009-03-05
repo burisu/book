@@ -172,7 +172,11 @@ class IntraController < ApplicationController
       @person.password = password
       @person.password_confirmation = password
       if @person.save
-        Maily.deliver_password(@person, password) if RAILS_ENV != 'development'
+        begin
+          Maily.deliver_password(@person, password) if RAILS_ENV != 'development'
+        rescue
+          flash[:warning] = "L'e-mail de confirmation n'a pas pu être envoyé."
+        end
         flash[:notice] = 'La personne '+@person.label+' a été créée'
         redirect_to :action=>:people_browse
       end
