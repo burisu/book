@@ -65,6 +65,7 @@
     %td.label Nom d'utilisateur
     %td.value=text_field :person, :user_name
     %td.hint 
+-if @self_subscribing
   %tr
     %td.label Mot de passe
     %td.value=password_field :person, :password
@@ -73,7 +74,6 @@
     %td.label Confirmation du mot de passe
     %td.value=password_field :person, :password_confirmation
     %td.hint 
--if @self_subscribing
   %tr
     =show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label => "Recopiez le code"
     %td.hint
