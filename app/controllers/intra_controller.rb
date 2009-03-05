@@ -52,6 +52,7 @@ class IntraController < ApplicationController
       end        
     else
       @folder ||= Folder.new
+      @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     end
   end
   
