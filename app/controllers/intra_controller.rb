@@ -151,7 +151,8 @@ class IntraController < ApplicationController
 
   def people_select
     access :users
-    @person = Person.find(params[:id])
+    @person = Person.find_by_id(params[:id])
+    redirect_to :action=>:people_browse if @person.nil?
     @subscriptions = @person.subscriptions
     @mandates = @person.mandates
     @articles = @person.articles
