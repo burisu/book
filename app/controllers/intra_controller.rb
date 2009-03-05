@@ -224,7 +224,13 @@ class IntraController < ApplicationController
   
   def people_delete
     access :users
-    Person.find(params[:id]).destroy if request.post? or request.delete?
+    if request.post? or request.delete?
+      begin
+        Person.find(params[:id]).destroy 
+      rescue
+        flash[:warning] = "La personne n'a pas pu être supprimée"
+      end
+    end
     redirect_to :action=>:people_browse
   end 
 
