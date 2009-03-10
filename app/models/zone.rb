@@ -20,12 +20,23 @@ class Zone < ActiveRecord::Base
   def before_validation
     self.code = self.parent ? self.parent.code : ''
     self.code += '/'+self.number.to_s
+    self.children.each do |zone|
+      self.save
+    end
   end
 
   def validate 
     if self.nature and self.nature.parent
       errors.add(:parent_id, "doit être du type \""+self.nature.parent.name+"\" ") if self.parent and self.parent.nature != self.nature.parent
     end
+  end
+
+  def children
+    Zone.find_by_parent_id(self.id)
+  end
+
+  def scaffold_name
+    self.name+' ('+self.parent.name+')'
   end
   
 end
