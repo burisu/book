@@ -36,8 +36,9 @@ class Zone < ActiveRecord::Base
   end
 
   def scaffold_name
-    #self.name+' ('+self.parent.name+')'
-    scaffold_attribute_value(:name)+" - "+scaffold_attribute_value(:parent).name
+    code = self.name
+    code +=' ('+self.parent.name+')' if self.parent
+    code
   end
   
 end
