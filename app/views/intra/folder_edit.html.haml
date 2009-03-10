@@ -26,15 +26,15 @@
       %td.hint 
     %tr
       %td.label Club d'origine
-      %td.value=select :folder, :proposer_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.value=select :folder, :proposer_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.parent.parent.name+' - '+p.name, p.id ] }
       %td.hint 
     %tr
       %td.label Club hôte
-      %td.value=select :folder, :host_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.value=select :folder, :host_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.parent.parent.name+' - '+p.name, p.id ] }
       %td.hint 
     %tr
       %td.label Club sponsor
-      %td.value=select :folder, :sponsor_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td.value=select :folder, :sponsor_zone_id, Zone.find(:all, :conditions=>{:nature_id=>@zone_nature.id}, :order=>:name).collect {|p| [ p.parent.parent.name+' - '+p.name, p.id ] }
       %td.hint 
     %tr
       %td.label Commentaire
