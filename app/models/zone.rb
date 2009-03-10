@@ -30,7 +30,7 @@ class Zone < ActiveRecord::Base
 
   def after_save
     Zone.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
-      zone.update_attribute :code, 'CODE'
+      zone.save
     end    
   end
 
