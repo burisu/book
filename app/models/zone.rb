@@ -20,7 +20,9 @@ class Zone < ActiveRecord::Base
   def before_validation
     self.code = self.parent ? self.parent.code : ''
     self.code += '/'+self.number.to_s
-    Zone.find_all_by_parent_id(self.id).each {|zone| zone.save}
+    Zone.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
+      zone.update_attribute :code=>'CODE'
+    end
   end
 
   def validate 
