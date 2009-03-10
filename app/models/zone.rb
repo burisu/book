@@ -32,7 +32,7 @@ class Zone < ActiveRecord::Base
   end
 
   def children
-    Zone.find_by_parent_id(self.id)
+    Zone.find_all_by_parent_id(self.id)
   end
 
   def scaffold_name
