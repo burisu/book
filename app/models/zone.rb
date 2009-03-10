@@ -21,7 +21,7 @@ class Zone < ActiveRecord::Base
     self.code = self.parent ? self.parent.code : ''
     self.code += '/'+self.number.to_s
     Zone.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
-      zone.update_attribute :code=>'CODE'
+      zone.update_attribute :code, 'CODE'
     end
   end
 
