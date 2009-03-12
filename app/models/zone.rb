@@ -26,6 +26,7 @@ class Zone < ActiveRecord::Base
     if self.nature and self.nature.parent
       errors.add(:parent_id, "doit être du type \""+self.nature.parent.name+"\" ") if self.parent and self.parent.nature != self.nature.parent
       errors.add(:parent_id, "doit être renseigné") if self.parent.nil? and !self.nature.parent.nil?
+      errors.add(:parent_id, "ne doit pas être renseigné") if !self.parent.nil? and self.nature.parent.nil?
     end
   end
 
