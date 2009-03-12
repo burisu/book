@@ -31,3 +31,8 @@
   %tr
     %td.label Commentaire
     %td.value=@folder.comment
+
+%h2 Mes comptes-rendus
+%ul.aclist
+  -for report in @reports
+    %li=link_to(report[:title], {:action=>:report_edit, :id=>report[:month]})
