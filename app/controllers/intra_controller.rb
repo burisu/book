@@ -33,11 +33,11 @@ class IntraController < ApplicationController
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     start = @folder.begun_on.at_beginning_of_month
-    stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on).at_beginning_of_month
-    while stop!= start do
+    stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
+    while start <= stop do
       article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
       @reports << {:title=>start.year.to_s+'/'+start.month.to_s+' - '+(article.nil? ? "" : article.title_h), :month=>start.year.to_s+start.month.to_s}
-      start << 1
+      start >> 1
     end
       
   end
