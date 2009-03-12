@@ -36,7 +36,7 @@ class IntraController < ApplicationController
     stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
     while start <= stop do
       article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
-      @reports << {:title=>start.year.to_s+'/'+start.month.to_s+' - '+(article.nil? ? "" : article.title_h), :month=>start.year.to_s+start.month.to_s}
+      @reports << {:title=>start.inspect+' + '+start.year.to_s+'/'+start.month.to_s+' - '+(article.nil? ? "" : article.title_h), :month=>start.year.to_s+start.month.to_s}
       start >> 1
       break if @reports.size>11
     end
