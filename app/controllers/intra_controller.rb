@@ -95,6 +95,7 @@ class IntraController < ApplicationController
       end
     else
       @article = Article.new
+      @article.done_on = session[:report_done_on] if session[:report_done_on]
     end
   end
   
