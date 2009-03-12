@@ -36,13 +36,33 @@ class IntraController < ApplicationController
     stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
     while start <= stop do
       article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
-      @reports << {:title=>start.year.to_s+'/'+start.month.to_s+' - '+(article.nil? ? "" : article.title_h), :month=>start.year.to_s+start.month.to_s}
+      @reports << {:title=>start.year.to_s+'/'+start.month.to_s+' - '+(article.nil? ? "Créer" : article.title_h), :month=>start.year.to_s+start.month.to_s}
       start = start >> 1
-      break if @reports.size>24
+      break if @reports.size>=24
     end
       
   end
   
+
+  def report
+    begin
+      year = params[:id].to_s[0..3].to_i
+      month = params[:id].to_s[4..-1].to_i
+    rescue
+      flash[:error] = "Code d'article invalide"
+      redirect_to :back
+    end
+    start = Date.civil(year, month, 1)
+    @article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
+    if @article
+      redirect_to :action=>:edit_report, :id=>@article.id
+    else
+      session[:report_done_on] = start
+      redirect_to :action=>:new_report
+    end
+  end
+
+
   def folder_edit
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if request.post?
@@ -68,6 +88,7 @@ class IntraController < ApplicationController
     if request.post?
       @article = Article.new
       @article.init(params[:article], @current_person)
+      @article.done_on = session[:report_done_on] if session[:report_done_on] === Date and !@current_person.can_manage?(:publishing)
       @article.natures = 'default' unless @current_person.can_manage? :publishing
       if @article.save
         redirect_to :action=>:reporting

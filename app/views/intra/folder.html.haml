@@ -35,4 +35,4 @@
 %h2 Mes comptes-rendus
 %ul.aclist
   -for report in @reports
-    %li=link_to(report[:title], {:action=>:report_edit, :id=>report[:month]})
+    %li=link_to(report[:title], {:action=>:report, :id=>report[:month]})
