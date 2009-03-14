@@ -32,15 +32,16 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
-    start = @folder.begun_on.at_beginning_of_month
-    stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
-    while start <= stop do
-      article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
-      @reports << {:title=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0')+' - '+(article.nil? ? "Créer" : article.title_h), :month=>start.year.to_s+start.month.to_s}
-      start = start >> 1
-      break if @reports.size>=24
+    if @folder
+      start = @folder.begun_on.at_beginning_of_month
+      stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
+      while start <= stop do
+        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
+        @reports << {:title=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0')+' - '+(article.nil? ? "Créer" : article.title_h), :month=>start.year.to_s+start.month.to_s}
+        start = start >> 1
+        break if @reports.size>=24
+      end
     end
-      
   end
   
 
