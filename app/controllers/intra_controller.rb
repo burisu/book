@@ -374,7 +374,7 @@ class IntraController < ApplicationController
 
 
   def zones_create
-    @zones = Zone.find(:all, :conditions=>(params[:id].nil? ? "parent_is IS NULL" : ["parent_id=?", params[:id]]), :order=>:name)
+    @zones = Zone.find(:all, :conditions=>(params[:id].nil? ? "parent_id IS NULL" : ["parent_id=?", params[:id]]), :order=>:name)
     @parent = Zone.find_by_id(params[:id])
     @parents = (@parent.nil? ? [] : @parent.parents)
     if request.post?
