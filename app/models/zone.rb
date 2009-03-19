@@ -42,5 +42,13 @@ class Zone < ActiveRecord::Base
     code +=' ('+self.parent.name+')' if self.parent
     code
   end
+
+  def parents
+    if self.parent
+      self.parent.parents << self.parent
+    else
+      []
+    end
+  end
   
 end

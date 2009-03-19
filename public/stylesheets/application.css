@@ -140,6 +140,7 @@ div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}
 div.futo table.list tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}
 div.futo table.list tr td.act {background: #FDD; width:16px;border: 1px solid #DAA;}
+div.futo table.list a {color: #14A;}
 
 #scaffolded {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
 #scaffolded tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}
