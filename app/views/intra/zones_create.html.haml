@@ -29,5 +29,5 @@
       %tr
         %td=link_to(zone.name, :action=>:zones_create, :id=>zone.id)
         %td=zone.number
-        %td=image_tag("countries/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
+        %td=image_tag("country/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
 
