@@ -7,14 +7,16 @@
 
 
 -form_tag do
-  =error_messages_for 'zones'
-  %label Nom
-  =text_field :zone, :name
-  %label Numéro
-  =text_field :zone, :number
-  %label Pays
-  =select :zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
-  =submit_tag 'Créer la zone'
+  =error_messages_for 'zone'
+  %table
+    %tr
+      %td Nom
+      %td=text_field :zone, :name
+      %td Numéro
+      %td=text_field :zone, :number
+      %td Pays
+      %td=select :zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td=submit_tag 'Créer la zone'
 
 
 .futo 
@@ -27,5 +29,5 @@
       %tr
         %td=link_to(zone.name, :action=>:zones_create, :id=>zone.id)
         %td=zone.number
-        %td=image_tag("countries/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name
+        %td=image_tag("countries/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
 
