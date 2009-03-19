@@ -13,7 +13,9 @@
       %td Nom
       %td=text_field :zone, :name
       %td Numéro
-      %td=text_field :zone, :number
+      %td=text_field :zone, :number, :size=>6
+      %td Nature
+      %td=select :zone, :nature_id, ZoneNature.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
       %td Pays
       %td=select :zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
       %td=submit_tag 'Créer la zone'
@@ -24,10 +26,12 @@
     %tr
       %th Nom
       %th Numéro
+      %th Nature
       %th Pays
     -for zone in @zones
       %tr
         %td=link_to(zone.name, :action=>:zones_create, :id=>zone.id)
         %td=zone.number
+        %td=zone.nature.name if zone.nature
         %td=image_tag("country/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
 
