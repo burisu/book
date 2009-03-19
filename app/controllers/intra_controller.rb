@@ -43,7 +43,7 @@ class IntraController < ApplicationController
       end
     end
   end
-  
+
 
   def report
     begin
@@ -371,8 +371,23 @@ class IntraController < ApplicationController
     redirect_to :back
   end
 
+
+
+  def zones_create
+    @zones = Zone.find(:all, :conditions=>["parent_id=?", params[:id]])
+    @zone = Zone.find_by_id(params[:id])
+
+  end
+  
+
+
+
+
   def access_denied
   end
+
+
+
   
   protected
   

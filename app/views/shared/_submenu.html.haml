@@ -10,6 +10,7 @@
     %h3 Administration
     %ul
       %li=link_to('Admin (Mode Expert)', {:controller=>:admin, :action=>:index})
+      %li=link_to('Gérer les zones', {:controller=>:admin, :action=>:zones_create})
       %li=link_to('Création District', {:controller=>:admin, :action=>:new_zone})
       %li=link_to('Création Club', {:controller=>:admin, :action=>:new_zone})
   -if @current_person.can_manage? [:publishing,:specials,:home,:agenda]

@@ -1,0 +1,15 @@
+%h1 Gérer les zones géogrpahiques
+%h2=@zone.code if @zone
+
+.futo 
+  %table.list
+    %tr
+      %th Nom
+      %th Numéro
+      %th Pays
+    -for zone in @zones
+      %tr
+        %td=link_to(zone.name, :action=>:zones_create, :id=>zone.id)
+        %td=zone.number
+        %td=image_tag("countries/#{zone.country.iso3166}")+" "+zone.country.name
+   
