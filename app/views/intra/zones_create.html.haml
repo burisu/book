@@ -18,7 +18,7 @@
       %td Pays
       %td=select :zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
       %td Nature
-      %td=select :zone, :nature_id, ZoneNature.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td=select :zone, :nature_id, @natures.collect {|p| [ p.name, p.id ] }
     %tr
       %td{:colspan=>4}=submit_tag 'Créer la zone'
 
