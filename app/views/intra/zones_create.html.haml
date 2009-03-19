@@ -1,9 +1,9 @@
 %h1 Gérer les zones géographiques
 .path
+  =link_to 'Tous les districts', :action=>:zones_create, :id=>''
   -for parent in @parents
-    =link_to parent.name, :action=>:zones_create, :id=>parent.id
     &raquo;
-  &bull;
+    =link_to parent.name, :action=>:zones_create, :id=>parent.id
 
 
 -form_tag do

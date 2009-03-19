@@ -378,6 +378,9 @@ class IntraController < ApplicationController
       @zone = Zone.new(params[:zone])
       @zone.parent_id = @parent.id if @parent
       @zone.save
+    else
+      @zone = Zone.new
+      @zone.country_id = @zone.parent.country_id if @zone.parent
     end
     @zones = Zone.find(:all, :conditions=>(params[:id].nil? ? "parent_id IS NULL" : ["parent_id=?", params[:id]]), :order=>:name)
     @parent = Zone.find_by_id(params[:id])

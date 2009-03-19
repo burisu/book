@@ -44,11 +44,9 @@ class Zone < ActiveRecord::Base
   end
 
   def parents
-    if self.parent
-      self.parent.parents << self.parent
-    else
-      []
-    end
+    parents = self.parent ? self.parent.parents : []
+    parents << self
+    parents
   end
   
 end
