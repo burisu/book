@@ -32,6 +32,7 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
+    @families = []
     if @folder
       start = @folder.begun_on.at_beginning_of_month
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
@@ -61,6 +62,11 @@ class IntraController < ApplicationController
       session[:report_done_on] = start
       redirect_to :action=>:new_report
     end
+  end
+
+
+  def family
+    
   end
 
 

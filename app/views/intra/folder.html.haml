@@ -32,7 +32,17 @@
     %td.label Commentaire
     %td.value=@folder.comment
 
-%h2 Mes comptes-rendus
-%ul.aclist
-  -for report in @reports
-    %li=link_to(report[:title], {:action=>:report, :id=>report[:month]})
+%table
+  %tr
+    %td{:valign=>:top}
+      %h2 Mes comptes-rendus
+      %ul.aclist
+        -for report in @reports
+          %li=link_to(report[:title], {:action=>:report, :id=>report[:month]})
+    %td &nbsp; &nbsp;
+    %td{:valign=>:top}
+      %h2 Mes familles
+      %ul.aclist
+        -for family in @families
+          %li=link_to(family[:title], {:action=>:family, :id=>family[:id]})
+        %li=link_to('Ajouter une nouvelle famille', {:action=>:family})

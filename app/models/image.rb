@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20080808080808
+# Schema version: 20090324204319
 #
 # Table name: images
 #
@@ -13,6 +13,7 @@
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  lock_version :integer         default(0), not null
+#  name         :string(255)     not null
 #
 
 class Image < ActiveRecord::Base
