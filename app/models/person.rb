@@ -83,6 +83,10 @@ class Person < ActiveRecord::Base
     self.rotex_email = self.user_name+'@rotex1690.org'
   end
 
+  def after_save
+    PersonVersion.create!(self.attributes.merge(:person_id=>self.id))
+  end
+
   def before_destroy
     total = 0
     Role.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
