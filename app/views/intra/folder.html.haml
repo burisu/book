@@ -43,6 +43,6 @@
     %td{:valign=>:top}
       %h2 Mes familles
       %ul.aclist
-        -for family in @families
-          %li=link_to(family[:title], {:action=>:family, :id=>family[:id]})
-        %li=link_to('Ajouter une nouvelle famille', {:action=>:family})
+        -for period in @periods
+          %li=link_to(period[:id], {:action=>:period, :id=>period[:id]})
+        %li=link_to('Ajouter une nouvelle période', {:action=>:period})
