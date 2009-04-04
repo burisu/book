@@ -44,7 +44,6 @@ class IntraController < ApplicationController
       end
       @periods = @folder.periods
     end
-    @families = []
   end
 
 
@@ -67,13 +66,29 @@ class IntraController < ApplicationController
   end
 
 
-  def family
-    
-  end
-  
   def period
-    
+    if params[:id]
+      @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
+      redirect_to :action=>:folder unless @period
+    else
+      @period = Period.new
+    end
+    if request.post?
+      @period.attributes = params[:period]
+      @period.folder_id = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]}).id
+      @period.person_id = session[:current_person_id]
+      if @period.save
+        redirect_to :action=>:folder
+      end
+    else
+      if params[:id]
+        @title = 'Modification de la période '+@period.name
+      else
+        @title = 'Création d\'une période '
+      end
+    end
   end
+
 
   def folder_edit
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
