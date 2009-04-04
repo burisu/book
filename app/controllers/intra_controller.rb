@@ -32,6 +32,7 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
+    @periods = []
     if @folder
       start = @folder.begun_on.at_beginning_of_month
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
@@ -41,13 +42,8 @@ class IntraController < ApplicationController
         start = start >> 1
         break if @reports.size>=24
       end
+      @periods = @folder.periods
     end
-    @periode = Period.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
-    if @periode
-      
-    end
-      
-    @periods = []
     @families = []
   end
 

@@ -44,5 +44,5 @@
       %h2 Mes familles
       %ul.aclist
         -for period in @periods
-          %li=link_to(period[:id], {:action=>:period, :id=>period[:id]})
+          %li=link_to(period.name, {:action=>:period, :id=>period.id})
         %li=link_to('Ajouter une nouvelle période', {:action=>:period})
