@@ -37,7 +37,7 @@ class Period < ActiveRecord::Base
       errors.add(:begun_on, "ne doit pas être supérieure à la date de fin") if self.begun_on>self.finished_on
       
       if self.folder
-        errors.add(:begun_on, "ne doit pas être avant le début du voyage") if self.begun_on<self.folder.begun_on
+        errors.add(:begun_on, "ne doit pas être avant le début du voyage : "+self.folder.begun_on.to_s) if self.begun_on<self.folder.begun_on
         errors.add(:finished_on, "ne doit pas être après la fin du voyage : "+self.folder.finished_on.to_s ) if self.finished_on>self.folder.finished_on
         unless self.new_record?
           old_period = Period.find(self.id)
