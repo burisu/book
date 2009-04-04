@@ -70,8 +70,10 @@ class IntraController < ApplicationController
     if params[:id]
       @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
       redirect_to :action=>:folder unless @period
+      @title = 'Modification de la période '+@period.name
     else
       @period = Period.new
+      @title = 'Création d\'une période '
     end
     if request.post?
       @period.attributes = params[:period]
@@ -79,12 +81,6 @@ class IntraController < ApplicationController
       @period.person_id = session[:current_person_id]
       if @period.save
         redirect_to :action=>:folder
-      end
-    else
-      if params[:id]
-        @title = 'Modification de la période '+@period.name
-      else
-        @title = 'Création d\'une période '
       end
     end
   end

@@ -37,14 +37,16 @@ class Period < ActiveRecord::Base
       errors.add(:begun_on, "ne doit pas être supérieure à la date de fin") if self.begun_on>self.finished_on
       
       if self.folder
-        old_period = Period.find(self.id)
         errors.add(:begun_on, "ne doit pas être avant le début du voyage") if self.begun_on<self.folder.begun_on
-        errors.add(:finished_on, "ne doit pas être après la fin du voyage") if self.finished_on>self.folder.finished_on
-        if old_period.begun_on>self.begun_on
-          errors.add(:begun_on, "ne doit pas être antérieure à plusieurs périodes") if Period.count(:conditions=>["folder_id = ? AND finished_on+CAST('+2 days' AS INTERVAL) BETWEEN ? AND ? ", self.folder_id, old_period.begun_on, self.begun_on]) > 1
-        end
-        if old_period.finished_on<self.finished_on
-          errors.add(:finished_on, "ne doit pas être postérieure à plusieurs périodes") if Period.count(:conditions=>["folder_id = ? AND begun_on+CAST('-2 days' AS INTERVAL) BETWEEN ? AND ? ", self.folder_id, old_period.finished_on, self.finished_on]) > 1
+        errors.add(:finished_on, "ne doit pas être après la fin du voyage : "+self.folder.finished_on.to_s ) if self.finished_on>self.folder.finished_on
+        unless self.new_record?
+          old_period = Period.find(self.id)
+          if old_period.begun_on>self.begun_on
+            errors.add(:begun_on, "ne doit pas être antérieure à plusieurs périodes") if Period.count(:conditions=>["folder_id = ? AND finished_on+CAST('+2 days' AS INTERVAL) BETWEEN ? AND ? ", self.folder_id, old_period.begun_on, self.begun_on]) > 1
+          end
+          if old_period.finished_on<self.finished_on
+            errors.add(:finished_on, "ne doit pas être postérieure à plusieurs périodes") if Period.count(:conditions=>["folder_id = ? AND begun_on+CAST('-2 days' AS INTERVAL) BETWEEN ? AND ? ", self.folder_id, old_period.finished_on, self.finished_on]) > 1
+          end
         end
       end
     end
