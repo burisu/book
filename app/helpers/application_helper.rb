@@ -11,6 +11,23 @@ module ApplicationHelper
   end
 
 
+  def confirm(operation)
+    sentence  = 'Êtes-vous '
+    sentence += case @current_person.sex
+                when 'f': 'sûre'
+                when 'h': 'sûr'
+                else 'sûr(e)'
+                end
+    sentence += case operation
+                when :delete
+                  ' de vouloir supprimer cet enregistrement'
+                else
+                  ''
+                end
+    sentence += ' ?'
+    sentence
+  end
+
   
   def operation(object, operation, controller_path=self.controller.controller_path)
     return "" if not operation[:condition].nil? and operation[:condition]==false

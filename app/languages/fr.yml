@@ -134,6 +134,11 @@ models:
       begun_on: Du
       finished_on: Au
       nature_id: Nature
+  period:
+    name: Période
+    attributes:
+      begun_on: Date de début
+      finished_on: Date de fin
   person:
     name: Personne
     attributes:

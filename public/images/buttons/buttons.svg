@@ -3672,7 +3672,7 @@
        empopacity="0.3372549"
        empspacing="5" />
     <inkscape:grid
-       id="GridFromPre046Settings"
+       id="grid472"
        type="xygrid"
        originx="0px"
        originy="0px"
@@ -3732,8 +3732,9 @@
        d="M 44.396234,0.49022125 L 39.488753,5.1978493 L 34.693499,0.55483017 L 32.490368,2.9678427 L 37.238071,7.6144174 L 32.526906,12.794184 L 34.833738,15.429347 L 39.924981,10.233034 L 45.144111,15.509779 L 47.509632,12.973382 L 42.382484,7.7828855 L 47.2876,2.9128787 L 44.396234,0.49022125 z "
        id="destroy"
        sodipodi:nodetypes="ccccccccccccc"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+       inkscape:export-xdpi="67.498764"
+       inkscape:export-ydpi="67.498764"
+       inkscape:export-filename="/home/brice/dev/rotex/public/images/buttons/delete.png" />
     <path
        style="opacity:0.9;fill:url(#radialGradient3683);fill-opacity:1;fill-rule:evenodd;stroke:url(#radialGradient3685);stroke-width:0.67759907;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 88.383528,1.499029 C 86.706401,-0.058037975 83.232397,-0.1977061 81.477375,2.0883904 C 79.688193,4.4184842 80.06281,8.3563195 81.911134,9.8350152 C 83.78513,11.334253 87.027118,11.173827 88.424761,9.7511997 L 94.16386,15.657018 C 95.239807,15.388883 95.396002,14.721588 95.634745,13.735549 L 89.415455,8.475256 C 90.798212,6.6961095 90.059955,3.0554499 88.383528,1.499029 z "

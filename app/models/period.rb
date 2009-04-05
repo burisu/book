@@ -39,6 +39,11 @@ class Period < ActiveRecord::Base
       if self.folder
         errors.add(:begun_on, "ne doit pas être avant le début du voyage : "+self.folder.begun_on.to_s) if self.begun_on<self.folder.begun_on
         errors.add(:finished_on, "ne doit pas être après la fin du voyage : "+self.folder.finished_on.to_s ) if self.finished_on>self.folder.finished_on
+        pid = self.id||0
+        problem = self.folder.periods.find(:first, :conditions=>["? BETWEEN begun_on AND finished_on AND id!=?", self.begun_on, pid], :order=>'finished_on DESC')
+        errors.add(:begun_on, "ne doit pas être à l'antérieure à la fin de la période précédente : "+problem.finished_on.to_s) unless problem.nil?
+        problem = self.folder.periods.find(:first, :conditions=>["? BETWEEN begun_on AND finished_on AND id!=?", self.finished_on, pid], :order=>'begun_on ASC')
+        errors.add(:finished_on, "ne doit pas être à postérieure au début de la période suivante : "+problem.begun_on.to_s) unless problem.nil?
         unless self.new_record?
           old_period = Period.find(self.id)
           if old_period.begun_on>self.begun_on
@@ -54,14 +59,16 @@ class Period < ActiveRecord::Base
 
   def before_update
     old_period = Period.find(self.id)
-    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :finished_on=>old_period.begun_on-1})
-    for period in periods
-      period.update_attribute(:finished_on, self.begun_on-1)
-    end
-    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1})
-    for period in periods
-      period.update_attribute(:begun_on, self.finished_on+1)
-    end
+    Period.update_all({:finished_on=>self.begun_on-1}, {:folder_id=>self.folder_id, :finished_on=>old_period.begun_on-1})
+    Period.update_all({:begun_on=>self.finished_on+1}, {:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1})
+#    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :finished_on=>old_period.begun_on-1})
+ #   for period in periods
+#      period.update_attribute(:finished_on, self.begun_on-1)
+#    end
+#    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1})
+#    for period in periods
+#      period.update_attribute(:begun_on, self.finished_on+1)
+#    end
   end
 
   def name

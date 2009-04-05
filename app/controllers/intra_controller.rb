@@ -42,7 +42,7 @@ class IntraController < ApplicationController
         start = start >> 1
         break if @reports.size>=24
       end
-      @periods = @folder.periods
+      @periods = @folder.periods.find(:all, :order=>:begun_on)
     end
   end
 
@@ -67,17 +67,18 @@ class IntraController < ApplicationController
 
 
   def period
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
       redirect_to :action=>:folder unless @period
       @title = 'Modification de la période '+@period.name
     else
-      @period = Period.new
+      @period = Period.new(:country_id=>@folder.arrival_country_id)
       @title = 'Création d\'une période '
     end
     if request.post?
       @period.attributes = params[:period]
-      @period.folder_id = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]}).id
+      @period.folder_id = @folder.id
       @period.person_id = session[:current_person_id]
       if @period.save
         redirect_to :action=>:folder
