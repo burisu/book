@@ -6,6 +6,6 @@ class EmailMember < ActiveRecord::Migration
 
   def self.down
     remove_column :members, :email
-    add_column :members, :email, :string, :null=>false
+    add_column :members, :email, :string
   end
 end

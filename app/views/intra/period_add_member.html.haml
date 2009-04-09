@@ -3,52 +3,9 @@
 -if @members.size>0
   %h2 Utiliser un membre connu
   -form_tag do
-    =select(:period, :member_id, @members.collect {|p| [ p.name, p.id ] })
+    =select(:member, :id, @members.collect {|p| [ p.name, p.id ] })
     =submit_tag('Sélectionner')
 
 
 %h2 Ajouter un nouveau membre
-=error_messages_for 'member'
--form_tag do
-  %table
-    %tr
-      %td.label Nature
-      %td.value=select :member, :nature, [['Humain', 'human'], ['Chien', 'dog'], ['Chat', 'cat']]
-      %td.hint 
-    %tr
-      %td.label Sexe
-      %td.value=select :member, :sex, [['Masculin', 'm'], ['Féminin', 'f']]
-      %td.hint 
-    %tr
-      %td.label Nom
-      %td.value=text_field :member, :last_name
-      %td.hint 
-    %tr
-      %td.label Prénom
-      %td.value=text_field :member, :first_name
-      %td.hint 
-    %tr
-      %td.label Téléphone
-      %td.value=text_field :member, :phone
-      %td.hint 
-    %tr
-      %td.label Fax/Télécopie
-      %td.value=text_field :member, :fax
-      %td.hint 
-    %tr
-      %td.label E-mail
-      %td.value=text_field :member, :email
-      %td.hint 
-    %tr
-      %td.label Mobile
-      %td.value=text_field :member, :mobile
-      %td.hint 
-    %tr
-      %td.label Commentaire
-      %td.value=text_field :member, :comment
-      %td.hint 
-    %tr
-      %td
-      %td=submit_tag('Enregistrer')+' '+link_to('Annuler', :action=>:folder)
-      %td
-
+=render :partial=>'member_form'

@@ -108,23 +108,45 @@ class IntraController < ApplicationController
     redirect_to :action=>:folder if @period.nil?
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
     if request.post?
-      if params[:period].nil?
+      if params[:member][:id].nil?
         @member = Member.new(params[:member])
         @member.person_id = session[:current_person_id]
         if @member.save
           @period.members<< @member
           redirect_to :action=>:folder
         end
-        
       else
-        @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
-        @period.members<< @member
+        @member = Member.find_by_id_and_person_id(params[:member][:id], session[:current_person_id])
+        @period.members<< @member unless @period.members.exists? :id=>@member.id
         redirect_to :action=>:folder
       end
     else
       @member = Member.new
     end
   end
+
+
+
+
+  def member
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    if params[:id]
+      @member = Member.find_by_person_id_and_id(@current_person.id, params[:id])
+      redirect_to :action=>:folder unless @member
+      @title = 'Modification de '+@member.name
+    else
+      @member = Member.new()
+      @title = 'Création d\'un membre '
+    end
+    if request.post?
+      @member.attributes = params[:member]
+      @member.person_id = session[:current_person_id]
+      if @member.save
+        redirect_to :action=>:folder
+      end
+    end
+  end
+
 
 
   def folder_edit
