@@ -15,7 +15,7 @@ input[type="submit"] {background: transparent; border:none; display:block; curso
 a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
 a:visited { color : white;}
 a:hover, input[type="submit"]:hover { text-decoration:none;}
-a:link img { border: 0 solid blue;}
+a img { border: 0 solid blue;}
 
 
 table.formu {margin-left:auto; margin-right:auto;}
@@ -175,3 +175,5 @@ div.blog > div > div {background: #F88; color:#FFF; padding: 2px;}
 div.blog > div > div * {color:#FFF;}
 
 .content { margin: 16px 0px; }
+
+.period { padding: 4px; background: #0567FF; }
