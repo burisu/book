@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090404133338
+# Schema version: 20090404153612
 #
 # Table name: members
 #
@@ -22,4 +22,6 @@
 #
 
 class Member < ActiveRecord::Base
+
+
 end

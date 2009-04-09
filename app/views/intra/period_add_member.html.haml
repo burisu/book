@@ -1,0 +1,39 @@
+-if @members
+  -form_tag do
+     select() 
+
+-form_tag do
+   %table
+    %tr
+      %td.label Nom
+      %td.value=text_field :member, :last_name
+      %td.hint 
+    %tr
+      %td.label Prénom
+      %td.value=text_field :member, :first_name
+      %td.hint 
+    %tr
+      %td.label Téléphone
+      %td.value=text_field :member, :phone
+      %td.hint 
+    %tr
+      %td.label Fax/Télécopie
+      %td.value=text_field :member, :fax
+      %td.hint 
+    %tr
+      %td.label E-mail
+      %td.value=text_field :member, :email
+      %td.hint 
+    %tr
+      %td.label Mobile
+      %td.value=text_field :member, :mobile
+      %td.hint 
+    %tr
+      %td.label Commentaire
+      %td.value=text_field :member, :comment
+      %td.hint 
+    %tr
+      %td
+      %td=submit_tag('Enregistrer')+' '+link_to('Annuler', :action=>:folder)
+      %td
+

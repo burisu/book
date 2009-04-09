@@ -86,12 +86,25 @@ class IntraController < ApplicationController
     end
   end
 
+  def period_display
+    if request.xhr?
+      @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
+      render :partial=>'period_display'
+    else
+      redirect_to :action=>:folder
+    end
+  end
+
   def period_delete
     if request.post? or request.delete?
       period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
       period.destroy unless period.nil?
       redirect_to :action=>:folder
     end
+  end
+
+  def period_add_member
+    
   end
 
 

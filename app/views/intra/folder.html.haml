@@ -44,5 +44,8 @@
       %h2 Mes familles
       %ul.aclist
         -for period in @periods
-          %li=link_to(period.name, {:action=>:period, :id=>period.id})+' '+link_to(image_tag('buttons/delete.png'), {:action=>:period_delete, :id=>period.id}, :confirm=>confirm(:delete), :method=>:post)
-        %li=link_to('Ajouter une nouvelle période', {:action=>:period})
+          %li
+            =link_to_remote period.name, :url=>{:action=>:period_display, :id=>period.id}, :update=>"period#{period.id}"
+            =#link_to(period.name, {:action=>:period, :id=>period.id})+' '+link_to(image_tag('buttons/delete.png'), {:action=>:period_delete, :id=>period.id}, :confirm=>confirm(:delete), :method=>:post)
+            %div{:id=>"period#{period.id}"}
+        %li=link_to('Ajouter une nouvelle période et famille', {:action=>:period})
