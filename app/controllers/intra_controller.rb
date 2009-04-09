@@ -104,6 +104,7 @@ class IntraController < ApplicationController
   end
 
   def period_add_member
+    @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
     
   end
 

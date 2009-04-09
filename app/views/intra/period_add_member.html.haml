@@ -1,9 +1,16 @@
--if @members
-  -form_tag do
-     select() 
+%h1 Nouveau membre...
 
+-if @members.size>0
+  %h2 Utiliser un membre connu
+  -form_tag do
+    =select(:period, :member_id, @members.collect {|p| [ p.name, p.id ] })
+    =submit_tag('Sélectionner')
+
+
+%h2 Ajouter un nouveau membre
+=error_messages_for 'member'
 -form_tag do
-   %table
+  %table
     %tr
       %td.label Nom
       %td.value=text_field :member, :last_name
