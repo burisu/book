@@ -12,6 +12,14 @@
 -form_tag do
   %table
     %tr
+      %td.label Nature
+      %td.value=select :member, :nature, [['Humain', 'human'], ['Chien', 'dog'], ['Chat', 'cat']]
+      %td.hint 
+    %tr
+      %td.label Sexe
+      %td.value=select :member, :sex, [['Masculin', 'm'], ['Féminin', 'f']]
+      %td.hint 
+    %tr
       %td.label Nom
       %td.value=text_field :member, :last_name
       %td.hint 

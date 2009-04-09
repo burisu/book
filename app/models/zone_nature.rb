@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090404153612
+# Schema version: 20090409220615
 #
 # Table name: zone_natures
 #

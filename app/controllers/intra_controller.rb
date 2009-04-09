@@ -104,8 +104,26 @@ class IntraController < ApplicationController
   end
 
   def period_add_member
+    @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    redirect_to :action=>:folder if @period.nil?
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
-    
+    if request.post?
+      if params[:period].nil?
+        @member = Member.new(params[:member])
+        @member.person_id = session[:current_person_id]
+        if @member.save
+          @period.members<< @member
+          redirect_to :action=>:folder
+        end
+        
+      else
+        @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
+        @period.members<< @member
+        redirect_to :action=>:folder
+      end
+    else
+      @member = Member.new
+    end
   end
 
 
