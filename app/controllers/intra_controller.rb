@@ -86,6 +86,14 @@ class IntraController < ApplicationController
     end
   end
 
+  def period_delete
+    if request.post? or request.delete?
+      period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
+      period.destroy unless period.nil?
+      redirect_to :action=>:folder
+    end
+  end
+
 
   def folder_edit
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
