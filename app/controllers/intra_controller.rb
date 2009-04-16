@@ -74,7 +74,7 @@ class IntraController < ApplicationController
       @title = 'Modification de la période '+@period.name
     else
       @period = Period.new(:country_id=>@folder.arrival_country_id)
-      @title = 'Création d\'une période '
+      @title = 'Création d\'une période et famille '
     end
     if request.post?
       @period.attributes = params[:period]

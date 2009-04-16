@@ -1,6 +1,6 @@
 <%@admin = (@current_person ? @current_person.can_manage?(:all) : false) -%>
 <tr><th colspan="3">Identité</th></tr>
-<%if @admin-%>
+<%if @admin or @self_subscribing-%>
 <tr><td class="label">Nom patronymique</td><td class="value"><%=text_field :person, :patronymic_name-%></td><td class="hint">Ex.&nbsp;: MARTIN</td></tr>
 <tr><td class="label">Nom de famille</td><td class="value"><%=text_field :person, :family_name-%></td><td class="hint"></td></tr>
 <tr><td class="label">Prénom</td><td class="value"><%=text_field :person, :first_name-%></td><td class="hint">Ex.&nbsp;: Jean</td></tr>
