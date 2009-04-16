@@ -34,13 +34,13 @@
 
 %table
   %tr
-    %td{:valign=>:top}
+    %td{:valign=>:top, :style=>"width:280px;"}
       %h2 Mes comptes-rendus
       %ul.aclist
         -for report in @reports
           %li=link_to(report[:title], {:action=>:report, :id=>report[:month]})
     %td &nbsp; &nbsp;
-    %td{:valign=>:top}
+    %td{:valign=>:top, :style=>"width:320px;"}
       %h2 Mes familles
       %ul.aclist
         -for @period in @periods
