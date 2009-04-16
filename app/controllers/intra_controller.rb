@@ -33,6 +33,8 @@ class IntraController < ApplicationController
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
+    session[:periods] = {}
+    
     if @folder
       start = @folder.begun_on.at_beginning_of_month
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
@@ -89,6 +91,11 @@ class IntraController < ApplicationController
   def period_display
     if request.xhr?
       @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
+      if @period
+        key = @period.id.to_s
+        session[:periods][key] = false if session[:periods][key].nil?
+        session[:periods][key] = !session[:periods][key]
+      end
       render :partial=>'period_display'
     else
       redirect_to :action=>:folder

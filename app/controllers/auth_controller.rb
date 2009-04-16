@@ -16,13 +16,13 @@ class AuthController < ApplicationController
           redirect_to session[:last_url]
         end
       else
-        flash.now[:warning]="Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
+        flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
     end
   end
 
   def logout
-    session[:current_person_id]=nil
+    session[:current_person_id] = nil
     reset_session
     redirect_to :controller=>:inter, :action=>:index
   end

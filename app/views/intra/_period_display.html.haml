@@ -1,6 +1,10 @@
-.period
-  .title="Membres de la famille (#{link_to('Nouveau', :action=>:period_add_member, :id=>@period.id)})"
-  %ul
-    -for member in @period.members
-      %li=link_to member.name, :action=>:member, :id=>member.id
+-if @period
+  -if session[:periods][@period.id.to_s]
+    .period
+      .title="Membres de la famille (#{link_to('Nouveau', :action=>:period_add_member, :id=>@period.id)})"
+      %ul
+        -for member in @period.members
+          %li=link_to member.name, :action=>:member, :id=>member.id
+
+
     
