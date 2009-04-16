@@ -132,6 +132,17 @@ class IntraController < ApplicationController
     end
   end
 
+  def period_remove_member
+    @period = Period.find_by_id_and_person_id(params[:period], session[:current_person_id])
+    redirect_to :action=>:folder if @period.nil?
+    @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    redirect_to :action=>:folder if @member.nil?
+    if request.post?
+      @period.members.delete @member
+    end
+    redirect_to :action=>:folder
+  end
+
 
 
 
