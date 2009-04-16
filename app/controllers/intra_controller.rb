@@ -33,7 +33,7 @@ class IntraController < ApplicationController
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
-    session[:periods] = {}
+    session[:periods] ||= {}
     
     if @folder
       start = @folder.begun_on.at_beginning_of_month
