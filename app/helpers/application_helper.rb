@@ -34,11 +34,11 @@ module ApplicationHelper
     code = ""
     operation[:action] = operation[:actions][object.send(operation[:use]).to_s] if operation[:use]
     parameters = {}
-    parameters[:confirm] = operation[:confirm].t unless operation[:confirm].nil?
+    parameters[:confirm] = I18n.translate(operation[:confirm]) unless operation[:confirm].nil?
     parameters[:method]  = operation[:method]    unless operation[:method].nil?
     parameters[:id]      = operation[:action].to_s+"-"+(object.nil? ? 0 : object.id).to_s
     
-    image_title = operation[:title].nil? ? operation[:action].to_s.humanize.t : operation[:title].t
+    image_title = I18n.t(operation[:title].nil? ? operation[:action].to_s.humanize : operation[:title])
     dir = "#{RAILS_ROOT}/public/images/"
     image_file = "buttons/"+(operation[:image].nil? ? operation[:action].to_s.gsub(operation[:prefix].to_s||"","") : operation[:image].to_s)+".png"
     image_file = "buttons/unknown.png" unless File.file? dir+image_file
@@ -124,7 +124,7 @@ module ApplicationHelper
         code += content_tag('tr',line, :class=>cycle('odd','even'))
       end
     else
-      code += content_tag(:tr,content_tag(:td, "No records".t, :colspan=>definition.columns.size, :class=>"norecord"))
+      code += content_tag(:tr,content_tag(:td, I18n.t("app.no_records"), :colspan=>definition.columns.size, :class=>"norecord"))
     end
     line = ''
     if record_pages
@@ -192,7 +192,9 @@ end
               model.columns_hash[model.reflections[reflection].primary_key_name].human_name
             else
 #              raise Exception.new("Unknown property :#{@options[:name].to_s} for the ActiveRecord: "+@model.to_s) if @model.columns_hash[@options[:name].to_s].nil?
-              @model.human_attribute_name(@options[:name].to_sym)
+#              @model.human_attribute_name(@options[:name].to_sym)
+#              @model.human_attribute_name(@options[:name].to_sym)
+              I18n.translate("activerecord.attributes.#{@model.to_s.singularize.underscore}.#{@options[:name].to_s}")
             end;
           when :action : 'ƒ'
           else '-'

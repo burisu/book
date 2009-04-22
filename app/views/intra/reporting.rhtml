@@ -11,7 +11,7 @@
 <span class="separator">&bull;</span> <%=link_to "Proposer l'article à la publication", :action=>:article_to_publish, :id=>article-%> 
 <%end-%>
 <% if article.ready? -%><span class="separator">&bull;</span> <%=link_to "Corriger", :action=>:edit_report, :id=>article-%><%end-%>
-<span class="separator">&bull;</span> Créé&nbsp;le <%=article.created_at.to_formatted_s :default %> 
-<span class="separator">&bull;</span> Mis&nbsp;à&nbsp;jour&nbsp;le <%=article.updated_at.to_formatted_s :default %> 
+<span class="separator">&bull;</span> Créé&nbsp;le <%=I18n.localize(article.created_at) %> 
+<span class="separator">&bull;</span> Mis&nbsp;à&nbsp;jour&nbsp;le <%=I18n.localize(article.updated_at) %> 
 
 </div></div><%end-%></div>
