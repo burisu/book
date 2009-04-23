@@ -520,7 +520,13 @@ class IntraController < ApplicationController
     @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]})
   end
 
-
+  def image_delete
+    image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    if image
+      Image.destroy(image.id)
+    end
+    redirect_to :action=>:gallery
+  end
 
   
 
