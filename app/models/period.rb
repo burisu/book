@@ -74,7 +74,7 @@ class Period < ActiveRecord::Base
 #    Period.update_all({:begun_on=>self.finished_on+1}, {:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1})
 #    Period.find_all_by_begun_on(self.finished_on+1).each{|p| p.update_attributes(:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1) }
 #    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :finished_on=>old_period.begun_on-1})
- #   for period in periods
+#   for period in periods
 #      period.update_attribute(:finished_on, self.begun_on-1)
 #    end
 #    periods = Period.find(:all, :conditions=>{:folder_id=>self.folder_id, :begun_on=>old_period.finished_on+1})
@@ -84,7 +84,7 @@ class Period < ActiveRecord::Base
   end
 
   def name
-    self.family_name+' (du '+self.begun_on.to_s+' au '+self.finished_on.to_s+')'
+    self.family_name+' (du '+I18n.localize(self.begun_on)+' au '+I18n.localize(self.finished_on)+')'
   end
 
 end

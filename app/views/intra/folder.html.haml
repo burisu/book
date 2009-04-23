@@ -6,10 +6,10 @@
 %table.infos.formu
   %tr
     %td.label Du
-    %td.value=@folder.begun_on.to_formatted_s :long
+    %td.value=I18n.localize(@folder.begun_on, :format=>:long)
   %tr
     %td.label Au
-    %td.value=@folder.finished_on.to_formatted_s :long
+    %td.value=I18n.localize(@folder.finished_on, :format=>:long)
   %tr
     %td.label Pays de départ
     %td.value=@folder.departure_country.name
