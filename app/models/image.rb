@@ -18,5 +18,6 @@
 
 class Image < ActiveRecord::Base
   
+  file_column :document, :magick => {:versions => { "thumb" => "128x128", "medium" => "600x450>", "big"=>"1024x768>" } }
 
 end

@@ -5,6 +5,7 @@
     %li=link_to 'Mon profil', {:controller=>:intra, :action=>:profile}
     %li=link_to 'Mon voyage', {:controller=>:intra, :action=>:folder}
     %li=link_to 'Mes articles', {:controller=>:intra, :action=>:reporting}
+    %li=link_to 'Ma galerie', {:controller=>:intra, :action=>:gallery}
     %li=link_to 'Se déconnecter', {:controller=>:auth, :action=>:logout}
   -if @current_person.can_manage?(:all)
     %h3 Administration

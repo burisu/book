@@ -500,6 +500,21 @@ class IntraController < ApplicationController
     end
     @zones = Zone.find(:all, :conditions=>(params[:id].nil? ? "parent_id IS NULL" : ["parent_id=?", params[:id]]), :order=>:name)
   end
+
+
+
+
+
+
+
+
+
+  def gallery
+    
+  end
+
+
+
   
 
 

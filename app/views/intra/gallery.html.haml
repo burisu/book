@@ -1,0 +1,25 @@
+%h1 Galerie
+
+
+=error_messages_for 'image'
+-form_tag do
+  %table
+    %tr
+      %td.label Titre
+      %td.value=text_field :image, :title
+      %td.hint 
+    %tr
+      %td.label Description
+      %td.value=text_field :image, :desc
+      %td.hint 
+    %tr
+      %td.label Image à télécharger
+      %td.value=file_column_field 'image', 'document'
+      %td.hint 
+    %tr
+      %td.label
+      %td.value=submit_tag 'Enregistrer'
+      %td.hint 
+
+#gallery
+  =render :partial=>'diapo', :collection=>@images
