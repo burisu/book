@@ -1,0 +1,4 @@
+%h1=h @image.title
+
+=image_tag(url_for_file_column(@image, :document, "medium"))
+=link_to "Télécharger le format d'origine", url_for_file_column(@image, :document)
