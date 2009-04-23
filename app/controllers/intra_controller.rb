@@ -513,7 +513,7 @@ class IntraController < ApplicationController
     if request.post?
       @image = Image.new(params[:image])
       @image.person_id =  session[:current_person_id]
-      @image.save
+      @image = Image.new if @image.save
     else
       @image = Image.new
     end

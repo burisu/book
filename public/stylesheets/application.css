@@ -178,6 +178,8 @@ div.blog > div > div * {color:#FFF;}
 
 .period { padding: 4px; background: url(../images/background_submenu.png) repeat-y top right; margin: 0 0 8px;}
 
-.diapo { padding:8px; float:left; margin: 8px; border:1px solid #777; background: white; }
+.diapo { padding:6px; float:left; margin: 4px; border:1px solid #777; background: white; }
 .diapo .image { height:128px; width: 128px; }
 .diapo .title { color: #777; }
+
+.diapo:hover { margin: 2px; border-width: 3px; border-color: black; }
