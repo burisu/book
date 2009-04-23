@@ -510,7 +510,14 @@ class IntraController < ApplicationController
 
 
   def gallery
-    
+    if request.post?
+      @image = Image.new(params[:image])
+      @image.person_id =  session[:current_person_id]
+      @image.save
+    else
+      @image = Image.new
+    end
+    @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]})
   end
 
 

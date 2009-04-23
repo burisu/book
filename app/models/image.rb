@@ -20,4 +20,9 @@ class Image < ActiveRecord::Base
   
   file_column :document, :magick => {:versions => { "thumb" => "128x128", "medium" => "600x450>", "big"=>"1024x768>" } }
 
+  def before_validation
+    self.name = self.title.to_s + '.'
+    self.title_h = self.title.to_s
+  end
+
 end

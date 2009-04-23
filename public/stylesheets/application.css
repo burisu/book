@@ -177,3 +177,7 @@ div.blog > div > div * {color:#FFF;}
 .content { margin: 16px 0px; }
 
 .period { padding: 4px; background: url(../images/background_submenu.png) repeat-y top right; margin: 0 0 8px;}
+
+.diapo { padding:8px; float:left; margin: 8px; border:1px solid #777; background: white; }
+.diapo .image { height:128px; width: 128px; }
+.diapo .title { color: #777; }
