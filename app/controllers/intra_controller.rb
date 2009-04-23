@@ -517,8 +517,23 @@ class IntraController < ApplicationController
     else
       @image = Image.new
     end
-    @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]})
+    @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]}, :order=>:title)
   end
+
+
+  def image_detail
+    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    redirect_to :action=>:gallery if @image.nil?
+  end
+
+  def image_download
+    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    unless @image
+      redirect_to :action=>:gallery 
+      return
+    end
+  end
+
 
   def image_delete
     image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
