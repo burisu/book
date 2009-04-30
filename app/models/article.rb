@@ -24,6 +24,12 @@
 class Article < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
 
+  class << self
+    include ActionView::Helpers::TextHelper
+    include  FileColumnHelper
+  end
+
+
   NATURES={:default=>"Pour les membres",
            :home=>"Page d'accueil",
            :blog=>"Morceaux choisis",
@@ -39,9 +45,25 @@ class Article < ActiveRecord::Base
   def before_validation
     self.title_h   = textilize_without_paragraph(self.title.to_s)
     self.intro_h   = textilize(self.intro.to_s)
-    self.content_h = textilize(self.intro.to_s+"\n\n"+self.body.to_s)
+    self.content_h = Article.htmlize(self.intro.to_s+"\n\n"+self.body.to_s) # textilize(self.intro.to_s+"\n\n"+self.body.to_s)
   end
   
+  def self.htmlize(c)
+    content = c.dup
+    content.gsub!(/\!([^\!]+)\!/, '**\1**')
+    content.gsub!(/\{\{(\w*)\}\}/) do |match|
+      image = Image.find_by_name(match[2..-3])
+      if image.nil?
+        "**Image introuvable (#{match[2..-3]})**"
+      else
+        '!'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path+'!'
+      end
+    end
+    content = textilize(content.to_s)
+    content
+  end
+  
+
   def init(params,person)
     self.author_id ||= person.id
     self.language_id = params[:language_id]
@@ -50,7 +72,7 @@ class Article < ActiveRecord::Base
     self.body  = params[:body]
     self.status = 'W' if self.new_record?
     self.status = params[:status] if person.can_manage? :publishing
-#raise params[:agenda]+' '+params[:agenda].class.to_s
+    # raise params[:agenda]+' '+params[:agenda].class.to_s
     if person.can_manage? :agenda
       self.natures_set :agenda, params[:agenda]=='1'
       self.done_on = params[:done_on]
@@ -112,6 +134,6 @@ class Article < ActiveRecord::Base
   def blog
     self.natures_include? :blog
   end
-  
+
 end
 
