@@ -51,12 +51,18 @@ class Article < ActiveRecord::Base
   def self.htmlize(c)
     content = c.dup
     content.gsub!(/\!([^\!]+)\!/, '**\1**')
-    content.gsub!(/\{\{(\w*)\}\}/) do |match|
-      image = Image.find_by_name(match[2..-3])
+    content.gsub!(/\{\{(\<|\>|\=)?(\w*)\}\}/) do |data|
+      data = data[2..-3]
+      align = ''
+      if data.match /^(\<|\>|\=)/
+        align = data[0..0] 
+        data = data[1..-1]
+      end
+      image = Image.find_by_name(data)
       if image.nil?
-        "**Image introuvable (#{match[2..-3]})**"
+        "**Image introuvable (#{data})**"
       else
-        ' !'+cycle('<','>')+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+"(#{image.title})! "
+        ' !'+align+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+"(#{image.title})! "
       end
     end
     content = textilize(content.to_s)
