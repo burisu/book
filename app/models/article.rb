@@ -55,14 +55,18 @@ class Article < ActiveRecord::Base
       data = data[2..-3]
       align = ''
       if data.match /^(\<|\>|\=)/
-        align = data[0..0] 
+        align = data[0..0]
+        align = {'<'=>'left', '>'=>'right', '='=>'center'}[align]
         data = data[1..-1]
       end
       image = Image.find_by_name(data)
       if image.nil?
         "**Image introuvable (#{data})**"
       else
-        ' !'+align+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+"(#{image.title})! "
+        code = '!'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+"(#{image.title})!"
+        code = '<div class="align '+align+'">'+code+"</div>" if align
+        code = ' '+code+' '
+        code
       end
     end
     content = textilize(content.to_s)

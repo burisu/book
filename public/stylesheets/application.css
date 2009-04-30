@@ -175,7 +175,11 @@ div.blog > div > div {background: #F88; color:#FFF; padding: 2px;}
 div.blog > div > div * {color:#FFF;}
 
 .content { margin: 16px 0px; }
-.content img{ margin: 6px; }
+.content img { margin: 2px 4px; }
+.content div.align.right { float:right; }
+.content div.align.left { float:left; }
+.content div.align.center { text-align:center; }
+
 
 .period { padding: 4px; background: url(../images/background_submenu.png) repeat-y top right; margin: 0 0 8px;}
 
