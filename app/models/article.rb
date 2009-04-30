@@ -56,7 +56,7 @@ class Article < ActiveRecord::Base
       if image.nil?
         "**Image introuvable (#{match[2..-3]})**"
       else
-        '!'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path+'!'
+        '!'+cycle('<','>')+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+'!'
       end
     end
     content = textilize(content.to_s)
