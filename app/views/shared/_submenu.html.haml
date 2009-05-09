@@ -1,6 +1,5 @@
 %td.submenu{:valign=>"top"}
-  .label=@current_person.label
-  %h3 Menu
+  %h3=@current_person.label
   %ul
     %li=link_to 'Mon profil', {:controller=>:intra, :action=>:profile}
     %li=link_to 'Mon voyage', {:controller=>:intra, :action=>:folder}

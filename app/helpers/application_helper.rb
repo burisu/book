@@ -2,6 +2,17 @@
 module ApplicationHelper
 
 
+
+  def template_link_tag(name)
+    code = ''
+    ['screen', 'print'].each do |media|
+      rel_path = "/templates/#{name}/stylesheets/#{media}.css"
+      code += stylesheet_link_tag rel_path, :media=>media if File.exists?(File.join(Rails.public_path,rel_path))
+    end
+    code
+  end
+
+
   def flash_tag(key=:error)
     if flash[key]
       content_tag :div, flash[key], :id=>key
@@ -60,6 +71,49 @@ module ApplicationHelper
   end
   
   
+  ENTITIES = {'(c)'=>'&copy;', '(r)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '~'=>'&sim;'}
+  ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
+
+  def dokuwikize(text)
+    content = text.dup
+    content.gsub!(/\{\{\ *(\w*)\ *(\|[^\}]+)?\}\}/) do |data|
+      data = data.squeeze(' ')[2..-3].split('|')
+      align = ALIGNS[(data[0][0..0]+data[0][-1..-1]).gsub(/[^\ ]/,'x')]
+      image = Image.find_by_name(data[0].strip)
+      title = data[1]||image.title
+      if image.nil?
+        "**<span class=\"e\">Image introuvable (#{data})</span>**"
+      else
+        code  = '<img class="media'+align+'"'
+        code += ' align="'+align+'"' if ['left', 'right'].include? align
+        code += ' alt="'+title+'" title="'+title+'"' if title
+        code += ' src="'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+'"/>'
+        code = link_to(code, {:controller=>:intra, :action=>:image_detail, :id=>image.id}, {:class=>:media})
+        #code  = '<a class="media" title="'+image[:document]+'" href="'+url_for(:controller=>:intra, :action=>:image_detail, :id=>image.id)+'">'+code+'</a>'
+        # code  = ' '+code+' '
+        # code += "@"+data[0].gsub(' ','_')+'@'+(data[0][0..0]+data[0][-1..-1]).gsub(' ','_')+"@"
+        code
+      end
+    end
+    content.gsub!(/\-\-\-/, '&mdash;')
+    content.gsub!(/\-\-/, '&ndash;')
+    content.gsub!(/\!([^\!]+)\!/, '**\1**')
+#    content.gsub!(/\"([^\"]+)\"/, '&ldquo;\1&rdquo;')
+    content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
+    content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
+    content.gsub!(/\/\/([^\s][^\/]+)\/\//, '<em>\1</em>')
+    content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
+    content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
+    ENTITIES.each{ |k,v| content.gsub!(k,v) }
+    content.gsub!(/(^|\n)([^\n]*)(\n\n|\n$|$)/, '<p>\2</p>')
+    content
+  end
+  
+
+
+
+
+
   
   
   def print_table (table,options={:label=>nil, :records=>nil, :style=>''}, &block)

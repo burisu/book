@@ -52,4 +52,4 @@
             =#link_to(@period.name, {:action=>:period, :id=>@period.id})
             %div{:id=>"period#{@period.id}"}
               =render :partial=>'period_display'
-        %li=link_to('Ajouter une nouvelle période et famille', {:action=>:period})
+        %li=link_to('Ajouter une nouvelle période et famille', {:action=>:period}, :class=>:create)

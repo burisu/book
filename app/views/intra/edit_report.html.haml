@@ -3,7 +3,10 @@
 %ul.aclist
   %li=link_to "Voir l'article sans sauvegarder", :action=>:show_report, :id=>@article
 
+=dokuwikize(@article.content_h)
+
 -form_tag do
   =render :partial=>'report_form'
   =submit_tag "Enregistrer les modifications"
   =link_to "Annuler", :back
+

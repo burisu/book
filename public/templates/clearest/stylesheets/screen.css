@@ -1,5 +1,7 @@
+/* Clearest Template
+   Author: Brice Texier */
 * {padding:0; margin:0; }
-h1,h2,h3,p,div,li,td,th,a,span,input,select { color:#def; font-family: arial, sans-serif; }
+h1,h2,h3,p,div,li,td,th,a,span,input,select { color:#002; font-family: sans-serif; }
 span,p,a,div,ul,li,input,select {font-size:12px;}
 textarea { font-family: monospace; font-size:12px; }
 
@@ -14,21 +16,31 @@ div.im.r { float: right; margin:0 0 0 4px;}
 /* HTMLIZE */
 
 ul {padding-left: 20px;}
-body { background:#0567ff;}
-.column {margin-left:auto; margin-right:auto; width:990px;}
-.column > div {margin-left:auto; margin-right:auto; width:774px;}
+body { background:#FFF url(../images/background2.png) center top repeat-x;}
+.column {max-width:990px; margin: 0 auto;}
+/*.column > div {margin-left:auto; margin-right:auto; width:774px;} */
+/*
 #header {background: url(../images/background_header.png) no-repeat bottom center; height:150px;}
 #bodier {background: url(../images/background_bodier.png) repeat-y top center;}
 #footer {background: url(../images/background_footer.png) no-repeat bottom center; height:160px; text-align:center; }
-#bodier > div > div {padding:0px 1px;}
-#footer > div { padding:20px; color: #BDF;}
-#mainbody {padding: 0px; }
-input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer; padding: 8px;}
-a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
-a:visited { color : white;}
-a:hover, input[type="submit"]:hover { text-decoration:none;}
-a img { border: 0 solid blue;}
+*/
 
+#header > div {background: #00288d url(../images/header.png) no-repeat top left; height:72px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;}
+#header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:72px;width:170px;-moz-border-radius-bottomright: 8px;}
+#header .menu { position:relative; top:48px; left: 8px; }
+#header .menu a { color: white; }
+/*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
+/*#bodier {background: url(../images/background.png) center top no-repeat;}*/
+#footer > div {text-align: center; padding:16px;}
+
+#bodier > div > div {padding:0px 1px;}
+/*#footer > div { padding:20px; color: #BDF;} */
+#mainbody {padding: 0px; }
+a:link { color : #47B; text-decoration:underline; font-size: 12px;}
+a:visited { color : #47B;}
+a:hover { text-decoration:none;}
+a img { border: 0 solid blue;}
+a.create { padding-left: 16px; background: url(../../../images/buttons/create.png) left center no-repeat; }
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
@@ -39,25 +51,26 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 #warning {border:none; background: #FB7; color: #D50; text-align:center; padding : 8px;}
 #error   {border:none; background: #F98; color: #E00; text-align:center; padding : 8px;}
 
-.menu { background : url(../images/background_menu.png) repeat-y top center;}
+/*.menu { background : #00288d; } /*url(../images/background_menu.png) repeat-y top center;} */
 .menu ul { padding: 5px 1px; }
 .menu ul li{ display: inline; }
-.menu ul li a{ padding: 3px; color: #0567ff; border : 1px solid transparent;}
-.menu ul li a:hover{ background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
-.menu ul li a.current_action { background: #F98; border : 1px solid #C22; text-decoration : none; height : 29px; color: #C22;}
-
+.menu ul li a { padding: 3px 6px; color: #47B; }
+.menu ul li a.current_action { background: #D1DCF7; text-decoration : none; color: #522 !important; font-weight:bold; -moz-border-radius-topleft:8px; -moz-border-radius-topright:8px; }
+/*
+.menu ul li a:hover{ background: #CDF; border : 1px solid #47B; text-decoration : none; }
+*/
 #maintable {border-collapse: collapse; width:100%;}
 /*#maintable td {vertical-align : top;}*/
 /*#maintable .submenu {width : 160px; background: url(../images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
-#maintable .submenu {width : 160px; padding:0px; margin:0px; border:none;}
-#maintable .submenu h3 {padding:3px; background: url(../images/background_subtitle.png) repeat-y top left; font-size: 13px; text-align:center; color: #04E;}
-#maintable .submenu ul {padding:1px;background: url(../images/background_submenu.png) repeat-y top left;}
+#maintable .submenu {width : 180px; padding:0; margin:0px; border-right: 1px dotted #00288d;  }
+#maintable .submenu h3 {padding:8px 3px 0px; font-size: 13px; text-align:left; color: #00288d; border-bottom: 1px dotted #00288d;}
+#maintable .submenu ul {padding:1px; }
 #maintable .submenu ul li {list-style-type:none;}
 #maintable .submenu ul li a {padding: 2px; border : 1px solid transparent; display:block;}
-#maintable .submenu ul li a:hover{color: #0567ff; background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
+#maintable .submenu ul li a:hover{color: #47B; background: #CDF; border : 1px solid #47B; text-decoration : none; }
 #maintable .submenu .label {padding:2px 4px; color: #F33; background: #FFF;} /*background: url(../images/background_submenu.png) repeat-y top left; }*/
 #maintable .subbody {padding:4px;}
-#maintable .subend {background: url(../images/background_subend.png) repeat-y top left; height:2px;}
+#maintable .subend { height:2px;}
 
 .article {padding: 4px; margin-bottom: 12px;}
 .article h2 {color: #FD7;}
@@ -65,9 +78,9 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
 /*Jaune rotex #f0d15a*/
 
-#title h1{
-  text-align: center;
-  color: #f2d25c;
+.infos.formu .label { color: #888; }
+
+.subbody h1{
   font-variant: small-caps ;
   margin: 12px;
 }
@@ -151,7 +164,7 @@ div.futo h3 {padding:4px;color: #139; }
 div.futo > div {padding:4px;}
 div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
-div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: white;}
+div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: #47B;}
 div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
 div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
@@ -175,19 +188,18 @@ div.right_menu { float:right; margin: 0px 0px 4px 8px; width:252px}
 
 div.right_menu > div.separator {margin: 10px 0px;}
 
-div.right_menu > div.frame {border: 1px solid #EEF;}
-div.right_menu > div.frame > h3 {background:#EEF; color: #0567ff; text-align:center; padding:2px;}
+/*div.right_menu > div.frame {border: 1px solid #;}*/
+div.right_menu > div.frame > h3 {font-size:13px; color: #00288d; text-align:center; padding:2px; } /*border-bottom: 1px solid #00288d;} */
 
 
 div.agenda > table {border-collapse:collapse; width: 250px;}
-div.agenda > table td {padding:2px 4px;}
-div.agenda > table td.date {text-align:center; font-weight:bold;}
-div.agenda tr.odd  td {background: url(../images/background_subtitle.png) repeat-y top left;}
-div.agenda tr.even td {background: url(../images/background_submenu.png) repeat-y top left;}
+div.agenda > table td {padding:2px 4px; text-align:left;}
+div.agenda > table td.date {text-align:right; font-weight:bold;}
+/*div.agenda tr:first-child td {border-top: none;} */
+div.agenda tr td {border-top: 1px dotted #00288d;}
 
-div.blog > div > h4 {background: #F55; color:#FFF; padding:2px; text-align:center;}
-div.blog > div > div {background: #F88; color:#FFF; padding: 2px;}
-div.blog > div > div * {color:#FFF;}
+div.blog > div  {background: #ABF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0; padding:4px;}
+div.blog > div > h4 {}
 
 .content { margin: 16px 0px; }
 .content img { margin: 2px 4px; }
@@ -196,7 +208,7 @@ div.blog > div > div * {color:#FFF;}
 .content div.align.center { text-align:center; }
 
 
-.period { padding: 4px; background: url(../images/background_submenu.png) repeat-y top right; margin: 0 0 8px;}
+.period { padding: 4px; margin: 0 0 8px;}
 
 .diapo { padding:2px; float:left; margin: 4px; border:1px solid #777; background: white; }
 .diapo .image { height:128px; width: 128px; margin:4px; }

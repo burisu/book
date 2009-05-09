@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
     @controller_name  = self.controller_name
     @action_name = action_name
     @action = @controller_name+':'+@action_name
-  end
-  
+    @title = 'Bienvenue'
+  end  
   
   private
   

@@ -17,18 +17,20 @@ ul {padding-left: 20px;}
 body { background:#0567ff;}
 .column {margin-left:auto; margin-right:auto; width:990px;}
 .column > div {margin-left:auto; margin-right:auto; width:774px;}
-#header {background: url(../images/background_header.png) no-repeat bottom center; height:150px;}
+#header {background: url(../images/background_header.png) no-repeat top center; height:194px;}
+#header .menu { text-align:center; position:relative; top:170px; }
+#menu   {background: url(../images/background_bodier.png) repeat-y top center;}
+#menu > div {text-align: center;}
 #bodier {background: url(../images/background_bodier.png) repeat-y top center;}
 #footer {background: url(../images/background_footer.png) no-repeat bottom center; height:160px; text-align:center; }
-#bodier > div > div {padding:0px 1px;}
+#bodier > div > div {padding:0px 2px;}
 #footer > div { padding:20px; color: #BDF;}
-#mainbody {padding: 0px; }
+#mainbody {padding: 0 1px; }
 input[type="submit"] {background: transparent; border:none; display:block; cursor:pointer; padding: 8px;}
 a:link, input[type="submit"] { color : white; text-decoration:underline; font-size: 12px;}
 a:visited { color : white;}
 a:hover, input[type="submit"]:hover { text-decoration:none;}
 a img { border: 0 solid blue;}
-
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
@@ -46,7 +48,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 .menu ul li a:hover{ background: #CDF; border : 1px solid #0567ff; text-decoration : none; }
 .menu ul li a.current_action { background: #F98; border : 1px solid #C22; text-decoration : none; height : 29px; color: #C22;}
 
-#maintable {border-collapse: collapse; width:100%;}
+#maintable {border-collapse: collapse; width:772px; margin-left: 1px;}
 /*#maintable td {vertical-align : top;}*/
 /*#maintable .submenu {width : 160px; background: url(../images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
 #maintable .submenu {width : 160px; padding:0px; margin:0px; border:none;}
