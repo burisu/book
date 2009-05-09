@@ -2,7 +2,8 @@
 
 %ul.aclist
   %li=link_to 'Modifier mon profil', :action=>:profile_update, :id=>@person.id
-  %li=link_to @person.articles.size.to_s+' article'+(@person.articles.size>1 ? 's' : ''), :action=>:reporting
+  %li=link_to 'Changer mon mot de passe', {:controller=>:auth, :action=>:change_password}
+  %li=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:auth, :action=>:change_email}
 
 
 %table.infos.formu

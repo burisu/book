@@ -63,6 +63,10 @@ class Article < ActiveRecord::Base
     self.natures_set :legals, params[:legals]=='1' if person.can_manage? :specials
   end
   
+  def content
+    self.intro+"\n\n"+self.body
+  end
+
   def to_correct
     self.update_attribute(:status, 'C')
   end

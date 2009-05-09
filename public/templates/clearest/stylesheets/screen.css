@@ -27,7 +27,7 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 
 #header > div {background: #00288d url(../images/header.png) no-repeat top left; height:72px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;}
 #header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:72px;width:170px;-moz-border-radius-bottomright: 8px;}
-#header .menu { position:relative; top:48px; left: 8px; }
+#header .menu { position:relative; top:46px; left: 84px; }
 #header .menu a { color: white; }
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
 /*#bodier {background: url(../images/background.png) center top no-repeat;}*/
@@ -62,7 +62,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 #maintable {border-collapse: collapse; width:100%;}
 /*#maintable td {vertical-align : top;}*/
 /*#maintable .submenu {width : 160px; background: url(../images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
-#maintable .submenu {width : 180px; padding:0; margin:0px; border-right: 1px dotted #00288d;  }
+#maintable .submenu {width : 164px; padding:0; margin:0px; border-right: 1px dotted #00288d;  }
 #maintable .submenu h3 {padding:8px 3px 0px; font-size: 13px; text-align:left; color: #00288d; border-bottom: 1px dotted #00288d;}
 #maintable .submenu ul {padding:1px; }
 #maintable .submenu ul li {list-style-type:none;}
@@ -74,7 +74,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
 .article {padding: 4px; margin-bottom: 12px;}
 .article h2 {color: #FD7;}
-.article .author {color: #8AF;}
+.article .author {color: #888;}
 
 /*Jaune rotex #f0d15a*/
 
@@ -102,19 +102,10 @@ p {
   text-indent : 0em;
   padding : 3px 0px;
 }
-input[type="password"], input[type="text"], select {
-  font-family : sans-serif;
-}
-
-textarea, input[type="password"], input[type="text"], select {
-  border : 1px solid #55F;
-  background : white;
-  color : #00A;
-}
-
-textarea, input[type="password"], input[type="text"]{
-  width:100%;
-}
+input[type="password"], input[type="text"], select { font-family : sans-serif; }
+textarea, input[type="password"], input[type="text"], select { border : 1px solid #888; background : white; color : #007; }
+/*textarea, input[type="password"], input[type="text"]{ width:100%;}*/
+textarea { width:100%;}
 
 .invalid {
   border : 1px solid #A00 !important;//#2e558a;
@@ -165,7 +156,7 @@ div.futo > div {padding:4px;}
 div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
 div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: #47B;}
-div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:590px;}
+div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE;}
 div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}
@@ -198,7 +189,7 @@ div.agenda > table td.date {text-align:right; font-weight:bold;}
 /*div.agenda tr:first-child td {border-top: none;} */
 div.agenda tr td {border-top: 1px dotted #00288d;}
 
-div.blog > div  {background: #ABF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0; padding:4px;}
+div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0; padding:4px;}
 div.blog > div > h4 {}
 
 .content { margin: 16px 0px; }
@@ -215,3 +206,5 @@ div.blog > div > h4 {}
 .diapo .title { color: #777; padding:4px;}
 
 .diapo:hover { margin: 2px; border-width: 3px; border-color: black; }
+
+.aclist { background: #BCF; -moz-border-radius: 8px; padding: 8px 8px 8px 24px;  margin: 2px 8px;}

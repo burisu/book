@@ -71,7 +71,7 @@ module ApplicationHelper
   end
   
   
-  ENTITIES = {'(c)'=>'&copy;', '(r)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '~'=>'&sim;'}
+  ENTITIES = {'(c)'=>'&copy;', '(C)'=>'&copy;', '(r)'=>'&reg;', '(R)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;'}
   ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
 
   def dokuwikize(text)
@@ -101,7 +101,7 @@ module ApplicationHelper
 #    content.gsub!(/\"([^\"]+)\"/, '&ldquo;\1&rdquo;')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
     content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
-    content.gsub!(/\/\/([^\s][^\/]+)\/\//, '<em>\1</em>')
+    content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
     content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
     content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
     ENTITIES.each{ |k,v| content.gsub!(k,v) }
