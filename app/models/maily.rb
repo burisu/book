@@ -49,6 +49,15 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
 
+  def test(person)
+    @subject      = '[ROTEX1690] '+person.first_name+", ceci est un test"
+    @body[:person]   = person
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
 
    def fw(email)
      @from       = 'system@example.com'
@@ -63,6 +72,15 @@ class Maily < ActionMailer::Base
      @body       = zail.body
      @recipients = email.from
    end
+
+  def lost_login(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'
+    @body[:person] = person
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
 
   def receive(zail)
 #    Ticket.create!(:mail=>zail.to.first, :subject=>zail.subject, :message=>zail.body)

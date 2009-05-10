@@ -118,6 +118,12 @@ class AuthController < ApplicationController
       end
     end
   end
+
+  def test
+    Maily.deliver_test @current_person
+    redirect_to :index
+  end
+  
   
   private
   def clean_people
