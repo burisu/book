@@ -1,14 +1,15 @@
 %h1 Gérer les zones géographiques
-.path
+.aclist
   =link_to 'Tous les districts', :action=>:zones_create, :id=>''
   -for parent in @parents
     &raquo;
     =link_to parent.name, :action=>:zones_create, :id=>parent.id
 
 
+%h2 Ajouter une zone fille
 -form_tag do
   =error_messages_for 'zone'
-  %table
+  %table.formu
     %tr
       %td Nom
       %td=text_field :zone, :name
@@ -22,7 +23,7 @@
     %tr
       %td{:colspan=>4}=submit_tag 'Enregistrer la zone'
 
-
+%h2 Zones
 .futo 
   %table.list
     %tr

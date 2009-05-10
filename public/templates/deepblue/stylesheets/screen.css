@@ -36,6 +36,8 @@ table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
 td.label { text-align:right; padding :1px 4px;}
 td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
+td#reports { width: 240px; }
+td#periods { width: 360px; }
 
 #notice  {border:none; background: #CF9; color: #180; text-align:center; padding : 8px;}
 #warning {border:none; background: #FB7; color: #D50; text-align:center; padding : 8px;}

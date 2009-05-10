@@ -1,9 +1,9 @@
 %h1 Galerie
 
-
+%h2 Ajouter une image
 =error_messages_for 'image'
 -form_tag({}, :multipart=>true) do
-  %table
+  %table.formu
     %tr
       %td.label Titre
       %td.value=text_field :image, :title
@@ -21,5 +21,6 @@
       %td.value=submit_tag 'Enregistrer'
       %td.hint 
 
+%h2 Mes images
 #gallery
   =render :partial=>'diapo', :collection=>@images

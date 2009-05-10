@@ -67,6 +67,10 @@ class IntraController < ApplicationController
     end
   end
 
+  def report_help
+    
+  end
+
 
   def period
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
@@ -219,7 +223,9 @@ class IntraController < ApplicationController
     if request.post?
       @article.init(params[:article], @current_person)
       if @article.save
-        flash[:notice] = 'Vos modifications ont été enregistrées ('+Time.now.to_s+')'
+        expire_fragment({:controller=>:inter, :action=>:article_complete, :id=>@article.id})
+        expire_fragment({:controller=>:inter, :action=>:article_extract, :id=>@article.id})
+        flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
         redirect_to :back
       end
     end
@@ -239,9 +245,12 @@ class IntraController < ApplicationController
     end
   end
 
-  def show_report
-    
+  def report_show
     @article = Article.find(params[:id])
+    unless @article
+      flash[:error] = "L'article que vous demandez n'existe pas"
+      redirect_to :action=>:index
+    end
   end  
   
   def persons

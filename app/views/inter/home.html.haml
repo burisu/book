@@ -7,19 +7,19 @@
           -for article in @agenda
             %tr{:class=>cycle('odd','even')}
               %td.date=I18n.localize(article.done_on)
-              %td.title=link_to(article.title_h, {:controller=>:inter, :action=>:article, :id=>article.id})
+              %td.title=link_to(article.title, {:controller=>:inter, :action=>:article, :id=>article.id})
     -if @agenda.size>0 and @blog.size>0
       .separator
     -if @blog.size>0
       .frame.blog
         %h3 Extraits aléatoires
         -for article in @blog
-          .extract
-            %h4=article.title_h
-            %div
-              =article.intro_h+link_to('Lire la suite', {:controller=>:intra, :action=>:show_report, :id=>article})
+          -cache({:controller=>:inter, :action=>:article_extract, :id=>article.id}) do
+            .extract
+              %h4=article.title
+              .content=dokuwikize(article.intro)+link_to('Lire la suite', {:controller=>:intra, :action=>:report_show, :id=>article})
 
 -for @article in @articles
-  =render :partial=>'article'
+  =render :partial=>'shared/article'
 = will_paginate @articles
 

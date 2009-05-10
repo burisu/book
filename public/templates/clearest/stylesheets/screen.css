@@ -9,6 +9,7 @@ textarea { font-family: monospace; font-size:12px; }
 span.u{ text-decoration: underline; }
 span.e{ color: #D30; }
 code{ font-family: monospace; }
+pre{ font-family: monospace; border: 1px dashed #89A; background: #DEF; padding:4px; margin:4px;}
 div.im { border: 1px solid #56A;width:128px;}
 div.im.c { margin: 0 auto;}
 div.im.l { float: left;  margin:0 4px 0 0;}
@@ -16,6 +17,7 @@ div.im.r { float: right; margin:0 0 0 4px;}
 /* HTMLIZE */
 
 ul {padding-left: 20px;}
+ul li ul li { list-style-type: square; }
 body { background:#FFF url(../images/background2.png) center top repeat-x;}
 .column {max-width:990px; margin: 0 auto;}
 /*.column > div {margin-left:auto; margin-right:auto; width:774px;} */
@@ -27,13 +29,13 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 
 #header > div {background: #00288d url(../images/header.png) no-repeat top left; height:72px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;}
 #header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:72px;width:170px;-moz-border-radius-bottomright: 8px;}
-#header .menu { position:relative; top:46px; left: 84px; }
+#header .menu { position:relative; top:47px; left: 84px; width: 512px;}
 #header .menu a { color: white; }
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
 /*#bodier {background: url(../images/background.png) center top no-repeat;}*/
-#footer > div {text-align: center; padding:16px;}
+#footer > div {text-align: center; padding:16px; border-top: 1px dotted #00288d;}
 
-#bodier > div > div {padding:0px 1px;}
+/*#bodier > div > div {padding:0px 1px;}*/
 /*#footer > div { padding:20px; color: #BDF;} */
 #mainbody {padding: 0px; }
 a:link { color : #47B; text-decoration:underline; font-size: 12px;}
@@ -44,12 +46,13 @@ a.create { padding-left: 16px; background: url(../../../images/buttons/create.pn
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
-td.label { text-align:right; padding :1px 4px;}
+td.label { text-align:right; padding :1px 4px; color: #888;}
 td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
-#notice  {border:none; background: #CF9; color: #180; text-align:center; padding : 8px;}
-#warning {border:none; background: #FB7; color: #D50; text-align:center; padding : 8px;}
-#error   {border:none; background: #F98; color: #E00; text-align:center; padding : 8px;}
+.flash         {border:none; text-align:center; padding : 8px; border-bottom: 1px dotted #00288d;}
+.flash.notice  {background: #CF9; color: #180;}
+.flash.warning {background: #FB7; color: #D50;}
+.flash.error   {background: #F98; color: #E00;}
 
 /*.menu { background : #00288d; } /*url(../images/background_menu.png) repeat-y top center;} */
 .menu ul { padding: 5px 1px; }
@@ -73,17 +76,15 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 #maintable .subend { height:2px;}
 
 .article {padding: 4px; margin-bottom: 12px;}
-.article h2 {color: #FD7;}
+/*.article h2 {color: #FD7;}*/
 .article .author {color: #888;}
 
 /*Jaune rotex #f0d15a*/
 
 .infos.formu .label { color: #888; }
 
-.subbody h1{
-  font-variant: small-caps ;
-  margin: 12px;
-}
+.subbody h1{ font-variant: small-caps ; margin: 12px; }
+.subbody h2{ margin: 8px 16px; border-bottom: 1px dotted #00288d;}
 
 #main {
   border-collapse: collapse;
@@ -189,22 +190,25 @@ div.agenda > table td.date {text-align:right; font-weight:bold;}
 /*div.agenda tr:first-child td {border-top: none;} */
 div.agenda tr td {border-top: 1px dotted #00288d;}
 
-div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0; padding:4px;}
-div.blog > div > h4 {}
+div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0 6px; padding:4px;}
 
-.content { margin: 16px 0px; }
+.article .content { margin: 16px 0px; }
 .content img { margin: 2px 4px; }
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }
 
+table.folder { width: 100%; }
 
 .period { padding: 4px; margin: 0 0 8px;}
 
-.diapo { padding:2px; float:left; margin: 4px; border:1px solid #777; background: white; }
-.diapo .image { height:128px; width: 128px; margin:4px; }
+.diapo { padding:3px; float:left; margin: 5px; border:1px solid #777; background: white; }
+.diapo .image { height:128px; width: 128px; margin:5px; }
 .diapo .title { color: #777; padding:4px;}
 
-.diapo:hover { margin: 2px; border-width: 3px; border-color: black; }
+.diapo:hover { margin: 2px; border-width: 4px; border-color: black; }
 
-.aclist { background: #BCF; -moz-border-radius: 8px; padding: 8px 8px 8px 24px;  margin: 2px 8px;}
+.aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 2px 8px;}
+ul.aclist { padding: 8px 8px 8px 24px; }
+
+.previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px }

@@ -1,4 +1,0 @@
-.article
-  %h1=@article.title_h
-  .content=dokuwikize(@article.content)
-  .author='&Eacute;crit par '+@article.author.label+' le '+I18n.localize(@article.created_at, :format=>:long)+' et mis à jour le '+I18n.localize(@article.updated_at, :format=>:long)

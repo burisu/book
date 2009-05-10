@@ -32,15 +32,15 @@
     %td.label Commentaire
     %td.value=@folder.comment
 
-%table
+%table.folder
   %tr
-    %td{:valign=>:top, :style=>"width:240px;"}
+    %td#reports{:valign=>:top}
       %h2 Mes comptes-rendus
       %ul.aclist
         -for report in @reports
           %li=link_to(report[:title], {:action=>:report, :id=>report[:month]})
     %td &nbsp; &nbsp;
-    %td{:valign=>:top, :style=>"width:360px;"}
+    %td#periods{:valign=>:top}
       %h2 Mes familles
       %ul.aclist
         -for @period in @periods

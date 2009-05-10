@@ -1,15 +1,12 @@
 # == Schema Information
-# Schema version: 20090409220615
+# Schema version: 20090510103348
 #
 # Table name: articles
 #
 #  id           :integer         not null, primary key
 #  title        :string(255)     not null
-#  title_h      :text            not null
 #  intro        :string(512)     not null
-#  intro_h      :text            not null
 #  body         :text            not null
-#  content_h    :text            not null
 #  done_on      :date            
 #  natures      :text            
 #  status       :string(255)     default("W"), not null

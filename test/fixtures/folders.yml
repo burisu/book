@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090409220615
+# Schema version: 20090510103348
 #
 # Table name: folders
 #

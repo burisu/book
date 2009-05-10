@@ -15,7 +15,7 @@ module ApplicationHelper
 
   def flash_tag(key=:error)
     if flash[key]
-      content_tag :div, flash[key], :id=>key
+      content_tag :div, flash[key], :class=>'flash '+key.to_s
     else
       ''
     end
@@ -71,11 +71,32 @@ module ApplicationHelper
   end
   
   
-  ENTITIES = {'(c)'=>'&copy;', '(C)'=>'&copy;', '(r)'=>'&reg;', '(R)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;'}
+  ENTITIES = {'(c)'=>'&copy;', '(C)'=>'&copy;', '(r)'=>'&reg;', '(R)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '<=>'=>'&hArr;', '>>'=>'&raquo;', '<<'=>'&laquo;'}
   ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
 
   def dokuwikize(text)
     content = text.dup
+    ENTITIES.each{ |k,v| content.gsub!(k,v) }
+    content.gsub!(/\-\-\-/, '&mdash;')
+    content.gsub!(/\-\-/, '&ndash;')
+    content.gsub!(/([^\=])\"([^\s][^\"]+[^\s])\"([^\>])/, '\1&ldquo;\2&rdquo;\3')
+
+    content.gsub!(/\<([\w\-\.]+\@[\w\-\.]+)\>/) do |data|
+   #   , '\1<a class="mail" href="http://\2" title="http://\2">\2</a>')
+      data = data[1..-2]
+      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data.gsub('@','%20%5Bat%5D%20').gsub('.', '%20%5Bdot%5D%20')+'">'+data+'</a>'
+    end
+
+    content.gsub!(/\[\[([^\]\|]+)(\|[^\]]+)?\]\]/) do |data|
+      data = data.squeeze(' ')[2..-3].split('|')
+      url = data[0].strip
+      caption = data[1] ? data[1].strip : url
+      url = 'http://'+url unless url.match(/^[a-z]+\:\/\//)
+      '<a class="urlextern" href="'+url+'" title="'+url+'">'+caption+'</a>'
+    end    
+    content.gsub!(/(\s|^)([a-z]+\:\/\/www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="\2" title="\2">\2</a>')
+    content.gsub!(/([^\/])(www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="http://\2" title="http://\2">\2</a>')
+
     content.gsub!(/\{\{\ *(\w*)\ *(\|[^\}]+)?\}\}/) do |data|
       data = data.squeeze(' ')[2..-3].split('|')
       align = ALIGNS[(data[0][0..0]+data[0][-1..-1]).gsub(/[^\ ]/,'x')]
@@ -95,17 +116,25 @@ module ApplicationHelper
         code
       end
     end
-    content.gsub!(/\-\-\-/, '&mdash;')
-    content.gsub!(/\-\-/, '&ndash;')
+
+    for x in 2..5
+      n = 7-x
+      content.gsub!(/^\s*\={#{n}}([^\=]+)\={#{n}}\s*$/, "<h#{x}>\\1</h#{x}>")
+    end
+
+    content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
+    content.gsub!("</pre>\n  <pre>", '')
+
+
     content.gsub!(/\!([^\!]+)\!/, '**\1**')
-#    content.gsub!(/\"([^\"]+)\"/, '&ldquo;\1&rdquo;')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
     content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
     content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
     content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
     content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
-    ENTITIES.each{ |k,v| content.gsub!(k,v) }
-    content.gsub!(/(^|\n)([^\n]*)(\n\n|\n$|$)/, '<p>\2</p>')
+#    content.gsub!(/(^|\n)([^\ ][^\n]*)(\n\n|\n$|$)/, '<p>\2</p>')
+    content.gsub!(/^([^\ ][^\ ].*)$/, '<p>\1</p>')
+    content.gsub!("</p>\n<p>", "\n")
     content
   end
   
@@ -442,7 +471,7 @@ module RotexActiveRecord #:nodoc:
           array.delete(key)
           self.#{col} = self.class.#{col}_string(array)
         end
-        def #{col}_set(key,add)
+        def #{col}_set(key, add = true)
           if add
             return #{col}_add(key)
           else
