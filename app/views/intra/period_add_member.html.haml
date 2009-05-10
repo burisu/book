@@ -3,8 +3,10 @@
 -if @members.size>0
   %h2 Utiliser un membre connu
   -form_tag do
-    =select(:member, :id, @members.collect {|p| [ p.name, p.id ] })
-    =submit_tag('Sélectionner')
+    %table.formu
+      %tr
+        %td=select(:member, :id, @members.collect {|p| [ p.name, p.id ] })
+        %td=submit_tag('Sélectionner')
 
 
 %h2 Ajouter un nouveau membre

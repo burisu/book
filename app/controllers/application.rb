@@ -25,6 +25,24 @@ class ApplicationController < ActionController::Base
       session[:last_url]= request.url
       redirect_to :controller=>"/auth", :action=>"login"
     end
+    session[:last_request] ||= Time.now.to_i
+    if Time.now.to_i-session[:last_request]>3600
+      reset_session
+      flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
+      redirect_to :controller=>:auth, :action=>:login
+      return
+    end
+    session[:last_request] = Time.now.to_i
+    session[:history] ||= []
+    session[:history].delete_at(0) if session[:no_history]
+    if request.get? and not request.xhr?
+      if session[:history][1]==request.url
+        session[:history].delete_at(0)
+      elsif session[:history][0]!=request.url
+        session[:history].insert(0, request.url)
+      end
+      session[:no_history] = false
+    end
   end
 
 end

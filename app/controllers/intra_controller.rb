@@ -1,7 +1,10 @@
 class IntraController < ApplicationController
 
   before_filter :authorize
-	
+  cattr_reader :images_count_per_person
+  @@images_count_per_person = 100
+
+
   def index
     profile
     render :action=>:profile
@@ -16,23 +19,20 @@ class IntraController < ApplicationController
     if request.post?
       params2 = {}
       [:address, :phone, :phone2, :fax, :mobile].each {|x| params2[x] = params[:person][x]}
+      @person.attributes = params2
       @person.forced = true
-      if @person.update_attributes(params2)
+      if @person.save
         redirect_to :action=>:profile
       end
     end
   end
-
-  def reporting
-    @articles = Article.find(:all, :conditions=>{:author_id=>session[:current_person_id]}, :order=>"created_at DESC")
-  end
-  
 
   def folder
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
+    @reports2 = {}
     session[:periods] ||= {}
     
     if @folder
@@ -40,7 +40,9 @@ class IntraController < ApplicationController
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
       while start <= stop do
         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
-        @reports << {:title=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0')+' - '+(article.nil? ? "Créer" : article.title_h), :month=>start.year.to_s+start.month.to_s}
+        @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
+        @reports2[start.year.to_s] ||= []
+        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month_id=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
         start = start >> 1
         break if @reports.size>=24
       end
@@ -50,6 +52,7 @@ class IntraController < ApplicationController
 
 
   def report
+    session[:no_history] = true
     begin
       year = params[:id].to_s[0..3].to_i
       month = params[:id].to_s[4..-1].to_i
@@ -196,6 +199,16 @@ class IntraController < ApplicationController
       @folder ||= Folder.new
     end
   end
+
+  hide_action :redirect_to_back
+  def redirect_to_back
+    if session[:history][1]
+      session[:history].delete_at(0)
+      redirect_to session[:history][0]
+    else
+      redirect_to :back
+    end
+  end
   
   def new_report
     if request.post?
@@ -203,9 +216,7 @@ class IntraController < ApplicationController
       @article.init(params[:article], @current_person)
       @article.done_on = session[:report_done_on] if session[:report_done_on] === Date and !@current_person.can_manage?(:publishing)
       @article.natures = 'default' unless @current_person.can_manage? :publishing
-      if @article.save
-        redirect_to :action=>:reporting
-      end
+      redirect_to_back if @article.save
     else
       @article = Article.new
       @article.done_on = session[:report_done_on] if session[:report_done_on]
@@ -226,7 +237,11 @@ class IntraController < ApplicationController
         expire_fragment({:controller=>:inter, :action=>:article_complete, :id=>@article.id})
         expire_fragment({:controller=>:inter, :action=>:article_extract, :id=>@article.id})
         flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
-        redirect_to :back
+        if params[:save_and_exit]
+          redirect_to_back
+        else
+          redirect_to :back
+        end
       end
     end
   end
@@ -526,6 +541,8 @@ class IntraController < ApplicationController
     else
       @image = Image.new
     end
+    
+    @addable = (@current_person.images.size < @@images_count_per_person)
     @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]}, :order=>:title)
   end
 

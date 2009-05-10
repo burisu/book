@@ -2,5 +2,6 @@
   .image
     =link_to(image_tag(url_for_file_column(diapo, :document, "thumb")), {:action=>:image_detail, :id=>diapo.id})
   .title
-    =h diapo.title
+    ="{{#{diapo.name}}}"
     =link_to(image_tag('buttons/delete.png'), {:action=>:image_delete, :id=>diapo.id}, :confirm=>confirm(:delete), :method=>:post)
+

@@ -145,7 +145,6 @@ class Person < ActiveRecord::Base
   end
 
   def confirm(password)
-    
     return (self.hashed_password == Person.encrypt(password.to_s, self.salt) ? true : false )
   end
 

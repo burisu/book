@@ -33,13 +33,6 @@ class Article < ActiveRecord::Base
     
   STATUS = {:W=>"À l'écriture", :R=>"Prêt", :P=>"Publié", :C=>"À la correction", :U=>"Dépublié"}
 
-  def before_validation
-    self.title_h   = textilize_without_paragraph(self.title.to_s)
-    self.intro_h   = textilize(self.intro.to_s)
-    self.content_h = self.intro.to_s+"\n\n"+self.body.to_s # dokuwikize(self.intro.to_s+"\n\n"+self.body.to_s) # textilize(self.intro.to_s+"\n\n"+self.body.to_s)
-  end
-    
-
   def init(params,person)
     self.author_id ||= person.id
     self.language_id = params[:language_id]

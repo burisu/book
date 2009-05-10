@@ -41,8 +41,9 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 a:link { color : #47B; text-decoration:underline; font-size: 12px;}
 a:visited { color : #47B;}
 a:hover { text-decoration:none;}
-a img { border: 0 solid blue;}
+a img { border: none; }
 a.create { padding-left: 16px; background: url(../../../images/buttons/create.png) left center no-repeat; }
+li.none { list-style-type: none; margin-left: -16px; }
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
@@ -66,7 +67,7 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 /*#maintable td {vertical-align : top;}*/
 /*#maintable .submenu {width : 160px; background: url(../images/background_submenus.png) repeat-y top left; padding:0px; margin:0px; border:none;}*/
 #maintable .submenu {width : 164px; padding:0; margin:0px; border-right: 1px dotted #00288d;  }
-#maintable .submenu h3 {padding:8px 3px 0px; font-size: 13px; text-align:left; color: #00288d; border-bottom: 1px dotted #00288d;}
+#maintable .submenu h3 {padding:8px 3px 0px; font-size: 13px; text-align:left; color: #d20000; border-bottom: 1px dotted #00288d;}
 #maintable .submenu ul {padding:1px; }
 #maintable .submenu ul li {list-style-type:none;}
 #maintable .submenu ul li a {padding: 2px; border : 1px solid transparent; display:block;}
@@ -193,7 +194,7 @@ div.agenda tr td {border-top: 1px dotted #00288d;}
 div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0 6px; padding:4px;}
 
 .article .content { margin: 16px 0px; }
-.content img { margin: 2px 4px; }
+/*.content img { margin: 2px 4px; }*/
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }

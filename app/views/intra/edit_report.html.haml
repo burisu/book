@@ -2,8 +2,9 @@
 
 -form_tag do
   =render :partial=>'report_form'
-  =submit_tag "Enregistrer les modifications"
+  =submit_tag "Enregistrer et prévisualiser", :name=>"save_and_show"
+  =submit_tag "Enregistrer", :name=>"save_and_exit"
   =link_to "Annuler", :back
 
 %h2 Prévisualisation
-.previsu.article=dokuwikize(@article.content_h)
+.previsu.article=dokuwikize(@article.content)

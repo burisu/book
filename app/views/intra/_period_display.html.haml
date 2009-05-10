@@ -8,7 +8,7 @@
             =' '
             =link_to(image_tag('buttons/update.png'), {:action=>:member, :id=>member.id})
             =link_to(image_tag('buttons/delete.png'), {:action=>:period_remove_member, :id=>member.id, :period=>@period.id}, :confirm=>confirm(:delete), :method=>:post)
-        %li=link_to 'Ajouter un nouveau membre à la famille', {:action=>:period_add_member, :id=>@period.id}, :class=>:create
+        %li.none=link_to 'Ajouter un nouveau membre à la famille', {:action=>:period_add_member, :id=>@period.id}, :class=>:create
 
 
     

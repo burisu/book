@@ -1,4 +1,4 @@
-%h1=@person.first_name+" "+@person.patronymic_name+' '+image_tag("country/"+@person.country.iso3166.downcase+".png")
+%h1=@person.first_name+" "+@person.patronymic_name
 
 %ul.aclist
   %li=link_to 'Modifier mon profil', :action=>:profile_update, :id=>@person.id
@@ -22,3 +22,6 @@
   %tr
     %td.label Fax/Télécopie
     %td.value=@person.fax
+  %tr
+    %td.label Pays d'origine
+    %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name

@@ -76,6 +76,7 @@ module ApplicationHelper
 
   def dokuwikize(text)
     content = text.dup
+    content.gsub!(/\r/, '')
     ENTITIES.each{ |k,v| content.gsub!(k,v) }
     content.gsub!(/\-\-\-/, '&mdash;')
     content.gsub!(/\-\-/, '&ndash;')
@@ -132,8 +133,7 @@ module ApplicationHelper
     content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
     content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
     content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
-#    content.gsub!(/(^|\n)([^\ ][^\n]*)(\n\n|\n$|$)/, '<p>\2</p>')
-    content.gsub!(/^([^\ ][^\ ].*)$/, '<p>\1</p>')
+    content.gsub!(/(^)([^\s][^\s].*)($)/, '<p>\2</p>')
     content.gsub!("</p>\n<p>", "\n")
     content
   end
