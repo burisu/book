@@ -78,7 +78,13 @@ class IntraController < ApplicationController
                  "ou **//__''tous à la fois''__//**",
                  "===== Titre de niveau 2 =====",
                  "==== Titre de niveau 3 ====",
-                 "=== Titre de niveau 4 ==="               ]
+                 "=== Titre de niveau 4 ===",
+                 "Caractères spèciaux : * -> => <=> <= <- (C) (R)...",
+                 "un exemple de site www.rotex1690.org",
+                 "ou [[www.rotex1690.org]]",
+                 "ou le site du [[www.rotex1690.org|Rotex 1690]]",
+                 "un petit mail : <exemple@rotex1690.org>"
+               ]
     
   end
 

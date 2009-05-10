@@ -71,13 +71,15 @@ module ApplicationHelper
   end
   
   
-  ENTITIES = {'(C)'=>'&copy;', '(R)'=>'&reg;', '(TM)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '<=>'=>'&hArr;', '>>'=>'&raquo;', '<<'=>'&laquo;'}
+  ENTITIES = {'(C)'=>'&copy;', '(R)'=>'&reg;', '(TM)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '>>'=>'&raquo;', '<<'=>'&laquo;', '...'=>'&hellip;'}
   ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
 
   def dokuwikize(text)
     content = text.dup
     content.gsub!(/\r/, '')
+    content.gsub!('<=>', '&hArr;')
     ENTITIES.each{ |k,v| content.gsub!(k,v) }
+
     content.gsub!(/\-\-\-/, '&mdash;')
     content.gsub!(/\-\-/, '&ndash;')
     content.gsub!(/([^\=])\"([^\s][^\"]+[^\s])\"([^\>])/, '\1&ldquo;\2&rdquo;\3')
