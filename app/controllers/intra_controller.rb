@@ -71,6 +71,14 @@ class IntraController < ApplicationController
   end
 
   def report_help
+    @samples = [ "un texte en **gras**...",
+                 "en //italique//...", 
+                 "en __souligné__...",
+                 "en ''monospace''",
+                 "ou **//__''tous à la fois''__//**",
+                 "===== Titre de niveau 2 =====",
+                 "==== Titre de niveau 3 ====",
+                 "=== Titre de niveau 4 ==="               ]
     
   end
 
