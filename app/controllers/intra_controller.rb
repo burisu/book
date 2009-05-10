@@ -83,7 +83,11 @@ class IntraController < ApplicationController
                  "un exemple de site www.rotex1690.org",
                  "ou [[www.rotex1690.org]]",
                  "ou le site du [[www.rotex1690.org|Rotex 1690]]",
-                 "un petit mail : <exemple@rotex1690.org>"
+                 "un petit mail : <exemple@rotex1690.org>",
+                 "un image centrée {{ image1 }}",
+                 "un image alignée à gauche {{image1 }}",
+                 "un image alignée à droite {{ image1|Titre}}",
+                 "  Texte largeur fixe"
                ]
     
   end

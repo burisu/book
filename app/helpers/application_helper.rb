@@ -87,7 +87,8 @@ module ApplicationHelper
     content.gsub!(/\<([\w\-\.]+\@[\w\-\.]+)\>/) do |data|
    #   , '\1<a class="mail" href="http://\2" title="http://\2">\2</a>')
       data = data[1..-2]
-      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data.gsub('@','%20%5Bat%5D%20').gsub('.', '%20%5Bdot%5D%20')+'">'+data+'</a>'
+#      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data.gsub('@','%20%5Bat%5D%20').gsub('.', '%20%5Bdot%5D%20')+'">'+data+'</a>'
+      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data+'">'+data+'</a>'
     end
 
     content.gsub!(/\[\[([^\]\|]+)(\|[^\]]+)?\]\]/) do |data|
