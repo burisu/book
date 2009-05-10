@@ -71,7 +71,7 @@ module ApplicationHelper
   end
   
   
-  ENTITIES = {'(c)'=>'&copy;', '(C)'=>'&copy;', '(r)'=>'&reg;', '(R)'=>'&reg;', '(tm)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '<=>'=>'&hArr;', '>>'=>'&raquo;', '<<'=>'&laquo;'}
+  ENTITIES = {'(C)'=>'&copy;', '(R)'=>'&reg;', '(TM)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '<=>'=>'&hArr;', '>>'=>'&raquo;', '<<'=>'&laquo;'}
   ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
 
   def dokuwikize(text)
@@ -125,7 +125,6 @@ module ApplicationHelper
 
     content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
     content.gsub!("</pre>\n  <pre>", '')
-
 
     content.gsub!(/\!([^\!]+)\!/, '**\1**')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
