@@ -121,7 +121,7 @@ class AuthController < ApplicationController
 
   def test
     Maily.deliver_test @current_person
-    redirect_to :index
+    redirect_to :action=>:index
   end
   
   

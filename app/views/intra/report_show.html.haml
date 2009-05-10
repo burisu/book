@@ -1,7 +1,7 @@
-%h1=@article.title_h
+%h1=@article.title
 -if (!@article.locked? and @article.author_id==@current_person.id) or @current_person.can_manage? :publishing
   %ul.aclist
     %li=link_to "Modifier l'article", :action=>:edit_report, :id=>@article
 
-.content=@article.content_h
+.content=dokuwikize(@article.content)
 .author='&Eacute;crit par '+@article.author.label+' le '+I18n.localize(@article.created_at, :format=>:long)+' et mis à jour le '+I18n.localize(@article.updated_at, :format=>:long)
