@@ -19,8 +19,6 @@
 #
 
 class Article < ActiveRecord::Base
-  include ActionView::Helpers::TextHelper
-
   NATURES={:default=>"Pour les membres",
            :home=>"Page d'accueil",
            :blog=>"Morceaux choisis",

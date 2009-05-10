@@ -105,10 +105,11 @@ module ApplicationHelper
       data = data.squeeze(' ')[2..-3].split('|')
       align = ALIGNS[(data[0][0..0]+data[0][-1..-1]).gsub(/[^\ ]/,'x')]
       image = Image.find_by_name(data[0].strip)
-      title = data[1]||image.title
+      title = data[1]
       if image.nil?
         "**<span class=\"e\">Image introuvable (#{data})</span>**"
       else
+        title ||= image.title
         code  = '<img class="media'+align+'"'
         code += ' align="'+align+'"' if ['left', 'right'].include? align
         code += ' alt="'+title+'" title="'+title+'"' if title
@@ -127,7 +128,7 @@ module ApplicationHelper
     end
 
     content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
-    content.gsub!("</pre>\n  <pre>", '')
+    content.gsub!("</pre>\n  <pre>", "\n  ")
 
     content.gsub!(/\!([^\!]+)\!/, '**\1**')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
