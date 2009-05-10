@@ -25,5 +25,5 @@ config.action_controller.perform_caching             = true
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default_charset = "utf-8"
 config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {:address => "localhost", :port => 25, :domain=>'rotex1690.org' }
+config.action_mailer.smtp_settings = {:address => "smtp.rotex1690.org", :port => 465, :domain=>'rotex1690.org', :user_name=>'postmaster@rotex1690.org', :password=>'r0T3X1690',  :authentication=>:login}
 config.action_mailer.perform_deliveries = true
