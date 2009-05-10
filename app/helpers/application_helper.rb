@@ -128,7 +128,7 @@ module ApplicationHelper
     end
 
     content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
-    content.gsub!("</pre>\n  <pre>", "\n  ")
+    # content.gsub!("</pre>\n  <pre>", "\n")
 
     content.gsub!(/\!([^\!]+)\!/, '**\1**')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
