@@ -243,6 +243,7 @@ class IntraController < ApplicationController
   
   def edit_report
     @article = Article.find(params[:id])
+    redirect_to_back unless @article
     redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or @current_person.can_manage? :publishing
     @article.to_correct if @article.ready?
     if @article.locked? and !@current_person.can_manage? :publishing
