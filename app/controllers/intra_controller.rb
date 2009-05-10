@@ -234,8 +234,8 @@ class IntraController < ApplicationController
     if request.post?
       @article.init(params[:article], @current_person)
       if @article.save
-        expire_fragment({:controller=>:inter, :action=>:article_complete, :id=>@article.id})
-        expire_fragment({:controller=>:inter, :action=>:article_extract, :id=>@article.id})
+        expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
+        expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
         flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
         if params[:save_and_exit]
           redirect_to_back
