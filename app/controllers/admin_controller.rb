@@ -6,10 +6,10 @@ class AdminController < ApplicationController
 
   def authorize
     unless session[:current_person_id]
-      redirect_to :controller=>:inter, :action=>:index
+      redirect_to :controller=>:home
     else
       current_person=Person.find(session[:current_person_id])
-      redirect_to(:controller=>:inter, :action=>:index) unless current_person.role.can_manage?(:all)
+      redirect_to(:controller=>:home) unless current_person.role.can_manage?(:all)
     end
   end
 end

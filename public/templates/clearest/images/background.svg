@@ -892,15 +892,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="701.90354"
-     inkscape:cy="727.34238"
+     inkscape:cx="450.68365"
+     inkscape:cy="1168.7453"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1439"
-     inkscape:window-height="850"
+     inkscape:window-height="851"
      inkscape:window-x="0"
      inkscape:window-y="0">
     <sodipodi:guide
@@ -1236,5 +1236,7 @@
            style="fill:#ffffff;fill-opacity:1;display:inline" />
       </g>
     </g>
+    <g
+       id="g2691" />
   </g>
 </svg>

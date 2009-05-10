@@ -47,8 +47,8 @@ li.none { list-style-type: none; margin-left: -16px; }
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
-td.label { text-align:right; padding :1px 4px; color: #888;}
-td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
+td.label { text-align:right; padding :1px 4px; color: #777;}
+td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .flash         {border:none; text-align:center; padding : 8px; border-bottom: 1px dotted #00288d;}
 .flash.notice  {background: #CF9; color: #180;}
@@ -78,11 +78,11 @@ td.hint {color: #BCF; font-style:italic; padding: 1px 4px;}
 
 .article {padding: 4px; margin-bottom: 12px;}
 /*.article h2 {color: #FD7;}*/
-.article .author {color: #888;}
+.article .author {color: #777;}
 
 /*Jaune rotex #f0d15a*/
 
-.infos.formu .label { color: #888; }
+.infos.formu .label { color: #777; }
 
 .subbody h1{ font-variant: small-caps ; margin: 12px; }
 .subbody h2{ margin: 8px 16px; border-bottom: 1px dotted #00288d;}
@@ -105,7 +105,7 @@ p {
   padding : 3px 0px;
 }
 input[type="password"], input[type="text"], select { font-family : sans-serif; }
-textarea, input[type="password"], input[type="text"], select { border : 1px solid #888; background : white; color : #007; }
+textarea, input[type="password"], input[type="text"], select { border : 1px solid #777; background : white; color : #007; }
 /*textarea, input[type="password"], input[type="text"]{ width:100%;}*/
 textarea { width:100%;}
 
@@ -212,4 +212,4 @@ table.folder { width: 100%; }
 .aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 2px 8px;}
 ul.aclist { padding: 8px 8px 8px 24px; }
 
-.previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px }
+.previsu { border: 1px dashed #777; background: #FFD; margin: 8px; padding:8px }

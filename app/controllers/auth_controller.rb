@@ -24,7 +24,7 @@ class AuthController < ApplicationController
   def logout
     session[:current_person_id] = nil
     reset_session
-    redirect_to :controller=>:inter, :action=>:index
+    redirect_to :controller=>:home, :action=>:index
   end
 
   def subscribe
