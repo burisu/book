@@ -87,7 +87,7 @@ class IntraController < ApplicationController
                  "un image centrée {{ image1 }}",
                  "un image alignée à gauche {{image1 }}",
                  "un image alignée à droite {{ image1|Titre}}",
-                 "  Texte largeur fixe"
+                 "  Texte largeur fixe avec 2 espace en début de ligne"
                ]
     
   end
