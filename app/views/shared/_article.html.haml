@@ -1,4 +1,4 @@
--cache({:controller=>:inter, :action=>:article_complete, :id=>@article.id}) do
+-cache({:controller=>:home, :action=>:article_complete, :id=>@article.id}) do
   .article
     %h1=@article.title
     .content=dokuwikize(@article.content)
