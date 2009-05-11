@@ -130,7 +130,6 @@ module ApplicationHelper
     content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
     # content.gsub!("</pre>\n  <pre>", "\n")
 
-    content.gsub!(/\!([^\!]+)\!/, '**\1**')
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
     content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
     content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
