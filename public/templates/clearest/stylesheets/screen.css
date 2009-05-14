@@ -151,9 +151,12 @@ span.separator {
   padding : 0 5px;
 }
 
-#errorExplanation { background : #B32; padding : 5px; margin: 20px; border : 2px solid white;}
-#errorExplanation h2 { margin : 1px 3px; }
-#errorExplanation ul {padding : 2px 20px; list-style-type :square;}
+#errorExplanation { background : #FED; padding : 5px; margin: 20px 40px; border : 1px solid #DCB;}
+#errorExplanation h2 { margin : 1px 3px; color: #d20000; }
+#errorExplanation ul { padding : 2px 20px; list-style-type :square; }
+#errorExplanation li {  }
+
+.fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select { background: #FCC; color: #B00; border: 1px solid #B00; }
 
 
 

@@ -29,6 +29,7 @@ class AuthController < ApplicationController
 
   def subscribe
     @register = true
+    @self_subscribing = true
     if request.post?
       role = Role.none
       params[:person][:role_id] = role.id
@@ -43,7 +44,6 @@ class AuthController < ApplicationController
       end
     else
       @person = Person.new
-      @self_subscribing = true
     end
   end
   
@@ -57,13 +57,13 @@ class AuthController < ApplicationController
         @person.is_validated = true
         @person.is_locked = false
         @person.save!
-        @activation += 1
+        @activation = 1
       end
       unless @person.replacement_email.blank?
         @person.email = @person.replacement_email
         @person.replacement_email = nil
         @person.save!
-        @activation += 2
+        @activation = 2
       end
     end
   end
