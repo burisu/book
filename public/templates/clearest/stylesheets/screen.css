@@ -40,7 +40,7 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
 /*#bodier {background: url(../images/background.png) center top no-repeat;}*/
 #footer > div {text-align: center; padding:16px; border-top: 1px dotted #00288d;}
-
+#footer * { color: #888; }
 /*#bodier > div > div {padding:0px 1px;}*/
 /*#footer > div { padding:20px; color: #BDF;} */
 #mainbody {padding: 0px; }
@@ -53,7 +53,7 @@ li.none { list-style-type: none; margin-left: -16px; }
 
 table.formu {margin-left:auto; margin-right:auto;}
 .formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
-td.label { text-align:right; padding :1px 4px; color: #777;}
+td.label { text-align:right; padding :1px 4px; color: #888;}
 td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .flash         {border:none; text-align:center; padding : 4px; border-bottom: 1px dotted #00288d;}
@@ -84,11 +84,11 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .article {padding: 4px; margin-bottom: 12px;}
 /*.article h2 {color: #FD7;}*/
-.article .author {color: #777;}
+.article .author {color: #888;}
 
 /*Jaune rotex #f0d15a*/
 
-.infos.formu .label { color: #777; }
+.infos.formu .label { color: #888; }
 
 .subbody h1{ font-variant: small-caps ; margin: 12px; }
 .subbody h2{ margin: 8px 16px; border-bottom: 1px dotted #00288d;}
@@ -111,7 +111,7 @@ p {
   padding : 3px 0px;
 }
 input[type="password"], input[type="text"], select { font-family : sans-serif; }
-textarea, input[type="password"], input[type="text"], select { border : 1px solid #777; background : white; color : #007; }
+textarea, input[type="password"], input[type="text"], select { border : 1px solid #888; background : white; color : #007; }
 /*textarea, input[type="password"], input[type="text"]{ width:100%;}*/
 textarea { width:100%;}
 
@@ -182,7 +182,7 @@ div.futo table.list a {color: #14A;}
 div.pagination {text-align:center; padding:8px;}
 div.pagination * {padding:2px 3px; font-size:13px; border:1px solid #9AC; background: #EEF; color:#9AC;}
 div.pagination a:link, div.pagination a:visited { text-decoration:none; color: #12F;}
-div.pagination a:hover {border:1px solid #12F; background: #DDF; color: #AAA; text-decoration:none;}
+div.pagination a:hover {border:1px solid #12F; background: #DDF; color: #888; text-decoration:none;}
 div.pagination span.current {font-weight:bold; color: #D30; border:1px solid #D30; background: #FED;}
 div.pagination .disabled {display:none;}
 
@@ -212,13 +212,13 @@ table.folder { width: 100%; }
 
 .period { padding: 4px; margin: 0 0 8px;}
 
-.diapo { padding:3px; float:left; margin: 5px; border:1px solid #777; background: white; }
+.diapo { padding:3px; float:left; margin: 5px; border:1px solid #888; background: white; }
 .diapo .image { height:128px; width: 128px; margin:5px; }
-.diapo .title { color: #777; padding:4px;}
+.diapo .title { color: #888; padding:4px;}
 
 .diapo:hover { margin: 2px; border-width: 4px; border-color: black; }
 
 .aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 2px 8px;}
 ul.aclist { padding: 8px 8px 8px 24px; }
 
-.previsu { border: 1px dashed #777; background: #FFD; margin: 8px; padding:8px; }
+.previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
