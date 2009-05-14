@@ -9,6 +9,26 @@ class Maily < ActionMailer::Base
     @sent_on      = Time.now
     @headers      = {}
   end
+  
+  def notification(nature=:subscription, person=nil)
+    @subject      = '[ROTEX1690] Notification : '+
+      if nature==:subscription
+        "Enregistrement d'un nouveau membre (#{person.label})"
+      elsif nature==:activation
+        "Activation de compte (#{person.label})"
+      else
+        "Inconnue"
+      end
+    @body[:nature] = nature
+    @body[:person] = person
+    roles = Role.find(:all, :conditions=>["code in (?, ?)", 'tresor', 'admin']).collect{|r| r.id}
+    people = Person.find(:all, :conditions=>{:role_id=>roles})
+    @recipients   = people.collect{|person| "#{person.label} <#{person.email}>"}.join (', ')
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+  
 
   def lost_login(person)
     @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'

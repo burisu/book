@@ -41,6 +41,7 @@ class AuthController < ApplicationController
       if @person.save_with_captcha
         @register = false
         Maily.deliver_confirmation @person
+        Maily.deliver_notification :subscription, @person
       end
     else
       @person = Person.new
@@ -58,6 +59,7 @@ class AuthController < ApplicationController
         @person.is_locked = false
         @person.save!
         @activation = 1
+        Maily.deliver_notification :activation, @person
       end
       unless @person.replacement_email.blank?
         @person.email = @person.replacement_email

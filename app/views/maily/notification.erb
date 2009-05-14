@@ -1,0 +1,13 @@
+Bonjour,
+
+<%if @nature==:subscription%>
+La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne. Elle devrait activer son compte sous peu, vous recevrez un nouvel e-amil à ce moment-là.
+<%elsif @nature==:activation%>
+La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
+<%else-%>
+Notification d'origine inconnue
+<%end%>
+
+Cordialement,
+
+L'equipe du Rotex 1690.
