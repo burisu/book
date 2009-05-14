@@ -91,6 +91,17 @@ class Person < ActiveRecord::Base
     total = 0
     Role.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
     raise Exception.new("Vous ne pouvez pas supprimer le dernier administrateur") if total<=1 and self.can_manage?
+    if self.subscriptions.size<=0
+      # PersonVersion.delete_all(:person_id=>self.id)
+      self.articles = {}
+      self.emails   = {}
+      self.folders  = {}
+      self.images   = {}
+      self.mandates = {}
+      self.members  = {}
+      self.periods  = {}
+      self.versions = {}      
+    end
   end
 
   def password

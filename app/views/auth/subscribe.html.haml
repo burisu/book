@@ -1,0 +1,14 @@
+-if @register
+  %h1 S'inscrire sur Rotex1690.org
+
+  -form_tag({}, :multipart=>true) do
+    = error_messages_for "person"
+    %table.formu
+      = render :partial=>'shared/person_form'
+      %tr
+        %td{:colspan=>"3", :align=>"center"}=submit_tag "Valider l'inscription sur Rotex1690.org"
+-else
+  %h1 Votre inscription est en passe d'être validée
+  %p Un e-mail vous a été envoyé. Dès que vous aurez activé votre compte en cliquant sur lien qui vous sera donné, vous aurez accès à la partie membre dès que le trésorier aura enregistré votre cotisation.
+  %p Vous disposez de <em>24 heures pour activer votre compte</em>. Un fois ce délai passé, vous devrez vous réinscrire.
+
