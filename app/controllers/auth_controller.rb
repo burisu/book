@@ -40,10 +40,9 @@ class AuthController < ApplicationController
         @person.is_user   = true
         if @person.save_with_captcha
           @register = false
-          Maily.deliver_confirmation(@person)
           begin
             Maily.deliver_confirmation(@person)
-#            Maily.deliver_notification(:subscription, @person)
+            Maily.deliver_notification(:subscription, @person)
           rescue Object=>e
             @register = true
             Person.destroy(@person.id)
