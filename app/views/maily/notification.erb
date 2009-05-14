@@ -6,6 +6,10 @@ La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne.
 La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
 <%else-%>
 Notification d'origine inconnue
+<%end-%>
+
+<%if @person-%>
+Détail de la personne : <%=@person.email-%>, <%=@person.address-%>
 <%end%>
 
 Cordialement,

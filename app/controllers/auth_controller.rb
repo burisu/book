@@ -31,18 +31,24 @@ class AuthController < ApplicationController
     @register = true
     @self_subscribing = true
     if request.post?
-      role = Role.none
-      params[:person][:role_id] = role.id
-      @person = Person.new params[:person]
-      @person.email = params[:person][:email]
-      @person.is_validated = false
-      @person.is_locked = true
-      @person.is_user   = true
-      if @person.save_with_captcha
-        @register = false
-        Maily.deliver_confirmation @person
-        Maily.deliver_notification :subscription, @person
-      end
+        role = Role.none
+        params[:person][:role_id] = role.id
+        @person = Person.new params[:person]
+        @person.email = params[:person][:email]
+        @person.is_validated = false
+        @person.is_locked = true
+        @person.is_user   = true
+        if @person.save_with_captcha
+          @register = false
+          begin
+            Maily.deliver_confirmation(@person)
+            Maily.deliver_notification(:subscription, @person)
+          rescue
+            @register = true
+            Person.destroy(@person.id)
+            @person.errors.add_to_base("Votre adresse e-mail est invalide")
+          end
+        end
     else
       @person = Person.new
     end
@@ -59,7 +65,7 @@ class AuthController < ApplicationController
         @person.is_locked = false
         @person.save!
         @activation = 1
-        Maily.deliver_notification :activation, @person
+        Maily.deliver_notification(:activation, @person)
       end
       unless @person.replacement_email.blank?
         @person.email = @person.replacement_email
