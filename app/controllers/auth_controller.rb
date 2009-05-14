@@ -43,10 +43,10 @@ class AuthController < ApplicationController
           begin
             Maily.deliver_confirmation(@person)
             Maily.deliver_notification(:subscription, @person)
-          rescue
+          rescue Object=>e
             @register = true
             Person.destroy(@person.id)
-            @person.errors.add_to_base("Votre adresse e-mail est invalide")
+            @person.errors.add_to_base("Votre adresse e-mail est invalide : "+e.message)
           end
         end
     else
