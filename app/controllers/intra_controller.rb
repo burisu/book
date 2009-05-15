@@ -468,48 +468,48 @@ class IntraController < ApplicationController
   def articles
     access :publishing
     @title = "Tous les articles"
-    @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
   end
 
   def waiting_articles
     access :publishing
     @title = "Articles proposés à la publication"
-    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def special_articles
     access :specials
     @title = "Articles spéciaux"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def agenda_articles
     access :agenda
     @title = "Articles de l'agenda"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def home_articles
     access :home
     @title = "Articles de la page d'accueil"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def blog_articles
     access :home
     @title = "Articles extraits pour la présentation"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def other_articles
     access :publishing
     @title = "Autres articles (réservés aux membres)"
-    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
