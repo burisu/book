@@ -29,6 +29,16 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
   
+  def message(person, options={})
+    @subject      = '[ROTEX1690] '+options[:subject].to_s
+    @body[:body] = options[:body].to_s
+    people = Folder.find(:all, :conditions=>{:arrival_country_id=>options[:arrival_id], :promotion_id=>options[:promotion_id]}).collect{|f| f.person}
+    @recipients   = "mailing@rotex1690.org"
+    @bcc          = people.collect{|person| "#{person.label} <#{person.email}>"}.join (', ')
+    @from         = "#{person.label} <#{person.email}>"
+    @sent_on      = Time.now
+    @headers      = {}
+  end
 
   def lost_login(person)
     @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'

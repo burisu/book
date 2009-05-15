@@ -591,17 +591,25 @@ class IntraController < ApplicationController
     redirect_to :action=>:gallery
   end
 
-  
 
-
+  def message_send
+    @countries = Country.find(:all, :order=>:name)
+    @promotions = Promotion.find(:all, :conditions=>{:is_outbound=>true}, :order=>:name)
+    if request.post?
+      begin
+        Maily.deliver_message(@current_person, params[:mail])
+        flash[:notice] = 'Votre message a été envoyé.'
+        redirect_to :action=>:profile
+      rescue
+        flash[:error] = "Votre message n'a pas pu être envoyé."
+      end
+    end
+  end
 
 
   def access_denied
   end
 
-
-
-  
   protected
   
   def access(right=:all)
