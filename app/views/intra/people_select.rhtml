@@ -27,8 +27,8 @@ print_table :mandates do |t|
   t.datum :begun_on
   t.datum :finished_on
   t.datum :name, :through=>:nature
-  t.action :action=>:mandate_update, :image=>:edit
-  t.action :action=>:mandate_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+  t.action :controller=>:admin, :action=>:edit_mandate, :image=>:edit
+  # t.action :action=>:mandate_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
 end
 -%>
 
