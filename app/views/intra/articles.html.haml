@@ -6,9 +6,10 @@
   -t.datum :id
   -t.datum :title
   -t.datum(:done_on) if action_name=='agenda_articles'
-  -t.datum :label, :through=>:author
+  -t.datum :label, :through=>:author, :label=>'Auteur'
   -t.datum :status
   -t.datum :natures
+  -t.datum :created_on, :label=>'Créé le'
   -t.action(:use=>:status, :actions=>{"P"=>:article_deactivate, "R"=>:article_activate, "U"=>:article_activate, "W"=>:article_edit, "C"=>:article_edit}, :prefix=>"article_", :method=>:post)
   -t.action :action=>:report_show, :image=>:show
   -t.action :action=>:edit_report, :image=>:edit

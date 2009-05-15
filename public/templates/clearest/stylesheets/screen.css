@@ -167,7 +167,7 @@ div.futo > div {padding:4px;}
 div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
 div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: #47B;}
-div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE;}
+div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:100%;}
 div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}

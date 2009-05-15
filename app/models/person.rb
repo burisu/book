@@ -152,7 +152,7 @@ class Person < ActiveRecord::Base
   end
   
   def label
-    self.first_name+' '+self.patronymic_name
+    self.first_name+' '+self.family_name
   end
 
   def confirm(password)

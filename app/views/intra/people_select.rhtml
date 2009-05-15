@@ -1,4 +1,4 @@
-<h1><%=@person.first_name+" "+@person.patronymic_name-%> <%=image_tag "country/"+@person.country.iso3166.downcase+".png"-%></h1>
+<h1><%=@person.label-%></h1>
 
 <h2>Cotisations</h2>
 <%= link_to "Ajouter une cotisation",{:action=>:add_subscription, :id=>@person.id}-%>

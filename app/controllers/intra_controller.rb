@@ -447,69 +447,69 @@ class IntraController < ApplicationController
   def subscribers
     access :subscribing
     @title = "Liste des adhérents actuels"
-    @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :page=>params[:page], :per_page=>50)
+    @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def non_subscribers
     access :subscribing
     @title = "Liste des non-adhérents actuels"
-    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :page=>params[:page], :per_page=>50)
+    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def new_non_subscribers
     access :subscribing
     @title = "Liste des futurs non-adhérents (à 2 mois)"
-    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :page=>params[:page], :per_page=>50)
+    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def articles
     access :publishing
     @title = "Tous les articles"
-    @articles = Article.paginate(:all, :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>:created_at, :page=>params[:page])
   end
 
   def waiting_articles
     access :publishing
     @title = "Articles proposés à la publication"
-    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 
   def special_articles
     access :specials
     @title = "Articles spéciaux"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 
   def agenda_articles
     access :agenda
     @title = "Articles de l'agenda"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 
   def home_articles
     access :home
     @title = "Articles de la page d'accueil"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 
   def blog_articles
     access :home
     @title = "Articles extraits pour la présentation"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 
   def other_articles
     access :publishing
     @title = "Autres articles (réservés aux membres)"
-    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :order=>:created_at, :page=>params[:page])
+    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at", :page=>params[:page])
     render :action=>:articles
   end
 

@@ -55,6 +55,10 @@ class Article < ActiveRecord::Base
     self.intro+"\n\n"+self.body
   end
 
+  def created_on
+    created_at.to_date
+  end
+
   def to_correct
     self.update_attribute(:status, 'C')
   end

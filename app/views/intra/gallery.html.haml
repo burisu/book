@@ -26,6 +26,7 @@
 -else
   .warning="Vous ne pouvez pas avoir plus de #{controller.class.images_count_per_person} images dans votre galerie."
 
-%h2='Mes images ('+@current_person.images.size.to_s+')'
-#gallery
-  =render :partial=>'diapo', :collection=>@images
+-if @current_person.images.size>0
+  %h2='Mes images ('+@current_person.images.size.to_s+')'
+  #gallery
+    =render :partial=>'diapo', :collection=>@images
