@@ -52,7 +52,7 @@ a.create { padding-left: 16px; background: url(../../../images/buttons/create.pn
 li.none { list-style-type: none; margin-left: -16px; }
 
 table.formu {margin-left:auto; margin-right:auto;}
-.formu th {padding: 10px 4px 4px; color: white; border-bottom: 2px solid white;}
+.formu th {padding: 16px 4px 4px; color: #00288d; border-bottom: 1px dotted #00288d;}
 td.label { text-align:right; padding :1px 4px; color: #888;}
 td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
@@ -175,7 +175,7 @@ div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
 div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: #47B;}
 div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width: 100%;}
-div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
+div.futo table.list th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}
 div.futo table.list tr td {padding: 1px 3px;color: #007;border: 1px solid #AAD; vertical-align:center;}

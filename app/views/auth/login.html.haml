@@ -1,0 +1,17 @@
+%h1 Connectez-vous
+
+.login
+  -form_tag do
+    %table#auth.formu
+      %tr
+        %td.label Nom d'utilisateur
+        %td.value=text_field :person, :user_name, :size=>16
+        %td.link=link_to "Nom d'utilisateur perdu ?", {:action=>:lost_login}, :tabindex=>3
+      %tr
+        %td.label Mot de passe
+        %td.value=password_field :person, :password, :size=>16
+        %td.link=link_to "Mot de passe perdu ?", {:action=>:lost_password}, :tabindex=>4
+      %tr.actions
+        %td{:colspan=>3, :align=>"center"}=submit_tag "Se connecter"
+      %tr
+        %td.subscribe{:colspan=>3, :align=>"center"}=link_to "S'inscrire sur le site du Rotex", :action=>:subscribe
