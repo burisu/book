@@ -17,7 +17,7 @@
           -cache({:controller=>:home, :action=>:article_extract, :id=>article.id}) do
             .extract
               %h4=article.title
-              .content=dokuwikize(article.intro)+link_to('Lire la suite', {:controller=>:intra, :action=>:report_show, :id=>article})
+              .content=dokuwikize(article.intro)+link_to('Lire la suite', {:controller=>:home, :action=>:article, :id=>article.id})
 
 -for @article in @articles
   =render :partial=>'shared/article'

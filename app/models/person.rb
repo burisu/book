@@ -133,6 +133,11 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def can_read?(article)
+    article = Article.find(article) unless article.is_a? Article
+    (article.author_id == self.id) or self.can_manage? :all or self.can_manage? :publishing
+  end
+
 
   def change_password
     pwd = Person.generate_password

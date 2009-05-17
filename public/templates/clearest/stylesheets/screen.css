@@ -82,6 +82,13 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 #maintable .subbody {padding:4px;}
 #maintable .subend { height:2px;}
 
+
+.login { width: 480px; padding:32px; margin:32px auto; background: #CDF; -moz-border-radius: 8px; }
+.login td{ padding:2px; }
+.login tr.actions td { padding: 16px; }
+.login td.subscribe { padding:4px; background: #DEF; }
+
+
 .article {padding: 4px; margin-bottom: 12px;}
 /*.article h2 {color: #FD7;}*/
 .article .author {color: #888;}
@@ -167,7 +174,7 @@ div.futo > div {padding:4px;}
 div.futo div.menu {background: #68E; margin:0px; padding:4px; color:#DDF;}
 /*div.futo li {list-style-type: none; padding:4px;  margin:0px;}*/
 div.futo div.menu a, div.futo div.menu a:link, div.futo div.menu a:visited, div.futo div.menu a:hover {color: #47B;}
-div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width:100%;}
+div.futo table.list {border-collapse:collapse; margin: 1px; background: #EFE; width: 100%;}
 div.futo table.list th, table.formu th, #scaffolded th {background: #8AE; padding:4px; color: #002; border: 1px solid #55A;}
 div.futo table.list tr.odd  td {background: #E1E6FF;}
 div.futo table.list tr.even td {background: #F0F2FF;}

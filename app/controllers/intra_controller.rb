@@ -85,8 +85,8 @@ class IntraController < ApplicationController
                  "ou le site du [[www.rotex1690.org|Rotex 1690]]",
                  "un petit mail : <exemple@rotex1690.org>",
                  "un image centrée {{ image1 }}",
-                 "un image alignée à gauche {{image1 }}",
-                 "un image alignée à droite {{ image1|Titre}}",
+                 "un image alignée à gauche {{image1 |Titre de remplacement}}",
+                 "un image alignée à droite {{ image1}}",
                  "  Texte largeur fixe avec 2 espace en début de ligne"
                ]
     
@@ -231,8 +231,9 @@ class IntraController < ApplicationController
   def new_report
     if request.post?
       @article = Article.new
+      # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !@current_person.can_manage?(:publishing)
       @article.init(params[:article], @current_person)
-      @article.done_on = session[:report_done_on] if session[:report_done_on] === Date and !@current_person.can_manage?(:publishing)
+      @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !@current_person.can_manage?(:publishing)
       @article.natures = 'default' unless @current_person.can_manage? :publishing
       redirect_to_back if @article.save
     else
@@ -282,11 +283,22 @@ class IntraController < ApplicationController
     end
   end
 
+  # copie de Home#article
   def report_show
     @article = Article.find(params[:id])
-    unless @article
-      flash[:error] = "L'article que vous demandez n'existe pas"
+    if @article.nil?
+      flash[:error] = "La page que vous demandez n'existe pas"
       redirect_to :action=>:index
+    end
+    if @current_person.nil? and not @article.natures_include?(:home) and not @article.natures_include?(:agenda) and not @article.natures_include?(:about_us) and not @article.natures_include?(:contact) and not @article.natures_include?(:legals)
+      flash[:error] = "Veuillez vous connecter pour accéder à l'article."
+      redirect_to :controller=>:auth, :action=>:login
+    elsif @current_person
+      unless @current_person.can_read? @article
+        @article = nil
+        flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
+        redirect_to :back
+      end
     end
   end  
   

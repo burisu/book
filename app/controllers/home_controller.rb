@@ -15,26 +15,32 @@ class HomeController < ApplicationController
   
   def special
     if ["contact","about_us","legals"].include?(params[:id])
-      @article = Article.find(:first, :conditions=>["natures ILIKE '% '||?||' %' AND status='P'",params[:id]])
+      @article = Article.find(:first, :conditions=>["natures LIKE ? AND status=?",'%'+params[:id].to_s+'%', 'P'])
       if @article.nil?
         flash[:warning] = "La page que vous demandez est en construction."
-        redirect_to :action=>:home
+        redirect_to :action=>:index
       end
     else
       flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:home
+      redirect_to :action=>:index
     end
   end
   
   def article
-    @article = Article.find params[:id]
+    @article = Article.find(params[:id])
     if @article.nil?
       flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:home
+      redirect_to :action=>:index
     end
-    if @article.natures_include?(:blog) and @current_user.nil?
-      flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:home
+    if @current_person.nil? and not @article.natures_include?(:home) and not @article.natures_include?(:agenda) and not @article.natures_include?(:about_us) and not @article.natures_include?(:contact) and not @article.natures_include?(:legals)
+      flash[:error] = "Veuillez vous connecter pour accéder à l'article."
+      redirect_to :controller=>:auth, :action=>:login
+    elsif @current_person
+      unless @current_person.can_read? @article
+        @article = nil
+        flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
+        redirect_to :back
+      end
     end
   end
 
