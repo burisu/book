@@ -5,12 +5,12 @@
     %table#auth.formu
       %tr
         %td.label Nom d'utilisateur
-        %td.value=text_field :person, :user_name, :size=>16
-        %td.link=link_to "Nom d'utilisateur perdu ?", {:action=>:lost_login}, :tabindex=>3
+        %td.value=text_field :person, :user_name
+        %td.link=link_to "Nom d'utilisateur perdu&nbsp;?", {:action=>:lost_login}, :tabindex=>3
       %tr
         %td.label Mot de passe
-        %td.value=password_field :person, :password, :size=>16
-        %td.link=link_to "Mot de passe perdu ?", {:action=>:lost_password}, :tabindex=>4
+        %td.value=password_field :person, :password
+        %td.link=link_to "Mot de passe perdu&nbsp;?", {:action=>:lost_password}, :tabindex=>4
       %tr.actions
         %td{:colspan=>3, :align=>"center"}=submit_tag "Se connecter"
       %tr

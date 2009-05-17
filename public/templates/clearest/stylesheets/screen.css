@@ -85,6 +85,7 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .login { width: 480px; padding:32px; margin:32px auto; background: #CDF; -moz-border-radius: 8px; }
 .login td{ padding:2px; }
+.login input[type="text"], .login input[type="password"] { width: 180px;}
 .login tr.actions td { padding: 16px; }
 .login td.subscribe { padding:4px; background: #DEF; }
 
