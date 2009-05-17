@@ -1,0 +1,25 @@
+%h1=@person.label
+
+%h2 Cotisations
+%ul.aclist
+  %li=link_to "Ajouter une cotisation",{:action=>:add_subscription, :id=>@person.id}
+=print_table :subscriptions do |t|
+  -t.datum :begun_on
+  -t.datum :finished_on
+  -t.datum :amount
+  -t.action :action=>:remove_subscription, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
+
+%h2 Articles
+=print_table :articles do |t|
+  -t.datum :title
+  -t.datum :done_on
+  -t.datum :natures
+  -t.action :action=>:edit_report, :image=>:edit
+
+%h2 Mandats
+=print_table :mandates do |t|
+  -t.datum :begun_on
+  -t.datum :finished_on
+  -t.datum :name, :through=>:nature
+  -# t.action :controller=>:admin, :action=>:edit_mandate, :image=>:edit
+  -# t.action :action=>:mandate_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
