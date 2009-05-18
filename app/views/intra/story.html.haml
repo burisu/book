@@ -9,7 +9,7 @@
   .article
     -for report in @reports
       %a{:name=>report.id}
-      %h1.subtitle=report.title
+      %h1.subtitle=report.title+' '+link_to(image_tag('buttons/update2.png'), {:action=>:edit_report, :id=>report.id})
       .content=dokuwikize(report.content)
     .author='Par '+@folder.person.label
   
