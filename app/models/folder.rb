@@ -23,4 +23,7 @@
 
 class Folder < ActiveRecord::Base
 
+  def reports
+    Article.find(:all, :conditions=>["author_id=? AND done_on IS NOT NULL AND natures NOT LIKE '%agenda%'", self.person_id], :order=>:done_on);
+  end
 end

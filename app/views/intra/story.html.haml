@@ -1,0 +1,14 @@
+%h1 Mon histoire
+
+-cache(:controller=>:intra, :action=>:story, :id=>@folder.id) do
+  .toc
+    %h3 Table des matières
+    %ul
+      -for report in @reports
+        %li=link_to report.title, '#'+report.id.to_s
+  .article
+    -for report in @reports
+      %h1.subtitle{:name=>report.id}=report.title
+      .content=dokuwikize(report.content)
+    .author='Par '+@folder.person.label
+  

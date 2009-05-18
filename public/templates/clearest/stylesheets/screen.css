@@ -210,11 +210,13 @@ div.agenda tr td {border-top: 1px dotted #00288d;}
 
 div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; margin: 2px 0 6px; padding:4px;}
 
+h1.subtitle { font-variant: normal; color: #444; font-size: 20px;}
 .article .content { margin: 16px 0px; }
 /*.content img { margin: 2px 4px; }*/
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }
+.content p { text-indent: 1.5em }
 
 table.folder { width: 100%; }
 
@@ -230,3 +232,6 @@ table.folder { width: 100%; }
 ul.aclist { padding: 8px 8px 8px 24px; }
 
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
+
+.toc { float: right; border: 1px solid #AAA; background: #EEE; padding: 8px;}
+.toc h3 { color: #777; }

@@ -35,8 +35,9 @@
 %table.folder
   %tr
     %td#reports{:valign=>:top}
-      %h2 Mes comptes-rendus
+      %h2='Mes comptes-rendus'
       %ul.aclist
+        %li.none=link_to('Histoire complète', :action=>:story)
         -for year in @reports2.sort
           %li
             =year[0].to_s+'&nbsp;:'
@@ -46,10 +47,6 @@
                   %li.none=link_to('Créer le compte-rendu pour '+report[:month].lower, {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
                 -else
                   %li= report[:month]+"&nbsp;: "+link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-      / 
-        %ul.aclist
-          -#for report in @reports
-            %li=report[:name]+"&nbsp;: "+link_to(report[:title], {:action=>:report, :id=>report[:month]}, :class=>report[:class])
     %td &nbsp; &nbsp;
     %td#periods{:valign=>:top}
       %h2 Mes familles

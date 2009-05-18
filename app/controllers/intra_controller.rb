@@ -70,6 +70,12 @@ class IntraController < ApplicationController
     end
   end
 
+  def story
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @reports = @folder.reports
+    expire_fragment(:controller=>:intra, :action=>:story, :id=>@folder.id)
+  end
+
   def report_help
     @samples = [ "un texte en **gras**...",
                  "en //italique//...", 
