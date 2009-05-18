@@ -23,7 +23,7 @@ class Maily < ActionMailer::Base
     @body[:person] = person
     roles = Role.find(:all, :conditions=>["code in (?, ?)", 'tresor', 'admin']).collect{|r| r.id}
     people = Person.find(:all, :conditions=>{:role_id=>roles})
-    @recipients   = people.collect{|person| "#{person.label} <#{person.email}>"}.join (', ')
+    @recipients   = people.collect{|person| "#{person.label} <#{person.email}>"} # .join (', ')
     @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
     @sent_on      = Time.now
     @headers      = {}
@@ -36,7 +36,7 @@ class Maily < ActionMailer::Base
     promotion = Promotion.find(options[:promotion_id])
     people = Folder.find(:all, :conditions=>{:arrival_country_id=>country.id, :promotion_id=>promotion.id}).collect{|f| f.person}
     @recipients   = "#{country.name.to_s+' '+promotion.name.to_s} <mailing@rotex1690.org>"
-    @bcc          = people.collect{|person| "#{person.label} <#{person.email}>"}.join (', ')
+    @bcc          = people.collect{|person| "#{person.label} <#{person.email}>"} # .join (', ')
     @from         = "#{person.label} <#{person.email}>"
     @sent_on      = Time.now
     @headers      = {}
