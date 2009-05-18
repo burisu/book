@@ -37,7 +37,7 @@
     %td#reports{:valign=>:top}
       %h2='Mes comptes-rendus'
       %ul.aclist
-        %li.none=link_to('Histoire complète', {:action=>:story}, :class=>:report)
+        %li.none=link_to('Mon journal', {:action=>:story}, :class=>:reports)
         -for year in @reports2.sort
           %li
             =year[0].to_s+'&nbsp;:'
