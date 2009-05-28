@@ -1,1 +1,8 @@
+-if @article.author.articles.size > 1
+  .toc
+    %h3 Article(s) du même auteur
+    %ul
+      -for article in @article.author.articles.find(:all, :conditions=>['id!=?', @article.id], :order=>"done_on, created_at DESC")
+        %li=link_to article.title, :controller=>:home, :action=>:article, :id=>article.id
+
 =render :partial=>'shared/article'
