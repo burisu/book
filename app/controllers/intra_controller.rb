@@ -307,6 +307,32 @@ class IntraController < ApplicationController
       end
     end
   end  
+
+
+
+
+  def all_reports
+    @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN folders ON (countries.id=arrival_country_id)', :order=>:name)
+    
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   def persons
     if @current_person.role.restriction_level=0
