@@ -16,7 +16,7 @@
 class Country < ActiveRecord::Base
 
   def available_authors
-    Person.find(:all, :conditions=>{:id=>Folder.find_all_by_arrival_country_id(self.id).collect{|f| f.id}}, :order=>"family_name, first_name")
+    Person.find(:all, :conditions=>{:id=>Folder.find_all_by_arrival_country_id(self.id).collect{|f| f.person_id}}, :order=>"family_name, first_name")
   end
 
 end
