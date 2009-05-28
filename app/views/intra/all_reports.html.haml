@@ -1,0 +1,5 @@
+%h1 Tous les articles de Student Exchange
+
+-for country in @countries
+  %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
+ 
