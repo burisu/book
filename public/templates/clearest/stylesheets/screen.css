@@ -100,7 +100,8 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 .infos.formu .label { color: #888; }
 
 .subbody h1{ font-variant: small-caps ; margin: 12px; }
-.subbody h2{ margin: 8px 16px; border-bottom: 1px dotted #00288d;}
+.subbody h2{ margin: 8px 8px; border-bottom: 1px dotted #00288d;}
+.subbody ul{ margin-left:8px; }
 
 #main {
   border-collapse: collapse;

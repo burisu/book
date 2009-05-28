@@ -1,11 +1,15 @@
 %h1 Tous les articles de Student Exchange
 
--for country in @countries
-  %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
-  -for author in country.available_authors
-    - articles = author.articles.find(:all, :conditions=>["status='P' AND done_on IS NOT NULL AND NOT natures ILIKE ?", "\%agenda\%"], :order=>"done_on")
-    %h3=author.label+" ("+articles.size.to_s+")"
-    %ul
-      -for article in articles
-        %li=link_to article.title, :controller=>:home, :action=>:article, :id=>article.id
+.article
+  .content
+    -for country in @countries
+      %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
+      %ul
+        -for author in country.available_authors
+          - articles = author.articles.find(:all, :conditions=>["status='P' AND done_on IS NOT NULL AND NOT natures ILIKE ?", "\%agenda\%"], :order=>"done_on")
+          %li
+            =author.label+" ("+articles.size.to_s+")"
+            %ul
+              -for article in articles
+                %li=link_to article.title, :controller=>:home, :action=>:article, :id=>article.id
  
