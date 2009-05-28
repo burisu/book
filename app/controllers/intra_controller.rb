@@ -312,6 +312,8 @@ class IntraController < ApplicationController
 
 
   def all_reports
+    # expires_in 6.hours
+    expires_now
     @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN folders ON (countries.id=arrival_country_id)', :order=>:name)
     
   end
