@@ -508,6 +508,16 @@ class IntraController < ApplicationController
     render :action=>:people_browse
   end
 
+  def mandates
+    @mandates = Mandate.all_current(:joins=>"JOIN mandate_natures mn ON (mn.id=nature_id) JOIN people p ON (person_id=p.id)", :order=>"mn.name, p.family_name, p.first_name")
+  end
+
+
+
+
+
+
+
   def articles
     try_to_access :publishing
     @title = "Tous les articles"

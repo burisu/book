@@ -16,4 +16,10 @@
 #
 
 class Mandate < ActiveRecord::Base
+
+  def self.all_current(options={})
+    options.merge!(:conditions=>["dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)", Date.today])
+    Mandate.find(:all, options)
+  end
+
 end
