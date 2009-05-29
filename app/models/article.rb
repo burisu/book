@@ -30,26 +30,6 @@ class Article < ActiveRecord::Base
   list_column :natures, NATURES
     
   STATUS = {:W=>"À l'écriture", :R=>"Prêt", :P=>"Publié", :C=>"À la correction", :U=>"Dépublié"}
-
-  def init(params,person)
-    self.author_id ||= person.id
-    self.language_id = params[:language_id]
-    self.title = params[:title]
-    self.intro = params[:intro]
-    self.body  = params[:body]
-    self.status = 'W' if self.new_record?
-    self.status = params[:status] if person.can_manage? :publishing
-    # raise params[:agenda]+' '+params[:agenda].class.to_s
-    if person.can_manage? :agenda
-      self.natures_set :agenda, params[:agenda]=='1'
-      self.done_on = params[:done_on]
-    end
-    self.natures_set :blog, params[:blog]=='1' if person.can_manage? :blog
-    self.natures_set :home, params[:home]=='1' if person.can_manage? :home
-    self.natures_set :contact, params[:contact]=='1' if person.can_manage? :specials
-    self.natures_set :about_us, params[:about_us]=='1' if person.can_manage? :specials
-    self.natures_set :legals, params[:legals]=='1' if person.can_manage? :specials
-  end
   
   def content
     self.intro+"\n\n"+self.body

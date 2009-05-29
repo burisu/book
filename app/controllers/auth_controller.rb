@@ -10,6 +10,7 @@ class AuthController < ApplicationController
       person=Person.authenticate(params[:person][:user_name],params[:person][:password])
       if person
         session[:current_person_id]=person.id
+        session[:rights] = person.rights
         if session[:last_url].blank?
           redirect_to :controller=>:intra, :action=>:profile
         else
@@ -31,8 +32,6 @@ class AuthController < ApplicationController
     @register = true
     @self_subscribing = true
     if request.post?
-        role = Role.none
-        params[:person][:role_id] = role.id
         @person = Person.new params[:person]
         @person.email = params[:person][:email]
         @person.is_validated = false

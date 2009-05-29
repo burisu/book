@@ -234,13 +234,36 @@ class IntraController < ApplicationController
     end
   end
   
+
+  hide_action :init_article
+  def init_article(article, params, person)
+    article.author_id ||= person.id
+    article.language_id = params[:language_id]
+    article.title = params[:title]
+    article.intro = params[:intro]
+    article.body  = params[:body]
+    article.status = 'W' if article.new_record?
+    article.status = params[:status] if access? :publishing
+    # raise params[:agenda]+' '+params[:agenda].class.to_s
+    if access? :agenda
+      article.natures_set :agenda, params[:agenda]=='1'
+      article.done_on = params[:done_on]
+    end
+    article.natures_set :blog, params[:blog]=='1' if access? :blog
+    article.natures_set :home, params[:home]=='1' if access? :home
+    article.natures_set :contact, params[:contact]=='1' if access? :specials
+    article.natures_set :about_us, params[:about_us]=='1' if access? :specials
+    article.natures_set :legals, params[:legals]=='1' if access? :specials
+  end
+
+
   def new_report
     if request.post?
       @article = Article.new
-      # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !@current_person.can_manage?(:publishing)
-      @article.init(params[:article], @current_person)
-      @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !@current_person.can_manage?(:publishing)
-      @article.natures = 'default' unless @current_person.can_manage? :publishing
+      # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
+      init_article(@article, params[:article], @current_person)
+      @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
+      @article.natures = 'default' unless access? :publishing
       redirect_to_back if @article.save
     else
       @article = Article.new
@@ -254,14 +277,14 @@ class IntraController < ApplicationController
       flash[:error] = "L'article demandé n'est pas disponible."
       redirect_to_back
     end
-    redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or @current_person.can_manage? :publishing
+    redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or access? :publishing
     @article.to_correct if @article.ready?
-    if @article.locked? and !@current_person.can_manage? :publishing
+    if @article.locked? and !access? :publishing
       flash[:warning] = "L'article a été validé par le rédacteur en chef et ne peut plus être modifié. Merci de votre compréhension."
       redirect_to :back
     end
     if request.post?
-      @article.init(params[:article], @current_person)
+      init_article(@article, params[:article], @current_person)
       if @article.save
         expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
         expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
@@ -281,7 +304,7 @@ class IntraController < ApplicationController
   
   def article_to_publish
     @article = Article.find(params[:id])
-    if @article.author_id==@current_person.id or @current_person.can_manage? :publishing
+    if @article.author_id==@current_person.id or access? :publishing
       @article.to_publish
       redirect_to :back
     else
@@ -300,7 +323,7 @@ class IntraController < ApplicationController
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
       redirect_to :controller=>:auth, :action=>:login
     elsif @current_person
-      unless @current_person.can_read? @article
+      unless @article.author_id = @current_person.id or access? :publishing
         @article = nil
         flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
         redirect_to :back
@@ -321,30 +344,6 @@ class IntraController < ApplicationController
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  def persons
-    if @current_person.role.restriction_level=0
-      @persons = Person.find(:all,:order=>:user_name)
-    else
-      likes = Zone.find(:all, :joins=>"LEFT JOIN mandates ON (zone_id=zones.id)", :conditions=>["person_id=? AND ? BETWEEN begun_on AND finished_on", @current_person_id, Date.today]).collect{|z| "code LIKE '"+z.code+"%'"}.join(" OR ")
-      likes = "zone_id IN (SELECT id FROM zones WHERE "+likes+") and " if likes.size>0
-      @persons = Person.find(:all, :joins=>"join roles on (role_id=roles.id) left join mandates on (people.id=mandates.person_id)", :conditions=>[likes+"roles.restriction_level>?",@current_person.role.restriction_level], :order=>:patronymic_name)
-    end
-  end
   
   def new_person
     if request.post?
@@ -371,18 +370,18 @@ class IntraController < ApplicationController
   end
 
   def waiting_users
-    access :user_validation
+    try_to_access :user_validation
     @people = Person.paginate(:all, :conditions=>{:is_validated=>true, :is_locked=>true}, :page=>params[:page])
   end
   
   def people_browse
-    access :users
+    try_to_access :users
     @title = "Liste des personnes"
     @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
   def people_select
-    access :users
+    try_to_access :users
     @person = Person.find_by_id(params[:id])
     redirect_to :action=>:people_browse if @person.nil?
     @subscriptions = @person.subscriptions
@@ -391,9 +390,8 @@ class IntraController < ApplicationController
   end
   
   def people_create
-    access :users
+    try_to_access :users
     if request.post?
-      params[:person][:role_id] = Role.none unless @current_person.can_manage? :all
       @person = Person.new params[:person]
       @person.email = params[:person][:email]
       @person.email = Digest::MD5.hexdigest(@person.label)+'@'+rand.to_s if @person.email.blank?
@@ -419,11 +417,10 @@ class IntraController < ApplicationController
   end
   
   def people_update
-    access :users
+    try_to_access :users
     @person = Person.find(params[:id])
     if request.post?
-      unless @current_person.can_manage? :all 
-        params[:person][:role_id] = @person.role_id 
+      unless access? :all 
         params[:person][:password] = ''
         params[:person][:password_confirmation] = ''
       end
@@ -438,7 +435,7 @@ class IntraController < ApplicationController
   end
   
   def people_lock_access
-    access :users
+    try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = true
     p.forced    = true
@@ -447,7 +444,7 @@ class IntraController < ApplicationController
   end
   
   def people_unlock_access
-    access :users
+    try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = false
     p.forced    = true
@@ -456,7 +453,7 @@ class IntraController < ApplicationController
   end
   
   def people_delete
-    access :users
+    try_to_access :users
     if request.post? or request.delete?
       begin
         Person.find(params[:id]).destroy 
@@ -468,7 +465,7 @@ class IntraController < ApplicationController
   end 
 
   def add_subscription
-    access :subscribing
+    try_to_access :subscribing
     @person = Person.find(params[:id])
     if request.post?
       @subscription = Subscription.new(params[:subscription])
@@ -484,89 +481,89 @@ class IntraController < ApplicationController
   end
 
   def remove_subscription
-    access :subscribing
+    try_to_access :subscribing
     s = Subscription.find(params[:id])
     s.destroy if request.post?
     redirect_to :action=>:people_select, :id=>s.person_id
   end
 
   def subscribers
-    access :subscribing
+    try_to_access :subscribing
     @title = "Liste des adhérents actuels"
     @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def non_subscribers
-    access :subscribing
+    try_to_access :subscribing
     @title = "Liste des non-adhérents actuels"
     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def new_non_subscribers
-    access :subscribing
+    try_to_access :subscribing
     @title = "Liste des futurs non-adhérents (à 2 mois)"
     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
     render :action=>:people_browse
   end
 
   def articles
-    access :publishing
+    try_to_access :publishing
     @title = "Tous les articles"
     @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
   end
 
   def waiting_articles
-    access :publishing
+    try_to_access :publishing
     @title = "Articles proposés à la publication"
     @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def special_articles
-    access :specials
+    try_to_access :specials
     @title = "Articles spéciaux"
     @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def agenda_articles
-    access :agenda
+    try_to_access :agenda
     @title = "Articles de l'agenda"
     @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def home_articles
-    access :home
+    try_to_access :home
     @title = "Articles de la page d'accueil"
     @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def blog_articles
-    access :home
+    try_to_access :home
     @title = "Articles extraits pour la présentation"
     @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def other_articles
-    access :publishing
+    try_to_access :publishing
     @title = "Autres articles (réservés aux membres)"
     @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
     render :action=>:articles
   end
 
   def article_activate
-    access :publishing
+    try_to_access :publishing
     Article.find(params[:id]).publish
     redirect_to :back
   end
 
   def article_deactivate
-    access :publishing
+    try_to_access :publishing
     Article.find(params[:id]).unpublish
     redirect_to :back
   end
@@ -658,8 +655,8 @@ class IntraController < ApplicationController
 
   protected
   
-  def access(right=:all)
-    redirect_to :action=>:access_denied unless @current_person.can_manage? right
+  def try_to_access(right=:all)
+    redirect_to :action=>:access_denied unless access? right
   end
   
   

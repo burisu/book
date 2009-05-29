@@ -21,8 +21,9 @@ class Maily < ActionMailer::Base
       end
     @body[:nature] = nature
     @body[:person] = person
-    roles = Role.find(:all, :conditions=>["code in (?, ?)", 'tresor', 'admin']).collect{|r| r.id}
-    people = Person.find(:all, :conditions=>{:role_id=>roles})
+    people = Person.mandated_for(['tresor', 'admin'])
+    # roles = Role.find(:all, :conditions=>["code in (?, ?)", 'tresor', 'admin']).collect{|r| r.id}
+    # people = Person.find(:all, :conditions=>{:role_id=>roles})
     @recipients   = people.collect{|person| "#{person.label} <#{person.email}>"} # .join (', ')
     @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
     @sent_on      = Time.now

@@ -6,22 +6,22 @@
   %tr
     %td.label Langue
     %td.value=select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] })
-  -if @current_person.can_manage? :agenda
+  -if access? :agenda
     %tr
       %td.label A mettre dans l'agenda
       %td.value=check_box(:article, :agenda)
     %tr
       %td.label Date pour l'agenda (AAAA-MM-JJ)
       %td.value=text_field(:article, :done_on)
-  -if @current_person.can_manage? :home
+  -if access? :home
     %tr
       %td.label A mettre en page d'accueil
       %td.value=check_box(:article, :home)
-  -if @current_person.can_manage? :blog
+  -if access? :blog
     %tr
       %td.label A mettre dans les extraits
       %td.value=check_box(:article, :blog)
-  -if @current_person.can_manage? :specials
+  -if access? :specials
     %tr
       %td.label Article à afficher pour 'Contact'
       %td.value=check_box(:article, :contact)
@@ -31,7 +31,7 @@
     %tr
       %td.label Article à afficher pour 'Mentions légales'
       %td.value=check_box(:article, :legals)
-  -if @current_person.can_manage? :publishing
+  -if access? :publishing
     %tr
       %td.label Statut
       %td.value=select :article, :status, Article.status

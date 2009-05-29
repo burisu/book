@@ -17,8 +17,23 @@ class ApplicationController < ActionController::Base
     @title = 'Bienvenue'
   end  
   
+
+  hide_action :access
+  def access?(right=:all)
+    session[:rights] ||= []
+    if session[:rights].include? :all
+      return true
+    elsif right.is_a? Array
+      for r in right
+        return true if session[:right].include(r)
+      end
+    else
+      session[:right].include?(right)
+    end
+  end
+ 
   private
-  
+
   def authorize
     unless session[:current_person_id]
       session[:original_uri] = request.request_uri

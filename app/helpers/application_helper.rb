@@ -2,6 +2,10 @@
 module ApplicationHelper
 
 
+  def access?(right=:all)
+    self.controller.access?(right)
+  end
+
 
   def template_link_tag(name)
     code = ''

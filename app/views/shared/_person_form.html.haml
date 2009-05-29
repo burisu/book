@@ -1,4 +1,4 @@
--@admin = (@current_person ? @current_person.can_manage?(:all) : false)
+-@admin = (@current_person ? access?(:all) : false)
 -if @admin or @self_subscribing
   %tr
     %th{:colspan=>"3"} Identité
@@ -81,9 +81,4 @@
     %td{:colspan=>"3", :align=>:center}
       =check_box :person, :terms_of_use
       %label{:for=>'person_terms_of_use'} J'accepte les termes d'utilisation du site Rotex1690.org
--if @admin
-  %tr
-    %td.label Rôle/Niveau d'accès
-    %td.value=select :person, :role_id, Role.find(:all).collect {|p| [ p.name, p.id ] }
-    %td.hint
 

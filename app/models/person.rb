@@ -89,7 +89,7 @@ class Person < ActiveRecord::Base
   def before_destroy
     total = 0
     # MandateNature.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
-    raise Exception.new("Vous ne pouvez pas supprimer un administrateur dans l'exercice de sa fonction") if self.can_manage?
+    raise Exception.new("Vous ne pouvez pas supprimer un administrateur dans l'exercice de sa fonction") if self.rights.include? :all
     if self.subscriptions.size<=0
       # PersonVersion.delete_all(:person_id=>self.id)
       self.articles = {}
@@ -114,30 +114,24 @@ class Person < ActiveRecord::Base
       self.hashed_password=Person.encrypt(@password, self.salt)
     end
   end
-  
-  def can_manage?(level=:all,mode=:or)
-    if level.is_a? Symbol
-      return self.role.can_manage?(level)
-    elsif level.is_a? Array
-      ok = false
-      if mode==:and
-        ok = true
-        level.each{|x| ok = false unless self.role.can_manage?(x)}
-      else
-        level.each{|x| ok = true if self.role.can_manage?(x)}
-      end
-      return ok
-    else
-      raise Exception.new "Bad type for right: "+level.class.to_s
+
+  def rights(active_on=Date.today)
+    array = []
+    for mandate in self.mandates.find(:all, :conditions=>["dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)", active_on])
+      array += mandate.nature.rights_array
     end
+    return array.uniq
   end
 
-  def can_read?(article)
-    article = Article.find(article) unless article.is_a? Article
-    (article.author_id == self.id) or self.can_manage? :all or self.can_manage? :publishing
+  def self.mandated_for(nature, active_on=Date.today)
+    nature = [nature] unless nature.is_a? Array
+    nature = nature.collect do |n|
+      nature.is_a?(MandateNature) ? nature.code : nature
+    end
+    pids = Mandate.find(:all, :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND code IN ?", active_on, nature]).collect{|m| m.person_id}
+    Person.find(:all, :conditions=>{:id=>pids})
   end
-
-
+  
   def change_password
     pwd = Person.generate_password
     self.forced = true
@@ -150,7 +144,7 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     person = self.find_by_user_name name
     if person
-      person = nil if person.is_locked or !person.confirm(password) or !(person.can_manage?(:all) or person.has_subscribed?)
+      person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed?)
     end
     person
   end
