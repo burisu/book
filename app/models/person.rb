@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090510103348
+# Schema version: 20090529124009
 #
 # Table name: people
 #
@@ -30,7 +30,6 @@
 #  is_validated      :boolean         not null
 #  is_locked         :boolean         not null
 #  is_user           :boolean         not null
-#  role_id           :integer         not null
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #  lock_version      :integer         default(0), not null
@@ -89,8 +88,8 @@ class Person < ActiveRecord::Base
 
   def before_destroy
     total = 0
-    Role.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
-    raise Exception.new("Vous ne pouvez pas supprimer le dernier administrateur") if total<=1 and self.can_manage?
+    # MandateNature.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
+    raise Exception.new("Vous ne pouvez pas supprimer un administrateur dans l'exercice de sa fonction") if self.can_manage?
     if self.subscriptions.size<=0
       # PersonVersion.delete_all(:person_id=>self.id)
       self.articles = {}

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090510103348
+# Schema version: 20090529124009
 #
 # Table name: people
 #
@@ -30,7 +30,6 @@
 #  is_validated      :boolean         not null
 #  is_locked         :boolean         not null
 #  is_user           :boolean         not null
-#  role_id           :integer         not null
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #  lock_version      :integer         default(0), not null

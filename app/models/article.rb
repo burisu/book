@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090510103348
+# Schema version: 20090529124009
 #
 # Table name: articles
 #

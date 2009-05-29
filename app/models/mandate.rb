@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090510103348
+# Schema version: 20090529124009
 #
 # Table name: mandates
 #
@@ -9,7 +9,7 @@
 #  finished_on  :date            
 #  nature_id    :integer         not null
 #  person_id    :integer         not null
-#  zone_id      :integer         not null
+#  zone_id      :integer         
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  lock_version :integer         default(0), not null
