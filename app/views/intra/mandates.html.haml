@@ -1,0 +1,8 @@
+%h1 Liste des personnes mandatées
+
+=print_table :mandates do |t|
+  -t.datum :name, :through=>:nature
+  -t.datum :label, :through=>:person
+  -t.datum :begun_on
+  -t.datum :finished_on
+
