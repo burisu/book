@@ -512,6 +512,27 @@ class IntraController < ApplicationController
     @mandates = Mandate.all_current(:joins=>"JOIN mandate_natures mn ON (mn.id=nature_id) JOIN people p ON (person_id=p.id)", :order=>"mn.name, p.family_name, p.first_name")
   end
 
+  def mandates_create
+    try_to_access :all
+    @mandate = Mandate.new :person_id=>params[:id]
+
+    if request.post?
+      @mandate.attributes = params[:mandate]
+      if @mandate.save
+        redirect_to :action=>:mandates
+      end
+    end
+
+  end
+
+  def mandates_delete
+    try_to_access :all
+    @mandate = Mandate.find(params[:id])
+    if @mandate and request.post?
+      Mandate.destroy(@mandate.id)
+    end
+  end
+
 
 
 
