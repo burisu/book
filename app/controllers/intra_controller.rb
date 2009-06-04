@@ -522,7 +522,18 @@ class IntraController < ApplicationController
         redirect_to :action=>:mandates
       end
     end
+  end
 
+  def mandates_update
+    try_to_access :all
+    @mandate = Mandate.find_by_id params[:id]
+    redirect_to :action=>:mandates if @mandate.nil?
+    if request.post?
+      @mandate.attributes = params[:mandate]
+      if @mandate.save
+        redirect_to :action=>:mandates
+      end
+    end
   end
 
   def mandates_delete

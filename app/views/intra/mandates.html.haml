@@ -7,5 +7,5 @@
   -t.datum :label, :through=>:person, :url=>{:action=>:people_select}, :label=>"Personne"
   -t.datum :begun_on, :url=>{:controller=>:admin, :action=>:edit_mandate}
   -t.datum :finished_on
-  -# t.action :controller=>:admin, :action=>:edit_mandate, :image=>:edit
+  -t.action :action=>:mandates_update, :image=>:edit
   -t.action :action=>:mandates_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
