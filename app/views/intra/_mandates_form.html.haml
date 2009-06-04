@@ -1,4 +1,6 @@
 %tr
+  %td{:colspan=>3}=error_messages_for 'mandate'
+%tr
   %td.label Personne
   %td.value=select :mandate, :person_id, Person.find(:all, :order=>"family_name, first_name").collect{|p| [ p.label, p.id ] }
   %td.hint
@@ -20,5 +22,5 @@
   %td.hint
 %tr
   %td.label Zone concernée
-  %td.value=select :mandate, :zone_id, Zone.find(:all, :order=>:name).collect{|p| [ p.name, p.id ] }, :include_blank=>true
+  %td.value=select :mandate, :zone_id, Zone.find(:all, :order=>:code).collect{|p| [ p.parents.collect{|z| z.name}.join(" :: "), p.id ] }, :include_blank=>true
   %td.hint
