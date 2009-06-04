@@ -1,9 +1,12 @@
 %h1 Gérer les zones géographiques
 .aclist
-  =link_to 'Tous les districts', :action=>:zones_create, :id=>''
-  -for parent in @parents
-    &raquo;
-    =link_to parent.name, :action=>:zones_create, :id=>parent.id
+  %ul
+    %li
+      =link_to 'Tous les districts', :action=>:zones_create, :id=>''
+      -for parent in @parents
+        &raquo;
+        =link_to parent.name, :action=>:zones_create, :id=>parent.id
+    %li=link_to "Mettre à jour les codes zones", :action=>:zones_refresh
 
 
 %h2 Ajouter une zone fille

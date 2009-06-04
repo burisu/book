@@ -634,6 +634,13 @@ class IntraController < ApplicationController
 
 
 
+  def zones_refresh
+    zones = Zone.find(:all, :conditions=>["parent_id IS NULL"])
+    for zone in zones
+      zone.save
+    end
+    redirect_to :action=>:zones_create
+  end
 
 
 

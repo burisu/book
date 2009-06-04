@@ -19,7 +19,7 @@ class Zone < ActiveRecord::Base
   
   def before_validation
     self.code = self.parent ? self.parent.code : ''
-    self.code += '/'+self.number.to_s
+    self.code += '/'+self.number.to_s.rjust(6, "0")
   end
 
   def validate 
