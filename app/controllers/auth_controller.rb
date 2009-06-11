@@ -89,10 +89,6 @@ class AuthController < ApplicationController
   end
 
   def lost_password
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
     if request.post?
       @person = Person.find_by_user_name params[:person][:user_name]
       if @person
@@ -105,10 +101,6 @@ class AuthController < ApplicationController
   end
   
   def lost_login
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
     if request.post?
       @person = Person.find_by_email params[:person][:email]
       if @person
