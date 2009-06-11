@@ -26,7 +26,7 @@
         #mainbody
           %table#maintable
             %tr
-              = render(:partial=>'shared/submenu', :object=>@current_person) if @current_person
+              = render(:partial=>'shared/submenu', :object=>@current_person) if @current_person and @vision==:rotex
               %td.subbody{:valign=>"top"}=yield
     #footer
       .column

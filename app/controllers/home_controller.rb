@@ -1,5 +1,10 @@
 class HomeController < ApplicationController
 
+  before_filter :vision
+  def vision
+    redirect_to :controller=>:suivi unless @vision==:rotex
+  end
+
   def index
     language  = Language.find_by_iso639('FR')
     @articles = Article.paginate(:all, :conditions=>["language_id=? AND natures ILIKE '% home %' AND status='P'",language.id], :order=>"created_at DESC", :page=>params[:page], :per_page=>5)||[]

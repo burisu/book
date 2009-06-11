@@ -41,6 +41,14 @@ class ApplicationController < ActionController::Base
   private
 
   def authorize
+    if @vision!=:rotex and self.controller_name=='intra'
+      redirect_to :controller=>:suivi 
+      return
+    end
+    if @vision==:rotex and self.controller_name=='suivi'
+      redirect_to :controller=>:intra 
+      return
+    end
     unless session[:current_person_id]
       session[:original_uri] = request.request_uri
       session[:last_url]= request.url
