@@ -19,6 +19,10 @@ class AuthController < ApplicationController
       else
         flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
+    else
+      if session[:current_person_id]
+        redirect_to :controller=>:intra
+      end
     end
   end
 
@@ -29,6 +33,11 @@ class AuthController < ApplicationController
   end
 
   def subscribe
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
+
     @register = true
     @self_subscribing = true
     if request.post?
@@ -54,6 +63,10 @@ class AuthController < ApplicationController
   end
   
   def activate
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
     clean_people
     @person = Person.find_by_validation params[:id]
     @person.forced = true
@@ -76,6 +89,10 @@ class AuthController < ApplicationController
   end
 
   def lost_password
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
     if request.post?
       @person = Person.find_by_user_name params[:person][:user_name]
       if @person
@@ -88,6 +105,10 @@ class AuthController < ApplicationController
   end
   
   def lost_login
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
     if request.post?
       @person = Person.find_by_email params[:person][:email]
       if @person
@@ -100,6 +121,10 @@ class AuthController < ApplicationController
   end
   
   def change_password
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
     @person = @current_person
     if request.post?
       @person.test_password = params[:person][:test_password]
@@ -113,6 +138,10 @@ class AuthController < ApplicationController
   end
 
   def change_email
+    if @vision!=:rotex
+      redirect_to :controller=>:suivi
+      return
+    end
     @person = @current_person
     if request.post?
       @person.test_password = params[:person][:test_password]

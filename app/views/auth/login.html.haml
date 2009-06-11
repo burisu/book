@@ -13,5 +13,6 @@
         %td.link=link_to "Mot de passe perdu&nbsp;?", {:action=>:lost_password}, :tabindex=>4
       %tr.actions
         %td{:colspan=>3, :align=>"center"}=submit_tag "Se connecter"
-      %tr
-        %td.subscribe{:colspan=>3, :align=>"center"}=link_to "S'inscrire sur le site du Rotex", :action=>:subscribe
+      - if @vision==:rotex
+        %tr
+          %td.subscribe{:colspan=>3, :align=>"center"}=link_to "S'inscrire sur le site", :action=>:subscribe
