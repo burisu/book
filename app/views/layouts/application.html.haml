@@ -9,15 +9,15 @@
     #header
       .column
         .flag
-          .menu
-            -if @vision==:rotex
-              %ul
-                %li=link_to 'Accueil', {:controller=>:home}
-                - unless @current_person
-                  %li= link_to 'Espace Membres', {:controller=>:intra, :action=>:profile}
-                %li= link_to 'Contact', {:controller=>:home, :action=>:special, :id=>:contact}
-                %li= link_to 'À propos de nous', {:controller=>:home, :action=>:special, :id=>:about_us}
-                %li= link_to 'Mentions légales', {:controller=>:home, :action=>:special, :id=>:legals}
+        .menu
+          -if @vision==:rotex
+            %ul
+              %li=link_to 'Accueil', {:controller=>:home}
+              - unless @current_person
+                %li= link_to 'Espace Membres', {:controller=>:intra, :action=>:profile}
+              %li= link_to 'Contact', {:controller=>:home, :action=>:special, :id=>:contact}
+              %li= link_to 'À propos de nous', {:controller=>:home, :action=>:special, :id=>:about_us}
+              %li= link_to 'Mentions légales', {:controller=>:home, :action=>:special, :id=>:legals}
     #bodier
       .column
         =flash_tag :error
