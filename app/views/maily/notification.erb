@@ -5,7 +5,7 @@ La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne.
 <%elsif @nature==:activation%>
 La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
 <%elsif @nature==:has_subscribed%>
-La cotisation pour la personne <%=@person.label-%> (<%=@person.id-%>).
+La cotisation pour la personne <%=@person.label-%> (<%=@person.id-%>) a été enregistrée.
 <%else-%>
 Notification d'origine inconnue.
 <%end-%>
@@ -15,12 +15,12 @@ Notification d'origine inconnue.
 <%end-%>
 
 <%if @person-%>
-Détail de la personne : <%=@person.email-%>, <%=@person.address-%>
+Coordonnées de la personne : <%=@person.email-%>, <%=@person.address%>
 Cotisations :
 <%for s in @person.subscriptions.find(:all, :order=>:begun_on)-%>
- - <%=s.amount.to_s+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
+ - <%=s.amount.to_s.rjust(7,' ')+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
 <%end-%>
-<%end%>
+<%end-%>
 
 Cordialement,
 
