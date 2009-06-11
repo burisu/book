@@ -20,7 +20,7 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
   
-  def notification(nature=:subscription, person, resp=nil)
+  def notification(nature, person, resp=nil)
     @subject      = '[ROTEX1690] Notification : '+
       if nature==:subscription
         "Enregistrement d'un nouveau membre (#{person.label})"

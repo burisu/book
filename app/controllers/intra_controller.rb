@@ -473,7 +473,7 @@ class IntraController < ApplicationController
       if @subscription.save
         session[:last_finished_on] = @subscription.finished_on
         Maily.deliver_has_subscribed(@person, @subscription)
-        Maily.deliver_notification(:has_subscribed, @subcription.person, @current_person)
+        Maily.deliver_notification(:has_subscribed, @person, @current_person)
         redirect_to :action=>:people_select, :id=>@person.id
       end
     else

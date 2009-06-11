@@ -17,8 +17,8 @@ Notification d'origine inconnue.
 <%if @person-%>
 Détail de la personne : <%=@person.email-%>, <%=@person.address-%>
 Cotisations :
-<%for s in person.subscriptions.find(:all, :order=>:begun_on)-%>
- - <%=s.amount.to_s+' pour la période du '+s.begun_on.to_s+' au '+s.begun_on.to_s-%>
+<%for s in @person.subscriptions.find(:all, :order=>:begun_on)-%>
+ - <%=s.amount.to_s+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
 <%end-%>
 <%end%>
 
