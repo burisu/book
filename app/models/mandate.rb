@@ -18,10 +18,10 @@
 class Mandate < ActiveRecord::Base
 
   def validate
-    unless self.zone.nature_id == self.nature.zone_nature_id
-      if self.nature.zone_nature.nil?
-        errors.add(:zone_id, "ne doit pas être renseigné")
-      else
+    if self.nature
+      if self.nature.zone_nature_id.nil?
+        errors.add(:zone_id, "ne doit pas être renseigné") unless self.zone.nature_id.nil?
+      elsif self.zone.nature_id != self.nature.zone_nature_id
         errors.add(:zone_id, "doit être du type #{self.nature.zone_nature.inspect}")
       end
     end
