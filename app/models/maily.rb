@@ -10,21 +10,32 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
   
-  def notification(nature=:subscription, person=nil)
+  def has_subscribed(person, subscription)
+    @subject      = '[ROTEX1690] '+person.first_name+', votre cotisation a été enregistrée'
+    @body[:person] = person
+    @body[:subscription] = subscription
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+  
+  def notification(nature=:subscription, person, resp=nil)
     @subject      = '[ROTEX1690] Notification : '+
       if nature==:subscription
         "Enregistrement d'un nouveau membre (#{person.label})"
       elsif nature==:activation
         "Activation de compte (#{person.label})"
+      elsif nature==:has_subscribed
+        "Enregistrement de cotisation effectué pour #{person.label}"
       else
         "Inconnue"
       end
     @body[:nature] = nature
     @body[:person] = person
+    @body[:resp]   = resp
     people = Person.mandated_for(['tresor', 'admin'])
-    # roles = Role.find(:all, :conditions=>["code in (?, ?)", 'tresor', 'admin']).collect{|r| r.id}
-    # people = Person.find(:all, :conditions=>{:role_id=>roles})
-    @recipients   = people.collect{|person| "#{person.label} <#{person.email}>"} # .join (', ')
+    @recipients   = people.collect{|p| "#{p.label} <#{p.email}>"}
     @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
     @sent_on      = Time.now
     @headers      = {}

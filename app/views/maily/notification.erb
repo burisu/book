@@ -4,12 +4,22 @@ Bonjour,
 La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne. Elle devrait activer son compte sous peu, vous recevrez un nouvel e-mail à ce moment-là.
 <%elsif @nature==:activation%>
 La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
+<%elsif @nature==:has_subscribed%>
+La cotisation pour la personne <%=@person.label-%> (<%=@person.id-%>).
 <%else-%>
-Notification d'origine inconnue
+Notification d'origine inconnue.
+<%end-%>
+
+<%if @resp -%>
+<%=@resp.label-%> a effectué l'opération.
 <%end-%>
 
 <%if @person-%>
 Détail de la personne : <%=@person.email-%>, <%=@person.address-%>
+Cotisations :
+<%for s in person.subscriptions.find(:all, :order=>:begun_on)-%>
+ - <%=s.amount.to_s+' pour la période du '+s.begun_on.to_s+' au '+s.begun_on.to_s-%>
+<%end-%>
 <%end%>
 
 Cordialement,

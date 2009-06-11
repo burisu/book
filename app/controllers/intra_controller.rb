@@ -471,8 +471,10 @@ class IntraController < ApplicationController
       @subscription = Subscription.new(params[:subscription])
       @subscription.person_id = @person.id
       if @subscription.save
-          session[:last_finished_on] = @subscription.finished_on
-         redirect_to :action=>:people_select, :id=>@person.id
+        session[:last_finished_on] = @subscription.finished_on
+        Maily.deliver_has_subscribed(@person, @subscription)
+        Maily.deliver_notification(:has_subscribed, @subcription.person, @current_person)
+        redirect_to :action=>:people_select, :id=>@person.id
       end
     else
       @subscription = Subscription.new
