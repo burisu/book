@@ -1,4 +1,4 @@
-%h1="Modifier l'article : "+h(truncate(@article.title, 56))
+%h1="Modifier l'article : "+h(truncate(@article.title, :length=>56))
 
 -form_tag do
   =render :partial=>'report_form'
