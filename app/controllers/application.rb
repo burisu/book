@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       return true
     elsif right.is_a? Array
       for r in right
-        return true if session[:rights].include(r)
+        return true if session[:rights].include?(r)
       end
     else
       session[:rights].include?(right)
