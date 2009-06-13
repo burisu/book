@@ -31,10 +31,10 @@ class ApplicationController < ActionController::Base
       return true
     elsif right.is_a? Array
       for r in right
-        return true if session[:right].include(r)
+        return true if session[:rights].include(r)
       end
     else
-      session[:right].include?(right)
+      session[:rights].include?(right)
     end
   end
  
