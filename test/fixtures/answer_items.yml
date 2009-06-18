@@ -1,22 +1,21 @@
 # == Schema Information
 # Schema version: 20090618212207
 #
-# Table name: mandates
+# Table name: answer_items
 #
 #  id           :integer         not null, primary key
-#  dont_expire  :boolean         not null
-#  begun_on     :date            not null
-#  finished_on  :date            
-#  nature_id    :integer         not null
-#  person_id    :integer         not null
-#  zone_id      :integer         
+#  content      :text            
+#  answer_id    :integer         not null
+#  question_id  :integer         not null
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  lock_version :integer         default(0), not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
-  id: 1
-two:
-  id: 2
+
+# one:
+#   column: value
+#
+# two:
+#   column: value

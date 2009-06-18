@@ -1,15 +1,16 @@
 # == Schema Information
 # Schema version: 20090618212207
 #
-# Table name: zone_natures
+# Table name: answer_items
 #
 #  id           :integer         not null, primary key
-#  name         :string(255)     not null
-#  parent_id    :integer         
+#  content      :text            
+#  answer_id    :integer         not null
+#  question_id  :integer         not null
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  lock_version :integer         default(0), not null
 #
 
-class ZoneNature < ActiveRecord::Base
+class AnswerItem < ActiveRecord::Base
 end

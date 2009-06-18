@@ -1,0 +1,18 @@
+# == Schema Information
+# Schema version: 20090618212207
+#
+# Table name: answers
+#
+#  id               :integer         not null, primary key
+#  created_on       :date            
+#  ready            :boolean         not null
+#  locked           :boolean         not null
+#  person_id        :integer         not null
+#  questionnaire_id :integer         not null
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  lock_version     :integer         default(0), not null
+#
+
+class Answer < ActiveRecord::Base
+end
