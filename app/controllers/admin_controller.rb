@@ -1,7 +1,7 @@
 require 'scaffolding_extensions'
 
 class AdminController < ApplicationController
-  scaffold_all_models
+#  scaffold_all_models
   before_filter :authorize
 
   def authorize
