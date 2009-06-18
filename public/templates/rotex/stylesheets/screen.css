@@ -118,7 +118,7 @@ table.form {
 p {
   text-align : justify;
   text-indent : 0em;
-  padding : 3px 0px;
+  padding : 3px 0px 12px;
 }
 input[type="password"], input[type="text"], select { font-family : sans-serif; }
 textarea, input[type="password"], input[type="text"], select { border : 1px solid #888; background : white; color : #007; }
