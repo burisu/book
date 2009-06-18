@@ -125,10 +125,11 @@ class Person < ActiveRecord::Base
 
   def self.mandated_for(nature, active_on=Date.today)
     nature = [nature] unless nature.is_a? Array
-    nature = '('+nature.collect do |n|
-      "'"+(nature.is_a?(MandateNature) ? nature.id : MandateNature.find_by_code(nature).id).to_s+"'"
-    end.join(',')+')'
-    pids = Mandate.find(:all, :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND nature_id IN "+nature, active_on]).collect{|m| m.person_id}
+#    nature = '('+nature.collect do |n|
+#      "'"+(nature.is_a?(MandateNature) ? nature.id : MandateNature.find_by_code(nature).id).to_s+"'"
+#    end.join(',')+')'
+#    pids = Mandate.find(:all, :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND nature_id IN "+nature, active_on]).collect{|m| m.person_id}
+    pids = Mandate.find(:all, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id)", :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND mn.code IN (?)", active_on, nature]).collect{|m| m.person_id}
     Person.find(:all, :conditions=>{:id=>pids})
   end
   

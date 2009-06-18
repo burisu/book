@@ -3,6 +3,8 @@
 %ul.aclist
   %li=link_to "Ajouter une personne", :action=>:people_create
 
+=h Person.mandated_for(['tresor', 'admin']).inspect
+
 =print_table :people do |t|
   -t.datum :id
   -t.datum :family_name
