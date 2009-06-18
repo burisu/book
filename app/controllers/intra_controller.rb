@@ -332,6 +332,19 @@ class IntraController < ApplicationController
   end  
 
 
+  def report_delete
+    if request.post?
+      @article = Article.find(params[:id])
+      if @article.nil?
+        flash[:error] = "La page que vous demandez n'existe pas"
+      else
+        Article.destroy(@article)
+        flash[:notice] = "Article supprimé"
+      end
+    end
+    redirect_to :back
+  end
+
 
 
   def all_reports

@@ -13,6 +13,7 @@
   -t.action(:use=>:status, :actions=>{"P"=>:article_deactivate, "R"=>:article_activate, "U"=>:article_activate, "W"=>:article_edit, "C"=>:article_edit}, :prefix=>"article_", :method=>:post)
   -t.action :action=>:report_show, :image=>:show
   -t.action :action=>:edit_report, :image=>:edit
+  -t.action :action=>:report_delete, :image=>:destroy, :method=>:post, :confirm=>'Sûr(e)?'
 = wp
 %p
   %strong Statut (S.)&nbsp;: 

@@ -53,6 +53,7 @@ class ApplicationController < ActionController::Base
       session[:original_uri] = request.request_uri
       session[:last_url]= request.url
       redirect_to :controller=>"/auth", :action=>"login"
+      return
     end
     session[:last_request] ||= Time.now.to_i
     if Time.now.to_i-session[:last_request]>3600
