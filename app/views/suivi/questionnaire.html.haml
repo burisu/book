@@ -1,0 +1,24 @@
+%h1="Composition du questionnaire "+@questionnaire.name
+
+=error_messages_for 'questionnaire'
+-form_tag do 
+  %table.formu
+    =tr "Nom", text_field(:questionnaire, :name)
+    =tr "Lancé le", text_field(:questionnaire, :started_on), "C'est la date à partir de laquelle les students pourront renseigner le questionnaire"
+    =tr "Arrêté le", text_field(:questionnaire, :stopped_on), "C'est la date jusqu'à laquelle les students pourront renseigner le questionnaire"
+    =tr "Introduction", text_area(:questionnaire, :intro, :rows=>3, :cols=>60), "Texte apparaissant en haut du questionnaire lors de la saisie"
+    =tr "Commentaire", text_area(:questionnaire, :comment, :rows=>3, :cols=>60), "Commentaire interne"
+    =tr "", submit_tag("Enregistrer les modifications")
+
+-unless @questionnaire.new_record?
+  %h2 Questions
+  %ul.aclist
+    %li=link_to "Nouvelle question", :action=>:question, :id=>nil
+  =print_table :questions do |t|
+    -t.datum :position
+    -t.datum :name
+    -t.datum :explanation
+    -t.action :action=>:question_up, :image=>:up
+    -t.action :action=>:question_down, :image=>:down
+    -t.action :action=>:question, :image=>:edit
+    -t.action :action=>:question, :image=>:destroy, :method=>:delete, :confirm=>'Are you sure?'

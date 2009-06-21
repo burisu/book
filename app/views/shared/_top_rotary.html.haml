@@ -1,0 +1,6 @@
+.menu
+  %ul
+    %li=link_to "Accueil", {:controller=>:suivi}
+    - if @current_person
+      %li=link_to "Questionnaires", {:controller=>:suivi, :action=>:questionnaires}
+      %li=link_to "Se déconnecter", :controller=>:auth, :action=>:logout 

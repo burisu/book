@@ -26,6 +26,35 @@ module ApplicationHelper
   end
 
 
+  def menu_tag
+    render :partial=>"shared/top_#{@vision}"
+  end
+
+  def tr(label, value, hint='', options={})
+    content_tag(:tr,
+                content_tag(:td, label, :class=>:label)+
+                content_tag(:td, value, :class=>:value)+
+                content_tag(:td, hint, :class=>:hint),
+                options)
+  end
+
+  def tr_tag(*args)
+    options = {}
+    options = args.delete_at(-1) if args[-1].is_a? Hash
+    code = ""
+    for arg in args
+      data, opts = "[NoData]", {}
+      if arg.is_a? Array
+        data, opts = arg[0], arg[1]
+      else
+        data = arg.to_s
+      end
+      code += content_tag (:td, data, opts)
+    end
+    content_tag(:tr, code, options)
+  end
+
+
   def confirm(operation)
     sentence  = 'Êtes-vous '
     sentence += case @current_person.sex
@@ -70,7 +99,7 @@ module ApplicationHelper
         else image =  value.to_s
       end
 #      "<div align=\"center\">"+image_tag("buttons/"+image+".png", :border => 0, :alt=>image.t, :title=>image.t)+"</div>" unless image.nil?
-      image_tag("buttons/"+image+".png", :border => 0, :alt=>image.t, :title=>image.t) unless image.nil?
+      image_tag("buttons/"+image+".png", :border => 0, :alt=>image, :title=>image) unless image.nil?
     end
   end
   
@@ -213,7 +242,7 @@ module ApplicationHelper
         code += content_tag('tr',line, :class=>cycle('odd','even'))
       end
     else
-      code += content_tag(:tr,content_tag(:td, I18n.t("app.no_records"), :colspan=>definition.columns.size, :class=>"norecord"))
+      # code += content_tag(:tr,content_tag(:td, I18n.t("app.no_records"), :colspan=>definition.columns.size, :class=>"norecord"))
     end
     line = ''
     if record_pages
@@ -318,7 +347,8 @@ end
     end
     
     def datatype
-      @model.columns_hash[@options[:name].to_s].send(:type)
+      column = @model.columns_hash[@options[:name].to_s]
+      @options[:datatype]||column.send(:type) 
     end
     
     def valids_condition(record)

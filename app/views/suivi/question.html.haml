@@ -1,0 +1,8 @@
+%h1="Question "+(@question.name)
+
+=error_messages_for 'question'
+-form_tag do 
+  %table.formu
+    =tr "Nom", text_field(:question, :name), "C'est la question en elle-même"
+    =tr "Explications", text_area(:question, :explanation, :rows=>3, :cols=>60), "Texte apparaissant en dessous de la question"
+    =tr "", submit_tag("Enregistrer les modifications")

@@ -1,0 +1,17 @@
+%h1 Questionnaires
+
+%ul.aclist
+  %li=link_to "Nouveau questionnaire", :action=>:questionnaire, :id=>nil
+
+=print_table :questionnaires do |t|
+  -t.datum :name
+  -t.datum :started_on
+  -t.datum :stopped_on
+  -t.datum :active, :datatype=>:boolean
+  -t.datum :questions_size
+  -t.datum :answers_size
+  -t.action :action=>:questionnaire, :image=>:edit
+  -t.action :action=>:questionnaire_duplicate, :image=>:spread
+  -t.action :action=>:questionnaire, :image=>:destroy, :method=>:delete, :confirm=>'Are you sure?'
+=# will_paginate @questionnaires
+

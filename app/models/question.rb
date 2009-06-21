@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20090618212207
+# Schema version: 20090621154736
 #
 # Table name: questions
 #
 #  id               :integer         not null, primary key
 #  name             :string(255)     not null
-#  explaning        :text            
+#  explanation      :text            
 #  position         :integer         
 #  questionnaire_id :integer         
 #  created_at       :datetime        not null
@@ -14,4 +14,13 @@
 #
 
 class Question < ActiveRecord::Base
+  acts_as_list :scope=>:questionnaire
+
+
+  def duplicate(attributes={})
+    question = self.class.new({:name=>self.name, :explanation=>self.explanation}.merge(attributes))
+    question.save!
+    question
+  end
+  
 end
