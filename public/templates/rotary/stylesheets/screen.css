@@ -33,7 +33,7 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 */
 
 
-#header > div {background: #00288d url(../images/header.png) no-repeat top left; height:106px; }
+#header > div {background: #00288d url(../images/header.png) no-repeat top left; height:105px; }
 #header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:80px;width:170px}
 #header .menu { clear: both; background: #EEF7FF;}   /* ffc20f */
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
@@ -98,7 +98,7 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .infos.formu .label { color: #888; }
 
-.subbody h1{ margin: 8px; color: #00288d; font-weight:normal; font-size: 24px; border-bottom: 1px solid #00288d;}
+.subbody h1{ margin: 8px; color: #00288d; font-weight:normal; font-size: 24px; border-bottom: 1px dotted #00288d;}
 .subbody h2{ margin: 8px 8px; border-bottom: 1px dotted #00288d; font-weight:normal; font-size: 20px;}
 .subbody ul{ margin-left:8px; }
 
@@ -236,3 +236,12 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
 
+.questionnaires .empty a { color: #009 }
+.questionnaires .locked a { color: gray }
+.questionnaires .error a { color: red }
+
+.question h3 { margin: 24px 0 0; color: #d20000 }
+.question p { margin: 0; padding: 0; color: #888; }
+.question textarea { background: #FFD; color: #864;border-color: #864 }
+.submits { text-align:center; padding:8px;}
+.submits * { margin:8px;}

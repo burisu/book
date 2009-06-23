@@ -23,8 +23,8 @@ class Questionnaire < ActiveRecord::Base
     while self.class.find(:first, :conditions=>["name LIKE ? AND id!=?", self.name, self.id||0])
       self.name.succ!
     end
-    self.started_on = Date.today-2
-    self.stopped_on = Date.today-1
+    self.started_on ||= Date.today-1
+    self.stopped_on ||= self.started_on
   end
 
   def before_destroy
@@ -51,13 +51,32 @@ class Questionnaire < ActiveRecord::Base
   end
 
   def answers_size
-    Answer.count(:conditions=>{:questionnaire_id=>self.id})
+    Answer.count(:conditions=>{:questionnaire_id=>self.id, :ready=>true})
   end
 
   def active(active_on=Date.today)
     b = self.started_on||(active_on+1)
     e = self.stopped_on||(active_on+1)
     b <= active_on and active_on <= e
+  end
+
+  def self.of(person)
+    Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers WHERE person_id=?) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL)", person.id])
+  end
+
+  def state_for(person)
+    answers = Answer.find_all_by_questionnaire_id_and_person_id(self.id, person.id)
+    if answers.size == 0
+      :empty
+    elsif answers.size == 1
+      if answers[0].locked?
+        :locked
+      else
+        :editable
+      end
+    else
+      :error
+    end
   end
 
 end

@@ -1,5 +1,5 @@
-%h1 Suivi des comptes-rendus trimestriels
+%h1 Mes comptes-rendus
 
-%ul
+%ul.questionnaires
   -for q in @questionnaires
-    %li=q.name
+    %li{:class=>q.state_for(@current_person)}=link_to q.name, :action=>:answer, :id=>q.id

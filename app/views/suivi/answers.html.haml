@@ -1,0 +1,8 @@
+%h1='Réponses au questionnaire&nbsp;: '+@questionnaire.name
+
+-for answer in @answers
+  %h2=answer.person.label
+  -for item in answer.items
+    %h3=item.question.name
+    %p=item.content
+  

@@ -2,7 +2,9 @@ class SuiviController < ApplicationController
   before_filter :authorize
 
   def index
-    @questionnaires = Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE-'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE-'1 day'::INTERVAL)"])
+    # @questionnaires = Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE-'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE-'1 day'::INTERVAL)"])
+    # @questionnaires = Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL)"])
+    @questionnaires = Questionnaire.of(@current_person)
   end
 
 
@@ -70,6 +72,41 @@ class SuiviController < ApplicationController
     @question.move_lower if @question
     redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
   end
+
+
+  def answer
+    @readonly = false
+    @questionnaire = Questionnaire.find_by_id(params[:id])
+    if @questionnaire.nil?
+      flash[:error] = 'Page indisponible'
+      redirect_to :action=>:index
+      return
+    end
+    @answer = Answer.find_by_person_id_and_questionnaire_id(@current_person.id, @questionnaire.id)
+    @answer = Answer.new(:person_id=>@current_person.id, :questionnaire_id=>@questionnaire.id) if @answer.nil?
+    @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
+    if @answer.locked?
+      @readonly = true
+      return
+    end
+    if request.post?
+      @answer.ready = true if params["save_and_ready"]
+      @answer.save
+      for k,v in params[:question]
+        item = AnswerItem.find_by_question_id_and_answer_id(k.to_i, @answer.id)
+        item = AnswerItem.new(:question_id=> k.to_i, :answer_id=>@answer.id) if item.nil?
+        item.content = v[:answer]
+        item.save
+      end
+    end
+    @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
+  end
   
+
+  def answers
+    access?
+    @questionnaire = Questionnaire.find_by_id(params[:id])
+    @answers = @questionnaire.answers.find(:all, :conditions=>{:ready=>true})
+  end
 
 end

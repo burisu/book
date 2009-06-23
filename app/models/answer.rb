@@ -15,4 +15,11 @@
 #
 
 class Answer < ActiveRecord::Base
+  validates_uniqueness_of :person_id, :scope=>:questionnaire_id
+  def before_validation
+    self.created_on ||= Date.today
+  end
+
+  
+
 end

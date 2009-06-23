@@ -22,5 +22,9 @@ class Question < ActiveRecord::Base
     question.save!
     question
   end
-  
+
+  def answer(person)
+    "tot"
+  end
+
 end
