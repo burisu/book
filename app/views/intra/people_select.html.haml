@@ -1,5 +1,37 @@
 %h1=@person.label
 
+%table.infos.formu
+  %tr
+    %td.label Adresse
+    %td.value=@person.address
+  %tr
+    %td.label Téléphone (domicile)
+    %td.value=@person.phone
+  %tr
+    %td.label Téléphone (travail)
+    %td.value=@person.phone2
+  %tr
+    %td.label Téléphone (mobile)
+    %td.value=@person.mobile
+  %tr
+    %td.label Fax/Télécopie
+    %td.value=@person.fax
+  %tr
+    %td.label E-mail
+    %td.value=mail_to @person.email
+  %tr
+    %td.label Pays d'origine
+    %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name
+  %tr
+    %td.label Sexe
+    %td.value=@person.sex
+  %tr
+    %td.label Date de naissance
+    %td.value=@person.born_on
+  %tr
+    %td.label Voyage
+    %td.value=link_to('Voir le descriptif du voyage', :action=>:folder, :id=>@person.id) if @person.folder
+
 %h2 Cotisations
 %ul.aclist
   %li=link_to "Ajouter une cotisation",{:action=>:add_subscription, :id=>@person.id}

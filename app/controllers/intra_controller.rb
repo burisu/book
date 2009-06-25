@@ -28,7 +28,9 @@ class IntraController < ApplicationController
   end
 
   def folder
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    person_id = session[:current_person_id]
+    person_id = params[:id] if params[:id] and access?
+    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
@@ -103,7 +105,7 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
-      redirect_to :action=>:folder unless @period
+      redirect_to :action=>:folder, :id=>@folder.id unless @period
       @title = 'Modification de la période '+@period.name
     else
       @period = Period.new(:country_id=>@folder.arrival_country_id)
@@ -114,12 +116,13 @@ class IntraController < ApplicationController
       @period.folder_id = @folder.id
       @period.person_id = session[:current_person_id]
       if @period.save
-        redirect_to :action=>:folder
+        redirect_to :action=>:folder, :id=>@folder.id
       end
     end
   end
 
   def period_display
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if request.xhr?
       @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
       if @period
@@ -129,15 +132,16 @@ class IntraController < ApplicationController
       end
       render :partial=>'period_display'
     else
-      redirect_to :action=>:folder
+      redirect_to :action=>:folder, :id=>@folder.id
     end
   end
 
   def period_delete
     if request.post? or request.delete?
+      @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
       period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
       period.destroy unless period.nil?
-      redirect_to :action=>:folder
+      redirect_to :action=>:folder, :id=>@folder.id
     end
   end
 
@@ -146,17 +150,18 @@ class IntraController < ApplicationController
     redirect_to :action=>:folder if @period.nil?
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
     if request.post?
+      @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
       if params[:member][:id].nil?
         @member = Member.new(params[:member])
         @member.person_id = session[:current_person_id]
         if @member.save
           @period.members<< @member
-          redirect_to :action=>:folder
+          redirect_to :action=>:folder, :id=>@folder.id
         end
       else
         @member = Member.find_by_id_and_person_id(params[:member][:id], session[:current_person_id])
         @period.members<< @member unless @period.members.exists? :id=>@member.id
-        redirect_to :action=>:folder
+        redirect_to :action=>:folder, :id=>@folder.id
       end
     else
       @member = Member.new
@@ -164,14 +169,15 @@ class IntraController < ApplicationController
   end
 
   def period_remove_member
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     @period = Period.find_by_id_and_person_id(params[:period], session[:current_person_id])
-    redirect_to :action=>:folder if @period.nil?
+    redirect_to :action=>:folder, :id=>@folder.id if @period.nil?
     @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    redirect_to :action=>:folder if @member.nil?
+    redirect_to :action=>:folder, :id=>@folder.id if @member.nil?
     if request.post?
       @period.members.delete @member
     end
-    redirect_to :action=>:folder
+    redirect_to :action=>:folder, :id=>@folder.id
   end
 
 
@@ -181,7 +187,7 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @member = Member.find_by_person_id_and_id(@current_person.id, params[:id])
-      redirect_to :action=>:folder unless @member
+      redirect_to :action=>:folder, :id=>@folder.id unless @member
       @title = 'Modification de '+@member.name
     else
       @member = Member.new()
@@ -191,7 +197,7 @@ class IntraController < ApplicationController
       @member.attributes = params[:member]
       @member.person_id = session[:current_person_id]
       if @member.save
-        redirect_to :action=>:folder
+        redirect_to :action=>:folder, :id=>@folder.id
       end
     end
   end
@@ -217,7 +223,7 @@ class IntraController < ApplicationController
         @folder.person_id = session[:current_person_id]
       end
       if @folder.save
-        redirect_to :action=>:folder
+        redirect_to :action=>:folder, :id=>@folder.id
       end        
     else
       @folder ||= Folder.new

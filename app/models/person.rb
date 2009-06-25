@@ -48,6 +48,7 @@ class Person < ActiveRecord::Base
   validates_length_of :user_name, :in=>4..32
   validates_acceptance_of :terms_of_use
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
+  has_one :folder
 
   def before_validation
     self.patronymic_name = self.patronymic_name.to_s.upcase
