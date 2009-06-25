@@ -576,8 +576,12 @@ class IntraController < ApplicationController
     try_to_access :promotions
     if request.post?
       @promotion = Promotion.find(params['promotion'])
-      
-      @folders = Folder.find(:all, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>{:promotion_id=>@promotion.id}, :order=>'family_name, first_name')
+      conditions = {:promotion_id=>@promotion.id}
+      if access?
+        m = @current_person.mandate('rpz')
+        conditions[:proposer_zone_id] = m.zone.children.collect{|z| z.id} if m
+      end
+      @folders = Folder.find(:all, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>conditions, :order=>'family_name, first_name')
     end
   end
 

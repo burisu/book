@@ -133,6 +133,10 @@ class Person < ActiveRecord::Base
     pids = Mandate.find(:all, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id)", :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND mn.code IN (?)", active_on, nature]).collect{|m| m.person_id}
     Person.find(:all, :conditions=>{:id=>pids})
   end
+
+  def mandate(nature, active_on=Date.today)
+    self.mandates.find(:first, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id)", :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND code=?", active_on, nature], :order=>:begun_on)
+  end
   
   def change_password
     pwd = Person.generate_password

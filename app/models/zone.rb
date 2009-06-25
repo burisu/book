@@ -48,5 +48,8 @@ class Zone < ActiveRecord::Base
     parents << self
     parents
   end
-  
+
+  def children
+    self.class.find(:all, :conditions=>{:parent_id => self.id})
+  end
 end
