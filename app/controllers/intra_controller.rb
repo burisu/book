@@ -573,7 +573,7 @@ class IntraController < ApplicationController
 
 
   def promotions
-    try_to_access? :promotions
+    try_to_access :promotions
     if request.post?
       @promotion = Promotion.find(params['promotion'])
       
