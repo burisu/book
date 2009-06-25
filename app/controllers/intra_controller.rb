@@ -73,7 +73,9 @@ class IntraController < ApplicationController
   end
 
   def story
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    person_id = session[:current_person_id]
+    person_id = params[:id] if params[:id] and access?
+    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
     @reports = @folder.reports
     expire_fragment(:controller=>:intra, :action=>:story, :id=>@folder.id)
   end
@@ -571,8 +573,10 @@ class IntraController < ApplicationController
 
 
   def promotions
+    try_to_access? :promotions
     if request.post?
       @promotion = Promotion.find(params['promotion'])
+      
       @folders = Folder.find(:all, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>{:promotion_id=>@promotion.id}, :order=>'family_name, first_name')
     end
   end

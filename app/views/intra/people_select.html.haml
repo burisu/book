@@ -30,7 +30,7 @@
     %td.value=@person.born_on
   %tr
     %td.label Voyage
-    %td.value=link_to('Voir le descriptif du voyage', :action=>:folder, :id=>@person.id) if @person.folder
+    %td.value=link_to('Voir le récit du voyage', :action=>:story, :id=>@person.id) if @person.folder
 
 %h2 Cotisations
 %ul.aclist
