@@ -402,7 +402,7 @@ class IntraController < ApplicationController
   end
 
   def people_select
-    try_to_access :users
+    try_to_access [:users, :promotions]
     @person = Person.find_by_id(params[:id])
     redirect_to :action=>:people_browse if @person.nil?
     @subscriptions = @person.subscriptions
