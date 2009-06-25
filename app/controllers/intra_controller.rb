@@ -564,6 +564,16 @@ class IntraController < ApplicationController
 
 
 
+  def promotions
+    if request.post?
+      @promotion = Promotion.find(params['promotion'])
+      @folders = Folder.find(:all, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>{:promotion_id=>@promotion.id}, :order=>'family_name, first_name')
+    end
+  end
+
+
+
+
 
   def articles
     try_to_access :publishing

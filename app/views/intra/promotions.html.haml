@@ -1,0 +1,15 @@
+%h1=@promotion ? 'Promotion '+@promotion.name : 'Promotions'
+
+.aclist
+  -form_tag do
+    =select_tag 'promotion', options_for_select(Promotion.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
+    =submit_tag 'Afficher la promotion'
+
+-if @folders
+  =print_table :folders do |t|
+    -t.datum :label, :through=>:person, :label=>"Personne"
+    -t.datum :begun_on, :label=>"Du"
+    -t.datum :finished_on, :label=>"Au"
+    -t.datum :name, :through=>:proposer_zone, :label=>"Origine"
+    -t.datum :name, :through=>:departure_country, :label=>"Départ"
+    -t.datum :name, :through=>:arrival_country, :label=>"Arrivée"

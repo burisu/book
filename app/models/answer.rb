@@ -16,8 +16,13 @@
 
 class Answer < ActiveRecord::Base
   validates_uniqueness_of :person_id, :scope=>:questionnaire_id
+
   def before_validation
     self.created_on ||= Date.today
+  end
+
+  def validate
+    errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if answer.locked?
   end
 
   

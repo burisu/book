@@ -151,6 +151,8 @@ class Person < ActiveRecord::Base
   end
   
   def label
+    patro = ''
+    patro += ' (né(e) '+self.patronymic_name+')' if self.family_name!=self.patronymic_name
     self.first_name+' '+self.family_name
   end
 

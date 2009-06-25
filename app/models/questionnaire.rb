@@ -31,6 +31,11 @@ class Questionnaire < ActiveRecord::Base
     self.questions.clear
   end
 
+  def validate
+    errors.add(:stopped_on, "doit être posterieure à la date de début") if self.started_on>self.stopped_on
+    errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.started_on<=Date.today and Date.today<=self.stopped_on
+  end
+
 
   def duplicate
     questionnaire = self.class.new

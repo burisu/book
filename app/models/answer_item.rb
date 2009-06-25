@@ -13,4 +13,11 @@
 #
 
 class AnswerItem < ActiveRecord::Base
+
+  def validate
+    if self.answer
+      errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if self.answer.locked?
+    end
+  end
+
 end
