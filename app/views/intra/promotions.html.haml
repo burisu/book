@@ -7,7 +7,8 @@
 
 -if @folders
   =print_table :folders do |t|
-    -t.datum :label, :through=>:person, :label=>"Personne"
+    -t.datum :id, :through=>:person, :label=>"ID"
+    -t.datum :label, :through=>:person, :label=>"Personne", :url=>{:action=>:people_select}
     -t.datum :begun_on, :label=>"Du"
     -t.datum :finished_on, :label=>"Au"
     -t.datum :name, :through=>:proposer_zone, :label=>"Origine"
