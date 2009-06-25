@@ -21,10 +21,9 @@ class Answer < ActiveRecord::Base
     self.created_on ||= Date.today
   end
 
-  def validate
-    errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if answer.locked?
+  def validate_on_update
+    ans = Answer.find_by_id(self.id)
+    errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if ans.locked?
   end
-
-  
 
 end

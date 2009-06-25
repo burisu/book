@@ -54,6 +54,17 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
 
+  def answer(ans)
+    @subject      = "[ROTEX1690] Notification : Réponse à un questionnaire de "+ans.person.label
+    @body[:person] = ans.person
+    @body[:answer] = ans
+    people = Person.mandated_for(['yeoout', 'yeo'])
+    @recipients   = people.collect{|p| "#{p.label} <#{p.email}>"}
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+
   def lost_login(person)
     @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'
     @body[:person] = person

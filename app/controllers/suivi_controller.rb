@@ -86,18 +86,28 @@ class SuiviController < ApplicationController
     @answer = Answer.find_by_person_id_and_questionnaire_id(@current_person.id, @questionnaire.id)
     @answer = Answer.new(:person_id=>@current_person.id, :questionnaire_id=>@questionnaire.id) if @answer.nil?
     @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
-    if @answer.locked?
+    if @answer.locked
       @readonly = true
       return
     end
-    if request.post?
-      @answer.ready = true if params["save_and_ready"]
+    if request.post? and params[:question]
       @answer.save
       for k,v in params[:question]
         item = AnswerItem.find_by_question_id_and_answer_id(k.to_i, @answer.id)
         item = AnswerItem.new(:question_id=> k.to_i, :answer_id=>@answer.id) if item.nil?
         item.content = v[:answer]
         item.save
+      end
+      if params["save_and_ready"].to_s.size>0
+        @answer.ready  = true 
+        @answer.locked = true 
+        @answer.save!
+        begin
+          Maily.deliver_answer(@answer) if @answer
+        rescue
+        end
+        redirect_to :action=>:index
+        return
       end
     end
     @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")

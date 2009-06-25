@@ -7,7 +7,8 @@
     .question
       %h3=@question.position.to_s+". "+@question.name
       %p=dokuwikize(@question.explanation)
-      =text_area "question[]", "answer", :rows=>4, :readonly=>@readonly
-  .submits
-    =submit_tag 'Enregistrer', :name=>"save"
-    =submit_tag 'Enregistrer et soumettre au YEO', :name=>"save_and_ready"
+      =text_area "question[]", "answer", :rows=>4, :readonly=>(@readonly ? 'readonly' : '')
+  -unless @readonly
+    .submits
+      =submit_tag 'Enregistrer', :name=>"save"
+      =submit_tag 'Enregistrer et soumettre au YEO', :name=>"save_and_ready"

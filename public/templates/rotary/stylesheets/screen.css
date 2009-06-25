@@ -237,7 +237,7 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
 
 .questionnaires .empty a { color: #009 }
-.questionnaires .locked a { color: gray }
+.questionnaires .locked a { color: #888; }
 .questionnaires .error a { color: red }
 
 .question h3 { margin: 24px 0 0; color: #d20000 }

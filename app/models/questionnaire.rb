@@ -74,7 +74,7 @@ class Questionnaire < ActiveRecord::Base
     if answers.size == 0
       :empty
     elsif answers.size == 1
-      if answers[0].locked?
+      if answers[0].locked
         :locked
       else
         :editable

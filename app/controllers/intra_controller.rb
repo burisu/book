@@ -565,6 +565,7 @@ class IntraController < ApplicationController
     if @mandate and request.post?
       Mandate.destroy(@mandate.id)
     end
+    redirect_to :action=>:mandates
   end
 
 
