@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     @action = @controller_name+':'+@action_name
     @title = 'Bienvenue'
     domain = request.domain
-    @vision = if ['rotary1690.org', 'localhost'].include? request.domain
+    @vision = if ['student-exchange-rotary.org', 'rotary1690.org', 'localhost'].include? request.domain
                 :rotary
               else
                 :rotex
