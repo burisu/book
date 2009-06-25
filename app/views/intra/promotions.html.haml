@@ -2,7 +2,7 @@
 
 .aclist
   -form_tag do
-    =select_tag 'promotion', options_for_select(Promotion.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
+    =select_tag 'promotion', options_for_select(Promotion.find(:all, :order=>:name).collect{|x| [x.name, x.id]}, (@promotion ? @promotion.id : nil))
     =submit_tag 'Afficher la promotion'
 
 -if @folders
