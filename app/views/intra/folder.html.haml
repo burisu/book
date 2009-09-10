@@ -46,7 +46,12 @@
                 -if report[:class]=='create'
                   %li.none=link_to('Créer la nouvelle pour '+report[:month].lower, {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
                 -else
-                  %li= report[:month]+"&nbsp;: "+link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])+' '+link_to(image_tag('buttons/delete.png'), {:action=>:report_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
+                  %li
+                    = report[:month]+"&nbsp;: "
+                    = link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
+                    = ' '
+                    = link_to(image_tag('buttons/update.png'), {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
+                    = link_to(image_tag('buttons/delete.png'), {:action=>:report_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
     %td &nbsp; &nbsp;
     %td#periods{:valign=>:top}
       %h2 Mes familles
