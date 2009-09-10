@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -27,11 +27,13 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem "haml"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+  config.plugins = [ :will_paginate, :dyke, :all ]
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
@@ -77,3 +79,6 @@ end
 #simple_localization :languages => [:fr, :en, :es, :de, :nl], :lang_file_dir => "#{RAILS_ROOT}/app/languages", :debug=>false, :except=>[:localized_templates]
 require "#{RAILS_ROOT}/lib/safe_string"
 Haml::Template.options[:preserve] = ['textarea','pre','code']
+
+ExceptionNotifier.exception_recipients = %w(michel@gilantoli.com temp@oneiros.fr)
+ExceptionNotifier.sender_address =  %("Rotex Error" <notifier@rote1690.org>)
