@@ -31,6 +31,9 @@
   %tr
     %td.label Voyage
     %td.value=link_to('Voir le récit du voyage', :action=>:story, :id=>@person.id) if @person.folder
+  %tr
+    %td.label Dossier complet
+    %td.value=link_to('Consulter', :action=>:folder, :id=>@person.id) if @person.folder
 
 %h2 Cotisations
 -if access? :subscribing

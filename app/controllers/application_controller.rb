@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers  
   # Pick a unique cookie name to distinguish our session data from others'
-  session :session_key => '_rotex_session_id'
+  # session :session_key => '_rotex_session_id'
   before_filter :init
   def init
     if session[:current_person_id]

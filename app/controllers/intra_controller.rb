@@ -29,8 +29,9 @@ class IntraController < ApplicationController
 
   def folder
     person_id = session[:current_person_id]
-    person_id = params[:id] if params[:id] and access?
+    person_id = params[:id] if params[:id] and access? :folders
     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
+    session[:current_folder_id] = @folder.id
     redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
@@ -41,7 +42,7 @@ class IntraController < ApplicationController
       start = @folder.begun_on.at_beginning_of_month
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
       while start <= stop do
-        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
+        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>person_id})
         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
         @reports2[start.year.to_s] ||= []
         @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :id=>(article ? article.id : 0), :month_id=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
@@ -124,9 +125,9 @@ class IntraController < ApplicationController
   end
 
   def period_display
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @folder = Folder.find_by_id(session[:current_folder_id])
     if request.xhr?
-      @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
+      @period = Period.find_by_id_and_person_id(params[:id], @folder.person_id)
       if @period
         key = @period.id.to_s
         session[:periods][key] = false if session[:periods][key].nil?
