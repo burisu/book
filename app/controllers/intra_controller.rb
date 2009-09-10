@@ -31,8 +31,8 @@ class IntraController < ApplicationController
     person_id = session[:current_person_id]
     person_id = params[:id] if params[:id] and access? :folders
     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
+    redirect_to :action=>:folder_edit unless @folder 
     session[:current_folder_id] = @folder.id
-    redirect_to :action=>:folder_edit unless @folder
     @reports = []
     @periods = []
     @reports2 = {}
