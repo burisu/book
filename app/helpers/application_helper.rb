@@ -472,8 +472,6 @@ end
 
 
 
-%dskldfmlk skldf md 
-
 module ActiveRecord
   class Base
     def self.list_column(column, reference)
