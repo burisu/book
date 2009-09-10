@@ -48,7 +48,7 @@ class Person < ActiveRecord::Base
   validates_length_of :user_name, :in=>4..32
   validates_acceptance_of :terms_of_use
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
-  has_one :folder
+  has_one :folder, :dependent=>:destroy
 
   def before_validation
     self.patronymic_name = self.patronymic_name.to_s.upcase
@@ -159,6 +159,10 @@ class Person < ActiveRecord::Base
     patro = ''
     patro += ' (né(e) '+self.patronymic_name+')' if self.family_name!=self.patronymic_name
     self.first_name+' '+self.family_name
+  end
+
+  def story?
+    self.articles.find_all_by_status('P').size>0
   end
 
   def confirm(password)

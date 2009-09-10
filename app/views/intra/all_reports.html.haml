@@ -5,11 +5,19 @@
     -for country in @countries
       %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
       %ul
-        -for author in country.available_authors
-          - articles = author.articles.find(:all, :conditions=>["status='P' AND done_on IS NOT NULL AND NOT natures ILIKE ?", "\%agenda\%"], :order=>"done_on")
+        -for promotion in country.available_promotions
           %li
-            =author.label+" ("+articles.size.to_s+")"
+            = promotion.name
             %ul
-              -for article in articles
-                %li=link_to article.title, :controller=>:home, :action=>:article, :id=>article.id
+              -for author in country.available_authors(:promotion_id=>promotion.id)
+                %li
+                  -if author.story?
+                    =link_to author.label, {:controller=>:intra, :action=>:story, :id=>author.id}
+                  -else
+                    = author.label
+ 
+
+
+
+
  

@@ -15,8 +15,13 @@
 
 class Country < ActiveRecord::Base
 
-  def available_authors
-    Person.find(:all, :conditions=>{:id=>Folder.find_all_by_arrival_country_id(self.id).collect{|f| f.person_id}}, :order=>"family_name, first_name")
+  def available_authors(conditions={})
+    Person.find(:all, :conditions=>{:id=>Folder.find(:all, :conditions=>conditions.merge(:arrival_country_id=>self.id)).collect{|f| f.person_id}}, :order=>"family_name, first_name")
+  end
+
+
+  def available_promotions
+    Promotion.find(:all, :conditions=>{:id=>Folder.find_all_by_arrival_country_id(self.id).collect{|f| f.promotion_id}}, :order=>"name")
   end
 
 end
