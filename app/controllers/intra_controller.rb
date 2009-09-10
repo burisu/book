@@ -44,7 +44,7 @@ class IntraController < ApplicationController
         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
         @reports2[start.year.to_s] ||= []
-        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month_id=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
+        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :id=>(article ? article.id : 0), :month_id=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
         start = start >> 1
         break if @reports.size>=24
       end
@@ -341,7 +341,7 @@ class IntraController < ApplicationController
 
 
   def report_delete
-    if request.post?
+    if request.post? or request.delete?
       @article = Article.find(params[:id])
       if @article.nil?
         flash[:error] = "La page que vous demandez n'existe pas"
