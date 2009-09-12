@@ -137,7 +137,7 @@ module Ekylibre
               code += "        csv << #{columns_to_csv(definition, :body, :record=>record)}\n"
               code += "      end\n"
               code += "    end\n"
-              code += "    send_data(data, :type=>Mime::CSV, :disposition=>'inline', :filename=>'#{::I18n.translate('activerecord.models.'+model.name.underscore.to_s).simpleize}.csv')\n"
+              code += "    send_data(data, :type=>Mime::CSV, :disposition=>'inline', :filename=>'#{::I18n.translate('activerecord.models.'+model.name.underscore.to_s).to_s.gsub(/\\W/,'_')}.csv')\n"
             end
             code += "  end\n"
             code += "end\n"
