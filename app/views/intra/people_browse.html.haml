@@ -10,6 +10,7 @@
   -#t.datum :user_name
   -#t.datum :born_on
   -t.datum :address
+  -t.datum :student
   -t.action :use=>:is_locked, :actions=>{"true"=>:people_unlock_access, "false"=>:people_lock_access}, :prefix=>"people_", :method=>:post
   -t.action :action=>:people_select, :image=>:show
   -t.action :action=>:people_update, :image=>:edit

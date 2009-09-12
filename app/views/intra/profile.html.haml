@@ -2,8 +2,8 @@
 
 %ul.aclist
   %li=link_to 'Modifier mon profil', :action=>:profile_update, :id=>@person.id
-  %li=link_to 'Changer mon mot de passe', {:controller=>:auth, :action=>:change_password}
-  %li=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:auth, :action=>:change_email}
+  %li=link_to 'Changer mon mot de passe', {:controller=>:authentication, :action=>:change_password}
+  %li=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:authentication, :action=>:change_email}
 
 
 %table.infos.formu
@@ -25,3 +25,11 @@
   %tr
     %td.label Pays d'origine
     %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name
+
+-@mandates = @person.mandates
+-if @mandates.size>0
+  %h2 Mandats
+  =print_table :mandates do |t|
+    -t.datum :begun_on
+    -t.datum :finished_on
+    -t.datum :name, :through=>:nature

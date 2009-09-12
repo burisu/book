@@ -27,10 +27,32 @@ class IntraController < ApplicationController
     end
   end
 
+
+  dyta(:folders, :default_order=>"begun_on desc", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
+    t.action :folder, :image=>:show
+    t.column :label, :through=>:person, :url=>{:action=>:person}
+    t.column :name, :through=>:promotion
+    t.column :begun_on
+    t.column :finished_on
+    t.column :name, :through=>:proposer_zone
+    t.column :name, :through=>:departure_country
+    t.column :name, :through=>:arrival_country
+    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.person.student'
+  end
+
+
+  def folders
+  end
+
+
   def folder
     person_id = session[:current_person_id]
-    person_id = params[:id] if params[:id] and access? :folders
-    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
+    if access?(:folders) and params[:id]
+      @folder = Folder.find_by_id(params[:id])
+    elsif access?(:folders) and params[:person_id]
+      person_id = params[:id].to_i 
+    end
+    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
     unless @folder 
       redirect_to :action=>:folder_edit 
       return
@@ -40,20 +62,28 @@ class IntraController < ApplicationController
     @periods = []
     @reports2 = {}
     session[:periods] ||= {}
+    @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
+
     
     if @folder
       start = @folder.begun_on.at_beginning_of_month
       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
       while start <= stop do
-        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>person_id})
+        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@folder.person_id})
         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
         @reports2[start.year.to_s] ||= []
-        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :id=>(article ? article.id : 0), :month_id=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
+        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], 
+          :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), 
+          :title=>(article.nil? ? "Créer" : article.title), 
+          :id=>(article ? article.id : 0), 
+          :month_id=>start.year.to_s+start.month.to_s, 
+          :class=>(article.nil? ? "create" : nil)}
         start = start >> 1
         break if @reports.size>=24
       end
       @periods = @folder.periods.find(:all, :order=>:begun_on)
     end
+    # raise Exception.new @folder.inspect
   end
 
 
@@ -78,7 +108,7 @@ class IntraController < ApplicationController
 
   def story
     person_id = session[:current_person_id]
-    person_id = params[:id] if params[:id] and access?
+    person_id = params[:id] if params[:id] # and access?
     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
     @reports = @folder.reports
     expire_fragment(:controller=>:intra, :action=>:story, :id=>@folder.id)
@@ -333,7 +363,7 @@ class IntraController < ApplicationController
     end
     if @current_person.nil? and not @article.natures_include?(:home) and not @article.natures_include?(:agenda) and not @article.natures_include?(:about_us) and not @article.natures_include?(:contact) and not @article.natures_include?(:legals)
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to :controller=>:auth, :action=>:login
+      redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person
       unless @article.author_id == @current_person.id or access? :publishing
         @article = nil

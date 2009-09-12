@@ -1,27 +1,37 @@
 class ::String
-  MAJUSCULES = ['À','Â','Ä','É','È','Ê','Ë','Ì','Ï','Î','Ò','Ô','Ö','Û','Ü','Ù','Ç']
-  MINUSCULES = ['à','â','ä','é','è','ê','ë','ì','ï','î','ò','ô','ö','û','ü','ù','ç']
-  MOLUSCULES = ['a','a','a','é','é','é','é','i','i','i','o','o','o','u','u','u','ss'] # Phonétique
-  MEJUSCULES = ['A','A','A','E','E','E','E','I','I','I','O','O','O','U','U','U','C']  # Simplification "lisible"
-  MENUSCULES = ['a','a','a','e','e','e','e','i','i','i','o','o','o','u','u','u','c']  # Simplification "lisible"
+  MAJUSCULES = ['Á','À','Â','Ä','Å','Ã','Æ','É','È','Ê','Ë','Ì','Ï','Î','Ò','Ô','Ö','Û','Ü','Ù','Ç']
+  MINUSCULES = ['á','à','â','ä','å','ã','æ','é','è','ê','ë','ì','ï','î','ò','ô','ö','û','ü','ù','ç']
+  MOLUSCULES = ['a','a','a','a','a','a','a','é','é','é','é','i','i','i','o','o','o','u','u','u','ss'] # Phonétique
+  MEJUSCULES = ['A','A','A','A','A','A','A','E','E','E','E','I','I','I','O','O','O','U','U','U','C']  # Simplification "lisible"
+  MENUSCULES = ['a','a','a','a','a','a','a','e','e','e','e','i','i','i','o','o','o','u','u','u','c']  # Simplification "lisible"
   
-
   def translate(from, to)
-    ss = self.dup.to_s
-    ss.translate!(from, to)
-    ss
+    return self.dup.translate!(from, to)
   end
 
   def translate!(from, to)
     from.length.times{|x| self.gsub!(from[x], to[x])}
+    self
   end
 
   def lower
-    return self.translate(MAJUSCULES,MINUSCULES).downcase
+    return self.dup.lower!
+  end
+
+  def lower!
+    self.translate!(MAJUSCULES,MINUSCULES)
+    self.downcase!
+    self
   end
   
   def upper
-    return self.translate(MINUSCULES,MAJUSCULES).upcase
+    return self.dup.upper!
+  end
+
+  def upper!
+    self.translate!(MINUSCULES,MAJUSCULES)
+    self.upcase!
+    self
   end
   
   def ascii
@@ -34,6 +44,14 @@ class ::String
 
   def lower_ascii
     return self.ascii.downcase
+  end
+
+  def simpleize
+    return self.ascii.gsub(/[^a-zA-Z0-9\_]/,'_').squeeze('_')
+  end
+
+  def codeize
+    return self.upper_ascii.gsub(/[^A-Z0-9]/,'')
   end
     
   

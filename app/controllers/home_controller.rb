@@ -39,7 +39,7 @@ class HomeController < ApplicationController
     end
     if @current_person.nil? and not @article.natures_include?(:home) and not @article.natures_include?(:agenda) and not @article.natures_include?(:about_us) and not @article.natures_include?(:contact) and not @article.natures_include?(:legals)
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to :controller=>:auth, :action=>:login
+      redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person
       unless @article.author_id == @current_person.id or access? :publishing
         @article = nil

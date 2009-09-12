@@ -160,7 +160,7 @@ module ApplicationHelper
       content.gsub!(/^\s*\={#{n}}([^\=]+)\={#{n}}\s*$/, "<h#{x}>\\1</h#{x}>")
     end
 
-    content.gsub!(/^\ \ (.*)$/, '  <pre>\1</pre>')
+    content.gsub!(/^\ \ (.+)$/, '  <pre>\1</pre>')
     # content.gsub!("</pre>\n  <pre>", "\n")
 
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')

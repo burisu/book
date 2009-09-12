@@ -1,17 +1,16 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: mandate_natures
 #
-#  id             :integer         not null, primary key
-#  name           :string(255)     not null
-#  code           :string(8)       not null
-#  zone_nature_id :integer         
-#  parent_id      :integer         
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
-#  lock_version   :integer         default(0), not null
-#  rights         :text            
+#  code           :string(8)     not null
+#  created_at     :datetime      not null
+#  id             :integer       not null, primary key
+#  lock_version   :integer       default(0), not null
+#  name           :string(255)   not null
+#  parent_id      :integer       
+#  rights         :text          
+#  updated_at     :datetime      not null
+#  zone_nature_id :integer       
 #
 
 class MandateNature < ActiveRecord::Base

@@ -1,26 +1,25 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: emails
 #
-#  id             :integer         not null, primary key
-#  arrived_at     :datetime        not null
-#  sent_on        :date            not null
-#  subject        :string(255)     not null
-#  unvalid        :boolean         not null
-#  from           :text            not null
-#  from_valid     :boolean         not null
-#  from_person_id :integer         
-#  identifier     :text            not null
-#  to             :text            
-#  cc             :text            
-#  bcc            :text            
-#  manual_sent    :boolean         not null
-#  sent_at        :datetime        
-#  message        :text            
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
-#  lock_version   :integer         default(0), not null
+#  arrived_at     :datetime      not null
+#  bcc            :text          
+#  cc             :text          
+#  created_at     :datetime      not null
+#  from           :text          not null
+#  from_person_id :integer       
+#  from_valid     :boolean       not null
+#  id             :integer       not null, primary key
+#  identifier     :text          not null
+#  lock_version   :integer       default(0), not null
+#  manual_sent    :boolean       not null
+#  message        :text          
+#  sent_at        :datetime      
+#  sent_on        :date          not null
+#  subject        :string(255)   not null
+#  to             :text          
+#  unvalid        :boolean       not null
+#  updated_at     :datetime      not null
 #
 
 class Email < ActiveRecord::Base

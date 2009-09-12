@@ -34,8 +34,9 @@ class ApplicationController < ActionController::Base
         return true if session[:rights].include?(r)
       end
     else
-      session[:rights].include?(right)
+      return session[:rights].include?(right)
     end
+    return false
   end
  
   private
@@ -52,14 +53,14 @@ class ApplicationController < ActionController::Base
     unless session[:current_person_id]
       session[:original_uri] = request.request_uri
       session[:last_url]= request.url
-      redirect_to :controller=>"/auth", :action=>"login"
+      redirect_to :controller=>:authentication, :action=>:login
       return
     end
     session[:last_request] ||= Time.now.to_i
     if Time.now.to_i-session[:last_request]>3600
       reset_session
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
-      redirect_to :controller=>:auth, :action=>:login
+      redirect_to :controller=>:authentication, :action=>:login
       return
     end
     session[:last_request] = Time.now.to_i

@@ -30,6 +30,10 @@
     %td.label Pays
     %td.value=select :person, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
     %td.hint 
+  %tr
+    %td.label Student Exchange
+    %td.value=check_box :person, :student
+    %td.hint 
 -else
   %tr
     %th{:colspan=>"3"} Coordonnées

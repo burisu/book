@@ -1,24 +1,23 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: members
 #
-#  id           :integer         not null, primary key
-#  last_name    :string(255)     not null
-#  first_name   :string(255)     not null
-#  photo        :string(255)     
-#  nature       :string(8)       not null
-#  other_nature :string(255)     
-#  sex          :string(1)       not null
-#  phone        :string(32)      
-#  fax          :string(32)      
-#  mobile       :string(32)      
-#  comment      :text            
-#  person_id    :integer         not null
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
-#  email        :string(255)     
+#  comment      :text          
+#  created_at   :datetime      not null
+#  email        :string(255)   
+#  fax          :string(32)    
+#  first_name   :string(255)   not null
+#  id           :integer       not null, primary key
+#  last_name    :string(255)   not null
+#  lock_version :integer       default(0), not null
+#  mobile       :string(32)    
+#  nature       :string(8)     not null
+#  other_nature :string(255)   
+#  person_id    :integer       not null
+#  phone        :string(32)    
+#  photo        :string(255)   
+#  sex          :string(1)     not null
+#  updated_at   :datetime      not null
 #
 
 class Member < ActiveRecord::Base

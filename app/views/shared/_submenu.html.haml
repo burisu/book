@@ -2,10 +2,11 @@
   %h3=@current_person.label
   %ul
     %li=link_to 'Mon profil', {:controller=>:intra, :action=>:profile}
-    %li=link_to 'Mon voyage', {:controller=>:intra, :action=>:folder}
-    %li=link_to 'Ma galerie', {:controller=>:intra, :action=>:gallery}
+    -if @current_person.student
+      %li=link_to 'Mon voyage', {:controller=>:intra, :action=>:folder}
+      %li=link_to 'Ma galerie', {:controller=>:intra, :action=>:gallery}
     %li=link_to 'Envoyer un message', {:controller=>:intra, :action=>:message_send}
-    %li=link_to 'Se déconnecter', {:controller=>:auth, :action=>:logout}
+    %li=link_to 'Se déconnecter', {:controller=>:authentication, :action=>:logout}
   -if access?(:all)
     %h3 Administration
     %ul
@@ -26,7 +27,7 @@
       -if access? :publishing
         %li=link_to('Articles <em>Extraits</em>', {:controller=>:intra, :action=>:blog_articles})
         %li=link_to('Articles restants', {:controller=>:intra, :action=>:other_articles})
-  -if access? [:users,:subscribing]
+  -if access? [:users,:subscribing, :folders]
     %h3 Adhérents
     %ul
       -if access? :users
@@ -37,5 +38,7 @@
         %li=link_to('Futurs non-adhérents', {:controller=>:intra, :action=>:new_non_subscribers})
       -if access?
         %li=link_to('Personnes mandatées', {:controller=>:intra, :action=>:mandates})
+      -if access? :folders
+        %li=link_to('Voyages', {:controller=>:intra, :action=>:folders})
       -if access? :promotions
         %li=link_to('Promotions', {:controller=>:intra, :action=>:promotions})

@@ -30,9 +30,15 @@ module AnnotateModels
     info << "# Table name: #{klass.table_name}\n#\n"
     
     max_size = klass.column_names.collect{|name| name.size}.max + 1
-    klass.columns.each do |col|
+    klass.columns.sort{|a,b| a.name<=>b.name}.each do |col|
       attrs = []
-      attrs << "default(#{quote(col.default)})" if col.default
+      if col.default
+        if col.default.is_a? Date
+          attrs << "default(CURRENT_DATE)" 
+        else
+          attrs << "default(#{quote(col.default)})" 
+        end
+      end
       attrs << "not null" unless col.null
       attrs << "primary key" if col.name == klass.primary_key
 
@@ -42,7 +48,7 @@ module AnnotateModels
       else
         col_type << "(#{col.limit})" if col.limit
       end 
-      info << sprintf("#  %-#{max_size}.#{max_size}s:%-15.15s %s\n", col.name, col_type, attrs.join(", "))
+      info << sprintf("#  %-#{max_size}.#{max_size}s:%-13.13s %s\n", col.name, col_type, attrs.join(", "))
     end
 
     info << "#\n\n"
@@ -90,7 +96,7 @@ module AnnotateModels
     
     if models.empty?
       Dir.chdir(MODEL_DIR) do 
-        models = Dir["**/*.rb"]
+        models = Dir["**/*.rb"].sort
       end
     end
     models
@@ -104,9 +110,9 @@ module AnnotateModels
   def self.do_annotations
     header = PREFIX.dup
     version = ActiveRecord::Migrator.current_version rescue 0
-    if version > 0
-      header << "\n# Schema version: #{version}"
-    end
+#    if version > 0
+#      header << "\n# Schema version: #{version}"
+#    end
     
     self.get_model_names.each do |m|
       class_name = m.sub(/\.rb$/,'').camelize
@@ -123,5 +129,6 @@ module AnnotateModels
       end
       
     end
+
   end
 end

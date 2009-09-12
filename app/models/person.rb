@@ -1,38 +1,38 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: people
 #
-#  id                :integer         not null, primary key
-#  patronymic_name   :string(255)     not null
-#  family_name       :string(255)     not null
-#  family_id         :integer         
-#  first_name        :string(255)     not null
-#  second_name       :string(255)     
-#  user_name         :string(32)      not null
-#  photo             :string(255)     
-#  country_id        :integer         not null
-#  sex               :string(1)       not null
-#  born_on           :date            not null
-#  address           :text            not null
-#  latitude          :float           
-#  longitude         :float           
-#  phone             :string(32)      
-#  phone2            :string(32)      
-#  fax               :string(32)      
-#  mobile            :string(32)      
-#  email             :string(255)     not null
-#  replacement_email :string(255)     
-#  hashed_password   :string(255)     
-#  salt              :string(255)     
-#  rotex_email       :string(255)     
-#  validation        :string(255)     
-#  is_validated      :boolean         not null
-#  is_locked         :boolean         not null
-#  is_user           :boolean         not null
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
-#  lock_version      :integer         default(0), not null
+#  address           :text          not null
+#  born_on           :date          not null
+#  country_id        :integer       not null
+#  created_at        :datetime      not null
+#  email             :string(255)   not null
+#  family_id         :integer       
+#  family_name       :string(255)   not null
+#  fax               :string(32)    
+#  first_name        :string(255)   not null
+#  hashed_password   :string(255)   
+#  id                :integer       not null, primary key
+#  is_locked         :boolean       not null
+#  is_user           :boolean       not null
+#  is_validated      :boolean       not null
+#  latitude          :float         
+#  lock_version      :integer       default(0), not null
+#  longitude         :float         
+#  mobile            :string(32)    
+#  patronymic_name   :string(255)   not null
+#  phone             :string(32)    
+#  phone2            :string(32)    
+#  photo             :string(255)   
+#  replacement_email :string(255)   
+#  rotex_email       :string(255)   
+#  salt              :string(255)   
+#  second_name       :string(255)   
+#  sex               :string(1)     not null
+#  student           :boolean       not null
+#  updated_at        :datetime      not null
+#  user_name         :string(32)    not null
+#  validation        :string(255)   
 #
 
 require 'digest/sha2'
@@ -72,7 +72,7 @@ class Person < ActiveRecord::Base
   end
 
   def validate_on_update
-    errors.add(:test_password, "est incorrect") unless self.forced or self.confirm(self.test_password)
+    errors.add(:test_password, "est incorrect") unless self.forced or Person.authenticate(self.user_name, self.test_password) # self.confirm(self.test_password)
   end
 
   def validate

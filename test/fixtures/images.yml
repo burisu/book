@@ -1,19 +1,18 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: images
 #
-#  id           :integer         not null, primary key
-#  title        :string(255)     not null
-#  title_h      :text            not null
-#  desc         :string(255)     
-#  desc_h       :text            
-#  document     :string(255)     not null
-#  person_id    :integer         not null
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
-#  name         :string(255)     not null
+#  created_at   :datetime      not null
+#  desc         :string(255)   
+#  desc_h       :text          
+#  document     :string(255)   not null
+#  id           :integer       not null, primary key
+#  lock_version :integer       default(0), not null
+#  name         :string(255)   not null
+#  person_id    :integer       not null
+#  title        :string(255)   not null
+#  title_h      :text          not null
+#  updated_at   :datetime      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

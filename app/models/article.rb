@@ -1,21 +1,20 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: articles
 #
-#  id           :integer         not null, primary key
-#  title        :string(255)     not null
-#  intro        :string(512)     not null
-#  body         :text            not null
-#  done_on      :date            
-#  natures      :text            
-#  status       :string(255)     default("W"), not null
-#  document     :string(255)     
-#  author_id    :integer         not null
-#  language_id  :integer         not null
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
+#  author_id    :integer       not null
+#  body         :text          not null
+#  created_at   :datetime      not null
+#  document     :string(255)   
+#  done_on      :date          
+#  id           :integer       not null, primary key
+#  intro        :string(512)   not null
+#  language_id  :integer       not null
+#  lock_version :integer       default(0), not null
+#  natures      :text          
+#  status       :string(255)   default("W"), not null
+#  title        :string(255)   not null
+#  updated_at   :datetime      not null
 #
 
 

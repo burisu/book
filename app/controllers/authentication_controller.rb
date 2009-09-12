@@ -1,4 +1,4 @@
-class AuthController < ApplicationController
+class AuthenticationController < ApplicationController
 
   def index
     redirect_to :action=>:login

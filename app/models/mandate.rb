@@ -1,18 +1,17 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: mandates
 #
-#  id           :integer         not null, primary key
-#  dont_expire  :boolean         not null
-#  begun_on     :date            not null
-#  finished_on  :date            
-#  nature_id    :integer         not null
-#  person_id    :integer         not null
-#  zone_id      :integer         
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
+#  begun_on     :date          not null
+#  created_at   :datetime      not null
+#  dont_expire  :boolean       not null
+#  finished_on  :date          
+#  id           :integer       not null, primary key
+#  lock_version :integer       default(0), not null
+#  nature_id    :integer       not null
+#  person_id    :integer       not null
+#  updated_at   :datetime      not null
+#  zone_id      :integer       
 #
 
 class Mandate < ActiveRecord::Base

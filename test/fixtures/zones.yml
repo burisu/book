@@ -1,18 +1,17 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: zones
 #
-#  id           :integer         not null, primary key
-#  name         :string(255)     not null
-#  number       :integer         not null
-#  code         :text            not null
-#  nature_id    :integer         
-#  parent_id    :integer         
-#  country_id   :integer         
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
+#  code         :text          not null
+#  country_id   :integer       
+#  created_at   :datetime      not null
+#  id           :integer       not null, primary key
+#  lock_version :integer       default(0), not null
+#  name         :string(255)   not null
+#  nature_id    :integer       
+#  number       :integer       not null
+#  parent_id    :integer       
+#  updated_at   :datetime      not null
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

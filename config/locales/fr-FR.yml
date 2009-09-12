@@ -167,6 +167,14 @@ fr-FR:
         intro: Introduction
         status: S.
         updated_at: Modifié le
+      folder:
+        arrival_country_id: Arrivée
+        begun_on: Commencé le
+        departure_country_id: Départ
+        finished_on: Fini le
+        person_id: Étudiant
+        promotion_id: Promotion
+        proposer_zone_id: Origine
       mandate:
         begun_on: Du
         finished_on: Au
@@ -201,6 +209,7 @@ fr-FR:
         photo: Photo
         country_id: Nationalité
         role_id: Rôle
+        student: SE
         id: ID
       question:
         position: Numéro
@@ -221,7 +230,9 @@ fr-FR:
         payment_mode: Mode Regl.
   app:
     no_records: 'Pas d''enregistrements'    
-
+    
+  general:
+    export: 'Exporter en CSV'
 
 
 
@@ -425,6 +436,4 @@ nu-LL:
         note: Note
         payment_mode: Mode Regl.
         
-  
-    
   

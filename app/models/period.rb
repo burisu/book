@@ -1,27 +1,26 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: periods
 #
-#  id           :integer         not null, primary key
-#  begun_on     :date            not null
-#  finished_on  :date            not null
-#  person_id    :integer         not null
-#  folder_id    :integer         not null
-#  comment      :text            
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
-#  family_name  :string(255)     not null
-#  address      :string(255)     not null
-#  country_id   :integer         
-#  latitude     :float           
-#  longitude    :float           
-#  photo        :string(255)     
-#  phone        :string(32)      
-#  fax          :string(32)      
-#  email        :string(32)      
-#  mobile       :string(32)      
+#  address      :string(255)   not null
+#  begun_on     :date          not null
+#  comment      :text          
+#  country_id   :integer       
+#  created_at   :datetime      not null
+#  email        :string(32)    
+#  family_name  :string(255)   not null
+#  fax          :string(32)    
+#  finished_on  :date          not null
+#  folder_id    :integer       not null
+#  id           :integer       not null, primary key
+#  latitude     :float         
+#  lock_version :integer       default(0), not null
+#  longitude    :float         
+#  mobile       :string(32)    
+#  person_id    :integer       not null
+#  phone        :string(32)    
+#  photo        :string(255)   
+#  updated_at   :datetime      not null
 #
 
 class Period < ActiveRecord::Base

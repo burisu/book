@@ -1,17 +1,16 @@
 # == Schema Information
-# Schema version: 20090621154736
 #
 # Table name: questionnaires
 #
-#  id           :integer         not null, primary key
-#  name         :string(64)      not null
-#  intro        :text            
-#  comment      :text            
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  lock_version :integer         default(0), not null
-#  started_on   :date            
-#  stopped_on   :date            
+#  comment      :text          
+#  created_at   :datetime      not null
+#  id           :integer       not null, primary key
+#  intro        :text          
+#  lock_version :integer       default(0), not null
+#  name         :string(64)    not null
+#  started_on   :date          
+#  stopped_on   :date          
+#  updated_at   :datetime      not null
 #
 
 class Questionnaire < ActiveRecord::Base
