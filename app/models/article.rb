@@ -119,6 +119,10 @@ class Article < ActiveRecord::Base
     ["R","P","U"].include? self.status
   end  
   
+  def published?
+    status=='P'
+  end
+
   def human_status
     STATUS[self.status.to_sym]
   end
@@ -127,6 +131,7 @@ class Article < ActiveRecord::Base
     STATUS.to_a.collect{|x| [x[1],x[0].to_s]}
   end
   
+
   def agenda
     self.natures_include? :agenda
   end

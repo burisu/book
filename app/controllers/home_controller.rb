@@ -41,7 +41,7 @@ class HomeController < ApplicationController
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
       redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person
-      unless @article.author_id == @current_person.id or access? :publishing
+      unless @article.author_id == @current_person.id or access? :publishing or @article.published?
         @article = nil
         flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
         redirect_to :back

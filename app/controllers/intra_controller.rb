@@ -30,7 +30,7 @@ class IntraController < ApplicationController
 
   dyta(:folders, :default_order=>"begun_on desc", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
     t.action :folder, :image=>:show
-    t.column :label, :through=>:person, :url=>{:action=>:person}
+    t.column :label, :through=>:person # , :url=>{:action=>:person}
     t.column :name, :through=>:promotion
     t.column :begun_on
     t.column :finished_on
@@ -84,6 +84,15 @@ class IntraController < ApplicationController
       @periods = @folder.periods.find(:all, :order=>:begun_on)
     end
     # raise Exception.new @folder.inspect
+  end
+
+
+  def folder_delete
+    if request.post? or request.delete?
+      @folder = Folder.find_by_id(params[:id])
+      @folder.destroy unless @folder.nil?
+      redirect_to :action=>:folders
+    end
   end
 
 
@@ -365,7 +374,7 @@ class IntraController < ApplicationController
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
       redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person
-      unless @article.author_id == @current_person.id or access? :publishing
+      unless @article.author_id == @current_person.id or access? :publishing or @article.published?
         @article = nil
         flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
         redirect_to :back

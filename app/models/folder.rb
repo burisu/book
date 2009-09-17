@@ -30,4 +30,10 @@ class Folder < ActiveRecord::Base
     self.begun_on <= Date.today and Date.today <= self.finished_on
   end
 
+  def before_destroy
+    self.periods.each do |p|
+      p.destroy
+    end
+  end
+
 end
