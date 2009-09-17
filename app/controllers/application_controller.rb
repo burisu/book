@@ -41,6 +41,12 @@ class ApplicationController < ActionController::Base
  
   private
 
+  protected
+  
+  def try_to_access(right=:all)
+    redirect_to :action=>:access_denied unless access? right
+  end
+
   def authorize
     if @vision!=:rotex and self.controller_name=='intra'
       redirect_to :controller=>:suivi 
@@ -49,6 +55,12 @@ class ApplicationController < ActionController::Base
     if @vision==:rotex and self.controller_name=='suivi'
       redirect_to :controller=>:intra 
       return
+    end
+    if action_name.to_sym!=:access_denied
+      if @vision==:rotary and not (access?(:suivi) or (@current_person and @current_person.student?))
+        redirect_to :controller=>:suivi, :action=>:access_denied
+        return
+      end
     end
     unless session[:current_person_id]
       session[:original_uri] = request.request_uri

@@ -8,14 +8,13 @@ class SuiviController < ApplicationController
     @questionnaires = Questionnaire.of(@current_person)
   end
 
-
   def questionnaires
-    access? :suivi
+    try_to_access :suivi
     @questionnaires = Questionnaire.find(:all, :order=>"started_on DESC, name")
   end
 
   def questionnaire
-    access? :suivi
+    try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @questionnaire = Questionnaire.new(:name=>'Nouveau questionnaire') unless @questionnaire
     @questions = @questionnaire.questions.find(:all, :order=>:position)
@@ -32,7 +31,7 @@ class SuiviController < ApplicationController
   end
 
   def questionnaire_duplicate
-    access? :suivi
+    try_to_access :suivi
     questionnaire = Questionnaire.find_by_id(params[:id])
     if questionnaire
       redirect_to :action=>:questionnaire, :id=>questionnaire.duplicate.id
@@ -42,7 +41,7 @@ class SuiviController < ApplicationController
   end
 
   def question
-    access? :suivi
+    try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question = Question.new(:name=>'') unless @question
     @questionnaire = Questionnaire.find(session[:current_questionnaire])
@@ -61,14 +60,14 @@ class SuiviController < ApplicationController
   end
 
   def question_up
-    access? :suivi
+    try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_higher if @question
     redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
   end
   
   def question_down
-    access? :suivi
+    try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_lower if @question
     redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
@@ -115,9 +114,12 @@ class SuiviController < ApplicationController
   
 
   def answers
-    access? :suivi
+    try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @answers = @questionnaire.answers.find(:all, :conditions=>{:ready=>true})
+  end
+
+  def access_denied
   end
 
 end

@@ -776,11 +776,5 @@ class IntraController < ApplicationController
   def access_denied
   end
 
-  protected
-  
-  def try_to_access(right=:all)
-    redirect_to :action=>:access_denied unless access? right
-  end
-  
   
 end
