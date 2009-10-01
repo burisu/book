@@ -32,7 +32,7 @@ class Questionnaire < ActiveRecord::Base
 
   def validate
     errors.add(:stopped_on, "doit être posterieure à la date de début") if self.started_on>self.stopped_on
-    errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.started_on<=Date.today and Date.today<=self.stopped_on
+    # errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.started_on<=Date.today and Date.today<=self.stopped_on
   end
 
 
@@ -73,7 +73,7 @@ class Questionnaire < ActiveRecord::Base
     if answers.size == 0
       :empty
     elsif answers.size == 1
-      if answers[0].locked
+      if answers[0].locked or answers[0].ready
         :locked
       else
         :editable

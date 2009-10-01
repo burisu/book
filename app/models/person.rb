@@ -47,10 +47,12 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :email #, :if=>Proc.new {|p| !p.system }
   validates_length_of :user_name, :in=>4..32
   validates_acceptance_of :terms_of_use
+  validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/i
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   has_one :folder, :dependent=>:destroy
 
   def before_validation
+    self.user_name = self.user_name.lower
     self.patronymic_name = self.patronymic_name.to_s.upcase
     self.family_name = self.family_name.to_s.upcase
     self.family_name = self.patronymic_name if self.family_name.blank?
@@ -148,7 +150,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.authenticate(name,password)
-    person = self.find_by_user_name name
+    person = self.find(:first, :conditions=>["LOWER(user_name) = ?", name.to_s.strip.lower])
     if person
       person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed?)
     end

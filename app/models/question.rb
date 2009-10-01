@@ -15,6 +15,11 @@
 class Question < ActiveRecord::Base
   acts_as_list :scope=>:questionnaire
 
+  def validate
+    if self.questionnaire
+      errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.questionnaire.started_on<=Date.today and Date.today<=self.questionnaire.stopped_on
+    end
+  end
 
   def duplicate(attributes={})
     question = self.class.new({:name=>self.name, :explanation=>self.explanation}.merge(attributes))

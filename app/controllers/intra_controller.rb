@@ -104,6 +104,7 @@ class IntraController < ApplicationController
     rescue
       flash[:error] = "Code d'article invalide"
       redirect_to :back
+      return
     end
     start = Date.civil(year, month, 1)
     @article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
@@ -150,7 +151,10 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
-      redirect_to :action=>:folder, :id=>@folder.id unless @period
+      unless @period
+        redirect_to :action=>:folder, :id=>@folder.id 
+        return
+      end
       @title = 'Modification de la période '+@period.name
     else
       @period = Period.new(:country_id=>@folder.arrival_country_id)
@@ -192,7 +196,10 @@ class IntraController < ApplicationController
 
   def period_add_member
     @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    redirect_to :action=>:folder if @period.nil?
+    if @period.nil?
+      redirect_to :action=>:folder 
+      return
+    end
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
     if request.post?
       @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
@@ -216,9 +223,15 @@ class IntraController < ApplicationController
   def period_remove_member
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     @period = Period.find_by_id_and_person_id(params[:period], session[:current_person_id])
-    redirect_to :action=>:folder, :id=>@folder.id if @period.nil?
+    if @period.nil?
+      redirect_to :action=>:folder, :id=>@folder.id 
+      return
+    end
     @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    redirect_to :action=>:folder, :id=>@folder.id if @member.nil?
+    if @member.nil?
+      redirect_to :action=>:folder, :id=>@folder.id 
+      return
+    end
     if request.post?
       @period.members.delete @member
     end
@@ -232,7 +245,10 @@ class IntraController < ApplicationController
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @member = Member.find_by_person_id_and_id(@current_person.id, params[:id])
-      redirect_to :action=>:folder, :id=>@folder.id unless @member
+      unless @member
+        redirect_to :action=>:folder, :id=>@folder.id 
+        return
+      end
       @title = 'Modification de '+@member.name
     else
       @member = Member.new()
@@ -256,6 +272,7 @@ class IntraController < ApplicationController
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
       redirect_to :action=>:profile 
+      return
     end
     if request.post?
       if @folder
@@ -327,12 +344,14 @@ class IntraController < ApplicationController
     unless @article
       flash[:error] = "L'article demandé n'est pas disponible."
       redirect_to_back
+      return
     end
     redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or access? :publishing
     @article.to_correct if @article.ready?
     if @article.locked? and !access? :publishing
       flash[:warning] = "L'article a été validé par le rédacteur en chef et ne peut plus être modifié. Merci de votre compréhension."
       redirect_to :back
+      return
     end
     if request.post?
       init_article(@article, params[:article], @current_person)

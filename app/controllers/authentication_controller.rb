@@ -11,10 +11,10 @@ class AuthenticationController < ApplicationController
       if person
         session[:current_person_id]=person.id
         session[:rights] = person.rights
-        if session[:last_url].blank?
+        if session[:history][1].blank?
           redirect_to :controller=>:intra, :action=>:profile
         else
-          redirect_to session[:last_url]
+          redirect_to session[:history][1]
         end
       else
         flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."

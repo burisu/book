@@ -77,7 +77,7 @@ class SuiviController < ApplicationController
   def answer
     @readonly = false
     @questionnaire = Questionnaire.find_by_id(params[:id])
-    if @questionnaire.nil?
+    if @questionnaire.nil? #  or not @current_person.student
       flash[:error] = 'Page indisponible'
       redirect_to :action=>:index
       return
@@ -85,7 +85,7 @@ class SuiviController < ApplicationController
     @answer = Answer.find_by_person_id_and_questionnaire_id(@current_person.id, @questionnaire.id)
     @answer = Answer.new(:person_id=>@current_person.id, :questionnaire_id=>@questionnaire.id) if @answer.nil?
     @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
-    if @answer.locked
+    if @answer.locked or @answer.ready
       @readonly = true
       return
     end
@@ -99,7 +99,6 @@ class SuiviController < ApplicationController
       end
       if params["save_and_ready"].to_s.size>0
         @answer.ready  = true 
-        @answer.locked = true 
         @answer.save!
         begin
           Maily.deliver_answer(@answer) if @answer
@@ -117,6 +116,17 @@ class SuiviController < ApplicationController
     try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @answers = @questionnaire.answers.find(:all, :conditions=>{:ready=>true})
+  end
+
+  def answer_unlock
+    try_to_access :suivi
+    @answer = Answer.find_by_id(params[:id])
+    if request.post?
+      @answer.update_attribute(:locked, false)
+      @answer.update_attribute(:ready, false)
+      @answer.save!
+    end
+    redirect_to :action=>:answers, :id=>@answer.questionnaire_id
   end
 
   def access_denied

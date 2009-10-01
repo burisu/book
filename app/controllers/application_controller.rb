@@ -21,6 +21,18 @@ class ApplicationController < ActionController::Base
               else
                 :rotex
               end
+    session[:last_request] = Time.now.to_i
+    session[:history] ||= []
+    session[:history].delete_at(0) if session[:no_history]
+    if request.get? and not request.xhr?
+      if session[:history][1]==request.url
+        session[:history].delete_at(0)
+      elsif session[:history][0]!=request.url
+        session[:history].insert(0, request.url)
+      end
+      session[:no_history] = false
+    end
+
   end  
   
 
@@ -62,9 +74,11 @@ class ApplicationController < ActionController::Base
         return
       end
     end
+
+
     unless session[:current_person_id]
+      session[:last_url] = request.url
       session[:original_uri] = request.request_uri
-      session[:last_url]= request.url
       redirect_to :controller=>:authentication, :action=>:login
       return
     end
@@ -74,17 +88,6 @@ class ApplicationController < ActionController::Base
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
       redirect_to :controller=>:authentication, :action=>:login
       return
-    end
-    session[:last_request] = Time.now.to_i
-    session[:history] ||= []
-    session[:history].delete_at(0) if session[:no_history]
-    if request.get? and not request.xhr?
-      if session[:history][1]==request.url
-        session[:history].delete_at(0)
-      elsif session[:history][0]!=request.url
-        session[:history].insert(0, request.url)
-      end
-      session[:no_history] = false
     end
   end
 
