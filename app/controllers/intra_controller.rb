@@ -340,7 +340,7 @@ class IntraController < ApplicationController
   end
   
   def pick_image
-    @images = @current_person.images
+    @images = Image.all # @current_person.images
     render :partial=>'pick_image'
   end
 
