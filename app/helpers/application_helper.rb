@@ -33,9 +33,10 @@ module ApplicationHelper
     code += link_to_function(image_tag('buttons/bold.png'), "insertion($('#{input_id}'), ' **', '** ');" )
     code += link_to_function(image_tag('buttons/italic.png'), "insertion($('#{input_id}'), ' //', '// ');" )
     code += link_to_function(image_tag('buttons/underline.png'), "insertion($('#{input_id}'), ' __', '__ ');" )
-    code += link_to_function(image_tag('buttons/t1.png'), "insertion($('#{input_id}'), '===== ', ' =====');" )
-    code += link_to_function(image_tag('buttons/t2.png'), "insertion($('#{input_id}'), '==== ', ' ====');" )
-    code += link_to_function(image_tag('buttons/t3.png'), "insertion($('#{input_id}'), '== ', ' ==');" )
+    code += link_to_function(image_tag('buttons/t1.png'), "insertion($('#{input_id}'), '\\n===== ', ' =====\\n');" )
+    code += link_to_function(image_tag('buttons/t2.png'), "insertion($('#{input_id}'), '\\n==== ', ' ====\\n');" )
+    code += link_to_function(image_tag('buttons/t3.png'), "insertion($('#{input_id}'), '\\n== ', ' ==\\n');" )
+    code += link_to(image_tag('buttons/unknown.png'), :action=>:report_help)
     content_tag(:div, code, :class=>:toolbar)
   end
 

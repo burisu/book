@@ -37,12 +37,11 @@
       %td.value=select :article, :status, Article.status
   %tr
     %td{:colspan=>"2"}
-      .label
-        ='Introduction ('+link_to('Aide sur la mise en forme', :action=>:report_help)+')&nbsp;:'
+      .label="Introduction"
       =toolbar('article_intro')
       =text_area(:article, :intro, {:rows=>5, :maxlength=>255})
   %tr
     %td{:colspan=>"2"}
-      .label="Corps de l'article ("+link_to('Aide sur la mise en forme', :action=>:report_help)+")&nbsp;:"
+      .label="Corps de l'article"
       =toolbar('article_body')
       =text_area(:article, :body, {:rows=>11})
