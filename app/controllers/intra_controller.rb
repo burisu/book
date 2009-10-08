@@ -340,7 +340,7 @@ class IntraController < ApplicationController
   end
   
   def pick_image
-    @images = Image.all # @current_person.images
+    @images = (access? ? Image.all : @current_person.images)
     render :partial=>'pick_image'
   end
 
@@ -766,6 +766,7 @@ class IntraController < ApplicationController
     
     @addable = (@current_person.images.size < @@images_count_per_person)
     @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]}, :order=>:title)
+    render :partial=>'pick_image' if request.xhr?
   end
 
 
