@@ -40,6 +40,7 @@
       .label
         ='Introduction ('+link_to('Aide sur la mise en forme', :action=>:report_help)+')&nbsp;:'
         =link_to_remote('Ajouter une image', :url=>{:action=>:pick_image}, :update=>:iselector, :success=>"$('iselector').show()")
+      =toolbar('article_intro')
       =text_area(:article, :intro, {:rows=>5, :maxlength=>255})
   %tr
     %td{:colspan=>"2"}

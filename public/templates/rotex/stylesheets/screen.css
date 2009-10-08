@@ -238,8 +238,10 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
 
 
-#iselector { border: 1px solid #AAA; background: threedface; padding: 8px; width:700px; height:420px; position: fixed; margin: 100px auto 0 auto; top: 20px;}
-#iselector .image-list { border: 1px solid #AAA; width:692px; height: 412px; background: #FFF; overflow:auto; clear:both; margin:0 auto;}
-#iselector .image-list .image a { display:block; float: left; width: 128px; height:128px; padding: 1px; border: 1px solid #DDD; margin: 1px;}
-#iselector .image-list .image a { display:block; }
+.iselector { border: 1px solid #AAA; background: threedface; padding: 8px; width:700px; height:420px; position: fixed; margin: 100px auto 0 auto; top: 20px;}
+.iselector .image-list { border: 1px solid #AAA; width:692px; height: 412px; background: #FFF; overflow:auto; clear:both; margin:0 auto;}
+.iselector .image-list .image a { display:block; float: left; width: 128px; height:128px; padding: 1px; border: 1px solid #DDD; margin: 1px;}
+.iselector .image-list .image a { display:block; }
 
+.toolbar { clear: both; }
+.toolbar a{ padding: 2px; margin: 1px;  background: white; border: 1px solid #BBB; width: 16px; height:16px; display:block; text-align:center; vertical-align: middle; float: left;}

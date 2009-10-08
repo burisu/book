@@ -25,6 +25,20 @@ module ApplicationHelper
     end
   end
 
+  def toolbar(input_id)
+    selector = input_id+'_iselector'
+    code = ''
+    code += content_tag(:div, nil, :id=>selector, :style=>"display:none;", :class=>'iselector')
+    code += link_to_remote(image_tag('buttons/image.png'), :url=>{:action=>:pick_image, :id=>input_id}, :update=>"#{selector}", :success=>"$('#{selector}').show()")
+    code += link_to_function(image_tag('buttons/bold.png'), "insertion($('#{input_id}'), ' **', '** ');" )
+    code += link_to_function(image_tag('buttons/italic.png'), "insertion($('#{input_id}'), ' //', '// ');" )
+    code += link_to_function(image_tag('buttons/underline.png'), "insertion($('#{input_id}'), ' __', '__ ');" )
+    code += link_to_function(image_tag('buttons/t1.png'), "insertion($('#{input_id}'), '===== ', ' =====');" )
+    code += link_to_function(image_tag('buttons/t2.png'), "insertion($('#{input_id}'), '==== ', ' ====');" )
+    code += link_to_function(image_tag('buttons/t3.png'), "insertion($('#{input_id}'), '== ', ' ==');" )
+    content_tag(:div, code, :class=>:toolbar)
+  end
+
 
   def menu_tag
     render :partial=>"shared/top_#{@vision}"
@@ -49,7 +63,7 @@ module ApplicationHelper
       else
         data = arg.to_s
       end
-      code += content_tag (:td, data, opts)
+      code += content_tag(:td, data, opts)
     end
     content_tag(:tr, code, options)
   end
