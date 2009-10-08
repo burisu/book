@@ -237,3 +237,7 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
 
+
+#iselector { border: 1px solid #AAA; background: threedface; padding: 8px; width:700px; height:300px; position: fixed; margin: 100px auto 0 auto; top: 100px;}
+#iselector .image-list { border: 1px solid #AAA; width:692px; height: 292px; background: #FFF; overflow:auto; clear:both; margin:0 auto;}
+#iselector .image-list a { display:block; float: left; }

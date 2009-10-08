@@ -37,10 +37,12 @@
       %td.value=select :article, :status, Article.status
   %tr
     %td{:colspan=>"2"}
-      .label='Introduction ('+link_to('Aide sur la mise en forme', :action=>:report_help)+')&nbsp;:'
+      .label
+        ='Introduction ('+link_to('Aide sur la mise en forme', :action=>:report_help)+')&nbsp;:'
+        =link_to_remote('Ajouter une image', :url=>{:action=>:pick_image}, :update=>:iselector, :success=>"$('iselector').show()")
       =text_area(:article, :intro, {:rows=>5, :maxlength=>255})
   %tr
     %td{:colspan=>"2"}
       .label="Corps de l'article ("+link_to('Aide sur la mise en forme', :action=>:report_help)+")&nbsp;:"
       =text_area(:article, :body, {:rows=>11})
-
+#iselector{:style=>"display:none;"}

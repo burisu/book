@@ -339,6 +339,12 @@ class IntraController < ApplicationController
     end
   end
   
+  def pick_image
+    @images = @current_person.images
+    render :partial=>'pick_image'
+  end
+
+
   def edit_report
     @article = Article.find(params[:id])
     unless @article

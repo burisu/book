@@ -1,0 +1,4 @@
+.image-list
+  -for image in @images
+    .image=link_to(image_tag(url_for_file_column(image, :document, "thumb")))
+     
