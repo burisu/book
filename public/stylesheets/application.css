@@ -203,7 +203,3 @@ div.blog > div > div * {color:#FFF;}
 .diapo .title { color: #777; padding:4px;}
 
 .diapo:hover { margin: 2px; border-width: 3px; border-color: black; }
-
-#iselector { border: 1px solid #AAA; background: red; padding: 8px; width:700px; height:300px; position:absolute; top: 100px; left: 100px; }
-#iselector .image-list { width:692px; height: 292px; overflow:auto; clear:both; }
-#iselector .image-list a { display:block; float: left; }
