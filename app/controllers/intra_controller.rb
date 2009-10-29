@@ -430,6 +430,21 @@ class IntraController < ApplicationController
     
   end
 
+  dyta(:students, :model=>:people, :conditions=>{:student=>true}, :default_order=>"family_name, first_name") do |t|
+    t.column :first_name
+    t.column :family_name
+    t.column :name, :through=>:promotion
+  end
+
+
+
+  def students
+    
+
+    # @students = Person.find(:all, :conditions=>conditions, :order=>
+
+  end
+
 
 
 

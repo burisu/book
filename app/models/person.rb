@@ -50,6 +50,7 @@ class Person < ActiveRecord::Base
   validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/i
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   has_one :folder, :dependent=>:destroy
+  has_one :promotion, :through=>:folder
 
   def before_validation
     self.user_name = self.user_name.lower

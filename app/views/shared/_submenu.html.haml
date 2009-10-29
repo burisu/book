@@ -6,6 +6,7 @@
       %li=link_to "Mon voyage", {:controller=>:intra, :action=>:folder}
       %li=link_to "Ma galerie", {:controller=>:intra, :action=>:gallery}
     %li=link_to "Toutes les nouvelles", {:controller=>:intra, :action=>:reports}
+    %li=link_to "Tous les students", {:controller=>:intra, :action=>:students}
     %li=link_to "Envoyer un message", {:controller=>:intra, :action=>:message_send}
     %li=link_to "Se déconnecter", {:controller=>:authentication, :action=>:logout}
   -if access?(:all)

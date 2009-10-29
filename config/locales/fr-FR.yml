@@ -211,6 +211,8 @@ fr-FR:
         role_id: Rôle
         student: SE
         id: ID
+      promotion:
+        name: Promo
       question:
         position: Numéro
         name: Nom
