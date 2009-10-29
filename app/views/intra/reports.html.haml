@@ -1,0 +1,33 @@
+%h1 Toutes les nouvelles des Students Exchange
+
+.article
+  .content
+    -@countries
+    -col=3
+    -q = (@countries.size/col).ceil
+    %table.formu
+      %tr
+        -offset = 0
+        -for x in 1..col
+          -countries = @countries[offset..offset+q-1]
+          -offset += q
+          %td{:valign=>:top}
+            -for country in countries
+              %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
+              %ul
+                -for promotion in country.available_promotions
+                  %li
+                    = promotion.name
+                    %ul
+                      -for author in country.available_authors(:promotion_id=>promotion.id)
+                        %li
+                          -if author.story?
+                            =link_to author.label, {:controller=>:intra, :action=>:story, :id=>author.id}
+                          -else
+                            =author.label
+ 
+
+
+
+
+ 
