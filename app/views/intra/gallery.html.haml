@@ -4,25 +4,7 @@
 
 %h2 Ajouter une image
 -if @addable
-  =error_messages_for 'image'
-  -form_tag({}, :multipart=>true) do
-    %table.formu
-      %tr
-        %td.label Titre
-        %td.value=text_field :image, :title
-        %td.hint 
-      %tr
-        %td.label Description
-        %td.value=text_field :image, :desc
-        %td.hint 
-      %tr
-        %td.label Image à télécharger
-        %td.value=file_column_field 'image', 'document'
-        %td.hint 
-      %tr
-        %td.label
-        %td.value=submit_tag 'Enregistrer'
-        %td.hint
+  =render :partial=>"image_form"
 -else
   .warning="Vous ne pouvez pas avoir plus de #{controller.class.images_count_per_person} images dans votre galerie."
 

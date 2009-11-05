@@ -798,11 +798,23 @@ class IntraController < ApplicationController
     redirect_to :action=>:gallery unless @image
   end
 
+  def image_update
+    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    if request.post?
+      if @image.update_attributes(params[:image])
+        redirect_to :action=>:gallery 
+        return
+      end
+    end
+    render :partial=>"image_form", :layout=>true
+  end
+
+
 
   def image_delete
     image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
     if image
-      Image.destroy(image.id)
+      Image.destroy(image.id) if request.delete?
     end
     redirect_to :action=>:gallery
   end
