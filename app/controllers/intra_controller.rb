@@ -268,7 +268,7 @@ class IntraController < ApplicationController
   def folder_edit
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
-    @zones = Zone.find(:all, :select=>"district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    @zones = Zone.find(:all, :select=>"co.iso3166||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
       redirect_to :action=>:profile 
