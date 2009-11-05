@@ -4,7 +4,7 @@
   .content
     -@countries
     -col=3
-    -q = (@countries.size/col).ceil
+    -q = (@countries.size/col).ceil+1
     %table.formu
       %tr
         -offset = 0
