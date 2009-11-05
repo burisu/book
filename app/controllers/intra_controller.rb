@@ -813,7 +813,7 @@ class IntraController < ApplicationController
 
   def image_delete
     image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    if image
+    if image and image.deletable?
       Image.destroy(image.id) if request.delete?
     end
     redirect_to :action=>:gallery

@@ -33,4 +33,9 @@ class Image < ActiveRecord::Base
     end
   end
 
+  def deletable?
+    reg = "\{\{[^\}]*#{self.name}[^\}]*[\|\}]+"
+    Article.find(:all, :conditions=>["intro ~ ? OR body ~ ? ", reg, reg]).size <= 0 ? true : false
+  end
+
 end
