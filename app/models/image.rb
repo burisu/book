@@ -19,12 +19,18 @@ class Image < ActiveRecord::Base
   
   file_column :document, :magick => {:versions => { "thumb" => "128x128", "medium" => "600x450>", "big"=>"1024x768>" } }
 
+  validates_uniqueness_of :name
+
   def before_validation
-    self.name = self.title.lower_ascii.gsub(/\s/, '').to_s
-    while Image.find(:first, :conditions=>['id!=? AND name=?', self.id||0, self.name])
+    self.title_h = self.title.to_s
+  end
+
+  def before_validation_on_create
+    self.name = self.title.lower_ascii.gsub(/\W/, '').to_s
+    # while Image.find(:first, :conditions=>['id!=? AND name=?', self.id||0, self.name])
+    while Image.find_by_name(self.name)
       self.name.succ!
     end
-    self.title_h = self.title.to_s
   end
 
 end
