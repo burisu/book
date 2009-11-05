@@ -340,7 +340,8 @@ class IntraController < ApplicationController
   end
   
   def pick_image
-    @images = (access? ? Image.all : @current_person.images)
+    # @images = (access? ? Image.all : @current_person.images)
+    @images = Image.all
     render :partial=>'pick_image'
   end
 
@@ -786,16 +787,15 @@ class IntraController < ApplicationController
 
 
   def image_detail
-    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    # @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    @image = Image.find_by_id(params[:id])
     redirect_to :action=>:gallery if @image.nil?
   end
 
   def image_download
-    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    unless @image
-      redirect_to :action=>:gallery 
-      return
-    end
+    # @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
+    @image = Image.find_by_id(params[:id])
+    redirect_to :action=>:gallery unless @image
   end
 
 
