@@ -12,14 +12,14 @@
       %td.label Au
       %td.value=date_select :folder, :finished_on, {:order => [:day, :month, :year], :start_year=>1901}
       %td.hint 
-    %tr
-      %td.label Pays de départ
-      %td.value=select :folder, :departure_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
-      %td.hint 
-    %tr
-      %td.label Pays d'arrivée
-      %td.value=select :folder, :arrival_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
-      %td.hint 
+    -#%tr
+    -#  %td.label Pays de départ
+    -#  %td.value=select :folder, :departure_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+    -#  %td.hint 
+    -#%tr
+    -#  %td.label Pays d'arrivée
+    -#  %td.value=select :folder, :arrival_country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+    -#  %td.hint 
     -#%tr
     -#  %td.label Promotion
     -#  %td.value=select :folder, :promotion_id, Promotion.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }

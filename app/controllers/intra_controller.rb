@@ -50,7 +50,7 @@ class IntraController < ApplicationController
     if access?(:folders) and params[:id]
       @folder = Folder.find_by_id(params[:id])
     elsif access?(:folders) and params[:person_id]
-      person_id = params[:id].to_i 
+      person_id = params[:person_id].to_i 
     end
     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
     unless @folder 
@@ -268,7 +268,7 @@ class IntraController < ApplicationController
   def folder_edit
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
-    @zones = Zone.find(:all, :select=>"co.iso3166||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
       redirect_to :action=>:profile 
@@ -428,7 +428,12 @@ class IntraController < ApplicationController
     # expires_in 6.hours
     expires_now
     @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN folders ON (countries.id=arrival_country_id)', :order=>:name)
-    
+    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'zone se'"])
+    @zones = Zone.find(:all, :joins=>"join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=? AND LOWER(co.iso3166) LIKE 'fr'",@zone_nature.id], :order=>"number").collect {|p| [ p[:name], p[:id].to_i ] }||[]
+    @zones.insert(0, ["",""])
+    if request.post?
+      @zone = Zone.find_by_id(params[:zone_id].to_i)
+    end
   end
 
   dyta(:students, :model=>:people, :conditions=>{:student=>true}, :default_order=>"family_name, first_name") do |t|

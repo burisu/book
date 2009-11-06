@@ -21,9 +21,11 @@
 #
 
 class Folder < ActiveRecord::Base
-
+  validates_presence_of :host_zone_id, :proposer_zone_id
 
   def before_validation
+    self.departure_country_id = self.proposer_zone.country_id if self.proposer_zone
+    self.arrival_country_id = self.host_zone.country_id if self.host_zone
     if self.begun_on and self.departure_country
       from = (self.begun_on.month>=5 ? 'N' : 'S')
       out = (self.departure_country.iso3166.lower == 'fr' ? true : false)
@@ -35,12 +37,15 @@ class Folder < ActiveRecord::Base
   end
 
   def validate
-    if self.proposer_zone
-      errors.add(:proposer_zone_id, "ne correspond pas au pays de départ") if self.proposer_zone.country_id!=self.departure_country_id
+    if self.proposer_zone and self.host_zone
+      errors.add_to_base("Le club d'origine ou le club hôte doit se trouver en France") if self.proposer_zone.country.iso3166.lower != 'fr' and self.host_zone.country.iso3166.lower != 'fr'
     end
-    if self.host_zone
-      errors.add(:host_zone_id, "ne correspond pas au pays d'arrivée") if self.host_zone.country_id!=self.arrival_country_id
-    end
+#     if self.proposer_zone
+#       errors.add(:proposer_zone_id, "ne correspond pas au pays de départ") if self.proposer_zone.country_id!=self.departure_country_id
+#     end
+#     if self.host_zone
+#       errors.add(:host_zone_id, "ne correspond pas au pays d'arrivée") if self.host_zone.country_id!=self.arrival_country_id
+#     end
   end
 
   def reports

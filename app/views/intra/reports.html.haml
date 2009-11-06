@@ -1,5 +1,10 @@
 %h1 Toutes les nouvelles des Students Exchange
 
+-form_tag do 
+  =select_tag :zone_id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil))
+  =submit_tag("Surligner")
+
+
 .article
   .content
     -@countries
@@ -20,7 +25,7 @@
                     = promotion.name
                     %ul
                       -for author in country.available_authors(:promotion_id=>promotion.id)
-                        %li
+                        %li{:class=>(@zone and author.in_zone?(@zone) ? "surlined" : "")}
                           -if author.story?
                             =link_to author.label, {:controller=>:intra, :action=>:story, :id=>author.id}
                           -else

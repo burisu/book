@@ -180,6 +180,13 @@ class Person < ActiveRecord::Base
     Subscription.count(:conditions=>["person_id=? AND finished_on>=?::DATE",self.id,Time.now-delay])>0
   end
 
+  def in_zone?(zone)
+    if f = self.folder
+      return true if f.proposer_zone.in_zone?(zone) or f.host_zone.in_zone?(zone)
+    end
+    return false
+  end
+
   def self.generate_password(length=8)
     l = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W Y X Z 0 1 2 3 4 5 6 7 8 9)
     s = l.length

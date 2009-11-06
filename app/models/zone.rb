@@ -51,4 +51,12 @@ class Zone < ActiveRecord::Base
   def children
     self.class.find(:all, :conditions=>{:parent_id => self.id})
   end
+
+  def in_zone?(zone)
+    return true if self.id == zone.id 
+    if self.parent
+      return true if self.parent.in_zone?(zone)
+    end
+  end
+  
 end
