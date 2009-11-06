@@ -430,10 +430,8 @@ class IntraController < ApplicationController
     @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN folders ON (countries.id=arrival_country_id)', :order=>:name)
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'zone se'"])
     @zones = Zone.find(:all, :joins=>"join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=? AND LOWER(co.iso3166) LIKE 'fr'",@zone_nature.id], :order=>"number").collect {|p| [ p[:name], p[:id].to_i ] }||[]
-    @zones.insert(0, ["",""])
-    if request.post?
-      @zone = Zone.find_by_id(params[:zone_id].to_i)
-    end
+    @zones.insert(0, ["-- Surligner les students d'une zone --",""])
+    @zone = Zone.find_by_id(params[:id].to_i)
   end
 
   dyta(:students, :model=>:people, :conditions=>{:student=>true}, :default_order=>"family_name, first_name") do |t|

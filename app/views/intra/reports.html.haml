@@ -1,8 +1,9 @@
 %h1 Toutes les nouvelles des Students Exchange
 
+=select_tag :id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil)), :onchange=>"window.location.replace('#{url_for(:action=>:reports, :id=>'')}'+this.value)"
+
 -form_tag do 
-  =select_tag :zone_id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil))
-  =submit_tag("Surligner")
+  =#submit_tag("Surligner")
 
 
 .article
