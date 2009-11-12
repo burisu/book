@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   # session :session_key => '_rotex_session_id'
   before_filter :init
+
+  @@configuration = Configuration.find(:first, :order=>:id)
+
+  hide_action :conf
+  def conf
+    @@configuration
+  end
+
   def init
     if session[:current_person_id]
       @current_person=Person.find(session[:current_person_id])
