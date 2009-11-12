@@ -68,12 +68,6 @@ class ApplicationController < ActionController::Base
       redirect_to :controller=>:intra 
       return
     end
-    if action_name.to_sym!=:access_denied
-      if @vision==:rotary and not (access?(:suivi) or (@current_person and @current_person.student?))
-        redirect_to :controller=>:suivi, :action=>:access_denied
-        return
-      end
-    end
 
 
     unless session[:current_person_id]
@@ -89,6 +83,12 @@ class ApplicationController < ActionController::Base
       redirect_to :controller=>:authentication, :action=>:login
       return
     end
+
+    if @vision==:rotary and not access?(:suivi) and not (@current_person and @current_person.student?)
+      redirect_to :controller=>:suivi, :action=>:access_denied
+      return
+    end
+
   end
 
 end
