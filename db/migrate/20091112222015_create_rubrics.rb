@@ -41,6 +41,7 @@ class CreateRubrics < ActiveRecord::Migration
     execute "UPDATE articles SET rubric_id=#{home_id} WHERE natures LIKE '% home %'"
     execute "UPDATE articles SET rubric_id=#{news_id}, opened=false WHERE natures LIKE '% blog %'"
     execute "UPDATE articles SET rubric_id=#{empty_id}, opened=false WHERE rubric_id IS NULL"
+    execute "UPDATE articles SET opened=true WHERE id IN (#{contact_id}, #{legals_id}, #{about_id})"
 
     rename_column(:articles, :natures, :bad_natures)
   end
@@ -48,6 +49,7 @@ class CreateRubrics < ActiveRecord::Migration
   def self.down
     rename_column(:articles, :bad_natures, :natures)
 
+    remove_column :articles, :opened
     remove_column :articles, :rubric_id
     remove_column :images, :published
     remove_column :images, :deleted
