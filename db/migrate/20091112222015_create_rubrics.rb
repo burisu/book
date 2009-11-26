@@ -20,6 +20,11 @@ class CreateRubrics < ActiveRecord::Migration
       t.column :agenda_rubric_id,    :integer,  :references=>:rubrics
     end
 
+    create_table :articles_mandate_natures, :id=>false do |t|
+      t.column :article_id,              :integer, :references=>:articles
+      t.column :mandate_nature_id,       :integer, :references=>:mandate_natures
+    end
+
     home_id = insert "INSERT INTO rubrics (name, code) VALUES ('Accueil', 'accueil')"
     news_id = insert "INSERT INTO rubrics (name, code) VALUES ('Nouvelles', 'nouvelles')"
     agenda_id = insert "INSERT INTO rubrics (name, code) VALUES ('Agenda', 'agenda')"
@@ -34,14 +39,14 @@ class CreateRubrics < ActiveRecord::Migration
     add_column :images, :deleted,   :boolean, :null=>false, :default=>false
     add_column :images, :published, :boolean, :null=>false, :default=>true
     add_column :articles, :rubric_id, :integer, :references=>:rubrics
-    add_column :articles, :opened,    :boolean, :null=>false, :default=>false
+    # add_column :articles, :opened,    :boolean, :null=>false, :default=>false
 
-    execute "UPDATE articles SET opened=true"
+    # execute "UPDATE articles SET opened=true"
     execute "UPDATE articles SET rubric_id=#{agenda_id} WHERE natures LIKE '% agenda %'"
     execute "UPDATE articles SET rubric_id=#{home_id} WHERE natures LIKE '% home %'"
-    execute "UPDATE articles SET rubric_id=#{news_id}, opened=false WHERE natures LIKE '% blog %'"
-    execute "UPDATE articles SET rubric_id=#{empty_id}, opened=false WHERE rubric_id IS NULL"
-    execute "UPDATE articles SET opened=true WHERE id IN (#{contact_id}, #{legals_id}, #{about_id})"
+    execute "UPDATE articles SET rubric_id=#{news_id} WHERE natures LIKE '% blog %'"
+    execute "UPDATE articles SET rubric_id=#{empty_id} WHERE rubric_id IS NULL"
+    # execute "UPDATE articles SET opened=true WHERE id IN (#{contact_id}, #{legals_id}, #{about_id})"
 
     rename_column(:articles, :natures, :bad_natures)
   end
@@ -49,12 +54,13 @@ class CreateRubrics < ActiveRecord::Migration
   def self.down
     rename_column(:articles, :bad_natures, :natures)
 
-    remove_column :articles, :opened
+    # remove_column :articles, :opened
     remove_column :articles, :rubric_id
     remove_column :images, :published
     remove_column :images, :deleted
     remove_column :images, :locked
 
+    drop_table :articles_mandate_natures
     drop_table :configurations
     drop_table :rubrics
   end
