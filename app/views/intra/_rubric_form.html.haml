@@ -1,0 +1,7 @@
+=error_messages_for "rubric"
+
+%table.formu.flex
+  =tl "Nom", text_field(:rubric, :name)
+  =tl "Code", text_field(:rubric, :code)
+  =tl "Description", text_area(:rubric, :description, :cols=>40, :rows=>5)
+  =tl "Parent", select(:rubric, :parent_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]}, :include_blank=>true)

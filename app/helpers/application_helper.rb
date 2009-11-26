@@ -45,6 +45,30 @@ module ApplicationHelper
     render :partial=>"shared/top_#{@vision}"
   end
 
+
+
+  def tl(label,field, options={})
+    code  = content_tag('td',label,:class=>"label", :id=>options[:label_id])
+    code += content_tag('td',field,:class=>"value", :id=>options[:value_id])
+    hint  = ''
+    hint += 'Ex&nbsp;: '+options[:example].to_s if options[:example]
+    hint += '<br/>'if hint!='' and options[:hint]
+    hint += 'Astuce&nbsp;: '+options[:hint].to_s if options[:hint]
+    hint += '<br/>'if hint!='' and options[:info]
+    hint += 'Info.&nbsp;: '+options[:info].to_s if options[:info]
+    code += content_tag('td',hint, :class=>"hint", :id=>options[:hint_id])
+    code  = content_tag('tr',code,:class=>cycle("odd","even"))
+    code
+  end
+
+  def tt(label)
+    code  = content_tag(:th, label, :colspan=>3)
+    code  = content_tag(:tr, code)
+    code
+  end
+
+
+
   def tr(label, value, hint='', options={})
     content_tag(:tr,
                 content_tag(:td, label, :class=>:label)+

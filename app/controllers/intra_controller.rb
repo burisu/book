@@ -677,6 +677,9 @@ class IntraController < ApplicationController
 
 
 
+
+
+
   def articles
     try_to_access :publishing
     @title = "Tous les articles"
@@ -690,40 +693,6 @@ class IntraController < ApplicationController
     render :action=>:articles
   end
 
-  def special_articles
-    try_to_access :specials
-    @title = "Articles spéciaux"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
-  end
-
-  def agenda_articles
-    try_to_access :agenda
-    @title = "Articles de l'agenda"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% agenda %'", :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
-  end
-
-  def home_articles
-    try_to_access :home
-    @title = "Articles de la page d'accueil"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% home %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
-  end
-
-  def blog_articles
-    try_to_access :home
-    @title = "Articles extraits pour la présentation"
-    @articles = Article.paginate(:all, :conditions=>"natures ILIKE '% blog %'" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
-  end
-
-  def other_articles
-    try_to_access :publishing
-    @title = "Autres articles (réservés aux membres)"
-    @articles = Article.paginate(:all, :conditions=>"NOT (natures ILIKE '% legals %' OR natures ILIKE '% about_us %' OR natures ILIKE '% contact %' OR natures ILIKE '% blog %' OR natures ILIKE '% agenda %' OR natures ILIKE '% home %')" , :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
-  end
 
   def article_activate
     try_to_access :publishing
@@ -736,6 +705,24 @@ class IntraController < ApplicationController
     Article.find(params[:id]).unpublish
     redirect_to :back
   end
+
+
+
+  dyta(:rubrics) do |t|
+    t.column :name
+    t.column :code
+    t.column :description
+    t.column :name, :through=>:parent
+    t.action :rubric_update
+    t.action :rubric_delete, :method=>:delete, :confirm=>:are_you_sure
+  end
+
+  def rubrics
+    try_to_access :publishing
+  end
+
+  manage :rubrics
+
 
 
 

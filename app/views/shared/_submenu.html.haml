@@ -18,17 +18,9 @@
     %h3 Publication
     %ul
       -if access? :publishing
-        %li=link_to("Articles (tous)", {:controller=>:intra, :action=>:articles})
+        %li=link_to("Articles", {:controller=>:intra, :action=>:articles})
+        %li=link_to("Rubriques", {:controller=>:intra, :action=>:rubrics})
         %li=link_to("Articles en attente", {:controller=>:intra, :action=>:waiting_articles})
-      -if access? :specials
-        %li=link_to("Articles <em>spéciaux</em>", {:controller=>:intra, :action=>:special_articles})
-      -if access? :agenda
-        %li=link_to("Articles <em>Agenda</em>", {:controller=>:intra, :action=>:agenda_articles})
-      -if access? :home
-        %li=link_to("Articles <em>Page d'accueil</em>", {:controller=>:intra, :action=>:home_articles})
-      -if access? :publishing
-        %li=link_to("Articles <em>Extraits</em>", {:controller=>:intra, :action=>:blog_articles})
-        %li=link_to("Articles restants", {:controller=>:intra, :action=>:other_articles})
   -if access? [:users,:subscribing, :folders]
     %h3 Adhérents
     %ul
