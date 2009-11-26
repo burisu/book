@@ -25,7 +25,7 @@ module ApplicationHelper
     end
   end
 
-  def toolbar(input_id)
+  def toolbar0(input_id)
     selector = input_id+'_iselector'
     code = ''
     code += content_tag(:div, nil, :id=>selector, :style=>"display:none;", :class=>'iselector')
@@ -39,6 +39,43 @@ module ApplicationHelper
     code += link_to(image_tag('buttons/unknown.png'), :action=>:report_help)
     content_tag(:div, code, :class=>:toolbar)
   end
+
+
+  def toolbar(input_id)
+    selector = input_id+'_iselector'
+    viewer = input_id+'_viewer'
+    code = ''
+    markups = [
+               ['bold',      ' **',   '** ', 'texte en gras'], 
+               ['italic',    ' //',   '// ', 'texte en italique'], 
+               # ['underline', ' +',    '+ ' , 'texte souligné'], 
+#               ['stroke',    ' -',    '- ' , 'texte rayé'], 
+#               ['sup',       ' ^',    '^ ' , 'texte en exposant'], 
+#               ['sub',       ' ~',    '~ ' , 'texte en indice'], 
+               ['h1',        '\\n===== ', ' =====\\n'   , 'Titre de niveau 1'],
+               ['h2',        '\\n==== ', ' ====\\n'   , 'Titre de niveau 2'],
+               ['h3',        '\\n=== ', ' ===\\n'   , 'Titre de niveau 3'],
+#               ['ul',        '\\n* ', ''   , 'Élément de liste à puce'], 
+#               ['ol',        '\\n# ', ''   , 'Élément de liste numérotée'],
+               ['link',      ' [[http://www.exemple.fr|', ']]' , 'site web'],
+              ]
+    code += content_tag(:div, nil, :id=>selector, :style=>"display:none;", :class=>'iselector')
+    code += link_to_remote(image_tag('buttons/image.png'), {:url=>{:action=>:pick_image, :id=>input_id}, :update=>"#{selector}", :success=>"$('#{selector}').show()"}, :class=>:tool)
+
+    for markup, start, finish, middle in markups
+      code += link_to_function(image_tag("buttons/#{markup}.png", :alt=>::I18n.t('general.layout.'+markup), :title=>::I18n.t('general.layout.'+markup)), "insertion($('#{input_id}'), '#{start}', '#{finish}', '#{middle}')", :class=>:tool)
+    end
+
+#    markup = 'image'
+#    code += link_to_function(image_tag("buttons/#{markup}.png", :alt=>::I18n.t('general.layout.'+markup), :title=>::I18n.t('general.layout.'+markup)), "openImagePopup('#{url_for(:action=>:media, :id=>input_id)}', 'preview')", :class=>:tool)
+
+    markup = 'show'
+    code += link_to_remote(image_tag('buttons/show.png'), {:url=>{:action=>:preview}, :with=>"'textile=' + encodeURIComponent($('#{input_id}').value)", :update=>viewer, :success=>"$('#{viewer}').show()"}, :class=>:tool)
+    code += link_to(image_tag('buttons/unknown.png'), {:action=>:report_help}, :class=>:tool)
+    code = content_tag(:div, code, :class=>:editor)
+    code = content_tag(:div, nil, :id=>viewer, :style=>"display:none;", :class=>'viewer')+code
+  end
+
 
 
   def menu_tag

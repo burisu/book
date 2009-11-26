@@ -317,11 +317,6 @@ class IntraController < ApplicationController
       article.natures_set :agenda, params[:agenda]=='1'
       article.done_on = params[:done_on]
     end
-    article.natures_set :blog, params[:blog]=='1' if access? :blog
-    article.natures_set :home, params[:home]=='1' if access? :home
-    article.natures_set :contact, params[:contact]=='1' if access? :specials
-    article.natures_set :about_us, params[:about_us]=='1' if access? :specials
-    article.natures_set :legals, params[:legals]=='1' if access? :specials
   end
 
 
@@ -374,6 +369,7 @@ class IntraController < ApplicationController
       end
     end
   end
+
   
   def article_edit
     redirect_to :action=>:edit_report, :id=>params[:id]
@@ -722,6 +718,12 @@ class IntraController < ApplicationController
   end
 
   manage :rubrics
+
+  def preview
+    @textile = params[:textile]||''
+    @current_user = nil
+    render :partial=>'preview' if request.xhr?
+  end
 
 
 

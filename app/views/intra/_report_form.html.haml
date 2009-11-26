@@ -1,47 +1,11 @@
 = error_messages_for "article"
+
 %table.form
-  %tr
-    %td.label Titre
-    %td.value=text_field(:article, :title)
-  %tr
-    %td.label Langue
-    %td.value=select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] })
-  -if access? :agenda
-    %tr
-      %td.label A mettre dans l'agenda
-      %td.value=check_box(:article, :agenda)
-    %tr
-      %td.label Date pour l'agenda (AAAA-MM-JJ)
-      %td.value=text_field(:article, :done_on)
-  -if access? :home
-    %tr
-      %td.label A mettre en page d'accueil
-      %td.value=check_box(:article, :home)
-  -if access? :blog
-    %tr
-      %td.label A mettre dans les extraits
-      %td.value=check_box(:article, :blog)
-  -if access? :specials
-    %tr
-      %td.label Article à afficher pour 'Contact'
-      %td.value=check_box(:article, :contact)
-    %tr
-      %td.label Article à afficher pour 'A propos de nous'
-      %td.value=check_box(:article, :about_us)
-    %tr
-      %td.label Article à afficher pour 'Mentions légales'
-      %td.value=check_box(:article, :legals)
+  =tl "Titre", text_field(:article, :title)
+  =tl "Langue", select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] })
+  =tl "Date (AAAA-MM-JJ)", text_field(:article, :done_on)
+  =tl "Rubrique", select(:article, :rubric_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
   -if access? :publishing
-    %tr
-      %td.label Statut
-      %td.value=select :article, :status, Article.status
-  %tr
-    %td{:colspan=>"2"}
-      .label="Introduction"
-      =toolbar('article_intro')
-      =text_area(:article, :intro, {:rows=>5, :maxlength=>255})
-  %tr
-    %td{:colspan=>"2"}
-      .label="Corps de l'article"
-      =toolbar('article_body')
-      =text_area(:article, :body, {:rows=>11})
+    =tl "Statut", select(:article, :status, Article.status)
+  =tl "Introduction", toolbar('article_intro')+text_area(:article, :intro, {:rows=>5, :maxlength=>255})
+  =tl "Corps de l'article", toolbar('article_body')+text_area(:article, :body, {:rows=>11})

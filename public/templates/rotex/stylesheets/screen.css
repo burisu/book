@@ -246,5 +246,16 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 .toolbar { clear: both; }
 .toolbar > a{ padding: 2px; margin: 1px;  background: white; border: 1px solid #BBB; width: 16px; height:16px; display:block; text-align:center; vertical-align: middle; float: left;}
 
+.editor { clear: both; height: 24px;}
+.editor a.tool:link, .editor a.tool:visited { border: 1px solid #AAA; padding: 2px; float: left; display: block; width :16px; height: 16px; margin: 1px; background: #EEF}
+.editor a.tool img { border: none; margin: auto;}
+.editor a.tool:hover { border: 1px solid #04F; background: #DDF; } 
+
+/*.viewer { border: 1px solid black; background: #DDD; z-index: 1000; width: 700px; position: fixed; top: 20px; margin: 100px 0 0 0; left: 0; padding: 8px;}*/
+.viewer { padding:4px 0;}
+/*.viewer .article_content { width: 684px; height: 484px; overflow: auto; background: white; border: 1px solid #AAA;}*/
+/*.viewer .article_content { padding:8px; overflow: auto; width: 600px; max-height:200px; background: white; border: 1px solid #AAA;}*/
+.viewer .article_content { padding:4px; overflow: auto; max-height:200px; max-width: 576px; background: #FFF; border: 1px dotted #AAA;}
+.viewer .preview { color: #AAA }
 
 li.surlined { background: #FFA; }
