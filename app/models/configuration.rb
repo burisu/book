@@ -15,4 +15,9 @@
 #
 
 class Configuration < ActiveRecord::Base
+
+  def self.parameter(*args)
+    self.find(:first, :order=>"id").send(*args)
+  end
+
 end

@@ -165,7 +165,7 @@ class Person < ActiveRecord::Base
   end
 
   def story?
-    self.articles.find(:all, :conditions=>["status=? AND natures LIKE ? AND done_on IS NOT NULL", 'P', '% blog %']).size>0
+    self.articles.find(:all, :conditions=>["status=? AND rubric_id= ? AND done_on IS NOT NULL", 'P', Configuration.parameter(:news_rubric_id)]).size>0
   end
 
   def confirm(password)
