@@ -310,13 +310,11 @@ class IntraController < ApplicationController
     article.title = params[:title]
     article.intro = params[:intro]
     article.body  = params[:body]
+    article.rubric_id  = params[:rubric_id]
     article.status = 'W' if article.new_record?
     article.status = params[:status] if access? :publishing
     # raise params[:agenda]+' '+params[:agenda].class.to_s
-    if access? :agenda
-      article.natures_set :agenda, params[:agenda]=='1'
-      article.done_on = params[:done_on]
-    end
+    article.done_on = params[:done_on]
   end
 
 
@@ -327,7 +325,10 @@ class IntraController < ApplicationController
       init_article(@article, params[:article], @current_person)
       @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
       @article.natures = 'default' unless access? :publishing
-      redirect_to_back if @article.save
+      if @article.save
+        # Mandate Nature à implémenter
+        redirect_to_back
+      end 
     else
       @article = Article.new
       @article.done_on = session[:report_done_on] if session[:report_done_on]
@@ -358,6 +359,7 @@ class IntraController < ApplicationController
     if request.post?
       init_article(@article, params[:article], @current_person)
       if @article.save
+        # Mandate Nature à implémenter
         expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
         expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
         flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
