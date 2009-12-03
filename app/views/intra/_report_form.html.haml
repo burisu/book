@@ -16,6 +16,6 @@
     -groups << content_tag(:div, check_box_tag("mandate_natures[#{mn.id}]", "1", @article.mandate_natures.exists?(:id=>mn.id))+" "+content_tag(:label, mn.name, :for=>"mandate_natures_#{mn.id}"), :style=>"float: left; padding: 1px 2px;")
   -groups = content_tag(:div, groups.join, :style=>"clear:both; display:#{@article.mandate_natures.empty? ? 'none' : 'block'};", :id=>"groups")
   -groups += link_to_function("Tout le monde", "this.hide(); $('groups').show()") if @article.mandate_natures.empty?
-  =tl "Groupes autorisés", groups
+  =tl "Qui peut voir l'article", groups
   =tl "Introduction", toolbar('article_intro')+text_area(:article, :intro, {:rows=>5, :maxlength=>255})
   =tl "Corps de l'article", toolbar('article_body')+text_area(:article, :body, {:rows=>11})
