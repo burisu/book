@@ -49,7 +49,7 @@ class Folder < ActiveRecord::Base
   end
 
   def reports
-    Article.find(:all, :conditions=>["author_id=? AND done_on IS NOT NULL AND natures NOT LIKE '%agenda%'", self.person_id], :order=>:done_on);
+    Article.find(:all, :conditions=>{:author_id=>self.person_id, :rubric_id=>Configuration.the_one.news_rubric_id}, :order=>:done_on);
   end
 
   def current?

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   # session :session_key => '_rotex_session_id'
   before_filter :init
 
-  @@configuration = Configuration.find(:first, :order=>:id)
+  @@configuration = Configuration.the_one
 
   hide_action :conf
   def conf

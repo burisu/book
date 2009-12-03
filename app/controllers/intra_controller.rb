@@ -410,7 +410,7 @@ class IntraController < ApplicationController
       flash[:error] = "La page que vous demandez n'existe pas"
       redirect_to :action=>:index
     end
-    if @current_person.nil? and not @article.natures_include?(:home) and not @article.natures_include?(:agenda) and not @article.natures_include?(:about_us) and not @article.natures_include?(:contact) and not @article.natures_include?(:legals)
+    if @current_person.nil? and not @article.public?
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
       redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person

@@ -16,8 +16,15 @@
 
 class Configuration < ActiveRecord::Base
 
+
   def self.parameter(*args)
     self.find(:first, :order=>"id").send(*args)
   end
 
+  def self.the_one
+    @@configuration ||= self.find(:first, :order=>:id)
+    @@configuration
+  end
+
+  @@configuration = self.the_one  
 end

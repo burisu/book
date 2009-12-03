@@ -28,7 +28,7 @@ class CreateRubrics < ActiveRecord::Migration
     home_id = insert "INSERT INTO rubrics (name, code) VALUES ('Accueil', 'accueil')"
     news_id = insert "INSERT INTO rubrics (name, code) VALUES ('Nouvelles', 'nouvelles')"
     agenda_id = insert "INSERT INTO rubrics (name, code) VALUES ('Agenda', 'agenda')"
-    empty_id = insert "INSERT INTO rubrics (name, code) VALUES ('Sans-rubrique', 'norubric')"
+    # empty_id = insert "INSERT INTO rubrics (name, code) VALUES ('Sans-rubrique', 'norubric')"
     contact_id = select_value("SELECT id FROM articles WHERE natures LIKE '% contact %'")
     legals_id = select_value("SELECT id FROM articles WHERE natures LIKE '% legals %'")
     about_id = select_value("SELECT id FROM articles WHERE natures LIKE '% about_us %'")
@@ -44,8 +44,8 @@ class CreateRubrics < ActiveRecord::Migration
     # execute "UPDATE articles SET opened=true"
     execute "UPDATE articles SET rubric_id=#{agenda_id} WHERE natures LIKE '% agenda %'"
     execute "UPDATE articles SET rubric_id=#{home_id} WHERE natures LIKE '% home %'"
-    execute "UPDATE articles SET rubric_id=#{news_id} WHERE natures LIKE '% blog %'"
-    execute "UPDATE articles SET rubric_id=#{empty_id} WHERE rubric_id IS NULL"
+    # execute "UPDATE articles SET rubric_id=#{news_id} WHERE natures LIKE '% blog %'"
+    execute "UPDATE articles SET rubric_id=#{news_id} WHERE rubric_id IS NULL"
     # execute "UPDATE articles SET opened=true WHERE id IN (#{contact_id}, #{legals_id}, #{about_id})"
 
     rename_column(:articles, :natures, :bad_natures)
