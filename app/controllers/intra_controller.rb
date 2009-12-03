@@ -327,6 +327,10 @@ class IntraController < ApplicationController
       @article.natures = 'default' unless access? :publishing
       if @article.save
         # Mandate Nature à implémenter
+        @article.mandate_natures.clear
+        for k,v in params[:mandate_natures]||[]
+          @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
+        end
         redirect_to_back
       end 
     else
@@ -360,6 +364,10 @@ class IntraController < ApplicationController
       init_article(@article, params[:article], @current_person)
       if @article.save
         # Mandate Nature à implémenter
+        @article.mandate_natures.clear
+        for k,v in params[:mandate_natures]||[]
+          @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
+        end
         expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
         expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
         flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'

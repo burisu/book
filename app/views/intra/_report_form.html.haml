@@ -11,7 +11,9 @@
   =tl "Rubrique", select(:article, :rubric_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
   -if access? :publishing
     =tl "Statut", select(:article, :status, Article.status)
+  -groups = []
   -for mn in MandateNature.find(:all, :order=>:name)
-    =tl mn.name, check_box_tag("mandate_natures[#{mn.id}]")
+    -groups << content_tag(:div, check_box_tag("mandate_natures[#{mn.id}]", "1", @article.mandate_natures.exists?(:id=>mn.id))+" "+content_tag(:label, mn.name, :for=>"mandate_natures_#{mn.id}"), :style=>"float: left; padding: 1px 2px;")
+  =tl "Groupes", content_tag(:div, groups.join, :style=>"clear:both")
   =tl "Introduction", toolbar('article_intro')+text_area(:article, :intro, {:rows=>5, :maxlength=>255})
   =tl "Corps de l'article", toolbar('article_body')+text_area(:article, :body, {:rows=>11})
