@@ -1,0 +1,15 @@
+%h1 Configuration du site
+
+-form_tag do 
+  %table.formu.flex
+    =tt "Rubriques"
+    -rubrics = Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]}
+    =tl "Rubrique pour l'agenda", select(:configuration, :agenda_rubric_id, rubrics)
+    =tl "Rubrique pour les articles de la page d'accueil", select(:configuration, :home_rubric_id, rubrics)
+    =tl "Rubrique pour les nouvelles", select(:configuration, :news_rubric_id, rubrics)
+    =tt "Articles"
+    -articles = Article.find(:all, :order=>:title).collect{|x| ["#{x.title} (#{x.author.label}) #{::I18n.localize(x.created_at.to_date)}", x.id]}
+    =tl "Article <em>À propos</em>", select(:configuration, :about_article_id, articles)
+    =tl "Article <em>Mentions légales</em>", select(:configuration, :legals_article_id, articles)
+    =tl "Article <em>Contact</em>", select(:configuration, :contact_article_id, articles)
+  .actions=submit_tag "Sauvegarder la configuration"

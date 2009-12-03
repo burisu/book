@@ -10,6 +10,14 @@ class IntraController < ApplicationController
     render :action=>:profile
   end
   
+  def configurate
+    @configuration = @@configuration
+    if request.post?
+      @configuration.attributes = params[:configuration]
+      @configuration.save
+    end
+  end
+
   def profile
     @person = Person.find(session[:current_person_id])
   end
@@ -839,6 +847,8 @@ class IntraController < ApplicationController
 
   def access_denied
   end
+
+
 
   
 end
