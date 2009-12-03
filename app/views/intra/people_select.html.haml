@@ -49,7 +49,7 @@
 =print_table :articles do |t|
   -t.datum :title
   -t.datum :done_on
-  -t.datum :natures
+  -t.datum :name, :through=>:rubric, :label=>"Rubrique"
   -t.action :action=>:edit_report, :image=>:edit if access? :publishing
 
 %h2 Mandats

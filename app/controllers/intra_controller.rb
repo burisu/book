@@ -332,7 +332,7 @@ class IntraController < ApplicationController
       # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
       init_article(@article, params[:article], @current_person)
       @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
-      @article.natures = 'default' unless access? :publishing
+      # @article.natures = 'default' unless access? :publishing
       if @article.save
         # Mandate Nature à implémenter
         @article.mandate_natures.clear
