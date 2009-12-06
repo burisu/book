@@ -232,8 +232,8 @@ table.folder { width: 100%; }
 
 .diapo:hover { margin: 2px; border-width: 4px; border-color: black; }
 
-.aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 2px 8px;}
-ul.aclist { padding: 8px 8px 8px 24px; }
+.aclist { background: #CDF; -moz-border-radius: 8px; padding: 4px;  margin: 8px 0px;}
+ul.aclist { padding: 4px 4px 4px 24px;  }
 
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
 

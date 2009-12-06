@@ -36,7 +36,7 @@ class IntraController < ApplicationController
   end
 
 
-  dyta(:folders, :default_order=>"begun_on desc", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
+  dyta(:folders, :order=>"begun_on desc", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
     t.action :folder, :image=>:show
     t.column :label, :through=>:person # , :url=>{:action=>:person}
     t.column :name, :through=>:promotion
@@ -404,7 +404,7 @@ class IntraController < ApplicationController
   end
 
   # copie de Home#article
-  def report_show
+  def article
     @article = Article.find(params[:id])
     if @article.nil?
       flash[:error] = "La page que vous demandez n'existe pas"
@@ -448,7 +448,7 @@ class IntraController < ApplicationController
     @zone = Zone.find_by_id(params[:id].to_i)
   end
 
-  dyta(:students, :model=>:people, :conditions=>{:student=>true}, :default_order=>"family_name, first_name") do |t|
+  dyta(:students, :model=>:people, :conditions=>{:student=>true}, :order=>"family_name, first_name") do |t|
     t.column :first_name
     t.column :family_name
     t.column :name, :through=>:promotion
@@ -502,7 +502,7 @@ class IntraController < ApplicationController
     @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
-  def people_select
+  def person
     try_to_access [:users, :promotions]
     @person = Person.find_by_id(params[:id])
     redirect_to :action=>:people_browse if @person.nil?
@@ -596,7 +596,7 @@ class IntraController < ApplicationController
         session[:last_finished_on] = @subscription.finished_on
         Maily.deliver_has_subscribed(@person, @subscription)
         Maily.deliver_notification(:has_subscribed, @person, @current_person)
-        redirect_to :action=>:people_select, :id=>@person.id
+        redirect_to :action=>:person, :id=>@person.id
       end
     else
       @subscription = Subscription.new
@@ -608,7 +608,7 @@ class IntraController < ApplicationController
     try_to_access :subscribing
     s = Subscription.find(params[:id])
     s.destroy if request.post?
-    redirect_to :action=>:people_select, :id=>s.person_id
+    redirect_to :action=>:person, :id=>s.person_id
   end
 
   def subscribers
@@ -691,20 +691,23 @@ class IntraController < ApplicationController
 
 
 
+  dyta(:articles, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
+    t.column :title, :url=>{:action=>:article}
+    t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
+    t.column :label, :through=>:author, :url=>{:action=>:person}
+    t.column :updated_at
+    t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
+    t.action :article_update
+    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
+  end
+
 
 
 
   def articles
     try_to_access :publishing
     @title = "Tous les articles"
-    @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-  end
-
-  def waiting_articles
-    try_to_access :publishing
-    @title = "Articles proposés à la publication"
-    @articles = Article.paginate(:all, :conditions=>{:status=>'R'}, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
-    render :action=>:articles
+    # @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
   end
 
 
@@ -723,8 +726,8 @@ class IntraController < ApplicationController
 
 
   dyta(:rubrics) do |t|
-    t.column :name
-    t.column :code
+    t.column :name, :url=>{:action=>:rubric}
+    t.column :code, :url=>{:action=>:rubric}
     t.column :description
     t.column :name, :through=>:parent
     t.action :rubric_update
@@ -733,6 +736,22 @@ class IntraController < ApplicationController
 
   def rubrics
     try_to_access :publishing
+  end
+
+
+  dyta(:rubric_articles, :model=>:articles,  :joins=>"JOIN people ON (people.id=author_id)", :conditions=>{:rubric_id=>['session[:current_rubric_id]']}, :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
+    t.column :title, :url=>{:action=>:article}
+    t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
+    t.column :label, :through=>:author, :url=>{:action=>:person}
+    t.column :updated_at
+    t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
+    t.action :article_update
+    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
+  end
+
+  def rubric
+    @rubric = Rubric.find_by_id(params[:id])
+    session[:current_rubric_id] = @rubric.id
   end
 
   manage :rubrics

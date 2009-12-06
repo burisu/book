@@ -24,7 +24,7 @@ module Ekylibre
           PAGINATION = {
             :will_paginate=>{
               :find_method=>'paginate',
-              :find_params=>':page=>params[:page], :per_page=>@@LENGTH@@'
+              :find_params=>':page=>page, :per_page=>@@LENGTH@@'
             },
             :default=>{
               :find_method=>'find',
@@ -32,13 +32,12 @@ module Ekylibre
             }
           }
           
+          OPTIONS = [:model, :distinct, :conditions, :order, :joins, :empty, :per_page, :pagination, :export, :children, :line_class]
 
           # Add methods to display a dynamic table
           def dyta(name, new_options={}, &block)
             name = name.to_s
             # Don't forget the View module if you change the names
-            # list_method_name = 'dyta_'+name
-            # tag_method_name  = 'dyta_'+name+'_tag'
             list_method_name = name+'_dyta'
             tag_method_name  = list_method_name+'_tag'
 
@@ -49,9 +48,16 @@ module Ekylibre
               end
             end
 
+
             options = {:pagination=>:default, :empty=>true, :export=>'general.export'}
             options[:pagination] = :will_paginate if Ekylibre::Dyke::Dyta.will_paginate
             options.merge! new_options
+
+            options.keys.each do |k|
+              raise ArgumentError.new("Unvalid option for the dyta :#{name} (#{k.inspect})") unless OPTIONS.include?(k)
+            end
+
+
             model = (options[:model]||name).to_s.classify.constantize
             begin
               model.columns_hash["id"]
@@ -61,62 +67,79 @@ module Ekylibre
             definition = Dyta.new(name, model, options)
             yield definition
 
+
+
+            if options[:pagination] == :will_paginate and not options.keys.include?(:order)
+              cols = definition.table_columns
+              if cols.size > 0
+                options[:order] = '"'+cols[0].name.to_s+'"'
+              else
+                raise ArgumentError.new("Option :order is needed for the dyta :#{name}")
+              end
+            end
+
+
             code = ""
 
             # List method
             conditions = ''
             conditions = conditions_to_code(options[:conditions]) if options[:conditions]
 
-            default_order = (options[:default_order] ? '||'+options[:default_order].inspect : '')
+            default_order = (options[:order] ? '||'+options[:order].inspect : '')
 
             order_definition  = ''
-            order_definition += "  options = params||{}\n"
+            order_definition += "  options = (params||{}).merge(options||{})\n"
+            order_definition += "  session[:dyta] ||= {}\n"
+            order_definition += "  session[:dyta][:#{name}] ||= {}\n"
+            order_definition += "  page = (options[:page]||session[:dyta][:#{name}][:page]||1).to_i\n"
+            order_definition += "  session[:dyta][:#{name}][:page] = page\n"
             order_definition += "  order = nil\n"
-            unless options[:order].nil?
-              raise Exception.new("options[:order] must be an Hash. Example: {:sort=>'column', 'dir'=>'asc'}") unless options[:order].is_a? Hash
-              raise Exception.new("options[:order]['sort'] must be completed (#{options[:order].inspect}).") if options[:order]['sort'].nil?
-              order_definition += "  options['#{name}_sort'] = #{options[:order]['sort'].to_s.inspect}\n"
-              order_definition += "  options['#{name}_dir'] = #{options[:order]['dir'].to_s.inspect}\n"
-            end
+            order_definition += "  options['#{name}_sort'] ||= session[:dyta][:#{name}][:sort]\n"
+            order_definition += "  options['#{name}_dir']  ||= session[:dyta][:#{name}][:dir]\n"
             order_definition += "  unless options['#{name}_sort'].blank?\n"
             order_definition += "    options['#{name}_dir'] ||= 'asc'\n"
             order_definition += "    order  = options['#{name}_sort']\n"
             order_definition += "    order += options['#{name}_dir']=='desc' ? ' DESC' : ' ASC'\n"
             order_definition += "  end\n"
+            order_definition += "  session[:dyta][:#{name}][:sort] = options['#{name}_sort']\n"
+            order_definition += "  session[:dyta][:#{name}][:dir]  = options['#{name}_dir']\n"
 
 
             builder  = order_definition
-            builder += "  @"+name.to_s+"="+model.to_s+"."+PAGINATION[options[:pagination]][:find_method]+"(:all"
-            builder += ", :select=>'DISTINCT #{model.table_name}.*'" unless options[:distinct]
+            builder += "  @#{name}=#{model}."+PAGINATION[options[:pagination]][:find_method]+"(:all"
+            builder += ", :select=>'DISTINCT #{model.table_name}.*'" if options[:distinct]
             builder += ", :conditions=>"+conditions unless conditions.blank?
             builder += ", "+PAGINATION[options[:pagination]][:find_params].gsub('@@LENGTH@@', "options['#{name}_per_page']||"+(options[:per_page]||25).to_s) unless PAGINATION[options[:pagination]][:find_params].blank?
             builder += ", :joins=>#{options[:joins].inspect}" unless options[:joins].blank?
             builder += ", :order=>order#{default_order})||{}\n"
+            if options[:pagination] == :will_paginate
+              builder += "  return #{tag_method_name}(options.merge(:page=>1)) if page>1 and @#{name}.out_of_bounds?\n"
+            end
 
-            bottom_var = 'bottom'
-            bottom = "  #{bottom_var}=''\n"
+            footer_var = 'footer'
+            footer = "#{footer_var}=''\n"
             # Export link
             if options[:export]
-              bottom += '  '+bottom_var+"+='"+content_tag(:div, "'+link_to('"+::I18n.t(options[:export]).gsub(/\'/,'&apos;')+"', {:action=>:#{list_method_name}, '#{name}_sort'=>params['#{name}_sort'], '#{name}_dir'=>params['#{name}_dir']}, {:method=>:post})+'", :class=>'export')+"'\n"
+              footer += footer_var+"+='"+content_tag(:div, "'+link_to('"+::I18n.t(options[:export]).gsub(/\'/,'&apos;')+"', {:action=>:#{list_method_name}, '#{name}_sort'=>params['#{name}_sort'], '#{name}_dir'=>params['#{name}_dir'], :format=>'csv'}, {:method=>:post})+'", :class=>'export')+"'\n"
             end
             # Pages link
-            bottom += if options[:pagination] == :will_paginate
-                        '  '+bottom_var+"+=will_paginate(@"+name.to_s+", :renderer=>ActionController::RemoteLinkRenderer, :remote=>{:update=>'"+name.to_s+"', :loading=>'onLoading();', :loaded=>'onLoaded();'}, :params=>{'#{name}_sort'=>params['#{name}_sort'], '#{name}_dir'=>params['#{name}_dir'], '#{name}_per_page'=>params['#{name}_per_page'], :action=>:#{list_method_name}}).to_s\n"
-                        #                           bottom_var+"='"+content_tag(:tr, content_tag(:td, "'+"+bottom_var+"+'", :class=>:paginate, :colspan=>definition.columns.size))+"' unless "+bottom_var+".nil?\n"
+            footer += if options[:pagination] == :will_paginate
+                        footer_var+"+=will_paginate(@"+name.to_s+", :renderer=>ActionController::RemoteLinkRenderer, :remote=>{:update=>'"+name.to_s+"', :loading=>'onLoading();', :loaded=>'onLoaded();'}, :params=>{'#{name}_sort'=>params['#{name}_sort'], '#{name}_dir'=>params['#{name}_dir'], '#{name}_per_page'=>params['#{name}_per_page'], :action=>:#{list_method_name}}).to_s\n"
+                        # footer_var+"='"+content_tag(:tr, content_tag(:td, "'+"+footer_var+"+'", :class=>:paginate, :colspan=>definition.columns.size))+"' unless "+footer_var+".nil?\n"
                       else
                         ''
                       end
 
-            # Bottom tag
-            bottom += "  text+='"+content_tag(:tr, content_tag(:td, "'+"+bottom_var+"+'", :class=>:bottom, :colspan=>definition.columns.size))+"' unless text.blank? "+(options[:export] ? "" : " or "+bottom_var+".blank?")+"\n"
+            # Footer tag
+            footer += footer_var+"='"+content_tag(:tr, content_tag(:th, "'+"+footer_var+"+'", :class=>:footer, :colspan=>definition.columns.size))+"' unless body.blank? "+(options[:export] ? "" : " or "+footer_var+".blank?")+"\n"
 
-            if options[:order].nil?
-              sorter  = "    sort = options['#{name}_sort']\n"
-              sorter += "    dir = options['#{name}_dir']\n"
-            else
-              sorter  = "    sort = #{options[:order]['sort'].to_s.inspect}\n"
-              sorter += "    dir = #{(options[:order]['dir']||'asc').to_s.inspect}\n"
-            end
+            #if options[:order].nil?
+            sorter  = "    sort = options['#{name}_sort']\n"
+            sorter += "    dir = options['#{name}_dir']\n"
+            #else
+            #  sorter  = "    sort = #{options[:order]['sort'].to_s.inspect}\n"
+            #  sorter += "    dir = #{(options[:order]['dir']||'asc').to_s.inspect}\n"
+            #end
 
             record = 'r'
             child  = 'c'
@@ -137,7 +160,7 @@ module Ekylibre
               code += "        csv << #{columns_to_csv(definition, :body, :record=>record)}\n"
               code += "      end\n"
               code += "    end\n"
-              code += "    send_data(data, :type=>Mime::CSV, :disposition=>'inline', :filename=>'#{::I18n.translate('activerecord.models.'+model.name.underscore.to_s).to_s.gsub(/\\W/,'_')}.csv')\n"
+              code += "    send_data(data, :type=>Mime::CSV, :disposition=>'inline', :filename=>'#{::I18n.translate('activerecord.models.'+model.name.underscore.to_s).gsub(/[^a-z0-9]/i,'_')}.csv')\n"
             end
             code += "  end\n"
             code += "end\n"
@@ -147,8 +170,8 @@ module Ekylibre
             module_eval(code)
 
             
-            header = columns_to_td(definition, :header, :method=>list_method_name, :order=>options[:order], :id=>name)
-            body = columns_to_td(definition, :body, :record=>record, :order=>options[:order])
+            header = columns_to_td(definition, :header, :method=>list_method_name, :id=>name)
+            body = columns_to_td(definition, :body, :record=>record)
             if options[:children].is_a? Symbol
               children = options[:children].to_s
               child_body = columns_to_td(definition, :children, :record=>child, :order=>options[:order])
@@ -175,16 +198,19 @@ module Ekylibre
               code += "      end\n"
             end
             code += "    end\n"
-            code += "    text = header+content_tag(:tbody,body)\n"
+            code += footer.gsub(/^/, '    ')
+            code += "    text = content_tag(:thead, header)+content_tag(:tfoot, #{footer_var})+content_tag(:tbody, body)\n"
             code += "  else\n"
             if options[:empty]
               code += "    text = ''\n"
             else
-              code += "    text = '"+content_tag(:tr,content_tag(:td,tg('no_records').gsub(/\'/,'&apos;'), :class=>:empty))+"'\n"
+              code += "    text = '"+content_tag(:tr,content_tag(:td, ::I18n.translate('dyta.no_records').gsub(/\'/,'&apos;'), :class=>:empty))+"'\n"
             end
             code += "  end\n"
-            code += bottom;
-            code += "  text = content_tag(:table, text, :class=>:dyta, :id=>'"+name.to_s+"') unless request.xhr?\n"
+            code += footer;
+            # code += "  text = content_tag(:table, text, :class=>:dyta, :id=>'"+name.to_s+"') unless request.xhr?\n"
+            code += "  text = content_tag(:table, text, :class=>:dyta)\n"
+            code += "  text = content_tag(:div, text, :class=>:dyta, :id=>'"+name.to_s+"') unless request.xhr?\n"
             code += "  return text\n"
             code += "end\n"
 
@@ -216,17 +242,16 @@ module Ekylibre
             code = ''
             record = options[:record]||'RECORD'
             list_method_name = options[:method]||'dyta_list'
-            order = options[:order]
             for column in columns
               column_sort = ''
-              if column.sortable? and order.nil?
+              if column.sortable?
                 column_sort = "+(sort=='"+column.name.to_s+"' ? ' sorted' : '')"
               end
               if nature==:header
                 code += "+\n      " unless code.blank?
                 header_title = "'"+h(column.header).gsub('\'','\\\\\'')+"'"
-                if column.sortable? and order.nil?
-                  header_title = "link_to_remote("+header_title+", {:update=>'"+options[:id].to_s+"', :loading=>'onLoading();', :loaded=>'onLoaded();', :url=>{:action=>:#{list_method_name}, '#{options[:id]}_sort'=>'"+column.name.to_s+"', '#{options[:id]}_dir'=>(sort=='"+column.name.to_s+"' and dir=='asc' ? 'desc' : 'asc'), :page=>params[:page]}}, {:class=>'sort '+(sort=='"+column.name.to_s+"' ? dir : 'unsorted')})"
+                if column.sortable?
+                  header_title = "link_to_remote("+header_title+", {:update=>'"+options[:id].to_s+"', :loading=>'onLoading();', :loaded=>'onLoaded();', :url=>{:action=>:#{list_method_name}, '#{options[:id]}_sort'=>'"+column.name.to_s+"', '#{options[:id]}_dir'=>(sort=='"+column.name.to_s+"' and dir=='asc' ? 'desc' : 'asc'), :page=>page}}, {:class=>'sort '+(sort=='"+column.name.to_s+"' ? dir : 'unsorted')})"
                 end
                 code += "content_tag(:th, "+header_title+", :class=>'"+(column.action? ? 'act' : 'col')+"'"+column_sort+")"
               else
@@ -237,41 +262,45 @@ module Ekylibre
                   style = style.gsub(/RECORD/, record)+"+" if style.match(/RECORD/)
                   style += "'"
                   css_class = column.options[:class] ? ' '+column.options[:class].to_s : ''
-                  datum = column.data(record, nature==:children)
-                  if column.datatype == :boolean
-                    datum = value_image2(datum)
-                    style += 'text-align:center;'
-                  end
-                  if [:date, :datetime, :timestamp].include? column.datatype
-                    datum = "(#{datum}.nil? ? '' : ::I18n.localize(#{datum}))"
-                  end
-                  if column.datatype == :decimal
-                    datum = "(#{datum}.nil? ? '' : number_to_currency(#{datum}, :separator=>',', :delimiter=>'&nbsp;', :unit=>'', :precision=>#{column.options[:precision]||2}))"
-                  end
-                  if column.options[:url] and nature==:body
+                  if nature!=:children or (not column.options[:children].is_a? FalseClass and nature==:children)
+                    datum = column.data(record, nature==:children)
+                    if column.datatype == :boolean
+                      datum = value_image2(datum)
+                      style += 'text-align:center;'
+                    end
+                    if [:date, :datetime, :timestamp].include? column.datatype
+                      datum = "(#{datum}.nil? ? '' : ::I18n.localize(#{datum}))"
+                    end
+                    if column.datatype == :decimal
+                      datum = "(#{datum}.nil? ? '' : number_to_currency(#{datum}, :separator=>',', :delimiter=>'&nbsp;', :unit=>'', :precision=>#{column.options[:precision]||2}))"
+                    end
+                    if column.options[:url] and nature==:body
                     datum = "("+datum+".blank? ? '' : link_to("+datum+', url_for('+column.options[:url].inspect+'.merge({:id=>'+column.record(record)+'.id}))))'
-                    css_class += ' url'
-                  elsif column.options[:mode] == :download# and !datum.nil?
-                    datum = 'link_to('+value_image(:download)+', url_for_file_column('+column.data(record)+",'"+column.name+"'))"
-                    style += 'text-align:center;'
-                    css_class += ' act'
-                  elsif column.options[:mode]||column.name == :email
-                    # datum = 'link_to('+datum+', "mailto:#{'+datum+'}")'
-                    datum = "("+datum+".blank? ? '' : link_to("+datum+", \"mailto:\#\{"+datum+"\}\"))"
-                    css_class += ' web'
-                  elsif column.options[:mode]||column.name == :website
-                    datum = "("+datum+".blank? ? '' : link_to("+datum+", "+datum+"))"
-                    css_class += ' web'
-                  end
-                  if column.options[:name]==:color
-                    css_class += ' color'
-                    style += "background: #'+"+column.data(record)+"+'; color:#'+viewable("+column.data(record)+")+';"
-                  end
-                  if column.name==:code
-                    css_class += ' code'
-                  end
-                  if column.name==:country and  column.datatype == :string and column.limit <= 8
-                    datum = "(#{datum}.nil? ? '' : '<nobr>'+#{value_image2(datum,'countries')}+'&nbsp;'+::I18n.translate('countries.'+#{datum}))+'</nobr>'"
+                      css_class += ' url'
+                    elsif column.options[:mode] == :download# and !datum.nil?
+                      datum = "("+datum+".blank? ? '' : link_to("+value_image(:download)+", url_for_file_column("+record+",'#{column.name}')))"
+                      style += 'text-align:center;'
+                      # css_class += ' act'
+                    elsif column.options[:mode]||column.name == :email
+                      # datum = 'link_to('+datum+', "mailto:#{'+datum+'}")'
+                      datum = "("+datum+".blank? ? '' : link_to("+datum+", \"mailto:\#\{"+datum+"\}\"))"
+                      css_class += ' web'
+                    elsif column.options[:mode]||column.name == :website
+                      datum = "("+datum+".blank? ? '' : link_to("+datum+", "+datum+"))"
+                      css_class += ' web'
+                    elsif column.name==:color
+                      css_class += ' color'
+                      style += "background: #'+"+column.data(record)+"+'; color:#'+viewable("+column.data(record)+")+';"
+                    elsif column.name==:country and  column.datatype == :string and column.limit <= 8
+                      datum = "(#{datum}.nil? ? '' : '<nobr>'+#{value_image2(datum,'countries')}+'&nbsp;'+::I18n.translate('countries.'+#{datum}))+'</nobr>'"
+                    elsif column.datatype == :string
+                      datum = "h("+datum+")"
+                    end
+                    if column.name==:code
+                      css_class += ' code'
+                    end
+                  else
+                    datum = 'nil'
                   end
                   code += "content_tag(:td, "+datum+", :class=>'"+column.datatype.to_s+css_class+"'"+column_sort
                   code += ", :style=>"+style+"'" unless style[1..-1].blank?
@@ -408,6 +437,12 @@ module Ekylibre
           @columns = []
           @procedures = []
         end
+
+        def table_columns
+          cols = @model.columns.collect{|c| c.name}
+          @columns.select{|c| c.nature == :column and cols.include? c.name.to_s}
+        end
+
         
         def column(name, options={})
           @columns << DytaElement.new(model, :column, name, options)
@@ -562,6 +597,7 @@ module Ekylibre
           format = @options[:format] ? ", :format=>'#{@options[:format]}'" : ""
           if @options[:remote] 
             remote_options = @options.dup
+            remote_options[:confirm] = ::I18n.translate('general.'+@options[:confirm].to_s) unless @options[:confirm].nil?
             remote_options.delete :remote
             remote_options.delete :image
             remote_options = remote_options.inspect.to_s
@@ -584,8 +620,15 @@ module Ekylibre
 
             code = "if "+cases.join("elsif ")+"end"
           else
+            url = @options[:url] ||= {}
+            url[:controller] ||= @options[:controller]
+            url[:action] ||= @name
+            url.delete(:id)
+            url.delete_if{|k, v| v.nil?}
             code  = "link_to(image_tag('"+image_file+"', :border=>0, :alt=>'"+image_title+"')"
-            code += ", {"+(@options[:controller] ? ':controller=>:'+@options[:controller].to_s+', ' : '')+":action=>:"+@name.to_s+", :id=>"+record+".id"+format+"}"
+            #code += ", {"+(@options[:controller] ? ':controller=>:'+@options[:controller].to_s+', ' : '')+":action=>:"+@name.to_s+", :id=>"+record+".id"+format+"}"
+            code += ", "+url.inspect[0..-2]+", :id=>"+record+".id"+format+"}"
+            #+"}"+{"+(@options[:controller] ? ':controller=>:'+@options[:controller].to_s+', ' : '')+":action=>:"+@name.to_s
             code += ", {:id=>'"+@name.to_s+"_'+"+record+".id.to_s"+(link_options.blank? ? '' : ", "+link_options)+", :alt=>::I18n.t('general.#{verb}'), :title=>::I18n.t('general.#{verb}')}"
             code += ")"
           end

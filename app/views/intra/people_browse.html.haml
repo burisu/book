@@ -12,7 +12,7 @@
   -t.datum :address
   -t.datum :student
   -t.action :use=>:is_locked, :actions=>{"true"=>:people_unlock_access, "false"=>:people_lock_access}, :prefix=>"people_", :method=>:post
-  -t.action :action=>:people_select, :image=>:show
+  -t.action :action=>:person, :image=>:show
   -t.action :action=>:people_update, :image=>:edit
   -t.action :action=>:people_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?'
 = will_paginate @people

@@ -33,6 +33,17 @@ module Ekylibre
                 query << (key.is_a?(Symbol) ? model.table_name+"."+key.to_s : key.to_s)+'=?'
                 parameters += ', ' + sanitize_conditions(value)
               end
+            elsif options[:conditions].is_a? Array
+              conditions = options[:conditions]
+              case conditions[0]
+              when String  # SQL
+#               query << '["'+conditions[0].to_s+'"'
+                query << conditions[0].to_s
+                parameters += ', '+conditions[1..-1].collect{|p| sanitize_conditions(p)}.join(', ') if conditions.size>1
+#                query << ')'
+              else
+                raise Exception.new("First element of an Array can only be String or Symbol.")
+              end
             end
             
             method_name = name_db.to_s+'_dyli'
@@ -101,8 +112,14 @@ module Ekylibre
           tf_name  = "#{name_db}[search]"
           tf_value = nil
           hf_name  = "#{name_html}"
-          hf_value =  nil
+          hf_value = nil
           options  = {:action => "#{name_db}_dyli"}.merge(options)
+          if options[:value].is_a? ActiveRecord::Base
+            foreign = options[:value]
+            tf_value = foreign.send([:label, :name, :code, :inspect].detect{|a| foreign.respond_to? a})
+            hf_value = foreign.id
+          end
+
           options[:field_id] = name_html.gsub(/[\[\]]/,'_').gsub(/(^\_+|\_+$)/, '')
           completion_options[:skip_style] = true;
           
@@ -255,13 +272,13 @@ module Ekylibre
         def determine_completion_options(hf_id, tf_id, options, completion_options) #:nodoc:
           # model_auto_completer does most of its work in the afterUpdateElement hook of the
           # standard autocompletion mechanism. Here we generate the JavaScript that goes there.
+          resize = completion_options[:no_resize] ? "" : "element.size = (element.dyli_cache.length > 64 ? 64 : element.dyli_cache.length);"
           completion_options[:after_update_element] = <<-JS.gsub(/\s+/, ' ')
           function(element, value) {
             var model_id = /#{options[:regexp_for_id]}/.exec(value.id)[1];
             $("#{hf_id}").value = model_id;
             element.dyli_cache = element.value;
-            element.size = (element.dyli_cache.length > 64 ? 64 : element.dyli_cache.length);
-            (#{options[:after_update_element]})(element, value, $("#{hf_id}"), model_id);
+            #{resize}(#{options[:after_update_element]})(element, value, $("#{hf_id}"), model_id);
           }
           JS
           

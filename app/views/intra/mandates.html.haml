@@ -4,7 +4,7 @@
 
 =print_table :mandates do |t|
   -t.datum :name, :through=>:nature, :label=>"Mandat"
-  -t.datum :label, :through=>:person, :url=>{:action=>:people_select}, :label=>"Personne"
+  -t.datum :label, :through=>:person, :url=>{:action=>:person}, :label=>"Personne"
   -t.datum :begun_on
   -t.datum :finished_on
   -t.datum :name, :through=>:zone
