@@ -1,15 +1,20 @@
 %h1 Articles
 
-
-
 %ul.aclist
-  %li=link_to "Créer un nouvel article", :action=>:new_report
+  %li=link_to "Créer un nouvel article", :action=>:article_create
 
-
-
+.search{:style=>"display: none"}
+  -form_tag do
+    %nobr
+      ="État"
+      =select(:article, :status, Article.status, :include_blank=>true)
+    %nobr
+      ="Auteur"
+      =select(:article, :author_id, Article.authors, :include_blank=>true)
+    %nobr
+      ="Rubrique"
+      =select(:article, :rubric_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]}, :include_blank=>true)
+    =submit_tag("Filtrer")
 
 =dyta(:articles)
-%p
-  %strong Statut (S.)&nbsp;: 
-  =Article::STATUS.sort{|x,y| x.to_s<=>y.to_s}.collect{|x| '<strong>'+x[0].to_s+'</strong>&nbsp;: '+x[1]}.join(", ")
 

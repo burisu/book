@@ -62,7 +62,7 @@ class IntraController < ApplicationController
     end
     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
     unless @folder 
-      redirect_to :action=>:folder_edit 
+      redirect_to :action=>:folder_update 
       return
     end
     session[:current_folder_id] = @folder.id
@@ -117,10 +117,10 @@ class IntraController < ApplicationController
     start = Date.civil(year, month, 1)
     @article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>session[:current_person_id]})
     if @article
-      redirect_to :action=>:edit_report, :id=>@article.id
+      redirect_to :action=>:article_update, :id=>@article.id
     else
       session[:report_done_on] = start
-      redirect_to :action=>:new_report
+      redirect_to :action=>:article_create
     end
   end
 
@@ -273,7 +273,7 @@ class IntraController < ApplicationController
 
 
 
-  def folder_edit
+  def folder_update
     @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
@@ -326,7 +326,7 @@ class IntraController < ApplicationController
   end
 
 
-  def new_report
+  def article_create
     if request.post?
       @article = Article.new
       # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
@@ -354,7 +354,7 @@ class IntraController < ApplicationController
   end
 
 
-  def edit_report
+  def article_update
     @article = Article.find(params[:id])
     unless @article
       flash[:error] = "L'article demandé n'est pas disponible."
@@ -390,7 +390,7 @@ class IntraController < ApplicationController
 
   
   def article_edit
-    redirect_to :action=>:edit_report, :id=>params[:id]
+    redirect_to :action=>:article_update, :id=>params[:id]
   end
   
   def article_to_publish
@@ -467,51 +467,60 @@ class IntraController < ApplicationController
 
 
   
-  def new_person
-    if request.post?
-      @person = Person.new(params[:person])
-      if @person.save
-        redirect_to :action=>:persons
-      end
-    else
-      @person = Person.new
-    end
-  end
+#   def person_create
+#     if request.post?
+#       @person = Person.new(params[:person])
+#       if @person.save
+#         redirect_to :action=>:persons
+#       end
+#     else
+#       @person = Person.new
+#     end
+#     render_form
+#   end
   
-  def edit_person
-    @person = Person.find(params[:id])
-    if request.post?
-      if params[:person][:password].blank? and params[:person][:password_confirmation].blank?
-        params[:person].delete :password
-        params[:person].delete :password_confirmation
-      end
-      if @person.update_attributes(params[:person])
-        redirect_to :action=>:persons
-      end
-    end
+#   def person_update
+#     @person = Person.find(params[:id])
+#     if request.post?
+#       if params[:person][:password].blank? and params[:person][:password_confirmation].blank?
+#         params[:person].delete :password
+#         params[:person].delete :password_confirmation
+#       end
+#       if @person.update_attributes(params[:person])
+#         redirect_to :action=>:persons
+#       end
+#     end
+#     render_form
+#   end
+
+
+  dyta(:people, :order=>"family_name, first_name", :per_page=>20, :line_class=>"(RECORD.is_locked ? 'error' : (RECORD.has_subscribed? ? 'notice' : (RECORD.has_subscribed_on? ? 'warning' : '')))") do |t|
+    t.column :family_name, :url=>{:action=>:person}
+    t.column :first_name, :url=>{:action=>:person}
+    t.column :address
+    t.column :student
+    t.action :is_locked, :actions=>{"true"=>{:action=>:person_unlock}, "false"=>{:action=>:person_lock}}
+    t.action :person_update
+    t.action :person_delete, :method=>:post, :confirm=>:are_you_sure
   end
 
-  def waiting_users
-    try_to_access :user_validation
-    @people = Person.paginate(:all, :conditions=>{:is_validated=>true, :is_locked=>true}, :page=>params[:page])
-  end
-  
-  def people_browse
+
+  def people
     try_to_access :users
     @title = "Liste des personnes"
-    @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
+    # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
   def person
     try_to_access [:users, :promotions]
     @person = Person.find_by_id(params[:id])
-    redirect_to :action=>:people_browse if @person.nil?
+    redirect_to :action=>:people if @person.nil?
     @subscriptions = @person.subscriptions
     @mandates = @person.mandates
     @articles = @person.articles
   end
   
-  def people_create
+  def person_create
     try_to_access :users
     if request.post?
       @person = Person.new params[:person]
@@ -531,14 +540,14 @@ class IntraController < ApplicationController
           flash[:warning] = "L'e-mail de confirmation n'a pas pu être envoyé."
         end
         flash[:notice] = 'La personne '+@person.label+' a été créée'
-        redirect_to :action=>:people_browse
+        redirect_to :action=>:people
       end
     else
       @person = Person.new
     end
   end
   
-  def people_update
+  def person_update
     try_to_access :users
     @person = Person.find(params[:id])
     if request.post?
@@ -551,30 +560,30 @@ class IntraController < ApplicationController
       @person.email = params[:person][:email]
       if @person.save
         flash[:notice] = 'La personne '+@person.label+' a été modifiée'
-        redirect_to :action=>:people_browse
+        redirect_to :action=>:people
       end
     end
   end
   
-  def people_lock_access
+  def person_lock
     try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = true
     p.forced    = true
     p.save!
-    redirect_to :action=>:people_browse
+    redirect_to :action=>:people
   end
   
-  def people_unlock_access
+  def person_unlock
     try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = false
     p.forced    = true
     p.save!
-    redirect_to :action=>:people_browse
+    redirect_to :action=>:people
   end
   
-  def people_delete
+  def person_delete
     try_to_access :users
     if request.post? or request.delete?
       begin
@@ -583,7 +592,7 @@ class IntraController < ApplicationController
         flash[:warning] = "La personne n'a pas pu être supprimée"
       end
     end
-    redirect_to :action=>:people_browse
+    redirect_to :action=>:people
   end 
 
   def add_subscription
@@ -611,26 +620,26 @@ class IntraController < ApplicationController
     redirect_to :action=>:person, :id=>s.person_id
   end
 
-  def subscribers
-    try_to_access :subscribing
-    @title = "Liste des adhérents actuels"
-    @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
-    render :action=>:people_browse
-  end
+#   def subscribers
+#     try_to_access :subscribing
+#     @title = "Liste des adhérents actuels"
+#     @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
+#     render :action=>:people
+#   end
 
-  def non_subscribers
-    try_to_access :subscribing
-    @title = "Liste des non-adhérents actuels"
-    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
-    render :action=>:people_browse
-  end
+#   def non_subscribers
+#     try_to_access :subscribing
+#     @title = "Liste des non-adhérents actuels"
+#     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
+#     render :action=>:people
+#   end
 
-  def new_non_subscribers
-    try_to_access :subscribing
-    @title = "Liste des futurs non-adhérents (à 2 mois)"
-    @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
-    render :action=>:people_browse
-  end
+#   def new_non_subscribers
+#     try_to_access :subscribing
+#     @title = "Liste des futurs non-adhérents (à 2 mois)"
+#     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
+#     render :action=>:people
+#   end
 
   def mandates
     @mandates = Mandate.all_current(:joins=>"JOIN mandate_natures mn ON (mn.id=nature_id) JOIN people p ON (person_id=p.id)", :order=>"mn.name, p.family_name, p.first_name")
@@ -690,24 +699,23 @@ class IntraController < ApplicationController
 
 
 
-
-  dyta(:articles, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
+  # :conditions=>{:status=>['session[:articles_status]']}, 
+  dyta(:articles, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))") do |t|
     t.column :title, :url=>{:action=>:article}
     t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
     t.column :label, :through=>:author, :url=>{:action=>:person}
     t.column :updated_at
     t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
-    t.action :article_update
     t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
   end
-
-
 
 
   def articles
     try_to_access :publishing
     @title = "Tous les articles"
-    # @articles = Article.paginate(:all, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :page=>params[:page])
+    if request.post?
+      @article = Article.new(params[:article])
+    end
   end
 
 
@@ -741,11 +749,10 @@ class IntraController < ApplicationController
 
   dyta(:rubric_articles, :model=>:articles,  :joins=>"JOIN people ON (people.id=author_id)", :conditions=>{:rubric_id=>['session[:current_rubric_id]']}, :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
     t.column :title, :url=>{:action=>:article}
-    t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
     t.column :label, :through=>:author, :url=>{:action=>:person}
     t.column :updated_at
+    t.column :created_at
     t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
-    t.action :article_update
     t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
   end
 

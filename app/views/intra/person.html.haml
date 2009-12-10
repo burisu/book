@@ -50,7 +50,7 @@
   -t.datum :title
   -t.datum :done_on
   -t.datum :name, :through=>:rubric, :label=>"Rubrique"
-  -t.action :action=>:edit_report, :image=>:edit if access? :publishing
+  -t.action :action=>:article_update, :image=>:edit if access? :publishing
 
 %h2 Mandats
 -if access?

@@ -1,5 +1,0 @@
-<h1>Modifier <em><%= @person.user_name%></em></h1>
-<%form_tag do %>
-<%=render :partial=>'person_form'-%>
-<%=submit_tag "Modifier la personne"-%> <%=link_to "Annuler", :action=>:persons-%>
-<%end%>

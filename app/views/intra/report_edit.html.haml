@@ -1,8 +1,0 @@
-%h1="Modifier le compte-rendu "+h(truncate(@article.title, 56))
-
--form_tag do
-  =render :partial=>'report_form'
-  =submit_tag "Enregistrer et prévisualiser"
-  =submit_tag "Enregistrer"
-  =link_to "Annuler", :back
-

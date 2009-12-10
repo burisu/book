@@ -177,7 +177,8 @@ class Person < ActiveRecord::Base
   end
 
   def has_subscribed?(delay=2.months)
-    Subscription.count(:conditions=>["person_id=? AND finished_on>=?::DATE",self.id,Time.now-delay])>0
+    # Subscription.count(:conditions=>["person_id=? AND finished_on>=CAST(? AS DATE)", self.id, Date.today-delay])>0
+    self.has_subscribed_on?(Date.today+delay)
   end
 
   def in_zone?(zone)

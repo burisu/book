@@ -67,7 +67,11 @@ class Article < ActiveRecord::Base
   end
   
   def self.status
-    STATUS.to_a.collect{|x| [x[1],x[0].to_s]}
+    STATUS.collect{|k,v| [v, k.to_s]}
+  end
+
+  def self.authors
+    Person.find(:all, :conditions=>["id IN (SELECT author_id FROM articles)"]).collect{|a| [a.label, a.id]}
   end
 
   def public?
