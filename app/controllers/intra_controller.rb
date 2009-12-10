@@ -414,7 +414,8 @@ class IntraController < ApplicationController
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
       redirect_to :controller=>:authentication, :action=>:login
     elsif @current_person
-      unless @article.author_id == @current_person.id or access? :publishing or @article.published?
+      # @article.published?
+      unless @article.author_id == @current_person.id or @article.can_be_read_by?(@current_person) or access? :publishing
         @article = nil
         flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
         redirect_to :back
@@ -423,7 +424,7 @@ class IntraController < ApplicationController
   end  
 
 
-  def report_delete
+  def article_delete
     if request.post? or request.delete?
       @article = Article.find(params[:id])
       if @article.nil?
@@ -746,14 +747,19 @@ class IntraController < ApplicationController
     try_to_access :publishing
   end
 
+  def self.rubric_articles_conditions
+    
+    {:rubric_id=>['session[:current_rubric_id]']}
+  end
 
-  dyta(:rubric_articles, :model=>:articles,  :joins=>"JOIN people ON (people.id=author_id)", :conditions=>{:rubric_id=>['session[:current_rubric_id]']}, :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
+
+  dyta(:rubric_articles, :model=>:articles, :conditions=>["rubric_id=? AND (amn.article_id IS NULL OR (amn.article_id IS NOT NULL AND m.person_id=? AND CURRENT_DATE BETWEEN COALESCE(m.begun_on, CURRENT_DATE) AND COALESCE(m.finished_on, CURRENT_DATE)))", ['session[:current_rubric_id]'], ['session[:current_person_id]']],  :joins=>"JOIN people ON (people.id=author_id) LEFT JOIN articles_mandate_natures AS amn ON (amn.article_id=articles.id) LEFT JOIN mandates AS m ON (m.nature_id=amn.mandate_nature_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
     t.column :title, :url=>{:action=>:article}
     t.column :label, :through=>:author, :url=>{:action=>:person}
     t.column :updated_at
     t.column :created_at
-    t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
-    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
+#    t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
+#    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
   end
 
   def rubric

@@ -55,7 +55,7 @@
                       = link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
                       = ' '
                       = link_to(image_tag('buttons/update.png'), {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-                      = link_to(image_tag('buttons/delete.png'), {:action=>:report_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
+                      = link_to(image_tag('buttons/delete.png'), {:action=>:article_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
                     -else
                       = report[:title]
     %td &nbsp; &nbsp;

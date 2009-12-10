@@ -78,6 +78,16 @@ class Article < ActiveRecord::Base
     conf = Configuration.the_one
     self.rubric_id == conf.home_rubric_id or (self.rubric_id == conf.agenda_rubric_id and self.mandate_natures.empty?) or self.id == conf.about_article_id or self.id == conf.contact_article_id or self.id == conf.legals_article_id
   end
+
+
+  def can_be_read_by?(person)
+    if self.mandate_natures.empty?
+      return true
+    else
+      return !Mandate.find(:first, :conditions=>["nature_id IN (?) AND person_id=? AND CURRENT_DATE BETWEEN COALESCE(begun_on, CURRENT_DATE) AND COALESCE(finished_on, CURRENT_DATE)", self.mandate_natures.collect{|mn| mn.id}, person.id]).nil?
+    end
+  end
+
   
 end
 
