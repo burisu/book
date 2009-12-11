@@ -120,7 +120,7 @@ class IntraController < ApplicationController
       redirect_to :action=>:article_update, :id=>@article.id
     else
       session[:report_done_on] = start
-      redirect_to :action=>:article_create
+      redirect_to :action=>:article_create, :rubric_id=>conf.news_rubric_id
     end
   end
 
@@ -342,7 +342,7 @@ class IntraController < ApplicationController
         redirect_to_back
       end 
     else
-      @article = Article.new
+      @article = Article.new(:rubric_id=>params[:rubric_id])
       @article.done_on = session[:report_done_on] if session[:report_done_on]
     end
   end
