@@ -7,8 +7,8 @@
             -if owner_mode
               =link_to member.name, :action=>:member, :id=>member.id
               =' '
-              =link_to(image_tag('buttons/update.png'), {:action=>:member, :id=>member.id})
-              =link_to(image_tag('buttons/delete.png'), {:action=>:period_remove_member, :id=>member.id, :period=>@period.id}, :confirm=>confirm(:delete), :method=>:post)
+              =link_to(image_tag('buttons/update0.png'), {:action=>:member, :id=>member.id})
+              =link_to(image_tag('buttons/delete0.png'), {:action=>:period_remove_member, :id=>member.id, :period=>@period.id}, :confirm=>confirm(:delete), :method=>:post)
             -else
               =member.name
         -if owner_mode

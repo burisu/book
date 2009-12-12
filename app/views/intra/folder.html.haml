@@ -54,8 +54,8 @@
                     -if @owner_mode
                       = link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
                       = ' '
-                      = link_to(image_tag('buttons/update.png'), {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-                      = link_to(image_tag('buttons/delete.png'), {:action=>:article_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
+                      = link_to(image_tag('buttons/update0.png'), {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
+                      = link_to(image_tag('buttons/delete0.png'), {:action=>:article_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
                     -else
                       = report[:title]
     %td &nbsp; &nbsp;
@@ -67,8 +67,8 @@
             =link_to_remote(@period.name, :url=>{:action=>:period_display, :id=>@period.id}, :update=>"period#{@period.id}")
             -if @owner_mode
               = ' '
-              =link_to(image_tag('buttons/update.png'), {:action=>:period, :id=>@period.id})
-              =link_to(image_tag('buttons/delete.png'), {:action=>:period_delete, :id=>@period.id}, :confirm=>confirm(:delete), :method=>:post)
+              =link_to(image_tag('buttons/update0.png'), {:action=>:period, :id=>@period.id})
+              =link_to(image_tag('buttons/delete0.png'), {:action=>:period_delete, :id=>@period.id}, :confirm=>confirm(:delete), :method=>:post)
               =#link_to(@period.name, {:action=>:period, :id=>@period.id})
             %div{:id=>"period#{@period.id}"}
               =render :partial=>'period_display', :locals=>{:owner_mode=>@owner_mode}

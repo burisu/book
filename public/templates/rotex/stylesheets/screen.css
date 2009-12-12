@@ -48,7 +48,7 @@ a:link { color : #47B; text-decoration:underline; font-size: 12px;}
 a:visited { color : #47B;}
 a:hover { text-decoration:none;}
 a img { border: none; }
-a.create { padding-left: 16px; background: url(../../../images/buttons/create.png) left center no-repeat; }
+a.create { padding-left: 16px; background: url(../../../images/buttons/create0.png) left center no-repeat; }
 a.report { padding-left: 16px; background: url(../../../images/buttons/report.png) left center no-repeat; }
 li.none { list-style-type: none; margin-left: -16px; }
 
@@ -99,7 +99,7 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 
 .infos.formu .label { color: #888; }
 
-.subbody h1{ font-variant: small-caps2 ; margin: 4px 4px 12px; font-family: Georgia, sans-serif; font-weight:normal; color: #555}
+.subbody h1{ font-variant: small-caps2 ; margin: 4px 4px 12px; font-family: Georgia, serif; font-weight:normal; color: #555}
 .subbody h2{ margin: 8px 8px; border-bottom: 1px dotted #00288d; font-weight:normal; }
 .subbody ul{ margin-left:8px; }
 

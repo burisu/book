@@ -182,12 +182,13 @@ class IntraController < ApplicationController
     @folder = Folder.find_by_id(session[:current_folder_id])
     if request.xhr?
       @period = Period.find_by_id_and_person_id(params[:id], @folder.person_id)
+      @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
       if @period
         key = @period.id.to_s
         session[:periods][key] = false if session[:periods][key].nil?
         session[:periods][key] = !session[:periods][key]
       end
-      render :partial=>'period_display'
+      render :partial=>'period_display', :locals=>{:owner_mode=>@owner_mode}
     else
       redirect_to :action=>:folder, :id=>@folder.id
     end
