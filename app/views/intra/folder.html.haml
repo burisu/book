@@ -3,7 +3,7 @@
   =' ('+@folder.person.label+')' unless @owner_mode
 
 %ul.aclist
-  %li=link_to 'Modifier mon voyage', :action=>:folder_update
+  %li=link_to 'Modifier mon voyage', :action=>:folder_update, :id=>@folder.id
 
 %table.infos.formu
   %tr

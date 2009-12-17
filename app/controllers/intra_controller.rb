@@ -54,24 +54,30 @@ class IntraController < ApplicationController
 
 
   def folder
-    person_id = session[:current_person_id]
-    if access?(:folders) and params[:id]
-      @folder = Folder.find_by_id(params[:id])
-    elsif access?(:folders) and params[:person_id]
-      person_id = params[:person_id].to_i 
-    end
-    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
-    unless @folder 
-      redirect_to :action=>:folder_update 
+    if params[:id].blank? or (not access?(:folders) and params[:id] != session[:current_person_id].to_s)
+      flash[:error] = "Vous n'avez pas accès à ce dossier"
+      redirect_to :back
       return
     end
+    @folder = Folder.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
+
+#     person_id = session[:current_person_id]
+#     if access?(:folders) and params[:id]
+#       @folder = Folder.find_by_id(params[:id])
+#     elsif access?(:folders) and params[:person_id]
+#       person_id = params[:person_id].to_i 
+#     end
+#     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
+#     unless @folder 
+#       redirect_to :action=>:folder_update 
+#       return
+#     end
     session[:current_folder_id] = @folder.id
     @reports = []
     @periods = []
     @reports2 = {}
     session[:periods] ||= {}
     @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
-
     
     if @folder
       start = @folder.begun_on.at_beginning_of_month
@@ -95,8 +101,13 @@ class IntraController < ApplicationController
   end
 
 
-  def folder_update
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+  def folder_create
+    unless @current_person.student
+      flash[:error] = "Vous n'avez pas accès à ce dossier"
+      redirect_to :back
+      return
+    end
+    @folder = Folder.new(params[:folder])
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
@@ -105,15 +116,33 @@ class IntraController < ApplicationController
       return
     end
     if request.post?
-      if @folder
-        # Update
-        params[:folder].delete :person_id
-        @folder.attributes = params[:folder]
-      else
-        # Create
-        @folder = Folder.new(params[:folder])
-        @folder.person_id = session[:current_person_id]
-      end
+      if @folder.save
+        redirect_to :action=>:folder, :id=>@folder.id
+        return
+      end        
+    end
+    render_form
+  end
+
+
+
+  def folder_update
+    if params[:id].blank? or (not access?(:folders) and params[:id] != session[:current_person_id].to_s)
+      flash[:error] = "Vous n'avez pas accès à ce dossier"
+      redirect_to :back
+      return
+    end
+    @folder = Folder.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
+    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
+    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    if @zones.empty?    
+      flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
+      redirect_to :action=>:profile 
+      return
+    end
+    if request.post?
+      params[:folder].delete :person_id
+      @folder.attributes = params[:folder]
       if @folder.save
         redirect_to :action=>:folder, :id=>@folder.id
       end        
@@ -121,6 +150,7 @@ class IntraController < ApplicationController
       @folder ||= Folder.new
     end
   end
+
 
 
 
@@ -235,7 +265,7 @@ class IntraController < ApplicationController
   def period_add_member
     @period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
     if @period.nil?
-      redirect_to :action=>:folder 
+      redirect_to :action=>:folder, :id=>session[:current_folder_id]
       return
     end
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
