@@ -38,12 +38,12 @@
 %h2 Cotisations
 -if access? :subscribing
   %ul.aclist
-    %li=link_to "Ajouter une cotisation", {:action=>:add_subscription, :id=>@person.id}
+    %li=link_to "Ajouter une cotisation", {:action=>:subscription_create, :id=>@person.id}
 =print_table :subscriptions do |t|
   -t.datum :begun_on
   -t.datum :finished_on
   -t.datum :amount
-  -t.action :action=>:remove_subscription, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?' if access? :subscribing
+  -t.action :action=>:subscription_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?' if access? :subscribing
 
 %h2 Articles
 =print_table :articles do |t|

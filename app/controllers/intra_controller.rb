@@ -95,6 +95,35 @@ class IntraController < ApplicationController
   end
 
 
+  def folder_update
+    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
+    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    if @zones.empty?    
+      flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
+      redirect_to :action=>:profile 
+      return
+    end
+    if request.post?
+      if @folder
+        # Update
+        params[:folder].delete :person_id
+        @folder.attributes = params[:folder]
+      else
+        # Create
+        @folder = Folder.new(params[:folder])
+        @folder.person_id = session[:current_person_id]
+      end
+      if @folder.save
+        redirect_to :action=>:folder, :id=>@folder.id
+      end        
+    else
+      @folder ||= Folder.new
+    end
+  end
+
+
+
   def folder_delete
     if request.post? or request.delete?
       @folder = Folder.find_by_id(params[:id])
@@ -273,33 +302,6 @@ class IntraController < ApplicationController
   end
 
 
-
-  def folder_update
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
-    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
-    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
-    if @zones.empty?    
-      flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
-      redirect_to :action=>:profile 
-      return
-    end
-    if request.post?
-      if @folder
-        # Update
-        params[:folder].delete :person_id
-        @folder.attributes = params[:folder]
-      else
-        # Create
-        @folder = Folder.new(params[:folder])
-        @folder.person_id = session[:current_person_id]
-      end
-      if @folder.save
-        redirect_to :action=>:folder, :id=>@folder.id
-      end        
-    else
-      @folder ||= Folder.new
-    end
-  end
 
   hide_action :redirect_to_back
   def redirect_to_back
@@ -597,7 +599,7 @@ class IntraController < ApplicationController
     redirect_to :action=>:people
   end 
 
-  def add_subscription
+  def subscription_create
     try_to_access :subscribing
     @person = Person.find(params[:id])
     if request.post?
@@ -615,7 +617,7 @@ class IntraController < ApplicationController
     end
   end
 
-  def remove_subscription
+  def subscription_delete
     try_to_access :subscribing
     s = Subscription.find(params[:id])
     s.destroy if request.post?
