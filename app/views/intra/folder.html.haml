@@ -39,7 +39,11 @@
     %td#reports{:valign=>:top}
       %h2='Mon journal'
       %ul.aclist
-        %li.none=link_to('Histoire complète', {:action=>:story, :id=>@folder.person_id}, :class=>:report)
+        -if @reports.size>1
+          %li.none=link_to("Histoire complète", {:action=>:story, :id=>@folder.person_id}, :class=>:report)
+        -for report in @reports
+          %li=link_to(report.title+" ("+::I18n.localize(report.done_on)+")", {:action=>:article, :id=>report.id})
+        %li.none=link_to('Ajouter un article', {:action=>:article_create, :rubric_id=>controller.conf.news_rubric_id}, :class=>:create)
         -for year in @reports2.sort
           %li
             =year[0].to_s+'&nbsp;:'

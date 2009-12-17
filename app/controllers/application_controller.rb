@@ -64,7 +64,11 @@ class ApplicationController < ActionController::Base
   protected
   
   def try_to_access(right=:all)
-    redirect_to :action=>:access_denied unless access? right
+    unless access? right
+      redirect_to :action=>:access_denied 
+      return false
+    end
+    return true
   end
 
   def authorize

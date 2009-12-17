@@ -18,6 +18,21 @@ class IntraController < ApplicationController
     end
   end
 
+  dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:current_person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
+    t.column :title, :url=>{:action=>:article}
+    t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
+    t.column :updated_at
+    # t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
+    t.action :article_update, :if=>"not RECORD.locked\?"
+    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
+  end
+
+  dyta(:person_mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false) do |t|
+    t.column :name, :through=>:nature
+    t.column :begun_on
+    t.column :finished_on
+  end
+
   def profile
     @person = Person.find(session[:current_person_id])
   end
@@ -80,21 +95,22 @@ class IntraController < ApplicationController
     @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
     
     if @folder
-      start = @folder.begun_on.at_beginning_of_month
-      stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
-      while start <= stop do
-        article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@folder.person_id})
-        @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
-        @reports2[start.year.to_s] ||= []
-        @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], 
-          :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), 
-          :title=>(article.nil? ? "Créer" : article.title), 
-          :id=>(article ? article.id : 0), 
-          :month_id=>start.year.to_s+start.month.to_s, 
-          :class=>(article.nil? ? "create" : nil)}
-        start = start >> 1
-        break if @reports.size>=24
-      end
+#       start = @folder.begun_on.at_beginning_of_month
+#       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
+#       while start <= stop do
+#         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@folder.person_id})
+#         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
+#         @reports2[start.year.to_s] ||= []
+#         @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], 
+#           :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), 
+#           :title=>(article.nil? ? "Créer" : article.title), 
+#           :id=>(article ? article.id : 0), 
+#           :month_id=>start.year.to_s+start.month.to_s, 
+#           :class=>(article.nil? ? "create" : nil)}
+#         start = start >> 1
+#         break if @reports.size>=24
+#       end
+      @reports = @folder.reports
       @periods = @folder.periods.find(:all, :order=>:begun_on)
     end
     # raise Exception.new @folder.inspect
@@ -108,6 +124,7 @@ class IntraController < ApplicationController
       return
     end
     @folder = Folder.new(params[:folder])
+    @folder.person_id = @current_person.id
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
@@ -121,6 +138,7 @@ class IntraController < ApplicationController
         return
       end        
     end
+    @title = "Enregistrement du voyage"
     render_form
   end
 
@@ -540,13 +558,13 @@ class IntraController < ApplicationController
 
 
   def people
-    try_to_access :users
+    return unless try_to_access :users
     @title = "Liste des personnes"
     # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
   def person
-    try_to_access [:users, :promotions]
+    return unless try_to_access [:users, :promotions]
     @person = Person.find_by_id(params[:id])
     redirect_to :action=>:people if @person.nil?
     @subscriptions = @person.subscriptions
@@ -555,7 +573,7 @@ class IntraController < ApplicationController
   end
   
   def person_create
-    try_to_access :users
+    return unless try_to_access :users
     if request.post?
       @person = Person.new params[:person]
       @person.email = params[:person][:email]
@@ -582,7 +600,7 @@ class IntraController < ApplicationController
   end
   
   def person_update
-    try_to_access :users
+    return unless try_to_access :users
     @person = Person.find(params[:id])
     if request.post?
       unless access? :all 
@@ -600,7 +618,7 @@ class IntraController < ApplicationController
   end
   
   def person_lock
-    try_to_access :users
+    return unless try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = true
     p.forced    = true
@@ -609,7 +627,7 @@ class IntraController < ApplicationController
   end
   
   def person_unlock
-    try_to_access :users
+    return unless try_to_access :users
     p = Person.find(params[:id])
     p.is_locked = false
     p.forced    = true
@@ -618,7 +636,7 @@ class IntraController < ApplicationController
   end
   
   def person_delete
-    try_to_access :users
+    return unless try_to_access :users
     if request.post? or request.delete?
       begin
         Person.find(params[:id]).destroy 
@@ -630,7 +648,7 @@ class IntraController < ApplicationController
   end 
 
   def subscription_create
-    try_to_access :subscribing
+    return unless try_to_access :subscribing
     @person = Person.find(params[:id])
     if request.post?
       @subscription = Subscription.new(params[:subscription])
@@ -648,28 +666,28 @@ class IntraController < ApplicationController
   end
 
   def subscription_delete
-    try_to_access :subscribing
+    return unless try_to_access :subscribing
     s = Subscription.find(params[:id])
     s.destroy if request.post?
     redirect_to :action=>:person, :id=>s.person_id
   end
 
 #   def subscribers
-#     try_to_access :subscribing
+#     return unless try_to_access :subscribing
 #     @title = "Liste des adhérents actuels"
 #     @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
 #   end
 
 #   def non_subscribers
-#     try_to_access :subscribing
+#     return unless try_to_access :subscribing
 #     @title = "Liste des non-adhérents actuels"
 #     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
 #   end
 
 #   def new_non_subscribers
-#     try_to_access :subscribing
+#     return unless try_to_access :subscribing
 #     @title = "Liste des futurs non-adhérents (à 2 mois)"
 #     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
@@ -680,7 +698,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_create
-    try_to_access :all
+    return unless try_to_access :all
     @mandate = Mandate.new :person_id=>params[:id]
 
     if request.post?
@@ -692,7 +710,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_update
-    try_to_access :all
+    return unless try_to_access :all
     @mandate = Mandate.find_by_id params[:id]
     redirect_to :action=>:mandates if @mandate.nil?
     if request.post?
@@ -704,7 +722,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_delete
-    try_to_access :all
+    return unless try_to_access :all
     @mandate = Mandate.find(params[:id])
     if @mandate and request.post?
       Mandate.destroy(@mandate.id)
@@ -718,7 +736,7 @@ class IntraController < ApplicationController
 
 
   def promotions
-    try_to_access :promotions
+    return unless try_to_access :promotions
     if request.post?
       @promotion = Promotion.find(params['promotion'])
       conditions = {:promotion_id=>@promotion.id}
@@ -745,7 +763,7 @@ class IntraController < ApplicationController
 
 
   def articles
-    try_to_access :publishing
+    return unless try_to_access :publishing
     @title = "Tous les articles"
     if request.post?
       @article = Article.new(params[:article])
@@ -754,13 +772,13 @@ class IntraController < ApplicationController
 
 
   def article_activate
-    try_to_access :publishing
+    return unless try_to_access :publishing
     Article.find(params[:id]).publish
     redirect_to :back
   end
 
   def article_deactivate
-    try_to_access :publishing
+    return unless try_to_access :publishing
     Article.find(params[:id]).unpublish
     redirect_to :back
   end
@@ -777,7 +795,7 @@ class IntraController < ApplicationController
   end
 
   def rubrics
-    try_to_access :publishing
+    return unless try_to_access :publishing
   end
 
   def self.rubric_articles_conditions
