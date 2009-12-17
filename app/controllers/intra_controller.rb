@@ -51,9 +51,9 @@ class IntraController < ApplicationController
   end
 
 
-  dyta(:folders, :order=>"begun_on desc", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
+  dyta(:folders, :joins=>"JOIN people ON (people.id=folders.person_id)", :order=>"family_name, first_name", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
     t.action :folder, :image=>:show
-    t.column :label, :through=>:person # , :url=>{:action=>:person}
+    t.column :title, :through=>:person # , :url=>{:action=>:person}
     t.column :name, :through=>:promotion
     t.column :begun_on
     t.column :finished_on
@@ -369,9 +369,10 @@ class IntraController < ApplicationController
     article.title = params[:title]
     article.intro = params[:intro]
     article.body  = params[:body]
+    article.ready  = params[:ready]
     article.rubric_id  = params[:rubric_id]
     article.status = 'W' if article.new_record?
-    article.status = params[:status] if access? :publishing
+    article.status = params[:status] if false # access? :publishing
     # raise params[:agenda]+' '+params[:agenda].class.to_s
     article.done_on = params[:done_on]
   end
@@ -549,6 +550,7 @@ class IntraController < ApplicationController
   dyta(:people, :order=>"family_name, first_name", :per_page=>20, :line_class=>"(RECORD.is_locked ? 'error' : (RECORD.has_subscribed? ? 'notice' : (RECORD.has_subscribed_on? ? 'warning' : '')))") do |t|
     t.column :family_name, :url=>{:action=>:person}
     t.column :first_name, :url=>{:action=>:person}
+    t.column :user_name
     t.column :address
     t.column :student
     t.action :is_locked, :actions=>{"true"=>{:action=>:person_unlock}, "false"=>{:action=>:person_lock}}

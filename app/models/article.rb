@@ -50,8 +50,16 @@ class Article < ActiveRecord::Base
     self.update_attribute(:status, 'U')
   end
   
+  def ready=(value)
+    self.status = 'R' if value
+  end
+
+  def ready
+    self.status=='R'
+  end
+
   def ready?
-    status=='R'
+    self.ready
   end
   
   def locked?

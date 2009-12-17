@@ -7,7 +7,7 @@ class AuthenticationController < ApplicationController
   def login
     clean_people
     if request.post?
-      person=Person.authenticate(params[:person][:user_name],params[:person][:password])
+      person=Person.authenticate(params[:person][:user_name], params[:person][:password])
       if person
         session[:current_person_id]=person.id
         session[:rights] = person.rights

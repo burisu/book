@@ -164,6 +164,10 @@ class Person < ActiveRecord::Base
     self.first_name+' '+self.family_name
   end
 
+  def title
+    self.family_name+" "+self.first_name
+  end
+
   def story?
     self.articles.find(:all, :conditions=>["status=? AND rubric_id= ? AND done_on IS NOT NULL", 'P', Configuration.parameter(:news_rubric_id)]).size>0
   end
