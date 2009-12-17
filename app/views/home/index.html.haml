@@ -18,7 +18,7 @@
             .extract
               %h4=article.title
               .content=dokuwikize(article.intro)+link_to('Lire la suite', {:controller=>:home, :action=>:article, :id=>article.id})
-        .extract{:style=>"text-align:center"}=link_to "Consulter les autres nouvelles...", :controller=>:intra, :action=>:reports
+        .extract{:style=>"text-align:center"}=link_to "Plus d'articles...", :controller=>:intra, :action=>:reports
 
 -for @article in @articles
   =render :partial=>'shared/article'
