@@ -153,7 +153,7 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     person = self.find(:first, :conditions=>["LOWER(user_name) = ?", name.to_s.strip.lower])
     if person
-      person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed?)
+      person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed_on?)
     end
     person
   end

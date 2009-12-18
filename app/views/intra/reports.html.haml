@@ -1,4 +1,4 @@
-%h1="Toutes les articles &laquo;#{controller.conf.news_rubric.name}&raquo; des Students Exchange"
+%h1="Tous les articles &laquo;#{controller.conf.news_rubric.name}&raquo; des Students Exchange"
 
 =select_tag :id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil)), :onchange=>"window.location.replace('#{url_for(:action=>:reports, :id=>'')}'+this.value)"
 

@@ -11,6 +11,7 @@ class AuthenticationController < ApplicationController
       if person
         session[:current_person_id]=person.id
         session[:rights] = person.rights
+        @@configuration.reload
         if session[:history][1].blank?
           redirect_to :controller=>:intra, :action=>:profile
         else
