@@ -3,7 +3,8 @@
 -for answer in @answers
   %h2
     =answer.person.label
-    =link_to("Déverrouiller la réponse", {:action=>:answer_unlock, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
+    -if answer.locked
+      =link_to("Déverrouiller la réponse", {:action=>:answer_unlock, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
   -for item in answer.items
     %h3=item.question.name
     %p=item.content

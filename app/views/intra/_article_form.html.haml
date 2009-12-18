@@ -9,7 +9,7 @@
   =tl "Langue", select(:article, :language_id, Language.find(:all).collect {|p| [ p.name, p.id ] })
   =tl "Date (AAAA-MM-JJ)", text_field(:article, :done_on, :size=>10)
   =tl "Rubrique", select(:article, :rubric_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
-  -if false # access? :publishing
+  -if access? :publishing
     =tl "Statut", select(:article, :status, Article.status)
   -else
     =tl "Prêt pour la publication", check_box(:article, :ready)

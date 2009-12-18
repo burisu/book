@@ -372,7 +372,7 @@ class IntraController < ApplicationController
     article.ready  = params[:ready]
     article.rubric_id  = params[:rubric_id]
     article.status = 'W' if article.new_record?
-    article.status = params[:status] if false # access? :publishing
+    article.status = params[:status] if access? :publishing
     # raise params[:agenda]+' '+params[:agenda].class.to_s
     article.done_on = params[:done_on]
   end

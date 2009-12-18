@@ -9,12 +9,12 @@ class SuiviController < ApplicationController
   end
 
   def questionnaires
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @questionnaires = Questionnaire.find(:all, :order=>"started_on DESC, name")
   end
 
   def questionnaire
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @questionnaire = Questionnaire.new(:name=>'Nouveau questionnaire') unless @questionnaire
     @questions = @questionnaire.questions.find(:all, :order=>:position)
@@ -31,7 +31,7 @@ class SuiviController < ApplicationController
   end
 
   def questionnaire_duplicate
-    try_to_access :suivi
+    return unless try_to_access :suivi
     questionnaire = Questionnaire.find_by_id(params[:id])
     if questionnaire
       redirect_to :action=>:questionnaire, :id=>questionnaire.duplicate.id
@@ -41,7 +41,7 @@ class SuiviController < ApplicationController
   end
 
   def question
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question = Question.new(:name=>'') unless @question
     @questionnaire = Questionnaire.find(session[:current_questionnaire])
@@ -60,14 +60,14 @@ class SuiviController < ApplicationController
   end
 
   def question_up
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_higher if @question
     redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
   end
   
   def question_down
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_lower if @question
     redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
@@ -84,7 +84,8 @@ class SuiviController < ApplicationController
     end
     @answer = Answer.find_by_person_id_and_questionnaire_id(@current_person.id, @questionnaire.id)
     @answer = Answer.new(:person_id=>@current_person.id, :questionnaire_id=>@questionnaire.id) if @answer.nil?
-    @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
+    # @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id) LEFT JOIN answers ON (answers.id=answer_id AND answer_id=#{@current_person.id})")
+    # @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id) LEFT JOIN answers ON (answers.id=answer_id)" , :conditions=>["answers.person_id=?", @current_person.id] )
     if @answer.locked or @answer.ready
       @readonly = true
       return
@@ -108,18 +109,20 @@ class SuiviController < ApplicationController
         return
       end
     end
-    @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
+    # @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id) LEFT JOIN answers ON (answers.id=answer_id)" , :conditions=>["answers.person_id=? OR answers.person_id IS NULL OR answer_id IS NULL", @current_person.id] )
+    # @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id)")
+    @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN questionnaires AS qt ON (questions.questionnaire_id=qt.id) LEFT JOIN answers AS aws ON (aws.questionnaire_id=qt.id AND person_id=#{@current_person.id}) LEFT JOIN answer_items ON (questions.id=question_id AND answer_id=aws.id)")
   end
   
 
   def answers
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @answers = @questionnaire.answers.find(:all, :conditions=>{:ready=>true})
   end
 
   def answer_unlock
-    try_to_access :suivi
+    return unless try_to_access :suivi
     @answer = Answer.find_by_id(params[:id])
     if request.post?
       @answer.update_attribute(:locked, false)
