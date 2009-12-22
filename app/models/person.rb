@@ -38,19 +38,19 @@
 require 'digest/sha2'
 
 class Person < ActiveRecord::Base
+  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   attr_accessor :password_confirmation
   attr_accessor :test_password
   attr_accessor :terms_of_use
   attr_accessor :forced
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
-  validates_confirmation_of :password
-  validates_uniqueness_of :email #, :if=>Proc.new {|p| !p.system }
-  validates_length_of :user_name, :in=>4..32
-  validates_acceptance_of :terms_of_use
-  validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/i
-  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   has_one :folder, :dependent=>:destroy
   has_one :promotion, :through=>:folder
+  validates_acceptance_of :terms_of_use
+  validates_confirmation_of :password
+  validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/
+  validates_length_of :user_name, :in=>4..32
+  validates_uniqueness_of :email, :user_name  #, :if=>Proc.new {|p| !p.system }
 
   def before_validation
     self.user_name = self.user_name.lower
@@ -176,8 +176,8 @@ class Person < ActiveRecord::Base
     return (self.hashed_password == Person.encrypt(password.to_s, self.salt) ? true : false )
   end
 
-  def has_subscribed_on?(date=Date.today)
-    Subscription.count(:conditions=>["person_id=? AND ? BETWEEN begun_on AND finished_on",self.id,date])>0
+  def has_subscribed_on?(verified_on=Date.today)
+    Subscription.count(:conditions=>["person_id=? AND ? BETWEEN begun_on AND finished_on", self.id, verified_on])>0
   end
 
   def has_subscribed?(delay=2.months)
