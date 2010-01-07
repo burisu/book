@@ -55,8 +55,8 @@ class Person < ActiveRecord::Base
   attr_accessor :terms_of_use
   attr_accessor :forced
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
-  has_one :folder, :dependent=>:destroy
-  has_one :promotion, :through=>:folder
+  # has_one :folder, :dependent=>:destroy
+  # has_one :promotion
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/
@@ -231,8 +231,8 @@ class Person < ActiveRecord::Base
 
 
   def in_zone?(zone)
-    if f = self.folder
-      return true if f.proposer_zone.in_zone?(zone) or f.host_zone.in_zone?(zone)
+    if self.promotion
+      return true if self.proposer_zone.in_zone?(zone) or self.host_zone.in_zone?(zone)
     end
     return false
   end

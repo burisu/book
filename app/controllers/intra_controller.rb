@@ -51,9 +51,9 @@ class IntraController < ApplicationController
   end
 
 
-  dyta(:folders, :joins=>"JOIN people ON (people.id=folders.person_id)", :order=>"family_name, first_name", :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
+  dyta(:folders, :model=>:people, :order=>"family_name, first_name", :conditions=>['promotion_id IS NOT NULL'], :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
     t.action :folder, :image=>:show
-    t.column :title, :through=>:person # , :url=>{:action=>:person}
+    t.column :title # , :url=>{:action=>:person}
     t.column :name, :through=>:promotion
     t.column :begun_on
     t.column :finished_on
@@ -494,7 +494,7 @@ class IntraController < ApplicationController
   def reports
     # expires_in 6.hours
     expires_now
-    @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN folders ON (countries.id=arrival_country_id)', :order=>:name)
+    @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN people ON (countries.id=arrival_country_id)', :order=>:name)
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'zone se'"])
     @zones = Zone.find(:all, :joins=>"join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=? AND LOWER(co.iso3166) LIKE 'fr'",@zone_nature.id], :order=>"number").collect {|p| [ p[:name], p[:id].to_i ] }||[]
     @zones.insert(0, ["-- Surligner les students d'une zone --",""])
