@@ -3,7 +3,7 @@
   %tr
     %th{:colspan=>"3"} Identité
   %tr
-    %td.label Nom patronymique
+    %td.label Nom de naissance
     %td.value=text_field :person, :patronymic_name
     %td.hint Ex.&nbsp;: MARTIN
   %tr
@@ -27,7 +27,7 @@
     %td.value=date_select :person, :born_on, {:order => [:day, :month, :year], :start_year=>1901}
     %td.hint 
   %tr
-    %td.label Pays
+    %td.label Pays de naissance
     %td.value=select :person, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
     %td.hint 
   %tr

@@ -12,7 +12,6 @@
 #  intro        :string(512)   not null
 #  language_id  :integer       not null
 #  lock_version :integer       default(0), not null
-#  opened       :boolean       not null
 #  rubric_id    :integer       
 #  status       :string(255)   default("W"), not null
 #  title        :string(255)   not null
