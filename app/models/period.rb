@@ -11,7 +11,6 @@
 #  family_name  :string(255)   not null
 #  fax          :string(32)    
 #  finished_on  :date          not null
-#  folder_id    :integer       not null
 #  id           :integer       not null, primary key
 #  latitude     :float         
 #  lock_version :integer       default(0), not null

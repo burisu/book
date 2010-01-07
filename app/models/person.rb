@@ -2,37 +2,48 @@
 #
 # Table name: people
 #
-#  address           :text          not null
-#  born_on           :date          not null
-#  country_id        :integer       not null
-#  created_at        :datetime      not null
-#  email             :string(255)   not null
-#  family_id         :integer       
-#  family_name       :string(255)   not null
-#  fax               :string(32)    
-#  first_name        :string(255)   not null
-#  hashed_password   :string(255)   
-#  id                :integer       not null, primary key
-#  is_locked         :boolean       not null
-#  is_user           :boolean       not null
-#  is_validated      :boolean       not null
-#  latitude          :float         
-#  lock_version      :integer       default(0), not null
-#  longitude         :float         
-#  mobile            :string(32)    
-#  patronymic_name   :string(255)   not null
-#  phone             :string(32)    
-#  phone2            :string(32)    
-#  photo             :string(255)   
-#  replacement_email :string(255)   
-#  rotex_email       :string(255)   
-#  salt              :string(255)   
-#  second_name       :string(255)   
-#  sex               :string(1)     not null
-#  student           :boolean       not null
-#  updated_at        :datetime      not null
-#  user_name         :string(32)    not null
-#  validation        :string(255)   
+#  address              :text          not null
+#  arrival_country_id   :integer       
+#  arrival_person_id    :integer       
+#  born_on              :date          not null
+#  comment              :text          
+#  country_id           :integer       not null
+#  created_at           :datetime      not null
+#  departure_country_id :integer       
+#  departure_person_id  :integer       
+#  email                :string(255)   not null
+#  family_id            :integer       
+#  family_name          :string(255)   not null
+#  fax                  :string(32)    
+#  first_name           :string(255)   not null
+#  hashed_password      :string(255)   
+#  host_zone_id         :integer       
+#  id                   :integer       not null, primary key
+#  is_locked            :boolean       not null
+#  is_user              :boolean       not null
+#  is_validated         :boolean       not null
+#  latitude             :float         
+#  lock_version         :integer       default(0), not null
+#  longitude            :float         
+#  mobile               :string(32)    
+#  patronymic_name      :string(255)   not null
+#  phone                :string(32)    
+#  phone2               :string(32)    
+#  photo                :string(255)   
+#  promotion_id         :integer       
+#  proposer_zone_id     :integer       
+#  replacement_email    :string(255)   
+#  rotex_email          :string(255)   
+#  salt                 :string(255)   
+#  second_name          :string(255)   
+#  sex                  :string(1)     not null
+#  sponsor_zone_id      :integer       
+#  started_on           :date          
+#  stopped_on           :date          
+#  student              :boolean       not null
+#  updated_at           :datetime      not null
+#  user_name            :string(32)    not null
+#  validation           :string(255)   
 #
 
 require 'digest/sha2'
@@ -51,6 +62,8 @@ class Person < ActiveRecord::Base
   validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/
   validates_length_of :user_name, :in=>4..32
   validates_uniqueness_of :email, :user_name  #, :if=>Proc.new {|p| !p.system }
+  validates_presence_of :proposer_zone_id
+  validates_presence_of :host_zone_id, :if=>Proc.new{|x| !x.stopped_on.nil?}
 
   def before_validation
     self.user_name = self.user_name.lower
@@ -71,6 +84,18 @@ class Person < ActiveRecord::Base
         end
       end      
     end
+
+    self.departure_country_id = self.proposer_zone.country_id if self.proposer_zone
+    self.arrival_country_id = self.host_zone.country_id if self.host_zone
+    if self.started_on and self.departure_country
+      from = (self.started_on.month>=5 ? 'N' : 'S')
+      out = (self.departure_country.iso3166.lower == 'fr' ? true : false)
+      pn = "#{out ? 'Out' : 'In'} #{self.started_on.year} #{from}"
+      promotion = Promotion.find_by_name(pn)
+      promotion = Promotion.create(:name=>pn, :is_outbound=>out, :from_code=>from) if promotion.nil?
+      self.promotion_id = promotion.id
+    end
+
     
   end
 
@@ -80,6 +105,11 @@ class Person < ActiveRecord::Base
 
   def validate
     errors.add(:password, "ne peut être vide") if self.hashed_password.blank?
+    if self.proposer_zone and self.host_zone
+      errors.add_to_base("Le club d'origine et le club hôte ne peuvent pas être tous les deux en France") if self.proposer_zone.country.iso3166.lower == 'fr' and self.host_zone.country.iso3166.lower == 'fr'
+      errors.add_to_base("Le club d'origine et le club hôte ne peuvent pas être tous les deux à l'étranger") if self.proposer_zone.country.iso3166.lower != 'fr' and self.host_zone.country.iso3166.lower != 'fr'
+    end
+
   end
   
   def before_save
@@ -184,6 +214,21 @@ class Person < ActiveRecord::Base
     # Subscription.count(:conditions=>["person_id=? AND finished_on>=CAST(? AS DATE)", self.id, Date.today-delay])>0
     self.has_subscribed_on?(Date.today+delay)
   end
+
+  def reports
+    Article.find(:all, :conditions=>{:author_id=>self.person_id, :rubric_id=>Configuration.the_one.news_rubric_id}, :order=>"done_on");
+  end
+
+  def current?
+    self.begun_on <= Date.today and Date.today <= self.finished_on
+  end
+
+  def before_destroy
+    self.periods.each do |p|
+      p.destroy
+    end
+  end
+
 
   def in_zone?(zone)
     if f = self.folder
