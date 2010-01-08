@@ -1,4 +1,7 @@
 -@admin = (@current_person ? access?(:all) : false)
+-zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
+-zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?", zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+
 -if @admin or @self_subscribing
   %tr
     %th{:colspan=>"3"} Identité
@@ -33,6 +36,10 @@
   %tr
     %td.label Student Exchange
     %td.value=check_box :person, :student
+    %td.hint 
+  %tr
+    %td.label=#Mon club est
+    %td.value=#select :person, :proposer_zone_id, zones
     %td.hint 
 -else
   %tr

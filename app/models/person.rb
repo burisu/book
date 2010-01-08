@@ -60,7 +60,7 @@ class Person < ActiveRecord::Base
   validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/
   validates_length_of :user_name, :in=>4..32
   validates_uniqueness_of :email, :user_name  #, :if=>Proc.new {|p| !p.system }
-  validates_presence_of :proposer_zone_id
+  validates_presence_of :proposer_zone_id, :sponsor_zone_id, :if=>Proc.new{|x| !x.started_on.nil?}
   validates_presence_of :host_zone_id, :if=>Proc.new{|x| !x.stopped_on.nil?}
 
   def before_validation
