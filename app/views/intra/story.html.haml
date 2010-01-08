@@ -1,6 +1,6 @@
 %h1 Mon journal
 
--cache(:controller=>:intra, :action=>:story, :id=>@folder.id) do
+-cache(:controller=>:intra, :action=>:story, :id=>@author.id) do
   .toc
     %h3 Table des matières
     %ul
@@ -11,5 +11,5 @@
       %a{:name=>report.id}
       %h1.subtitle=report.title+' '+link_to(image_tag('buttons/update2.png'), {:action=>:article_update, :id=>report.id})
       .content=dokuwikize(report.content)
-    .author='Par '+@folder.person.label
+    .author='Par '+@author.label
   

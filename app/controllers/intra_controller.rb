@@ -51,16 +51,17 @@ class IntraController < ApplicationController
   end
 
 
-  dyta(:folders, :model=>:people, :order=>"family_name, first_name", :conditions=>['promotion_id IS NOT NULL'], :line_class=>"(RECORD.current? ? 'notice' : '')") do |t|
+  dyta(:folders, :model=>:people, :order=>"family_name, first_name", :conditions=>['promotion_id IS NOT NULL'], :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on DESC") do |t|
     t.action :folder, :image=>:show
-    t.column :title # , :url=>{:action=>:person}
+    t.column :family_name, :url=>{:action=>:person}
+    t.column :first_name, :url=>{:action=>:person}
     t.column :name, :through=>:promotion
-    t.column :begun_on
-    t.column :finished_on
+    t.column :started_on
+    t.column :stopped_on
     t.column :name, :through=>:proposer_zone
     t.column :name, :through=>:departure_country
     t.column :name, :through=>:arrival_country
-    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.person.student'
+    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.student'
   end
 
 
@@ -74,31 +75,31 @@ class IntraController < ApplicationController
       redirect_to :back
       return
     end
-    @folder = Folder.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
+    @person = Person.find_by_id(params[:id]) # session[:current_person_id]
 
 #     person_id = session[:current_person_id]
 #     if access?(:folders) and params[:id]
-#       @folder = Folder.find_by_id(params[:id])
+#       @person = Person.find_by_id(params[:id])
 #     elsif access?(:folders) and params[:person_id]
 #       person_id = params[:person_id].to_i 
 #     end
-#     @folder = Folder.find(:first, :conditions=>{:person_id=>person_id}) unless @folder
-#     unless @folder 
+#     @person = Person.find(:first, :conditions=>{:person_id=>person_id}) unless @person
+#     unless @person 
 #       redirect_to :action=>:folder_update 
 #       return
 #     end
-    session[:current_folder_id] = @folder.id
+    session[:current_folder_id] = @person.id
     @reports = []
     @periods = []
     @reports2 = {}
     session[:periods] ||= {}
-    @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
+    @owner_mode = (session[:current_person_id]==@person.id ? true : false)
     
-    if @folder
-#       start = @folder.begun_on.at_beginning_of_month
-#       stop = (Date.today<@folder.finished_on ? Date.today : @folder.finished_on)
+    if @person
+#       start = @person.begun_on.at_beginning_of_month
+#       stop = (Date.today<@person.finished_on ? Date.today : @person.finished_on)
 #       while start <= stop do
-#         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@folder.person_id})
+#         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@person.id})
 #         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
 #         @reports2[start.year.to_s] ||= []
 #         @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], 
@@ -110,10 +111,10 @@ class IntraController < ApplicationController
 #         start = start >> 1
 #         break if @reports.size>=24
 #       end
-      @reports = @folder.reports
-      @periods = @folder.periods.find(:all, :order=>:begun_on)
+      @reports = @person.reports
+      @periods = @person.periods.find(:all, :order=>:begun_on)
     end
-    # raise Exception.new @folder.inspect
+    # raise Exception.new @person.inspect
   end
 
 
@@ -123,8 +124,8 @@ class IntraController < ApplicationController
       redirect_to :back
       return
     end
-    @folder = Folder.new(params[:folder])
-    @folder.person_id = @current_person.id
+    @person = @current_person
+    @person.attributes = params[:person]
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
@@ -133,8 +134,9 @@ class IntraController < ApplicationController
       return
     end
     if request.post?
-      if @folder.save
-        redirect_to :action=>:folder, :id=>@folder.id
+      @person.forced = true
+      if @person.save
+        redirect_to :action=>:folder, :id=>@person.id
         return
       end        
     end
@@ -150,7 +152,7 @@ class IntraController < ApplicationController
       redirect_to :back
       return
     end
-    @folder = Folder.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
+    @person = Person.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
     @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
@@ -159,13 +161,13 @@ class IntraController < ApplicationController
       return
     end
     if request.post?
-      params[:folder].delete :person_id
-      @folder.attributes = params[:folder]
-      if @folder.save
-        redirect_to :action=>:folder, :id=>@folder.id
+      @person.attributes = params[:person]
+      @person.forced = true
+      if @person.save
+        redirect_to :action=>:folder, :id=>@person.id
       end        
     else
-      @folder ||= Folder.new
+      @person ||= Person.new
     end
   end
 
@@ -174,8 +176,8 @@ class IntraController < ApplicationController
 
   def folder_delete
     if request.post? or request.delete?
-      @folder = Folder.find_by_id(params[:id])
-      @folder.destroy unless @folder.nil?
+      @person = Person.find_by_id(params[:id])
+      @person.update_attribute(:promotion_id, nil) unless @person.nil?
       redirect_to :action=>:folders
     end
   end
@@ -204,9 +206,9 @@ class IntraController < ApplicationController
   def story
     person_id = session[:current_person_id]
     person_id = params[:id] if params[:id] # and access?
-    @folder = Folder.find(:first, :conditions=>{:person_id=>person_id})
-    @reports = @folder.reports
-    expire_fragment(:controller=>:intra, :action=>:story, :id=>@folder.id)
+    @author = Person.find_by_id(person_id)
+    @reports = @author.reports
+    expire_fragment(:controller=>:intra, :action=>:story, :id=>@author.id)
   end
 
   def report_help
@@ -233,33 +235,32 @@ class IntraController < ApplicationController
 
 
   def period
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @person = Person.find_by_id(session[:current_person_id])
     if params[:id]
       @period = Period.find_by_person_id_and_id(@current_person.id, params[:id])
       unless @period
-        redirect_to :action=>:folder, :id=>@folder.id 
+        redirect_to :action=>:folder, :id=>@person.id 
         return
       end
       @title = 'Modification de la période '+@period.name
     else
-      @period = Period.new(:country_id=>@folder.arrival_country_id)
+      @period = Period.new(:country_id=>@person.arrival_country_id)
       @title = 'Création d\'une période et famille '
     end
     if request.post?
       @period.attributes = params[:period]
-      @period.folder_id = @folder.id
       @period.person_id = session[:current_person_id]
       if @period.save
-        redirect_to :action=>:folder, :id=>@folder.id
+        redirect_to :action=>:folder, :id=>@person.id
       end
     end
   end
 
   def period_display
-    @folder = Folder.find_by_id(session[:current_folder_id])
+    @person = Person.find_by_id(session[:current_folder_id])
     if request.xhr?
-      @period = Period.find_by_id_and_person_id(params[:id], @folder.person_id)
-      @owner_mode = (session[:current_person_id]==@folder.person_id ? true : false)
+      @period = Period.find_by_id_and_person_id(params[:id], @person.id)
+      @owner_mode = (session[:current_person_id]==@person.id ? true : false)
       if @period
         key = @period.id.to_s
         session[:periods][key] = false if session[:periods][key].nil?
@@ -267,16 +268,16 @@ class IntraController < ApplicationController
       end
       render :partial=>'period_display', :locals=>{:owner_mode=>@owner_mode}
     else
-      redirect_to :action=>:folder, :id=>@folder.id
+      redirect_to :action=>:folder, :id=>@person.id
     end
   end
 
   def period_delete
     if request.post? or request.delete?
-      @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+      @person = Person.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
       period = Period.find_by_id_and_person_id(params[:id], session[:current_person_id])
       period.destroy unless period.nil?
-      redirect_to :action=>:folder, :id=>@folder.id
+      redirect_to :action=>:folder, :id=>@person.id
     end
   end
 
@@ -288,18 +289,18 @@ class IntraController < ApplicationController
     end
     @members = @current_person.members.find(:all, :order=>"last_name, first_name")||[]
     if request.post?
-      @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+      @person = Person.find_by_id(session[:current_person_id])
       if params[:member][:id].nil?
         @member = Member.new(params[:member])
         @member.person_id = session[:current_person_id]
         if @member.save
           @period.members<< @member
-          redirect_to :action=>:folder, :id=>@folder.id
+          redirect_to :action=>:folder, :id=>@person.id
         end
       else
         @member = Member.find_by_id_and_person_id(params[:member][:id], session[:current_person_id])
         @period.members<< @member unless @period.members.exists? :id=>@member.id
-        redirect_to :action=>:folder, :id=>@folder.id
+        redirect_to :action=>:folder, :id=>@person.id
       end
     else
       @member = Member.new
@@ -307,32 +308,32 @@ class IntraController < ApplicationController
   end
 
   def period_remove_member
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @person = Person.find_by_id(session[:current_person_id])
     @period = Period.find_by_id_and_person_id(params[:period], session[:current_person_id])
     if @period.nil?
-      redirect_to :action=>:folder, :id=>@folder.id 
+      redirect_to :action=>:folder, :id=>@person.id 
       return
     end
     @member = Member.find_by_id_and_person_id(params[:id], session[:current_person_id])
     if @member.nil?
-      redirect_to :action=>:folder, :id=>@folder.id 
+      redirect_to :action=>:folder, :id=>@person.id 
       return
     end
     if request.post?
       @period.members.delete @member
     end
-    redirect_to :action=>:folder, :id=>@folder.id
+    redirect_to :action=>:folder, :id=>@person.id
   end
 
 
 
 
   def member
-    @folder = Folder.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @person = Person.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
     if params[:id]
       @member = Member.find_by_person_id_and_id(@current_person.id, params[:id])
       unless @member
-        redirect_to :action=>:folder, :id=>@folder.id 
+        redirect_to :action=>:folder, :id=>@person.id 
         return
       end
       @title = 'Modification de '+@member.name
@@ -344,7 +345,7 @@ class IntraController < ApplicationController
       @member.attributes = params[:member]
       @member.person_id = session[:current_person_id]
       if @member.save
-        redirect_to :action=>:folder, :id=>@folder.id
+        redirect_to :action=>:folder, :id=>@person.id
       end
     end
   end
@@ -735,18 +736,31 @@ class IntraController < ApplicationController
 
 
 
+  dyta(:promotion_people, :model=>:people, :order=>"family_name, first_name", :conditions=>{:promotion_id=>['session[:current_promotion_id]']}, :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on DESC") do |t|
+    t.action :folder, :image=>:show
+    t.column :family_name, :url=>{:action=>:person}
+    t.column :first_name, :url=>{:action=>:person}
+    t.column :name, :through=>:promotion
+    t.column :started_on
+    t.column :stopped_on
+    t.column :name, :through=>:proposer_zone
+    t.column :name, :through=>:departure_country
+    t.column :name, :through=>:arrival_country
+    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.student'
+  end
 
 
   def promotions
     return unless try_to_access :promotions
     if request.post?
       @promotion = Promotion.find(params['promotion'])
-      conditions = {:promotion_id=>@promotion.id}
-      if access?
-        m = @current_person.mandate('rpz')
-        conditions[:proposer_zone_id] = m.zone.children.collect{|z| z.id} if m
-      end
-      @folders = Folder.find(:all, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>conditions, :order=>'family_name, first_name')
+      session[:current_promotion_id] = @promotion.id
+#       conditions = {:promotion_id=>@promotion.id}
+#       if access?
+#         m = @current_person.mandate('rpz')
+#         conditions[:proposer_zone_id] = m.zone.children.collect{|z| z.id} if m
+#       end
+#       @persons = Person.find(:all, :conditions=>conditions, :order=>'family_name, first_name')
     end
   end
 

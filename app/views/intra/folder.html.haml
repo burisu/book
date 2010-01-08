@@ -1,38 +1,38 @@
 %h1
   ='Voyage Student Exchange'
-  =' ('+@folder.person.label+')' unless @owner_mode
+  =' ('+@person.label+')' unless @owner_mode
 
 %ul.aclist
-  %li=link_to 'Modifier mon voyage', :action=>:folder_update, :id=>@folder.id
+  %li=link_to 'Modifier mon voyage', :action=>:folder_update, :id=>@person.id
 
 %table.infos.formu
   %tr
     %td.label Du
-    %td.value=I18n.localize(@folder.begun_on, :format=>:long)
+    %td.value=I18n.localize(@person.started_on, :format=>:long)
   %tr
     %td.label Au
-    %td.value=I18n.localize(@folder.finished_on, :format=>:long)
+    %td.value=I18n.localize(@person.stopped_on, :format=>:long)
   %tr
     %td.label Pays de départ
-    %td.value=@folder.departure_country.name
+    %td.value=@person.departure_country.name
   %tr
     %td.label Pays d'accueil
-    %td.value=@folder.arrival_country.name
+    %td.value=@person.arrival_country.name
   %tr
     %td.label Promotion
-    %td.value=@folder.promotion.name
+    %td.value=@person.promotion.name
   %tr
     %td.label Club d'origine
-    %td.value=@folder.proposer_zone.name if @folder.proposer_zone
+    %td.value=@person.proposer_zone.name if @person.proposer_zone
   %tr
     %td.label Club sponsor
-    %td.value=@folder.sponsor_zone.name if @folder.sponsor_zone
+    %td.value=@person.sponsor_zone.name if @person.sponsor_zone
   %tr
     %td.label Club hôte
-    %td.value=@folder.host_zone.name if @folder.host_zone
+    %td.value=@person.host_zone.name if @person.host_zone
   %tr
     %td.label Commentaire
-    %td.value=@folder.comment
+    %td.value=@person.comment
 
 %table.folder
   %tr
@@ -40,7 +40,7 @@
       %h2='Mon journal'
       %ul.aclist
         -if @reports.size>1
-          %li.none=link_to("Histoire complète", {:action=>:story, :id=>@folder.person_id}, :class=>:report)
+          %li.none=link_to("Histoire complète", {:action=>:story, :id=>@person.id}, :class=>:report)
         -for report in @reports
           %li=link_to(report.title+" ("+::I18n.localize(report.done_on)+")", {:action=>:article, :id=>report.id})
         %li.none=link_to('Ajouter un article', {:action=>:article_create, :rubric_id=>controller.conf.news_rubric_id}, :class=>:create)

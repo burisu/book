@@ -107,7 +107,7 @@ class Email < ActiveRecord::Base
       end
       unless found
         if keyword=='students' or keyword=='student' or keyword=='etudiant' or keyword=='etudiants'
-          people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)")
+          people = Person.find(:all, :conditions=>["promotion_id IS NOT NULL"])
           for person in people
             listr << person.email
           end
@@ -117,7 +117,7 @@ class Email < ActiveRecord::Base
       unless found
         mn = MandateNature.find_by_code(keyword)
         unless mn.nil?
-          people = Person.find(:all, :join=>"join mandates on (mandates.person_id=people.id)", :condition=>["mandates.nature_id=? AND current_date BETWEEN begun_on AND finished_on",mn.id])
+          people = Person.find(:all, :join=>"join mandates on (mandates.person_id=people.id)", :condition=>["mandates.nature_id=? AND current_date BETWEEN begun_on AND finished_on", mn.id])
           for person in people
             listr << person.email
           end
@@ -162,15 +162,16 @@ class Email < ActiveRecord::Base
             if codes.length==1 and year.nil?
               condtions = ["departure_country_id=? or arrival_country_id=?", countries[0].id, countries[0].id]
             elsif codes.length==1 and !year.nil? 
-              condtions = ["EXTRACT(YEAR FROM begun_on)=?", year]
+              condtions = ["EXTRACT(YEAR FROM started_on)=?", year]
             elsif codes.length==2 and year.nil?
               condtions = ["departure_country_id=? and arrival_country_id=?", countries[0].id, countries[1].id]
             elsif codes.length==2 and !year.nil?
-              condtions = ["EXTRACT(YEAR FROM begun_on)=? and (departure_country_id=? or arrival_country_id=?)", year, countries[0].id, countries[0].id]
+              condtions = ["EXTRACT(YEAR FROM started_on)=? and (departure_country_id=? or arrival_country_id=?)", year, countries[0].id, countries[0].id]
             elsif codes.length==3
-              condtions = ["EXTRACT(YEAR FROM begun_on)=? and departure_country_id=? and arrival_country_id=?", year, countries[0].id, countries[1].id]
+              condtions = ["EXTRACT(YEAR FROM started_on)=? and departure_country_id=? and arrival_country_id=?", year, countries[0].id, countries[1].id]
             end
-            people = Person.find(:all, :join=>"join folders on (folders.person_id=people.id)", :conditions=>conditions)
+            conditions[0] = "promotion_id IS NOT NULL AND (#{conditions[0]})"
+            people = Person.find(:all, :conditions=>conditions)
             for person in people
               listr << person.email
             end

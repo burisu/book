@@ -19,6 +19,19 @@ class MergeFoldersWithPeople < ActiveRecord::Migration
     add_index :people, :sponsor_zone_id
     add_index :people, :started_on
     add_index :people, :stopped_on
+
+    add_column :person_versions, :arrival_country_id,   :integer, :references=>:countries
+    add_column :person_versions, :arrival_person_id,    :integer, :references=>:people
+    add_column :person_versions, :started_on,           :date
+    add_column :person_versions, :stopped_on,           :date
+    add_column :person_versions, :comment,              :text
+    add_column :person_versions, :departure_country_id, :integer, :references=>:countries
+    add_column :person_versions, :departure_person_id,  :integer, :references=>:people
+    add_column :person_versions, :host_zone_id,         :integer, :references=>:zones
+    add_column :person_versions, :promotion_id,         :integer, :references=>:promotions
+    add_column :person_versions, :proposer_zone_id,     :integer, :references=>:zones
+    add_column :person_versions, :sponsor_zone_id,      :integer, :references=>:zones
+
     
     execute "UPDATE people SET arrival_country_id=f.arrival_country_id, arrival_person_id=f.arrival_person_id, started_on=f.begun_on, stopped_on=f.finished_on, comment=f.comment, departure_country_id=f.departure_country_id, departure_person_id=f.departure_person_id, host_zone_id=f.host_zone_id, promotion_id=f.promotion_id, proposer_zone_id=f.proposer_zone_id, sponsor_zone_id=f.sponsor_zone_id FROM folders AS f WHERE f.person_id=people.id"
 
@@ -55,6 +68,19 @@ class MergeFoldersWithPeople < ActiveRecord::Migration
 
     add_column :periods, :folder_id, :integer, :references=>:folders
     execute "UPDATE periods SET folder_id=f.id  FROM folders AS f WHERE f.person_id=periods.person_id"
+
+
+    remove_column :person_versions, :arrival_country_id
+    remove_column :person_versions, :arrival_person_id
+    remove_column :person_versions, :started_on
+    remove_column :person_versions, :stopped_on
+    remove_column :person_versions, :comment
+    remove_column :person_versions, :departure_country_id
+    remove_column :person_versions, :departure_person_id
+    remove_column :person_versions, :host_zone_id
+    remove_column :person_versions, :promotion_id
+    remove_column :person_versions, :proposer_zone_id
+    remove_column :person_versions, :sponsor_zone_id
 
     remove_column :people, :arrival_country_id
     remove_column :people, :arrival_person_id

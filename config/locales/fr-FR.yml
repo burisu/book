@@ -213,6 +213,15 @@ fr-FR:
         role_id: Rôle
         student: SE
         id: ID
+
+        arrival_country_id: Arrivée
+        started_on: Commencé le
+        departure_country_id: Départ
+        stopped_on: Fini le
+        person_id: Étudiant
+        promotion_id: Promotion
+        proposer_zone_id: Origine
+
       promotion:
         name: Promo
       question:

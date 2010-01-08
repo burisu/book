@@ -55,8 +55,6 @@ class Person < ActiveRecord::Base
   attr_accessor :terms_of_use
   attr_accessor :forced
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
-  # has_one :folder, :dependent=>:destroy
-  # has_one :promotion
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9_\.]{4,32}/
@@ -128,12 +126,14 @@ class Person < ActiveRecord::Base
       # PersonVersion.delete_all(:person_id=>self.id)
       self.articles = {}
       self.emails   = {}
-      self.folders  = {}
       self.images   = {}
       self.mandates = {}
       self.members  = {}
       self.periods  = {}
       self.versions = {}      
+    end
+    self.periods.each do |p|
+      p.destroy
     end
   end
 
@@ -216,19 +216,12 @@ class Person < ActiveRecord::Base
   end
 
   def reports
-    Article.find(:all, :conditions=>{:author_id=>self.person_id, :rubric_id=>Configuration.the_one.news_rubric_id}, :order=>"done_on");
+    self.articles.find(:all, :conditions=>{:rubric_id=>Configuration.the_one.news_rubric_id}, :order=>"done_on")
   end
 
   def current?
-    self.begun_on <= Date.today and Date.today <= self.finished_on
+    self.started_on <= Date.today and Date.today <= self.stopped_on
   end
-
-  def before_destroy
-    self.periods.each do |p|
-      p.destroy
-    end
-  end
-
 
   def in_zone?(zone)
     if self.promotion
