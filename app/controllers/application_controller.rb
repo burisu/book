@@ -3,6 +3,8 @@
 
 class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers  
+  include ExceptionNotifiable
+
   # Pick a unique cookie name to distinguish our session data from others'
   # session :session_key => '_rotex_session_id'
   before_filter :init

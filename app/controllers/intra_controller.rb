@@ -392,7 +392,7 @@ class IntraController < ApplicationController
         for k,v in params[:mandate_natures]||[]
           @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
         end
-        redirect_to_back
+        redirect :action=>:profile
       end 
     else
       @article = Article.new(:rubric_id=>params[:rubric_id])
