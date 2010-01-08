@@ -220,7 +220,7 @@ class Person < ActiveRecord::Base
   end
 
   def current?
-    self.started_on <= Date.today and Date.today <= self.stopped_on
+    (self.started_on||Date.today) <= Date.today and Date.today <= (self.stopped_on||Date.today)
   end
 
   def in_zone?(zone)

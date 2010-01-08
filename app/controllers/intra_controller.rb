@@ -752,9 +752,14 @@ class IntraController < ApplicationController
 
   def promotions
     return unless try_to_access :promotions
+    session[:current_promotion_id] ||= Promotion.first.id
     if request.post?
-      @promotion = Promotion.find(params['promotion'])
-      session[:current_promotion_id] = @promotion.id
+      @promotion = Promotion.find_by_id(params['promotion'].to_i)
+      if @promotion
+        session[:current_promotion_id] = @promotion.id 
+      else
+        session.delete :current_promotion_id
+      end
 #       conditions = {:promotion_id=>@promotion.id}
 #       if access?
 #         m = @current_person.mandate('rpz')
@@ -762,6 +767,7 @@ class IntraController < ApplicationController
 #       end
 #       @persons = Person.find(:all, :conditions=>conditions, :order=>'family_name, first_name')
     end
+    @promotion = Promotion.find_by_id(session[:current_promotion_id])
   end
 
 
