@@ -14,8 +14,9 @@ div.im { border: 1px solid #56A;width:128px;}
 div.im.c { margin: 0 auto;}
 div.im.l { float: left;  margin:0 4px 0 0;}
 div.im.r { float: right; margin:0 0 0 4px;}
-div.media { width: 128px; margin:1em; background: #007; }
-div.media .title { text-align:center; color: #FFF; padding: 4px;}
+div.media { width: 128px; margin:1em; background:transparent; }
+div.media img { margin:2px 0;}
+div.media .title { text-align:center; color: #FFF; background: #007; padding: 4px; clear:both; }
 div.medialeft {border:0 none; float:left; margin:0 0.5em 0 0; }
 div.mediaright {border:0 none; float:right; margin:0 0 0 0.5em; }
 div.mediacenter { border:0 none; display:block; margin:0 auto; }
@@ -222,7 +223,6 @@ div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-
 h1.subtitle { font-variant: normal; color: #111; font-size: 20px; border-bottom: 1px solid #AAA; }
 .article .content { margin: 16px 0px; }
 /*.content img { margin: 2px 4px; }*/
-.content { clear:both; } }
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }
