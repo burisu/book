@@ -240,12 +240,12 @@ module ApplicationHelper
     # content.gsub!("</pre>\n  <pre>", "\n")
 
     content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
-    content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
     content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
     content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
     content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
     content.gsub!(/(^)([^\s\<][^\s].*)($)/, '<p>\2</p>')
     content.gsub!("</p>\n<p>", "\n")
+    content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
     content
   end
   
