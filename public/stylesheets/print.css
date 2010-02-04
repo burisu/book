@@ -1,5 +1,5 @@
-* { font-family: Times; page-break-after: avoid;}
+* { font-family: Times; page-break-before: avoid; page-break-after: avoid; }
 p { text-align: justify;}
-/*p { text-indent: 2em;}*/
+h1 { float:left; width: 19cm; border-bottom: 1pt solid #000;}
 #header, #footer, td.submenu, .aclist { display:none; }
 .author { font-style: italic }
