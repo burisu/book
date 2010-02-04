@@ -244,7 +244,7 @@ module ApplicationHelper
     content.gsub!(/(^)([^\s\<][^\s].*)($)/, '<p>\2</p>')
     content.gsub!("</p>\n<p>", "\n")
     content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
-    content
+    return content+'<div style="height:8px; clear:both;"></div>'
   end
   
 

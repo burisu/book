@@ -222,6 +222,7 @@ div.blog > div  {background: #BCF; -moz-border-radius-topleft: 8px; -moz-border-
 h1.subtitle { font-variant: normal; color: #111; font-size: 20px; border-bottom: 1px solid #AAA; }
 .article .content { margin: 16px 0px; }
 /*.content img { margin: 2px 4px; }*/
+.content { clear:both; } }
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }
