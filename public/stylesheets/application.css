@@ -204,4 +204,5 @@ div.blog > div > div * {color:#FFF;}
 
 .diapo:hover { margin: 2px; border-width: 3px; border-color: black; }
 
-
+ol { padding: 20px;}
+ol li { margin-left: 4em;}

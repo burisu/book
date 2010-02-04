@@ -266,3 +266,6 @@ li.surlined { background: #FFA; }
 
 .actions { text-align:center; margin: 4px 0;}
 .actions * { margin: 4px; }
+
+
+ol { padding-left: 4em;}

@@ -233,7 +233,7 @@ module ApplicationHelper
 
     for x in 2..5
       n = 7-x
-      content.gsub!(/^\s*\={#{n}}([^\=]+)\={#{n}}\s*$/, "<h#{x}>\\1</h#{x}>")
+      content.gsub!(/\={#{n}}([^\=]+)\={#{n}}/, "<h#{x}>\\1</h#{x}>")
     end
 
     content.gsub!(/^\ \ (.+)$/, '  <pre>\1</pre>')
@@ -244,7 +244,7 @@ module ApplicationHelper
     content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
     content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
     content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
-    content.gsub!(/(^)([^\s][^\s].*)($)/, '<p>\2</p>')
+    content.gsub!(/(^)([^\s\<][^\s].*)($)/, '<p>\2</p>')
     content.gsub!("</p>\n<p>", "\n")
     content
   end
