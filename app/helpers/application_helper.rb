@@ -218,15 +218,13 @@ module ApplicationHelper
       if image.nil?
         "**<span class=\"e\">Image introuvable (#{data})</span>**"
       else
-        title ||= image.title
+        alt = title||image.title
         code  = '<img class="media'+align+'"'
-        code += ' align="'+align+'"' if ['left', 'right'].include? align
-        code += ' alt="'+title+'" title="'+title+'"' if title
+        # code += ' align="'+align+'"' if ['left', 'right'].include? align
+        code += ' alt="'+alt+'" title="'+alt+'"'
         code += ' src="'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+'"/>'
         code = link_to(code, {:controller=>:intra, :action=>:image_detail, :id=>image.id}, {:class=>:media})
-        #code  = '<a class="media" title="'+image[:document]+'" href="'+url_for(:controller=>:intra, :action=>:image_detail, :id=>image.id)+'">'+code+'</a>'
-        # code  = ' '+code+' '
-        # code += "@"+data[0].gsub(' ','_')+'@'+(data[0][0..0]+data[0][-1..-1]).gsub(' ','_')+"@"
+        code = '<div class="media media'+align+'">'+code+'<div class="title">'+h(title)+'</div></div>' if title
         code
       end
     end

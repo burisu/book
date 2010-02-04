@@ -14,6 +14,11 @@ div.im { border: 1px solid #56A;width:128px;}
 div.im.c { margin: 0 auto;}
 div.im.l { float: left;  margin:0 4px 0 0;}
 div.im.r { float: right; margin:0 0 0 4px;}
+div.media { width: 128px; margin:1em; background: #007; }
+div.media .title { text-align:center; color: #FFF; padding: 4px;}
+div.medialeft {border:0 none; float:left; margin:0 0.5em 0 0; }
+div.mediaright {border:0 none; float:right; margin:0 0 0 0.5em; }
+div.mediacenter { border:0 none; display:block; margin:0 auto; }
 img.medialeft {border:0 none; float:left; margin:0 0.5em 0 0; }
 img.mediaright {border:0 none; float:right; margin:0 0 0 0.5em; }
 img.mediacenter { border:0 none; display:block; margin:0 auto; }
