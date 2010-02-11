@@ -165,15 +165,25 @@ class SuiviController < ApplicationController
     @answers = @questionnaire.answers.find(:all, :order=>:id) # , :conditions=>{:ready=>true}
   end
 
+  def answer_lock
+    return unless try_to_access :suivi
+    @answer = Answer.find_by_id(params[:id])
+    @answer.update_attribute(:locked, true) if request.post?
+    redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
+  end
+
   def answer_unlock
     return unless try_to_access :suivi
     @answer = Answer.find_by_id(params[:id])
-    if request.post?
-      @answer.update_attribute(:locked, false)
-      @answer.update_attribute(:ready, false)
-      @answer.save!
-    end
-    redirect_to :action=>:answers, :id=>@answer.questionnaire_id
+    @answer.update_attribute(:locked, false) if request.post?
+    redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
+  end
+
+  def answer_unvalidate
+    return unless try_to_access :suivi
+    @answer = Answer.find_by_id(params[:id])
+    @answer.update_attribute(:ready, false) if request.post?
+    redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
   end
 
   def access_denied

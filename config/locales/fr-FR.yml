@@ -169,6 +169,8 @@ fr-FR:
         rubric_id: Rubrique
         status: S.
         updated_at: Modifié le
+      answer:
+        person_id: Personne
       folder:
         arrival_country_id: Arrivée
         begun_on: Commencé le

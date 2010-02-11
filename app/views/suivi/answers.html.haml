@@ -8,7 +8,7 @@
         =link_to("Déverrouiller la réponse", {:action=>:answer_unlock, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
       -elsif answer.ready
         =link_to("Invalider la réponse", {:action=>:answer_unvalidate, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
-        =link_to("Verrouiller la réponse", {:action=>:answer_lock, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
+        =link_to("Verrouiller la réponse", {:action=>:answer_lock, :id=>answer.id}, :method=>:post)
     -for item in answer.items.find(:all, :joins=>"JOIN questions ON (question_id=questions.id)", :order=>"questions.position")
       %h3.question=item.question.position.to_s+". "+item.question.name
       %p=item.content
