@@ -231,7 +231,7 @@ table.folder { width: 100%; }
 
 .diapo:hover { margin: 2px; border-width: 4px; border-color: black; }
 
-.aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 2px 8px;}
+.aclist { background: #CDF; -moz-border-radius: 8px; padding: 8px;  margin: 8px 0px;}
 ul.aclist { padding: 8px 8px 8px 24px; }
 
 .previsu { border: 1px dashed #888; background: #FFD; margin: 8px; padding:8px; }
@@ -245,3 +245,5 @@ ul.aclist { padding: 8px 8px 8px 24px; }
 .question textarea { background: #FFD; color: #864;border-color: #864 }
 .submits { text-align:center; padding:8px;}
 .submits * { margin:8px;}
+
+fieldset { margin: 8px 0; }

@@ -7,10 +7,34 @@ class SuiviController < ApplicationController
     @questionnaires = Questionnaire.of(@current_person)
   end
 
+
+  dyta(:questionnaires, :order=>"started_on DESC, name") do |t|
+    t.column :name, :url=>{:action=>:questionnaire}
+    t.column :started_on
+    t.column :stopped_on
+    t.column :active, :datatype=>:boolean
+    t.column :questions_size
+    t.column :answers_size, :url=>{:action=>:answers}
+    t.action :questionnaire, :image=>:edit
+    t.action :questionnaire_duplicate, :image=>:spread
+    t.action :questionnaire, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?"
+  end
+
   def questionnaires
     return unless try_to_access :suivi
     @questionnaires = Questionnaire.find(:all, :order=>"started_on DESC, name")
   end
+
+  dyta(:questionnaire_questions, :model=>:questions, :conditions=>{:questionnaire_id=>['session[:current_questionnaire]']}) do |t|
+    t.column :position
+    t.column :name
+    t.column :explanation
+    t.action :question_up, :if=>"!RECORD.first\?"
+    t.action :question_down, :if=>"!RECORD.last\?"
+    t.action :question, :image=>:edit
+    t.action :question, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?"
+  end
+  
 
   def questionnaire
     return unless try_to_access :suivi
@@ -46,7 +70,7 @@ class SuiviController < ApplicationController
     @questionnaire = Questionnaire.find(session[:current_questionnaire])
     if request.post?
       params[:question][:questionnaire_id] = @questionnaire.id
-      if @question.update_attributes(params[:question])
+      if @question.update_attributes(params[:question]) and not request.xhr?
         redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id
       end
     elsif request.delete?
@@ -56,6 +80,7 @@ class SuiviController < ApplicationController
       end
       redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id
     end
+    render :inline=>"<%=dyta(:questionnaire_questions)-%>" if request.xhr?
   end
 
   def question_up
@@ -87,9 +112,7 @@ class SuiviController < ApplicationController
     # @questions = @questionnaire.questions.find(:all, :select=>"questions.*, content AS answer", :joins=>"LEFT JOIN answer_items ON (questions.id=question_id) LEFT JOIN answers ON (answers.id=answer_id)" , :conditions=>["answers.person_id=?", @current_person.id] )
     if @answer.locked or @answer.ready
       @readonly = true
-      return
-    end
-    if request.post? and params[:question]
+    elsif request.post? and params[:question]
       @answer.save
       for k,v in params[:question]
         item = AnswerItem.find_by_question_id_and_answer_id(k.to_i, @answer.id)
