@@ -29,10 +29,10 @@ class SuiviController < ApplicationController
     t.column :position
     t.column :name
     t.column :explanation
-    t.action :question_up, :if=>"!RECORD.first\?"
-    t.action :question_down, :if=>"!RECORD.last\?"
+    t.action :question_up, :if=>"!RECORD.first\?", :remote=>true, :update=>:questionnaire_questions
+    t.action :question_down, :if=>"!RECORD.last\?", :remote=>true, :update=>:questionnaire_questions
     t.action :question, :image=>:edit
-    t.action :question, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?"
+    t.action :question, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?", :remote=>true, :update=>:questionnaire_questions
   end
   
 
@@ -78,7 +78,7 @@ class SuiviController < ApplicationController
         Question.destroy(@question)
         flash[:notice] = 'Suppression de '+@question.name+' effectuée'
       end
-      redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id
+      redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id unless request.xhr?
     end
     render :inline=>"<%=dyta(:questionnaire_questions)-%>" if request.xhr?
   end
@@ -87,14 +87,22 @@ class SuiviController < ApplicationController
     return unless try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_higher if @question
-    redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
+    if request.xhr?
+      render :inline=>"<%=dyta(:questionnaire_questions)-%>" 
+    else
+      redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
+    end
   end
   
   def question_down
     return unless try_to_access :suivi
     @question = Question.find_by_id(params[:id])
     @question.move_lower if @question
-    redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
+    if request.xhr?
+      render :inline=>"<%=dyta(:questionnaire_questions)-%>" 
+    else
+      redirect_to :action=>:questionnaire, :id=>@question.questionnaire_id    
+    end
   end
 
 
