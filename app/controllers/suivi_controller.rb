@@ -25,16 +25,29 @@ class SuiviController < ApplicationController
     @questionnaires = Questionnaire.find(:all, :order=>"started_on DESC, name")
   end
 
-  dyta(:questionnaire_questions, :model=>:questions, :conditions=>{:questionnaire_id=>['session[:current_questionnaire]']}) do |t|
+  dyta(:questionnaire_questions, :model=>:questions, :conditions=>{:questionnaire_id=>['session[:current_questionnaire]']}, :order=>'position') do |t|
     t.column :position
     t.column :name
     t.column :explanation
-    t.action :question_up, :if=>"!RECORD.first\?", :remote=>true, :update=>:questionnaire_questions
-    t.action :question_down, :if=>"!RECORD.last\?", :remote=>true, :update=>:questionnaire_questions
-    t.action :question, :image=>:edit
-    t.action :question, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?", :remote=>true, :update=>:questionnaire_questions
+    t.action :question_up, :if=>"!RECORD.first\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
+    t.action :question_down, :if=>"!RECORD.last\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
+    t.action :question, :image=>:edit, :if=>"!RECORD.questionnaire.active"
+    t.action :question, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?", :remote=>true, :update=>:questionnaire_questions, :if=>"!RECORD.questionnaire.active"
   end
   
+
+  dyta(:questionnaire_answers, :model=>:answers, :joins=>"JOIN people ON (people.id=person_id)", :conditions=>["questionnaire_id=\?", ['session[:current_questionnaire]']], :per_page=>50, :order=>"family_name, first_name") do |t|
+    t.column :label, :through=>:person
+    t.column :status
+    t.action :answers, :url=>{:anchor=>"'answer'+RECORD.id.to_s", :id=>"session[:current_questionnaire]"}, :image=>:search
+  end
+
+
+  dyta(:questionnaire_students, :model=>:people, :conditions=>["student AND ? BETWEEN started_on AND stopped_on AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", ['session[:current_questionnaire_started_on]'], ['session[:current_questionnaire]']], :per_page=>50, :order=>"family_name") do |t|
+    t.column :family_name
+    t.column :first_name
+  end
+
 
   def questionnaire
     return unless try_to_access :suivi
@@ -51,6 +64,7 @@ class SuiviController < ApplicationController
       redirect_to :action=>:questionnaires
     end
     session[:current_questionnaire] = @questionnaire ? @questionnaire.id : nil
+    session[:current_questionnaire_started_on] = @questionnaire ? @questionnaire.started_on : nil
   end
 
   def questionnaire_duplicate
@@ -148,7 +162,7 @@ class SuiviController < ApplicationController
   def answers
     return unless try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
-    @answers = @questionnaire.answers.find(:all, :conditions=>{:ready=>true})
+    @answers = @questionnaire.answers.find(:all, :order=>:id) # , :conditions=>{:ready=>true}
   end
 
   def answer_unlock

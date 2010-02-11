@@ -25,4 +25,14 @@ class Answer < ActiveRecord::Base
     errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if ans.locked?
   end
 
+  def status
+    if self.locked
+      "locked"
+    elsif self.ready
+      "ready"
+    else
+      "writing"
+    end
+  end
+
 end

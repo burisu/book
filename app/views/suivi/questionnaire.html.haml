@@ -1,4 +1,4 @@
-%h1="Composition du questionnaire&nbsp;: "+@questionnaire.name
+%h1="Questionnaire "+@questionnaire.name
 
 =error_messages_for 'questionnaire'
 -form_tag do 
@@ -12,10 +12,15 @@
 
 -unless @questionnaire.new_record?
   %h2 Questions
-  -#%ul.aclist
-  -#  %li=link_to "Nouvelle question", :action=>:question, :id=>nil
-  %fieldset
-    %legend Ajouter une question
-    -form_remote_tag(:url=>{:action=>:question}, :method=>:post, :update=>'questionnaire_questions', :loaded=>"$('question_name').value=''; $('question_explanation').value=''; $('question_name').focus();") do
-      =render :partial=>'question_form'
+  -unless @questionnaire.active
+    %fieldset
+      %legend Ajouter une question
+      -form_remote_tag(:url=>{:action=>:question}, :method=>:post, :update=>'questionnaire_questions', :loaded=>"$('question_name').value=''; $('question_explanation').value=''; $('question_name').focus();") do
+        =render :partial=>'question_form'
   =dyta(:questionnaire_questions)
+
+  %h2 État des réponses
+  =dyta(:questionnaire_answers)
+
+  %h2 Absences de réponse
+  =dyta(:questionnaire_students)
