@@ -179,6 +179,13 @@ class SuiviController < ApplicationController
     redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
   end
 
+  def answer_validate
+    return unless try_to_access :suivi
+    @answer = Answer.find_by_id(params[:id])
+    @answer.update_attribute(:ready, true) if request.post?
+    redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
+  end
+
   def answer_unvalidate
     return unless try_to_access :suivi
     @answer = Answer.find_by_id(params[:id])
