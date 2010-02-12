@@ -191,7 +191,12 @@ class SuiviController < ApplicationController
     @answer = Answer.find_by_id(params[:id])
     if request.post?
       @answer.update_attribute(:ready, false) 
-      Maily.deliver_unvalidation(@answer, params[:message])
+      begin
+        Maily.deliver_unvalidation(@answer, params[:message])
+        flash[:notice] = "Le mail a été correctement envoyé"
+      rescue
+        flash[:error] = "Le mail n'a pu être envoyé"
+      end
     end
     redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
   end
