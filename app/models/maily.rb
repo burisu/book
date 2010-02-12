@@ -94,6 +94,17 @@ class Maily < ActionMailer::Base
   end
 
 
+  def unvalidation(answer, message)
+    @subject      = "[ROTEX1690] Invalidation de votre questionnaire #{answer.questionnaire.name}"
+    @body[:message]   = message
+    @recipients   = "#{answer.person.label} <#{answer.person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+  
+
+
   def password(person,password)
     @subject      = '[ROTEX1690] '+person.first_name+", voici vos codes d'accès au site du Rotex 1690"
     @body[:person]   = person

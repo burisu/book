@@ -189,7 +189,10 @@ class SuiviController < ApplicationController
   def answer_unvalidate
     return unless try_to_access :suivi
     @answer = Answer.find_by_id(params[:id])
-    @answer.update_attribute(:ready, false) if request.post?
+    if request.post?
+      @answer.update_attribute(:ready, false) 
+      Maily.deliver_unvalidation(@answer, params[:message])
+    end
     redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
   end
 

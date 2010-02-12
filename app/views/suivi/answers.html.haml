@@ -12,10 +12,11 @@
         =link_to("Verrouiller la réponse", {:action=>:answer_lock, :id=>answer.id}, :method=>:post)
       -else
         =link_to("Valider la réponse", {:action=>:answer_validate, :id=>answer.id}, :method=>:post, :confirm=>"Etes-vous sûr(e)?")
-    .invalidate{:style=>"display:none", :id=>"invalidate#{answer.id}"}
-      -form_tag(:action=>:answer_unvalidate) do
-        =text_area_tag(:body, "Bonjour #{answer.person.first_name},\n\nJe te demande de modifier tes réponses parce que\n\n\nAmicalement,\n#{@current_person.label}", :cols=>60, :rows=>10)
-        =submit_tag "Envoyer"
+    -if answer.ready and !answer.locked
+      .invalidate{:style=>"display:none", :id=>"invalidate#{answer.id}"}
+        -form_tag(:action=>:answer_unvalidate, :id=>answer.id) do
+          =text_area_tag(:message, "Bonjour #{answer.person.first_name},\n\nJe te demande de modifier tes réponses parce que\n\n\nAmicalement,\n#{@current_person.label}", :cols=>60, :rows=>10)
+          =submit_tag "Invalider la réponse"
     -for item in answer.items.find(:all, :joins=>"JOIN questions ON (question_id=questions.id)", :order=>"questions.position")
       %h3.question=item.question.position.to_s+". "+item.question.name
 
