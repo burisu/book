@@ -221,8 +221,8 @@ class SuiviController < ApplicationController
       begin
         Maily.deliver_unvalidation(@answer, params[:message])
         flash[:notice] = "Le mail a été correctement envoyé"
-      rescue
-        flash[:error] = "Le mail n'a pu être envoyé"
+      rescue Exception => e
+        flash[:error] = "Le mail n'a pu être envoyé. "+e.message
       end
     end
     redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
