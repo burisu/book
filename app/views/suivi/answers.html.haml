@@ -18,7 +18,7 @@
           =text_area_tag(:message, "Bonjour #{answer.person.first_name},\n\nJe te demande de modifier tes réponses parce que\n\n\nAmicalement,\n#{@current_person.label}", :cols=>60, :rows=>10)
           =submit_tag "Invalider la réponse"
     -for item in answer.items.find(:all, :joins=>"JOIN questions ON (question_id=questions.id)", :order=>"questions.position")
-      %h3.question=item.question.position.to_s+". "+item.question.name
+      %h3.question{:style=>"color: #{item.question.theme.foreground_color}"}=item.question.position.to_s+". "+item.question.name
 
       %p=item.content
   
