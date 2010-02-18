@@ -230,6 +230,7 @@ fr-FR:
         position: Numéro
         name: Nom
         explanation: Explication
+        theme_id: Thème
       questionnaire:
         active: Actif
         answers_size: Nb. Rép.

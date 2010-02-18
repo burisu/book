@@ -4,10 +4,10 @@
 
 -form_tag do
   -for @question in @questions
-    .question
-      %h3=@question.position.to_s+". "+@question.name
+    .question{:style=>"clear:both"}
+      %h3{:style=>"color: #{@question.theme.foreground_color}"}=@question.position.to_s+". "+@question.name+" <em style='font-weight:normal;'>(#{@question.theme.name})</em>"
       %p=dokuwikize(@question.explanation)
-      =text_area "question[]", "answer", :rows=>4, :readonly=>(@readonly ? true : false)
+      =text_area "question[]", "answer", :rows=>4, :readonly=>(@readonly ? true : false), :style=>"background: #{@question.theme.background_color}; color: #{@question.theme.foreground_color}; border-color: #{@question.theme.foreground_color};"
   -unless @readonly
     .submits
       =submit_tag 'Enregistrer', :name=>"save"

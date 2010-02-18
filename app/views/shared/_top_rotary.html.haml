@@ -4,4 +4,5 @@
     - if @current_person
       -if access? :suivi
         %li=link_to "Questionnaires", {:controller=>:suivi, :action=>:questionnaires}
+        %li=link_to "Thèmes", {:controller=>:suivi, :action=>:themes}
       %li=link_to "Se déconnecter", {:controller=>:authentication, :action=>:logout }

@@ -290,7 +290,7 @@ module Ekylibre
                       css_class += ' web'
                     elsif column.name==:color
                       css_class += ' color'
-                      style += "background: #'+"+column.data(record)+"+'; color:#'+viewable("+column.data(record)+")+';"
+                      style += "background: #'+"+column.data(record)+"+';"
                     elsif column.name==:country and  column.datatype == :string and column.limit <= 8
                       datum = "(#{datum}.nil? ? '' : '<nobr>'+#{value_image2(datum,'countries')}+'&nbsp;'+::I18n.translate('countries.'+#{datum}))+'</nobr>'"
                     elsif column.datatype == :string

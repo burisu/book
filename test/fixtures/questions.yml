@@ -9,6 +9,7 @@
 #  name             :string(255)   not null
 #  position         :integer       
 #  questionnaire_id :integer       
+#  theme_id         :integer       
 #  updated_at       :datetime      not null
 #
 

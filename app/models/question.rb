@@ -9,11 +9,13 @@
 #  name             :string(255)   not null
 #  position         :integer       
 #  questionnaire_id :integer       
+#  theme_id         :integer       
 #  updated_at       :datetime      not null
 #
 
 class Question < ActiveRecord::Base
   acts_as_list :scope=>:questionnaire
+  validates_presence_of :theme_id
 
   def validate
     if self.questionnaire

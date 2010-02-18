@@ -1,4 +1,5 @@
 %table.formu
+  =tr "Thème", select(:question, :theme_id, Theme.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
   =tr "Nom", text_field(:question, :name, :size=>60), "C'est la question en elle-même"
   =tr "Explications", text_area(:question, :explanation, :rows=>3, :cols=>60), "Texte apparaissant en dessous de la question"
   =tr "", submit_tag("Enregistrer les modifications")

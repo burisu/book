@@ -8,6 +8,32 @@ class SuiviController < ApplicationController
   end
 
 
+  dyta(:themes, :order=>:name) do |t|
+    t.column :name
+    t.column :color
+    t.column :comment
+    t.action :theme, :image=>:update
+    t.action :theme, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?"
+  end
+
+  def themes
+    return unless try_to_access :suivi
+  end
+
+  def theme
+    return unless try_to_access :suivi
+    @theme = Theme.find_by_id(params[:id])
+    @theme ||= Theme.new
+    if request.post?
+      @theme.attributes = params[:theme]
+      redirect_to :action=>:themes if @theme.save
+    elsif request.delete?
+      @theme.destroy
+      redirect_to :action=>:themes
+    end
+  end
+
+
   dyta(:questionnaires, :order=>"started_on DESC, name") do |t|
     t.column :name, :url=>{:action=>:questionnaire}
     t.column :started_on
@@ -27,6 +53,7 @@ class SuiviController < ApplicationController
 
   dyta(:questionnaire_questions, :model=>:questions, :conditions=>{:questionnaire_id=>['session[:current_questionnaire]']}, :order=>'position') do |t|
     t.column :position
+    t.column :name, :through=>:theme
     t.column :name
     t.column :explanation
     t.action :question_up, :if=>"!RECORD.first\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
