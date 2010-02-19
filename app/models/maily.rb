@@ -54,6 +54,8 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
 
+
+
   def answer(ans)
     @subject      = "[ROTEX1690] Notification : Réponse à un questionnaire de "+ans.person.label
     @body[:person] = ans.person
@@ -98,6 +100,20 @@ class Maily < ActionMailer::Base
     @subject      = "[ROTEX1690] Invalidation de votre questionnaire #{answer.questionnaire.name}"
     @body[:message]   = message
     @recipients   = "#{answer.person.label} <#{answer.person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+  
+
+  def awakenings(sleepers, questionnaire, expedier)
+    ["bricetexier@yahoo.fr", "michel@gilantoli.com"]
+    mails = sleepers.collect{|x| "#{x.label} <#{x.email}>"}
+    @subject      = "[ROTARY1690] Urgent! Le Rotary 1690 attend votre réponse au questionnaire obligatoire"
+    @body[:questionnaire] = questionnaire
+    @body[:sleepers] = mails
+    @recipients   = mails
+    @bcc          = expedier.email
     @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
     @sent_on      = Time.now
     @headers      = {}

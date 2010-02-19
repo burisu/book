@@ -76,6 +76,7 @@ class SuiviController < ApplicationController
   end
 
 
+
   def questionnaire
     return unless try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
@@ -93,6 +94,17 @@ class SuiviController < ApplicationController
     session[:current_questionnaire] = @questionnaire ? @questionnaire.id : nil
     session[:current_questionnaire_started_on] = @questionnaire ? @questionnaire.started_on : nil
   end
+
+  def absents_wake_up
+    if request.post?
+      questionnaire = Questionnaire.find_by_id(params[:id])
+      people = Person.find(:all, :conditions=>["student AND ? BETWEEN started_on AND stopped_on AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", session[:current_questionnaire_started_on], session[:current_questionnaire]])
+      Maily.deliver_awakenings(people, questionnaire, @current_person)
+    end
+    redirect_to :action=>:questionnaire, :id=>questionnaire.id
+  end
+
+
 
   def questionnaire_duplicate
     return unless try_to_access :suivi
@@ -227,6 +239,7 @@ class SuiviController < ApplicationController
     end
     redirect_to :action=>:answers, :id=>@answer.questionnaire_id, :anchor=>"answer#{@answer.id}"
   end
+
 
   def access_denied
   end

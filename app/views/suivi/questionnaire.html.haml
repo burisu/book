@@ -23,4 +23,6 @@
   =dyta(:questionnaire_answers)
 
   %h2 Absences de réponse
+  %ul.aclist
+    %li=link_to "Envoyer un mail aux absents", {:action=>:absents_wake_up, :id=>@questionnaire.id}, :method=>:post
   =dyta(:questionnaire_students)
