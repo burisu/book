@@ -67,6 +67,7 @@ class SuiviController < ApplicationController
     t.column :label, :through=>:person
     t.column :status
     t.action :answers, :url=>{:anchor=>"'answer'+RECORD.id.to_s", :id=>"session[:current_questionnaire]"}, :image=>:search
+    t.action :answer_delete, :method=>:delete
   end
 
 
@@ -202,6 +203,13 @@ class SuiviController < ApplicationController
     return unless try_to_access :suivi
     @questionnaire = Questionnaire.find_by_id(params[:id])
     @answers = @questionnaire.answers.find(:all, :order=>:id) # , :conditions=>{:ready=>true}
+  end
+
+  def answer_delete
+    return unless try_to_access :suivi
+    @answer = Answer.find_by_id(params[:id])
+    @answer.destroy if request.post? or request.delete?
+    redirect_to :action=>:questionnaire, :id=>@answer.questionnaire_id
   end
 
   def answer_lock

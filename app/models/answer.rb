@@ -15,6 +15,7 @@
 
 class Answer < ActiveRecord::Base
   validates_uniqueness_of :person_id, :scope=>:questionnaire_id
+  has_many :items, :class_name=>AnswerItem.name, :dependent=>:destroy
 
   def before_validation
     self.created_on ||= Date.today
