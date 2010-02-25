@@ -199,7 +199,7 @@ fr-FR:
         phone2: Téléphone (travail)
         fax: Fax
         mobile: Mobile
-        user_name: Login
+        user_name: 'Nom d''utilisateur'
         is_validated: Val.
         is_locked: Verr.
         email: E-mail
