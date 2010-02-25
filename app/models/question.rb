@@ -24,7 +24,7 @@ class Question < ActiveRecord::Base
   end
 
   def duplicate(attributes={})
-    question = self.class.new({:name=>self.name, :explanation=>self.explanation}.merge(attributes))
+    question = self.class.new({:name=>self.name, :explanation=>self.explanation, :theme_id=>self.theme_id}.merge(attributes))
     question.save!
     question
   end

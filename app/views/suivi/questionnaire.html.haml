@@ -3,11 +3,12 @@
 =error_messages_for 'questionnaire'
 -form_tag do 
   %table.formu
-    =tr "Nom", text_field(:questionnaire, :name)
+    =tr "Nom", text_field(:questionnaire, :name, :readonly=>@questionnaire.active)
+    =tr "Promotion", @questionnaire.active ? @questionnaire.promotion_name : select(:questionnaire, :promotion_id, Promotion.find(:all, :order=>"name DESC").collect{|x| [x.name, x.id]}), "Promotion de students devant répondre à ce questionnaire"
     =tr "Lancé le", text_field(:questionnaire, :started_on), "C'est la date à partir de laquelle les students pourront renseigner le questionnaire"
     =tr "Arrêté le", text_field(:questionnaire, :stopped_on), "C'est la date jusqu'à laquelle les students pourront renseigner le questionnaire"
-    =tr "Introduction", text_area(:questionnaire, :intro, :rows=>3, :cols=>60), "Texte apparaissant en haut du questionnaire lors de la saisie"
-    =tr "Commentaire", text_area(:questionnaire, :comment, :rows=>3, :cols=>60), "Commentaire interne"
+    =tr "Introduction", text_area(:questionnaire, :intro, :rows=>3, :cols=>60, :readonly=>@questionnaire.active), "Texte apparaissant en haut du questionnaire lors de la saisie"
+    =tr "Commentaire", text_area(:questionnaire, :comment, :rows=>3, :cols=>60, :readonly=>@questionnaire.active), "Commentaire interne"
     =tr "", submit_tag("Enregistrer les modifications")
 
 -unless @questionnaire.new_record?

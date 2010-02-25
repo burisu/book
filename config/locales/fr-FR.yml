@@ -235,6 +235,7 @@ fr-FR:
         active: Actif
         answers_size: Nb. Rép.
         name: Nom
+        promotion_id: Promotion
         started_on: Lancé le
         stopped_on: Arrêté le
         questions_size: Nb. Quest.

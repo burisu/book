@@ -4,7 +4,7 @@ class SuiviController < ApplicationController
   def index
     # @questionnaires = Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE-'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE-'1 day'::INTERVAL)"])
     # @questionnaires = Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL)"])
-    @questionnaires = Questionnaire.of(@current_person)
+    @questionnaires = @current_person.questionnaires
   end
 
 
@@ -38,6 +38,7 @@ class SuiviController < ApplicationController
     t.column :name, :url=>{:action=>:questionnaire}
     t.column :started_on
     t.column :stopped_on
+    t.column :name, :through=>:promotion
     t.column :active, :datatype=>:boolean
     t.column :questions_size
     t.column :answers_size, :url=>{:action=>:answers}
@@ -71,9 +72,10 @@ class SuiviController < ApplicationController
   end
 
 
-  dyta(:questionnaire_students, :model=>:people, :conditions=>["student AND ? BETWEEN started_on AND stopped_on AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", ['session[:current_questionnaire_started_on]'], ['session[:current_questionnaire]']], :per_page=>50, :order=>"family_name") do |t|
+  dyta(:questionnaire_students, :model=>:people, :conditions=>["student AND promotion_id=? AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", ['session[:current_questionnaire_promotion_id]'], ['session[:current_questionnaire]']], :per_page=>50, :order=>"family_name") do |t|
     t.column :family_name
     t.column :first_name
+    t.column :email
   end
 
 
@@ -92,14 +94,14 @@ class SuiviController < ApplicationController
       end
       redirect_to :action=>:questionnaires
     end
-    session[:current_questionnaire] = @questionnaire ? @questionnaire.id : nil
-    session[:current_questionnaire_started_on] = @questionnaire ? @questionnaire.started_on : nil
+    session[:current_questionnaire] = @questionnaire ? @questionnaire.id : 0
+    session[:current_questionnaire_promotion_id] = @questionnaire ? @questionnaire.promotion_id : 0
   end
 
   def absents_wake_up
     if request.post?
       questionnaire = Questionnaire.find_by_id(params[:id])
-      people = Person.find(:all, :conditions=>["student AND ? BETWEEN started_on AND stopped_on AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", session[:current_questionnaire_started_on], session[:current_questionnaire]])
+      people = Person.find(:all, :conditions=>["student AND promotion_id = ? AND id NOT IN (SELECT person_id FROM answers WHERE questionnaire_id=?)", session[:current_questionnaire_promotion_id], session[:current_questionnaire]])
       Maily.deliver_awakenings(people, questionnaire, @current_person)
     end
     redirect_to :action=>:questionnaire, :id=>questionnaire.id

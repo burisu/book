@@ -171,6 +171,11 @@ class Person < ActiveRecord::Base
     self.mandates.find(:first, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id)", :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND code=?", active_on, nature], :order=>:begun_on)
   end
   
+  def questionnaires
+    Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers WHERE person_id=?) OR (CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL) AND promotion_id=?)", self.id, self.promotion_id])
+  end
+
+
   def change_password
     pwd = Person.generate_password
     self.forced = true

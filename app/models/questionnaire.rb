@@ -8,6 +8,7 @@
 #  intro        :text          
 #  lock_version :integer       default(0), not null
 #  name         :string(64)    not null
+#  promotion_id :integer       
 #  started_on   :date          
 #  stopped_on   :date          
 #  updated_at   :datetime      not null
@@ -15,7 +16,8 @@
 
 class Questionnaire < ActiveRecord::Base
   has_many :questions, :dependent => :destroy
-  validates_presence_of :started_on, :stopped_on
+  validates_presence_of :started_on, :stopped_on, :promotion_id
+  
 
   def before_validation
     self.name
@@ -64,8 +66,8 @@ class Questionnaire < ActiveRecord::Base
     b <= active_on and active_on <= e
   end
 
-  def self.of(person)
-    Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers WHERE person_id=?) OR CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL)", person.id])
+  def promotion_name
+    self.promotion ? self.promotion.name : ""
   end
 
   def state_for(person)
