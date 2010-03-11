@@ -82,8 +82,6 @@ class ApplicationController < ActionController::Base
       redirect_to :controller=>:intra 
       return
     end
-
-
     unless session[:current_person_id]
       session[:last_url] = request.url
       session[:original_uri] = request.request_uri
@@ -96,6 +94,19 @@ class ApplicationController < ActionController::Base
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
       redirect_to :controller=>:authentication, :action=>:login
       return
+    end
+
+    # Verification des cotisations
+    if @current_person
+      unless @current_person.has_subscribed_on? or @current_person.rights.include?(:all)
+        flash[:warning] = "Vous n'êtes pas à jour de votre cotisation"
+        if @vision==:rotex
+          redirect_to :controller=>:store, :action=>:index
+        else
+          redirect_to :controller=>:authentication, :action=>:logout
+        end
+        return
+      end
     end
 
     if @vision==:rotary and not access?(:suivi) and not (@current_person and @current_person.student?)

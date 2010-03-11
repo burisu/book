@@ -138,7 +138,7 @@ class IntraController < ApplicationController
       if @person.save
         redirect_to :action=>:folder, :id=>@person.id
         return
-      end        
+      end
     end
     @title = "Enregistrement du voyage"
     render_form

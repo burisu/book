@@ -76,7 +76,7 @@
   %td.label Nom d'utilisateur
   %td.value=text_field :person, :user_name
   %td.hint Seuls les caractères en minuscule non accentués ainsi que les chiffres sont autorisés pour composer le nom d'utilisateur
--if @self_subscribing
+-if @self_subscribing or @admin
   %tr
     %td.label Mot de passe
     %td.value=password_field :person, :password
@@ -85,8 +85,9 @@
     %td.label Confirmation du mot de passe
     %td.value=password_field :person, :password_confirmation
     %td.hint 
+-if @self_subscribing
   %tr
-    =show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label => "Recopiez le code"
+    =show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label=>"Recopiez le code"
     %td.hint
   %tr
     %td{:colspan=>"3", :align=>:center}

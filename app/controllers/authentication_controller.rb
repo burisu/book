@@ -7,8 +7,8 @@ class AuthenticationController < ApplicationController
   def login
     clean_people
     if request.post?
-      person=Person.authenticate(params[:person][:user_name], params[:person][:password])
-      if person
+      person = Person.authenticate(params[:person][:user_name], params[:person][:password])
+      if person        
         session[:current_person_id]=person.id
         session[:rights] = person.rights
         @@configuration.reload
@@ -42,22 +42,22 @@ class AuthenticationController < ApplicationController
     @register = true
     @self_subscribing = true
     if request.post?
-        @person = Person.new params[:person]
-        @person.email = params[:person][:email]
-        @person.is_validated = false
-        @person.is_locked = true
-        @person.is_user   = true
-        if @person.save_with_captcha
-          @register = false
-          begin
-            Maily.deliver_confirmation(@person)
-            Maily.deliver_notification(:subscription, @person)
-          rescue Object=>e
-            @register = true
-            Person.destroy(@person.id)
-            @person.errors.add_to_base("Votre adresse e-mail est invalide : "+e.message)
-          end
+      @person = Person.new params[:person]
+      @person.email = params[:person][:email]
+      @person.is_validated = false
+      @person.is_locked = true
+      @person.is_user   = true
+      if @person.save_with_captcha
+        @register = false
+        begin
+          Maily.deliver_confirmation(@person)
+          Maily.deliver_notification(:subscription, @person)
+        rescue Object=>e
+          @register = true
+          Person.destroy(@person.id)
+          @person.errors.add_to_base("Votre adresse e-mail est invalide : "+e.message)
         end
+      end
     else
       @person = Person.new
     end
@@ -139,7 +139,7 @@ class AuthenticationController < ApplicationController
     if request.post?
       @person.test_password = params[:person][:test_password]
       @person.replacement_email = params[:person][:replacement_email]
-#      @person.errors.add(:test_password, "est incorrect") unless @person.confirm(params[:person][:test_password])
+      #      @person.errors.add(:test_password, "est incorrect") unless @person.confirm(params[:person][:test_password])
       if @person.save
         Maily.deliver_new_mail(@person)
         flash[:notice] = 'L\'e-mail à valider a été envoyé à l\'adresse '+@person.replacement_email

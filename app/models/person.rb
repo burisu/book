@@ -57,7 +57,7 @@ class Person < ActiveRecord::Base
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
-  validates_format_of :user_name, :with=>/[a-z0-9_]{6,32}/
+  validates_format_of :user_name, :with=>/[a-z0-9_]{4,32}/
   validates_length_of :user_name, :in=>4..32
   validates_uniqueness_of :email, :user_name  #, :if=>Proc.new {|p| !p.system }
   validates_presence_of :proposer_zone_id, :sponsor_zone_id, :if=>Proc.new{|x| !x.started_on.nil?}
@@ -188,7 +188,8 @@ class Person < ActiveRecord::Base
   def self.authenticate(name,password)
     person = self.find(:first, :conditions=>{:user_name=>name})
     if person
-      person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed_on?)
+      # person = nil if person.is_locked or !person.confirm(password) or !(person.rights.include?(:all) or person.has_subscribed_on?)
+      person = nil if person.is_locked or not person.confirm(password)
     end
     person
   end

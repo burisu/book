@@ -1,0 +1,11 @@
+%h1 Paiement de la cotisation
+
+-form_tag do
+  %label Sélectionner le nombre d'adhésion
+  =select_tag(:duration, options_for_select([1,2,3,4,5]))
+  =submit_tag('Payer en ligne')
+
+
+
+
+
