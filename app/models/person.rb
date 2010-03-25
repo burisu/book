@@ -193,6 +193,11 @@ class Person < ActiveRecord::Base
     end
     person
   end
+
+
+  def admin?
+    self.rights.include?(:all)
+  end
   
   def label
     patro = ''
@@ -219,6 +224,14 @@ class Person < ActiveRecord::Base
   def has_subscribed?(delay=2.months)
     # Subscription.count(:conditions=>["person_id=? AND finished_on>=CAST(? AS DATE)", self.id, Date.today-delay])>0
     self.has_subscribed_on?(Date.today+delay)
+  end
+
+  def first_day_as_non_subscriber
+    max = Date.today-1
+    if sub = self.subscriptions.find(:first, :order=>"finished_on DESC")
+      max = sub.finshed_on if sub.finished_on>max
+    end
+    return max+1
   end
 
   def reports

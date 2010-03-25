@@ -11,6 +11,8 @@
 #  legals_article_id  :integer       
 #  lock_version       :integer       default(0)
 #  news_rubric_id     :integer       
+#  store_introduction :text          
+#  subscription_price :decimal(, )   default(0.0), not null
 #  updated_at         :datetime      
 #
 

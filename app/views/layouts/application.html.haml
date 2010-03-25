@@ -22,7 +22,9 @@
         #mainbody
           %table#maintable
             %tr
-              = render(:partial=>'shared/submenu', :object=>@current_person) if @current_person and @vision==:rotex
+              -if @current_person and @vision==:rotex
+                -if @current_person.has_subscribed_on?(Date.today) or @current_person.admin?
+                  =render(:partial=>'shared/submenu', :object=>@current_person) 
               %td.subbody{:valign=>"top"}=yield
     #footer
       .column

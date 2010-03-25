@@ -254,6 +254,10 @@ fr-FR:
     export: 'Exporter en CSV'
     create: Créer
     update: Modifier
+    years:
+      zero: 'Aucune année ({{amount}})'
+      one: '1 année : du {{start}} au {{finish}} ({{amount}})'
+      other: '{{count}} années : du {{start}} au {{finish}} ({{amount}})'
 
 
 
@@ -457,4 +461,3 @@ nu-LL:
         note: Note
         payment_mode: Mode Regl.
         
-  

@@ -1,10 +1,13 @@
 %h1 Paiement de la cotisation
 
+%p=dokuwikize(conf.store_introduction)
+
 -form_tag do
   %label Sélectionner le nombre d'adhésion
-  =select_tag(:duration, options_for_select([1,2,3,4,5]))
-  =submit_tag('Payer en ligne')
+=select_tag(:duration, options_for_select([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].collect{|x| [t("general.years", :count=>x, :start=>::I18n.localize(@start), :finish=>::I18n.localize(@start+x.years-1), :amount=>number_to_currency(@unit_price*x, :unit=>"€", :format=>"%n %u")), x]}))
+  .actions=submit_tag("Valider la commande")
 
+-#=image_tag("cbvisamaster.gif")
 
 
 
