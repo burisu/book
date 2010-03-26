@@ -55,6 +55,7 @@ class Person < ActiveRecord::Base
   attr_accessor :terms_of_use
   attr_accessor :forced
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
+  has_many :orders, :class_name=>Subscription.name, :conditions=>{:state=>'C'}
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9_]{4,32}/
@@ -228,7 +229,7 @@ class Person < ActiveRecord::Base
 
   def first_day_as_non_subscriber
     max = Date.today-1
-    if sub = self.subscriptions.find(:first, :conditions=>{:paid=>true}, :order=>"finished_on DESC")
+    if sub = self.subscriptions.find(:first, :conditions=>{:state=>'P'}, :order=>"finished_on DESC")
       max = sub.finished_on if sub.finished_on>max
     end
     return max+1

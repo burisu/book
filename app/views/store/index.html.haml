@@ -2,6 +2,14 @@
 
 %p=dokuwikize(@conf.store_introduction)
 
+-if @current_person.orders.size>0
+  %h2 Commandes en cours
+  %ul
+    -for order in @current_person.orders
+      %li="Commande N°<strong>#{order.number}</strong> d'un montant de #{number_to_currency(order.amount, :format=>'%n €')} pour la période du #{::I18n.localize(order.begun_on)} au #{::I18n.localize(order.finished_on)}"
+
+
+%h2 Nouvelle adhésion
 -form_tag do
   %label Sélectionner le nombre d'adhésion
   =select_tag(:duration, options_for_select([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].collect{|x| [t("general.years", :count=>x, :start=>::I18n.localize(@start), :finish=>::I18n.localize(@start+x.years-1), :amount=>number_to_currency(@unit_price*x, :unit=>"€", :format=>"%n %u")), x]}))

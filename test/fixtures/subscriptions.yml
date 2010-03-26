@@ -16,13 +16,13 @@
 #  lock_version         :integer       default(0), not null
 #  note                 :text          
 #  number               :string(16)    
-#  paid                 :boolean       not null
 #  payer_country        :string(255)   
 #  payment_mode         :string(255)   not null
 #  payment_type         :string(255)   
 #  person_id            :integer       not null
 #  sequential_number    :string(255)   
 #  signature            :string(255)   
+#  state                :string(1)     default("I"), not null
 #  transaction_number   :string(255)   
 #  updated_at           :datetime      not null
 #

@@ -247,6 +247,11 @@ fr-FR:
         amount: Montant (€)
         note: Note
         payment_mode: Mode Regl.
+        payment_mode_label: Mode Regl.
+        number: Numéro
+        state_label: État
+        state: État
+      
   app:
     no_records: 'Pas d''enregistrements'    
     

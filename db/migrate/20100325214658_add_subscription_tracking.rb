@@ -1,7 +1,7 @@
 class AddSubscriptionTracking < ActiveRecord::Migration
   def self.up
     add_column :subscriptions, :number, :string, :limit=>16
-    add_column :subscriptions, :paid,   :boolean, :null=>false, :default=>false
+    add_column :subscriptions, :state,  :string, :null=>false, :default=>"I", :limit=>1
     add_column :subscriptions, :sequential_number,    :string
     add_column :subscriptions, :authorization_number, :string
     add_column :subscriptions, :payment_type,         :string
@@ -13,7 +13,7 @@ class AddSubscriptionTracking < ActiveRecord::Migration
     add_column :subscriptions, :payer_country,        :string
     add_column :subscriptions, :signature,            :string
     add_column :subscriptions, :bin6,                 :string
-    execute "UPDATE subscriptions SET number=id, paid=true"
+    execute "UPDATE subscriptions SET number='ABCDEF'||LPAD(id::text, 6, '0'), state='P'"
 
 
     add_column :configurations, :subscription_price, :decimal, :null=>false, :default=>0.0
@@ -37,7 +37,7 @@ class AddSubscriptionTracking < ActiveRecord::Migration
     remove_column :subscriptions, :payer_country
     remove_column :subscriptions, :signature
     remove_column :subscriptions, :bin6
-    remove_column :subscriptions, :paid
+    remove_column :subscriptions, :state
     remove_column :subscriptions, :number
   end
 end

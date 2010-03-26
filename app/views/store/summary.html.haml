@@ -32,7 +32,7 @@
         .logo=image_tag("cash.png")
       %td.mode.nf{:valign=>:top}
         =radio_button(:subscription, :payment_mode, :check)
-        %label{:for=>"subscription_payment_mode_check"} Paiement par chèque
+        %label{:for=>"subscription_payment_mode_check"} Paiement par chèque*
         .info 
           ="Veuillez envoyer votre chèque à l'adresse du trésorier ("+Person.mandated_for(['tresor']).collect{|p| "<em>"+p.label+", "+p.address.gsub("\n", ", ")+"</em>"}.join(" ou ")+")"
         .logo=image_tag("check.png")
@@ -42,6 +42,7 @@
         .info Vous serez automatiquement redirigé vers le site paiement en ligne de notre banque.
         .logo=image_tag("cbvisamaster.gif")
 
+  %p="* Le chèque doit être à l'ordre du <strong>Rotex 1690</strong>. Veuillez inscrire le numéro <strong>#{@subscription.number}</strong> au dos du chèque."
   .actions=submit_tag("Valider et payer ma commande")
   
 
