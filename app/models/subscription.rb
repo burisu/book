@@ -33,6 +33,8 @@ class Subscription < ActiveRecord::Base
   def before_validation
     last = self.class.find(:first, :order=>"id DESC")
     self.number = Time.now.to_i.to_s(36)+(last ? last.id+1 : 0).to_s(36).rjust(6, '0')
+    self.number.upcase!
+
   end
 
 end

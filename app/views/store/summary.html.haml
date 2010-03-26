@@ -1,4 +1,47 @@
 %h1="Récapitulatif de la commande #{@subscription.number}"
 
+%h2 Produits de la commande
 
+%table.dyta
+  %tr
+    %th Désignation 
+    %th Du
+    %th Au
+    %th Montant (€)
+  %tr.odd
+    %td Cotisation Rotex 1690
+    %td=::I18n.localize(@subscription.begun_on)
+    %td=::I18n.localize(@subscription.finished_on)
+    %td.decimal=number_to_currency(@subscription.amount, :unit=>"€", :format=>"%n %u")
+  %tr.even
+    %th{:colspan=>3, :style=>"text-align: right"} TOTAL
+    %td.decimal{:style=>"font-weight:bold"}=number_to_currency(@subscription.amount, :unit=>"€", :format=>"%n %u")
+    
+
+%h2 Mode de paiment
+
+%p Vous devez cliquer sur le bouton <em>Payer</em> dans tous les cas pour valider et payer votre commande, que ce soit en espèce, par chèque ou carte bancaire.
+
+-form_tag do
+  %table#modes
+    %tr
+      %td.mode{:valign=>:top}
+        =radio_button(:subscription, :payment_mode, :cash)
+        %label{:for=>"subscription_payment_mode_cash"} Paiement en espèce
+        .info Veuillez prendre contact avec notre trésorier qui sera informé de votre adhésion.
+        .logo=image_tag("cash.png")
+      %td.mode.nf{:valign=>:top}
+        =radio_button(:subscription, :payment_mode, :check)
+        %label{:for=>"subscription_payment_mode_check"} Paiement par chèque
+        .info 
+          ="Veuillez envoyer votre chèque à l'adresse du trésorier ("+Person.mandated_for(['tresor']).collect{|p| "<em>"+p.label+", "+p.address.gsub("\n", ", ")+"</em>"}.join(" ou ")+")"
+        .logo=image_tag("check.png")
+      %td.mode.nf{:valign=>:top}
+        =radio_button(:subscription, :payment_mode, :card)
+        %label{:for=>"subscription_payment_mode_card"} Paiement par carte bancaire
+        .info Vous serez automatiquement redirigé vers le site paiement en ligne de notre banque.
+        .logo=image_tag("cbvisamaster.gif")
+
+  .actions=submit_tag("Valider et payer ma commande")
+  
 

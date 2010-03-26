@@ -184,7 +184,7 @@ module ApplicationHelper
   ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
 
   def dokuwikize(text)
-    content = text.dup.to_s
+    content = text.to_s.dup
     content.gsub!(/\r/, '')
     content.gsub!('<=>', '&hArr;')
     ENTITIES.each{ |k,v| content.gsub!(k,v) }

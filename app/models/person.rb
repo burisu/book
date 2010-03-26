@@ -228,8 +228,8 @@ class Person < ActiveRecord::Base
 
   def first_day_as_non_subscriber
     max = Date.today-1
-    if sub = self.subscriptions.find(:first, :order=>"finished_on DESC")
-      max = sub.finshed_on if sub.finished_on>max
+    if sub = self.subscriptions.find(:first, :conditions=>{:paid=>true}, :order=>"finished_on DESC")
+      max = sub.finished_on if sub.finished_on>max
     end
     return max+1
   end

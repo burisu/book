@@ -5,19 +5,20 @@ class StoreController < ApplicationController
   def index
     @unit_price = conf.subscription_price
     @start = @current_person.first_day_as_non_subscriber
+    @conf = conf
     if request.post?
       duration = params[:duration].to_i
       if duration <= 0
         flash.now[:error] = "Attention le nombre d'années doit être strictement positif"
         return
       end
-      @subscription = Subscription.create!(:person_id=>@current_person.id, :payment_mode=>"card", :begun=>@start, :finshed_on=>@start+duration.years-1, :amount=>duration*@unit_price)
+      @subscription = Subscription.create!(:person_id=>@current_person.id, :payment_mode=>"card", :begun_on=>@start, :finished_on=>@start+duration.years-1, :amount=>duration*@unit_price)
       redirect_to :action=>:summary, :id=>@subscription.id
     end
   end
 
   def summary
-    unless @subscription = Susbcription.find_by_id(params[:id])
+    unless @subscription = Subscription.find_by_id(params[:id])
       flash[:error] = "Une errreur est survénue lors de la précédente opération. Veuillez réeessayer."
       redirect_to :action=>:index
       return 
