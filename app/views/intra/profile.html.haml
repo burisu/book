@@ -4,8 +4,8 @@
   %li=link_to 'Modifier mon compte', :action=>:profile_update, :id=>@person.id
   %li=link_to 'Changer mon mot de passe', {:controller=>:authentication, :action=>:change_password}
   %li=link_to 'Mettre à jour mon adresse e-mail', {:controller=>:authentication, :action=>:change_email}
-  -if @current_person.first_day_as_non_subscriber<=Date.today+2.month
-    %li=link_to 'Payer ma cotisation', {:controller=>:store, :action=>:index}
+  -#if @current_person.first_day_as_non_subscriber<=Date.today+2.month
+  %li=link_to 'Payer ma cotisation', {:controller=>:store, :action=>:index}
 
 
 %table.infos.formu
