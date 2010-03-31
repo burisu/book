@@ -80,6 +80,10 @@ class StoreController < ApplicationController
     finished
   end
 
+  def check_paiement
+    finished
+  end
+
 
   protected
 
