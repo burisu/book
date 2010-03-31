@@ -8,8 +8,12 @@
     =tl "Rubrique pour les articles de la page d'accueil", select(:configuration, :home_rubric_id, rubrics)
     =tl "Rubrique pour les nouvelles", select(:configuration, :news_rubric_id, rubrics)
     =tt "Articles"
-    -articles = Article.find(:all, :order=>:title).collect{|x| ["#{x.title} (#{x.author.label}) #{::I18n.localize(x.created_at.to_date)}", x.id]}
+    -articles = Article.find(:all, :order=>:title).collect{|x| [truncate(x.title, :length=>20)+" (#{x.author.label}) #{::I18n.localize(x.created_at.to_date)}", x.id]}
     =tl "Article <em>À propos</em>", select(:configuration, :about_article_id, articles)
     =tl "Article <em>Mentions légales</em>", select(:configuration, :legals_article_id, articles)
     =tl "Article <em>Contact</em>", select(:configuration, :contact_article_id, articles)
+    =tt "Vente en ligne"
+    =tl "Prix à l'année de l'adhésion", text_field(:configuration, :subscription_price)
+    =tl "Texte d'introduction du module vente", toolbar('configuration_store_introduction')+text_area(:configuration, :store_introduction, {:rows=>5, :maxlength=>255})
+
   .actions=submit_tag "Sauvegarder la configuration"

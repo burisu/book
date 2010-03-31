@@ -31,13 +31,13 @@
     %ul
       -if access? :users
         %li=link_to("Personnes", {:controller=>:intra, :action=>:people})
+      -if access? :subscribing
+        %li=link_to("Cotisations", {:controller=>:intra, :action=>:subscriptions})
       -if false # access? :subscribing
         %li=link_to("Adhérents", {:controller=>:intra, :action=>:subscribers})
         %li=link_to("Non-adhérents", {:controller=>:intra, :action=>:non_subscribers})
         %li=link_to("Futurs non-adhérents", {:controller=>:intra, :action=>:new_non_subscribers})
       -if access?
         %li=link_to("Mandats", {:controller=>:intra, :action=>:mandates})
-      -if access? :folders
-        %li=link_to("Voyages", {:controller=>:intra, :action=>:folders})
-      -if access? :promotions
+      -if access? [:folders, :promotions]
         %li=link_to("Promotions", {:controller=>:intra, :action=>:promotions})

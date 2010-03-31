@@ -35,3 +35,7 @@
 -if @person.mandates.size>0
   %h2 Mandats
   =dyta :person_mandates
+
+-if @person.subscriptions.size>0
+  %h2 Cotisations
+  =dyta :person_subscriptions

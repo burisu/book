@@ -22,7 +22,7 @@
         #mainbody
           %table#maintable
             %tr
-              -if @current_person and @vision==:rotex
+              -if @current_person and @vision==:rotex and controller_name!="store"
                 -if @current_person.has_subscribed_on?(Date.today) or @current_person.admin?
                   =render(:partial=>'shared/submenu', :object=>@current_person) 
               %td.subbody{:valign=>"top"}=yield

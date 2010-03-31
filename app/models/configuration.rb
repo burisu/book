@@ -28,5 +28,5 @@ class Configuration < ActiveRecord::Base
     @@configuration
   end
 
-  @@configuration = self.the_one  
+  @@configuration = self.the_one
 end

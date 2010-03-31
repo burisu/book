@@ -23,7 +23,7 @@ class StoreController < ApplicationController
 
   def summary
     unless @subscription = Subscription.find_by_id(params[:id])
-      flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réeessayer. (#{params[:id]})"
+      flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réessayer. (#{params[:id]})"
       redirect_to :action=>:index
       return 
     end
@@ -39,6 +39,8 @@ class StoreController < ApplicationController
       case @subscription.payment_mode.to_sym
       when :cash, :check
         flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."
+        Maily.deliver_notification(:waiting_payment, @current_person)
+        redirect_to :action=>:index
       when :card
         redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@subscription.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@subscription.number, :PBX_PORTEUR=>@current_person.email, :PBX_RETOUR=>Subscription.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>url_for(:controller=>:store, :action=>:finished), :PBX_REFUSE=>url_for(:controller=>:store, :action=>:refused), :PBX_ANNULE=>url_for(:controller=>:store, :action=>:cancelled)
       end
@@ -62,11 +64,14 @@ class StoreController < ApplicationController
       redirect_to :action=>:index
       return 
     end
-    for k, v in Subscription.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
-      @subscription.send("#{k}=", params[v])
+    if @subscription.state != "P" and @subscription.payment_mode == "card"
+      for k, v in Subscription.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
+        @subscription.send("#{k}=", params[v])
+      end
+      @subscription.responsible = @current_person
+      @subscription.save
+      @subscription.terminate
     end
-    @subscription.save
-    @subscription.terminate
     flash[:notice] = "La transaction a été validée."
     redirect_to :controller=>:intra, :action=>:index
   end

@@ -209,6 +209,12 @@ module ApplicationHelper
     end    
     content.gsub!(/(\s|^)([a-z]+\:\/\/www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="\2" title="\2">\2</a>')
     content.gsub!(/([^\/])(www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="http://\2" title="http://\2">\2</a>')
+    content.gsub!(/^  \* (.*)$/ , '<ul><li>\1</li></ul>')
+    content.gsub!(/<\/ul>\n<ul>/ , '')
+    content.gsub!(/^  \- (.*)$/ , '<ol><li>\1</li></ol>')
+    content.gsub!(/<\/ol>\n<ol>/ , '')
+
+
 
     content.gsub!(/\{\{\ *(\w*)\ *(\|[^\}]+)?\}\}/) do |data|
       data = data.squeeze(' ')[2..-3].split('|')

@@ -29,8 +29,11 @@
 
 class Subscription < ActiveRecord::Base
   PAYMENT_MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"]]
+  STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+
   validates_uniqueness_of :number
   attr_readonly :number
+  attr_accessor :responsible
 
   def self.transaction_columns
     return {:amount=>"M", :number=>"R", :authorization_number=>"A", :sequential_number=>"T", :payment_type=>"P", :card_type=>"C", :transaction_number=>"S", :country=>"Y", :error_code=>"E", :card_expired_on=>"D", :payer_country=>"I", :bin6=>"N", :signature=>"K"}
@@ -45,6 +48,21 @@ class Subscription < ActiveRecord::Base
 
   def validate
     errors.add(:payment_mode, :invalid) unless PAYMENT_MODES.collect{|x| x[1]}.include?(self.payment_mode)
+  end
+
+  def before_save
+    @deliver_mail = false
+    old_self = self.class.find_by_id(self.id.to_i)
+    if (old_self.nil? or (old_self.is_a?(self.class) and old_self.state != self.state)) and self.state == "P"
+      @deliver_mail = true
+    end
+  end
+  
+  def after_save
+    if @deliver_mail
+      Maily.deliver_has_subscribed(self.person, self)
+      Maily.deliver_notification(:has_subscribed, self.person, self.responsible)
+    end
   end
 
   def confirm
@@ -62,6 +80,12 @@ class Subscription < ActiveRecord::Base
   def state_label
     {"I"=>"Devis", "C"=>"Commande", "P"=>"Payée"}[self.state]
   end
+
+  def state_class
+    {"I"=>"error", "C"=>"warning", "P"=>"notice"}[self.state]
+  end
+
+
 
   def payment_mode_label
     PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}[0]

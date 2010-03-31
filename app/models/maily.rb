@@ -28,12 +28,14 @@ class Maily < ActionMailer::Base
         "Activation de compte (#{person.label})"
       elsif nature==:has_subscribed
         "Enregistrement de cotisation effectué pour #{person.label}"
+      elsif nature==:waiting_payment
+        "Commande effectuée par #{person.label}"
       else
         "Inconnue"
       end
     @body[:nature] = nature
     @body[:person] = person
-    @body[:resp]   = resp
+    @body[:responsible] = resp
     people = Person.mandated_for(['tresor', 'admin'])
     @recipients   = people.collect{|p| "#{p.label} <#{p.email}>"}
     @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
@@ -57,7 +59,7 @@ class Maily < ActionMailer::Base
 
 
   def answer(ans)
-    @subject      = "[ROTEX1690] Notification : Réponse à un questionnaire de "+ans.person.label
+    @subject      = "[ROTARY1690] Notification : Réponse à un questionnaire de "+ans.person.label
     @body[:person] = ans.person
     @body[:answer] = ans
     people = Person.mandated_for(['yeoout', 'yeo'])

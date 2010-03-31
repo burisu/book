@@ -1,27 +1,29 @@
 Bonjour,
 
-<%if @nature==:subscription%>
+<%if @nature==:subscription-%>
 La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne. Elle devrait activer son compte sous peu, vous recevrez un nouvel e-mail à ce moment-là.
-<%elsif @nature==:activation%>
+<%elsif @nature==:activation-%>
 La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
-<%elsif @nature==:has_subscribed%>
+<%elsif @nature==:has_subscribed-%>
 La cotisation pour la personne <%=@person.label-%> (<%=@person.id-%>) a été enregistrée.
+<%elsif @nature==:waiting_payment%>
+La cotisation de la personne <%=@person.label-%> (<%=@person.id-%>) est en attente de réglement. N'hésitez pas à prendre contact avec la personne en question pour récupérer le réglement.
 <%else-%>
-Notification d'origine inconnue.
+Notification d'origine inconnue (<%=@nature.inspect-%>).
 <%end-%>
 
-<%if @resp -%>
-<%=@resp.label-%> a effectué l'opération.
+<%if @responsible -%>
+<%=@responsible.label-%> a effectué l'opération.
 <%end-%>
 
 <%if @person-%>
 Coordonnées de la personne : <%=@person.email-%>, <%=@person.address%>
 Cotisations :
-<%for s in @person.subscriptions.find(:all, :order=>:begun_on)-%>
- - <%=s.amount.to_s.rjust(7,' ')+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
+<%for s in @person.subscriptions.find(:all, :order=>"begun_on DESC")-%>
+ - <%=s.amount.to_s.rjust(7,' ')+'€ pour la période du '+::I18n.localize(s.begun_on)+' au '+::I18n.localize(s.finished_on)+" ("+s.state_label+"/"+s.payment_mode_label+")"%>
 <%end-%>
 <%end-%>
 
 Cordialement,
 
-L'equipe du Rotex 1690.
+L'équipe du Rotex 1690.

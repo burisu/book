@@ -19,7 +19,7 @@ class IntraController < ApplicationController
   end
 
   dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:current_person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
-    t.column :title, :url=>{:action=>:article}
+    t.column :title, :url=>{:action=>:artic2le}
     t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
     t.column :updated_at
     # t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
@@ -27,10 +27,18 @@ class IntraController < ApplicationController
     t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
   end
 
-  dyta(:person_mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false) do |t|
+  dyta(:person_mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
     t.column :name, :through=>:nature
     t.column :begun_on
     t.column :finished_on
+  end
+
+  dyta(:person_subscriptions, :model=>:subscriptions, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
+    t.column :number, :class=>"code"
+    t.column :begun_on
+    t.column :finished_on
+    t.column :payment_mode_label
+    t.column :state_label
   end
 
   def profile
@@ -51,23 +59,6 @@ class IntraController < ApplicationController
   end
 
 
-  dyta(:folders, :model=>:people, :order=>"family_name, first_name", :conditions=>['promotion_id IS NOT NULL'], :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on DESC") do |t|
-    t.action :folder, :image=>:show
-    t.column :family_name, :url=>{:action=>:person}
-    t.column :first_name, :url=>{:action=>:person}
-    t.column :name, :through=>:promotion
-    t.column :started_on
-    t.column :stopped_on
-    t.column :name, :through=>:proposer_zone
-    t.column :name, :through=>:departure_country
-    t.column :name, :through=>:arrival_country
-    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.student'
-  end
-
-
-  def folders
-  end
-
 
   def folder
     if params[:id].blank? or (not access?(:folders) and params[:id] != session[:current_person_id].to_s)
@@ -77,17 +68,6 @@ class IntraController < ApplicationController
     end
     @person = Person.find_by_id(params[:id]) # session[:current_person_id]
 
-#     person_id = session[:current_person_id]
-#     if access?(:folders) and params[:id]
-#       @person = Person.find_by_id(params[:id])
-#     elsif access?(:folders) and params[:person_id]
-#       person_id = params[:person_id].to_i 
-#     end
-#     @person = Person.find(:first, :conditions=>{:person_id=>person_id}) unless @person
-#     unless @person 
-#       redirect_to :action=>:folder_update 
-#       return
-#     end
     session[:current_folder_id] = @person.id
     @reports = []
     @periods = []
@@ -96,21 +76,6 @@ class IntraController < ApplicationController
     @owner_mode = (session[:current_person_id]==@person.id ? true : false)
     
     if @person
-#       start = @person.begun_on.at_beginning_of_month
-#       stop = (Date.today<@person.finished_on ? Date.today : @person.finished_on)
-#       while start <= stop do
-#         article = Article.find(:first, :conditions=>{:done_on=>start, :author_id=>@person.id})
-#         @reports << {:name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), :title=>(article.nil? ? "Créer" : article.title), :month=>start.year.to_s+start.month.to_s, :class=>(article.nil? ? "create" : nil)}
-#         @reports2[start.year.to_s] ||= []
-#         @reports2[start.year.to_s] << {:month=>I18n.translate('date.month_names')[start.month], 
-#           :name=>start.year.to_s+'/'+start.month.to_s.rjust(2,'0'), 
-#           :title=>(article.nil? ? "Créer" : article.title), 
-#           :id=>(article ? article.id : 0), 
-#           :month_id=>start.year.to_s+start.month.to_s, 
-#           :class=>(article.nil? ? "create" : nil)}
-#         start = start >> 1
-#         break if @reports.size>=24
-#       end
       @reports = @person.reports
       @periods = @person.periods.find(:all, :order=>:begun_on)
     end
@@ -650,28 +615,68 @@ class IntraController < ApplicationController
     redirect_to :action=>:people
   end 
 
+
+
+
+  dyta(:subscriptions, :order=>"state, created_at DESC", :line_class=>'RECORD.state_class' ) do |t|
+    t.column :number, :class=>:code, :url=>{:action=>:subscription_update}
+    # t.column :family_name, :through=>:person, :url=>{:action=>:person}
+    # t.column :first_name, :through=>:person, :url=>{:action=>:person}
+    t.column :label, :through=>:person, :url=>{:action=>:person}
+    t.column :created_at
+    t.column :amount
+    t.column :begun_on
+    t.column :finished_on
+    t.column :state
+    t.column :payment_mode
+    t.action :subscription_delete, :method=>:delete, :confirm=>:are_you_sure
+  end
+
+  def subscriptions
+    return unless try_to_access :subscribing
+    if request.post?
+      Subscription.delete_all(["state=? AND created_at<=? ", "I", Time.now - 48.hours])
+    end
+  end
+
+
   def subscription_create
     return unless try_to_access :subscribing
     @person = Person.find(params[:id])
     if request.post?
       @subscription = Subscription.new(params[:subscription])
       @subscription.person_id = @person.id
+      @subscription.responsible = @current_person
       if @subscription.save
         session[:last_finished_on] = @subscription.finished_on
-        Maily.deliver_has_subscribed(@person, @subscription)
-        Maily.deliver_notification(:has_subscribed, @person, @current_person)
         redirect_to :action=>:person, :id=>@person.id
       end
     else
       @subscription = Subscription.new
       @subscription.finished_on = session[:last_finished_on] if session[:last_finished_on]
     end
+    @title = "Enregistrement d'une cotisation"
+    render_form
+  end
+
+  def subscription_update
+    return unless try_to_access :subscribing
+    @subscription = Subscription.find(params[:id])
+    if request.post?
+      @subscription.attributes = params[:subscription]
+      @subscription.responsible = @current_person
+      if @subscription.save
+        redirect_to :action=>:subscriptions
+      end
+    end
+    @title = "Modification de la cotisation #{@subscription.number}"
+    render_form
   end
 
   def subscription_delete
     return unless try_to_access :subscribing
     s = Subscription.find(params[:id])
-    s.destroy if request.post?
+    s.destroy if request.post? or request.delete?
     redirect_to :action=>:person, :id=>s.person_id
   end
 
@@ -736,7 +741,7 @@ class IntraController < ApplicationController
 
 
 
-  dyta(:promotion_people, :model=>:people, :order=>"family_name, first_name", :conditions=>{:promotion_id=>['session[:current_promotion_id]']}, :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on DESC") do |t|
+  dyta(:promotion_people, :model=>:people, :order=>"family_name, first_name", :conditions=>"(params[:id].blank? ? {} : {:promotion_id=>params[:id]}).merge(:student=>true)", :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on") do |t|
     t.action :folder, :image=>:show
     t.column :family_name, :url=>{:action=>:person}
     t.column :first_name, :url=>{:action=>:person}
@@ -752,22 +757,7 @@ class IntraController < ApplicationController
 
   def promotions
     return unless try_to_access :promotions
-    session[:current_promotion_id] ||= Promotion.first.id
-    if request.post?
-      @promotion = Promotion.find_by_id(params['promotion'].to_i)
-      if @promotion
-        session[:current_promotion_id] = @promotion.id 
-      else
-        session.delete :current_promotion_id
-      end
-#       conditions = {:promotion_id=>@promotion.id}
-#       if access?
-#         m = @current_person.mandate('rpz')
-#         conditions[:proposer_zone_id] = m.zone.children.collect{|z| z.id} if m
-#       end
-#       @persons = Person.find(:all, :conditions=>conditions, :order=>'family_name, first_name')
-    end
-    @promotion = Promotion.find_by_id(session[:current_promotion_id])
+    @promotion = Promotion.find_by_id(params[:id]) unless params[:id].blank?
   end
 
 

@@ -251,11 +251,14 @@ fr-FR:
         number: Numéro
         state_label: État
         state: État
+        person_id: Adhérent
+        created_at: Créée le
       
   app:
     no_records: 'Pas d''enregistrements'    
     
   general:
+    are_you_sure: 'Etes-vous sûr(e) ?'
     export: 'Exporter en CSV'
     create: Créer
     update: Modifier
