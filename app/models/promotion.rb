@@ -12,4 +12,7 @@
 #
 
 class Promotion < ActiveRecord::Base
+  def code
+    self.name.gsub(/\s+/,'')
+  end
 end
