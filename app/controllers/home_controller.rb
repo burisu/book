@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 
+
   before_filter :vision
   def vision
     redirect_to :controller=>:suivi unless @vision==:rotex

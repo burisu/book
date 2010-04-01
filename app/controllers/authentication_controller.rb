@@ -1,4 +1,5 @@
 class AuthenticationController < ApplicationController
+  ssl_only
 
   def index
     redirect_to :action=>:login

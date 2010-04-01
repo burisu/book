@@ -1,4 +1,5 @@
 class StoreController < ApplicationController
+  ssl_required :index, :summary, :cancelled, :refused, :finished
 
   before_filter :check
 
@@ -47,7 +48,6 @@ class StoreController < ApplicationController
     end
   end
 
-
   def cancelled
     flash[:warning] = "La transaction a été annulée."
     redirect_to :action=>:index
@@ -59,9 +59,21 @@ class StoreController < ApplicationController
   end
 
   def finished
+    validate_payment
+    redirect_to :controller=>:intra, :action=>:index
+  end
+
+  def check_payment
+    validate_payment(true)
+    render :text=>""
+  end
+
+  protected
+
+  def validate_payment(no_redirect = false)
     unless @subscription = Subscription.find_by_number(params["R"])
       flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réeessayer."
-      redirect_to :action=>:index
+      redirect_to :action=>:index unless no_redirect
       return 
     end
     if @subscription.state != "P" and @subscription.payment_mode == "card"
@@ -70,22 +82,14 @@ class StoreController < ApplicationController
       end
       @subscription.responsible = @current_person
       @subscription.save
-      @subscription.terminate
-    end
-    flash[:notice] = "La transaction a été validée."
-    redirect_to :controller=>:intra, :action=>:index
+      if error_code == "00000"
+        flash[:notice] = "La transaction a été validée."
+        @subscription.terminate 
+      else
+        flash[:error] = "Une erreur s'est produite #{@subscription.error_message}"
+      end
+    end    
   end
-
-  def check_payment
-    finished
-  end
-
-  def check_paiement
-    finished
-  end
-
-
-  protected
 
   def check
     unless session[:current_person_id]

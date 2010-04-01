@@ -1,4 +1,5 @@
 class IntraController < ApplicationController
+  ssl_only
 
   before_filter :authorize
   cattr_reader :images_count_per_person
