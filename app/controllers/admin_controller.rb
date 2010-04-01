@@ -1,9 +1,9 @@
 require 'scaffolding_extensions'
 
 class AdminController < ApplicationController
+  ssl_only
   scaffold_all_models
   before_filter :authorize
-  ssl_only
 
   def authorize
     unless session[:current_person_id]
