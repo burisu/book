@@ -69,6 +69,12 @@ class Article < ActiveRecord::Base
     status=='P'
   end
 
+  def label
+    l = self.title
+    l += " ("+::I18n.localize(self.done_on)+")" if self.done_on.is_a? Date
+    return l
+  end
+
   def human_status
     STATUS[self.status.to_sym]
   end

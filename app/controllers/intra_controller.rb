@@ -5,6 +5,8 @@ class IntraController < ApplicationController
   cattr_reader :images_count_per_person
   @@images_count_per_person = 100
 
+  dyli(:authors, [:first_name, :family_name, :user_name, :address], :model=>:people)
+
 
   def index
     profile
@@ -331,7 +333,7 @@ class IntraController < ApplicationController
 
   hide_action :init_article
   def init_article(article, params, person)
-    article.author_id ||= person.id
+    article.author_id = params[:author_id]||person.id
     article.language_id = params[:language_id]
     article.title = params[:title]
     article.intro = params[:intro]

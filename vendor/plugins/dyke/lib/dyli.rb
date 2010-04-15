@@ -20,12 +20,14 @@ module Ekylibre
             model = (options[:model]||name_db).to_s.singularize.camelize.constantize
             attributes = [attributes] unless attributes.is_a? Array
             attributes_hash = {}
-            0..attributes.size.times do |i|
+            attributes.each_index do |i|
               attribute = attributes[i]
-              attributes[i] = attribute.is_a?(Symbol) ? model.table_name+'.'+attribute.to_s : attribute.to_s
-              attributes_hash['att'+i.to_s] = attributes[i]
+              attributes[i] = [
+                               (attribute.to_s.match(/\./) ? attribute.to_s : model.table_name+'.'+attribute.to_s.split(/\:/)[0]),
+                               (attribute.to_s.match(/\:/) ? attribute.to_s.split(/\:/)[1] : (options[:filter]||'%X%')),
+                               '_a'+i.to_s]
+              attributes_hash[attributes[i][2]] = attributes[i][0]
             end
-            
             query = []
             parameters = ''
             if options[:conditions].is_a? Hash
@@ -53,25 +55,27 @@ module Ekylibre
             code += "  conditions = [#{query.join(' AND ').inspect+parameters}]\n"
             # code += "  raise Exception.new(params.inspect)\n"
             code += "  search = params[:#{name_db}][:search]||\"\"\n"
-            code += "  words = search.lower.split(/\\s+/)\n"
+            code += "  words = search.lower.split(/[\\s\\,]+/)\n"
             code += "  if words.size>0\n"
             code += "    conditions[0] += '#{' AND ' if query.size>0}('\n"
-            code += "    words.size.times do |index|\n"
-            code += "      word = #{(options[:filter]||'%X%').inspect}.gsub('X', words[index])\n"
+            code += "    words.each_index do |index|\n"
+            code += "      word = words[index]\n"
+            # code += "      word = #{(options[:filter]||'%X%').inspect}.gsub('X', words[index])\n"
             code += "      conditions[0] += ') AND (' if index>0\n"
-            code += "      conditions[0] += "+attributes.collect{|key| "LOWER(CAST(#{key} AS VARCHAR)) LIKE ?"}.join(' OR ').inspect+"\n"
-            code += "      conditions += ["+(["word"]*attributes.size).join(", ")+"]\n"
+            code += "      conditions[0] += "+attributes.collect{|key| "LOWER(#{key[0]}) LIKE ?"}.join(' OR ').inspect+"\n"
+            # code += "      conditions += ["+(["word"]*attributes.size).join(", ")+"]\n"
+            code += "      conditions += ["+attributes.collect{|key| key[1].inspect.gsub('X', '"+words[index].to_s+"').gsub(/(^\"\"\+|\+\"\"\+|\+\"\")/, '')}.join(", ")+"]\n"
             code += "    end\n"
             code += "    conditions[0] += ')'\n"
             code += "  end\n"
             select = (model.table_name+".id AS id, "+attributes_hash.collect{|k,v| v+" AS "+k}.join(", ")).inspect
-            order = ", :order=>"+attributes.collect{|key| "#{key} ASC"}.join(', ').inspect
+            order = ", :order=>"+attributes.collect{|key| "#{key[0]} ASC"}.join(', ').inspect
             limit = ", :limit=>"+(options[:limit]||12).to_s
             joins = options[:joins] ? ", :joins=>"+options[:joins].inspect : ""
             partial = options[:partial]
             code += "  list = ''\n"
-            code += "  for item in "+model.to_s+".find(:all, :select=>#{select}, :conditions=>conditions"+joins+order+limit+")\n"
-            code += "    content = "+attributes_hash.collect{|attribute, v| "item.#{attribute}.to_s"}.join('+", "+')+"\n"
+            code += "  for item in "+model.name.to_s+".find(:all, :select=>#{select}, :conditions=>conditions"+joins+order+limit+")\n"
+            code += "    content = "+attributes.collect{|key| "item.#{key[2]}.to_s"}.join('+", "+')+"\n"
             if partial
               display = "render(:partial=>#{partial.inspect}, :locals =>{:record=>item, :content=>content, :search=>search})"
             else
@@ -81,6 +85,9 @@ module Ekylibre
             code += "  end\n"
             code += "  render :text=>'<ul>'+list+'</ul>'\n"
             code += "end\n"
+
+            File.open("/tmp/test.rb", "wb") {|f| f.write(code)}
+            list = code.split("\n"); list.each_index{|x| puts((x+1).to_s.rjust(4)+": "+list[x])}
 
             module_eval(code)
           end
@@ -110,9 +117,8 @@ module Ekylibre
         # Acts like select_tag
         def dyli_tag(name_html, name_db, options={}, tag_options={}, completion_options={})
           tf_name  = "#{name_db}[search]"
-          tf_value = nil
           hf_name  = "#{name_html}"
-          hf_value = nil
+          tf_value, hf_value = nil, nil
           options  = {:action => "#{name_db}_dyli"}.merge(options)
           if options[:value].is_a? ActiveRecord::Base
             foreign = options[:value]
@@ -146,7 +152,8 @@ module Ekylibre
           options  = { :action => "#{name}_dyli"}.merge(options)
           options[:real_object] = real_object.send(foreign_key) unless real_object.new_record?
           options[:field_id] = "#{object}_#{foreign_key}"
-           
+          tag_options[:class] = tag_options[:class].to_s+' invalid' if real_object.errors.invalid?(association.to_s+"_id")
+
           completion_options[:skip_style] = true;
           
           dyli_completer(tf_name, tf_value, hf_name, hf_value, options, tag_options, completion_options)
@@ -176,12 +183,12 @@ module Ekylibre
           determine_completion_options(hf_id, tf_id, options, completion_options)
      
           return <<-HTML
-       #{dyli_complete_stylesheet unless completion_options[:skip_style]}    
-       #{hidden_field_tag(hf_name, hf_value, :id => hf_id)}
-       #{text_field_tag(tf_name, tf_value, tag_options)}
-       #{content_tag("div", " ", :id => "#{tf_id}_dyli_complete", :class => "dyli_complete")}
-       #{dyli_complete_field tf_id, completion_options}
-     HTML
+          #{dyli_complete_stylesheet unless completion_options[:skip_style]}    
+          #{hidden_field_tag(hf_name, hf_value, :id => hf_id)}
+          #{text_field_tag(tf_name, tf_value, tag_options)}
+          #{content_tag("div", " ", :id => "#{tf_id}_dyli_complete", :class => "dyli_complete")}
+          #{dyli_complete_field(tf_id, completion_options)}
+          HTML
         end
         
         #
@@ -207,8 +214,8 @@ module Ekylibre
           end
 
           function << (', ' + options_for_javascript(js_options) + ')')
-
-          javascript_tag(function)
+          
+          return javascript_tag(function)
         end
         
         
@@ -264,7 +271,7 @@ module Ekylibre
           unless options[:submit_on_return]
             tag_options[:onkeypress] = 'return event.keyCode == Event.KEY_RETURN ? false : true'
           end
-          tag_options[:class] = 'dyli'
+          tag_options[:class] = (tag_options[:class].to_s+' dyli').strip
         end
         
         # Determines the actual completion options, taken into account the ones from
@@ -272,18 +279,20 @@ module Ekylibre
         def determine_completion_options(hf_id, tf_id, options, completion_options) #:nodoc:
           # model_auto_completer does most of its work in the afterUpdateElement hook of the
           # standard autocompletion mechanism. Here we generate the JavaScript that goes there.
-          resize = completion_options[:no_resize] ? "" : "element.size = (element.dyli_cache.length > 64 ? 64 : element.dyli_cache.length);"
+          resize = options[:no_resize] ? "" : "element.size = (element.dyli_cache.length > 64 ? 64 : element.dyli_cache.length);"
           completion_options[:after_update_element] = <<-JS.gsub(/\s+/, ' ')
           function(element, value) {
             var model_id = /#{options[:regexp_for_id]}/.exec(value.id)[1];
             $("#{hf_id}").value = model_id;
             element.dyli_cache = element.value;
-            #{resize}(#{options[:after_update_element]})(element, value, $("#{hf_id}"), model_id);
+            #{resize}
+            (#{options[:after_update_element]})(element, value, $("#{hf_id}"), model_id);
           }
           JS
           
           # :url has higher priority than :action and :controller.
           completion_options[:url] = options[:url] || url_for(:controller => options[:controller], :action => options[:action])
+          completion_options
         end
         
       end

@@ -11,6 +11,7 @@
   =tl "Rubrique", select(:article, :rubric_id, Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]})
   -if access? :publishing
     =tl "Statut", select(:article, :status, Article.status)
+    =tl "Auteur", dyli(:article, :author_id, :authors)
   -else
     =tl "Prêt pour la publication", check_box(:article, :ready)
   -groups = []
