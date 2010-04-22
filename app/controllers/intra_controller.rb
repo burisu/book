@@ -930,7 +930,7 @@ class IntraController < ApplicationController
 
   def message_send
     if request.xhr?
-      render :inline=>"<%=options_for_select(Promotion.find(:all, :conditions=>['id IN (SELECT promotion_id FROM people WHERE arrival_country_id=?)', params[:country_id]], :order=>:name).collect{|p| [p.name, p.id]})-%>"
+      render :inline=>"<%=options_for_select(Promotion.find(:all, :conditions=>['id IN (SELECT promotion_id FROM people WHERE arrival_country_id=?)', params[:country_id]], :order=>:name).collect{|p| [p.name, p.id]}.insert(0, ['-- Toutes les promotions --', '']))-%>"
     else
       @countries = Country.find(:all, :conditions=>["id IN (SELECT arrival_country_id from people)"], :order=>:name)
       @promotions = Promotion.find(:all, :conditions=>['id IN (SELECT promotion_id FROM people WHERE arrival_country_id=?)', @countries[0].id], :order=>:name) # , :conditions=>{:is_outbound=>true}

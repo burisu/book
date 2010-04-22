@@ -9,7 +9,7 @@
         %td.hint 
       %tr
         %td.label Promotion
-        %td.value=select :mail, :promotion_id, @promotions.collect{|x| [x.name, x.id]}
+        %td.value=select :mail, :promotion_id, @promotions.collect{|x| [x.name, x.id]}.insert(0, ['-- Toutes les promotions --', ''])
         %td.hint 
       %tr
         %td.label Sujet

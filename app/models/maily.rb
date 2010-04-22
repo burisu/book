@@ -46,9 +46,12 @@ class Maily < ActionMailer::Base
   def message(person, options={})
     @subject      = '[ROTEX1690] '+options[:subject].to_s
     @body[:body] = options[:body].to_s
-    country = Country.find(options[:arrival_id])
-    promotion = Promotion.find(options[:promotion_id])
-    people = Person.find(:all, :conditions=>{:arrival_country_id=>country.id, :promotion_id=>promotion.id})
+    conditions = {}
+    conditions[:arrival_country_id] = Country.find(options[:arrival_id]).id unless options[:arrival_id].blank?
+    unless options[:promotion_id].blank?
+      conditions[:promotion_id] = Promotion.find(options[:promotion_id]).id
+    end
+    people = Person.find(:all, :conditions=>conditions)
     @recipients   = "#{country.name.to_s+' '+promotion.name.to_s} <mailing@rotex1690.org>"
     @bcc          = people.collect{|person| "#{person.label} <#{person.email}>"} # .join (', ')
     @from         = "#{person.label} <#{person.email}>"
