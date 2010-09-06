@@ -25,15 +25,20 @@ class CreateRubrics < ActiveRecord::Migration
       t.column :mandate_nature_id,       :integer, :references=>:mandate_natures
     end
 
-    home_id = insert "INSERT INTO rubrics (name, code) VALUES ('Accueil', 'accueil')"
-    news_id = insert "INSERT INTO rubrics (name, code) VALUES ('Nouvelles', 'nouvelles')"
-    agenda_id = insert "INSERT INTO rubrics (name, code) VALUES ('Agenda', 'agenda')"
-    # empty_id = insert "INSERT INTO rubrics (name, code) VALUES ('Sans-rubrique', 'norubric')"
-    contact_id = select_value("SELECT id FROM articles WHERE natures LIKE '% contact %'")
-    legals_id = select_value("SELECT id FROM articles WHERE natures LIKE '% legals %'")
-    about_id = select_value("SELECT id FROM articles WHERE natures LIKE '% about_us %'")
+    config = {}
+    config[:home_rubric_id] = insert "INSERT INTO rubrics (name, code) VALUES ('Accueil', 'accueil')"
+    config[:news_rubric_id] = insert "INSERT INTO rubrics (name, code) VALUES ('Nouvelles', 'nouvelles')"
+    config[:agenda_rubric_id] = insert "INSERT INTO rubrics (name, code) VALUES ('Agenda', 'agenda')"
+    # config[:empty_id] = insert "INSERT INTO rubrics (name, code) VALUES ('Sans-rubrique', 'norubric')"
+    config[:contact_article_id] = select_value("SELECT id FROM articles WHERE natures LIKE '% contact %'")
+    config[:legals_article_id] = select_value("SELECT id FROM articles WHERE natures LIKE '% legals %'")
+    config[:about_article_id] = select_value("SELECT id FROM articles WHERE natures LIKE '% about_us %'")
 
-    execute "INSERT INTO configurations (home_rubric_id, news_rubric_id, agenda_rubric_id, contact_article_id, legals_article_id, about_article_id) VALUES (#{home_id}, #{news_id}, #{agenda_id}, #{contact_id}, #{legals_id}, #{about_id})"
+    # execute "INSERT INTO configurations (home_rubric_id, news_rubric_id, agenda_rubric_id, contact_article_id, legals_article_id, about_article_id) VALUES (#{home_id}, #{news_id}, #{agenda_id}, #{contact_id}, #{legals_id}, #{about_id})"
+    execute "INSERT INTO configurations(home_rubric_id) VALUES (NULL)"
+    for k, v in config
+      execute "UPDATE configurations SET #{k}=#{v}" unless v.blank?
+    end
 
     add_column :images, :locked,    :boolean, :null=>false, :default=>false
     add_column :images, :deleted,   :boolean, :null=>false, :default=>false
@@ -42,10 +47,10 @@ class CreateRubrics < ActiveRecord::Migration
     # add_column :articles, :opened,    :boolean, :null=>false, :default=>false
 
     # execute "UPDATE articles SET opened=true"
-    execute "UPDATE articles SET rubric_id=#{agenda_id} WHERE natures LIKE '% agenda %'"
-    execute "UPDATE articles SET rubric_id=#{home_id} WHERE natures LIKE '% home %'"
-    # execute "UPDATE articles SET rubric_id=#{news_id} WHERE natures LIKE '% blog %'"
-    execute "UPDATE articles SET rubric_id=#{news_id} WHERE rubric_id IS NULL"
+    execute "UPDATE articles SET rubric_id=#{config[:agenda_rubric_id]} WHERE natures LIKE '% agenda %'"
+    execute "UPDATE articles SET rubric_id=#{config[:home_rubric_id]} WHERE natures LIKE '% home %'"
+    # execute "UPDATE articles SET rubric_id=#{config[:news_rubric_id]} WHERE natures LIKE '% blog %'"
+    execute "UPDATE articles SET rubric_id=#{config[:news_rubric_id]} WHERE rubric_id IS NULL"
     # execute "UPDATE articles SET opened=true WHERE id IN (#{contact_id}, #{legals_id}, #{about_id})"
 
     rename_column(:articles, :natures, :bad_natures)

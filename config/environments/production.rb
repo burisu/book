@@ -26,7 +26,7 @@ config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default_charset = "utf-8"
 config.action_mailer.delivery_method = :smtp
 # config.action_mailer.smtp_settings = {:address => "mail.gandi.net", :port => 587, :domain=>'rotex1690.org', :user_name=>'postmaster@rotex1690.org', :password=>'r0T3X1690',  :authentication=>:login, :tls=>true}
-if RUBY_VERSION == "1.8.7"
+if RUBY_VERSION > "1.8.6"
   config.action_mailer.smtp_settings = {:address => "mail.gandi.net", :port => 587, :domain=>'rotex1690.org', :user_name=>'postmaster@rotex1690.org', :password=>'r0T3X1690',  :authentication=>:login, :enable_starttls_auto => true}
 else
   config.action_mailer.smtp_settings = {:address => "mail.gandi.net", :port => 587, :domain=>'rotex1690.org', :user_name=>'postmaster@rotex1690.org', :password=>'r0T3X1690',  :authentication=>:login, :tls=>true}

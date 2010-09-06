@@ -3,14 +3,14 @@ namespace :rotex do
   task :migration => :environment do
     class LoadDefaultData < ActiveRecord::Migration
       def self.up
-        langue=Language.create!(:name=>'Français', :native_name=>'Français', :iso639=>'FR')
-        langue_en=Language.create!(:name=>'English', :native_name=>'English', :iso639=>'EN')
-        langue_es=Language.create!(:name=>'Espagnol', :native_name=>'Español', :iso639=>'ES')
-        pays=Country.create!(:name=>'France', :iso3166=>'FR', :language=>langue)
-        pays=Country.create!(:name=>'Etats Unis', :iso3166=>'US', :language=>langue_en)
-        pays=Country.create!(:name=>'Espagne', :iso3166=>'ES', :language=>langue_es)
-#        role=Role.create!(:name=>'Public', :code=>'public')
-#        role=Role.create!(:name=>'Administrator', :code=>'admin', :rights=>" all ")
+        language=Language.create!(:name=>'Français', :native_name=>'Français', :iso639=>'FR')
+        language_en=Language.create!(:name=>'English', :native_name=>'English', :iso639=>'EN')
+        language_es=Language.create!(:name=>'Espagnol', :native_name=>'Español', :iso639=>'ES')
+        country=Country.create!(:name=>'France', :iso3166=>'FR', :language=>language)
+        country=Country.create!(:name=>'Etats Unis', :iso3166=>'US', :language=>language_en)
+        country=Country.create!(:name=>'Espagne', :iso3166=>'ES', :language=>language_es)
+        # role=Role.create!(:name=>'Public', :code=>'public')
+        # role=Role.create!(:name=>'Administrator', :code=>'admin', :rights=>" all ")
         z1 = ZoneNature.create(:name=>'District')
         z2 = ZoneNature.create(:name=>'Zone SE', :parent_id=>z1.id)
         z3 = ZoneNature.create(:name=>'Club', :parent_id=>z2.id)
@@ -35,24 +35,25 @@ namespace :rotex do
         params[:user_name]='rotadmin'
         params[:password]='r0t4dm|n'
         params[:password_confirmation]='r0t4dm|n'
-        params[:country]=pays
-        params[:role]=role
+        params[:country]=country
+        # params[:role]=role
         params[:sex]='s'
-        personne=Person.new(params)
-        personne.email = 'bricetexier@yahoo.fr' # protected
-        personne.is_user = true
-        personne.is_validated = true
-        personne.save!
+        person=Person.new(params)
+        person.email = 'bricetexier@yahoo.fr' # protected
+        person.is_user = true
+        person.is_validated = true
+        person.save!
 
         params={}
         params[:title]='Bienvenue'
         params[:intro]='Bla Intro (C) '*5
         params[:body]='Bla Content http://www.rotex1690.org essai de *gras* essai de "guillemet" _test_ "Rotex 1690":http://www.rotex1690.org. '*10
-        params[:author]=personne
-        params[:language]=langue
+        params[:author]=person
+        params[:language]=language
         params[:status]='P'
-        params[:natures]=" home "
-#        params[:nature]=art_nat
+        params[:rubric_id]=Rubric.first.id rescue nil
+        # params[:natures]=" home "
+        # params[:nature]=art_nat
         article=Article.create!(params)
       end
     end

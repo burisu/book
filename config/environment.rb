@@ -81,7 +81,7 @@ end
 
 #simple_localization :languages => [:fr, :en, :es, :de, :nl], :lang_file_dir => "#{RAILS_ROOT}/app/languages", :debug=>false, :except=>[:localized_templates]
 require "#{RAILS_ROOT}/lib/safe_string"
-Haml::Template.options[:preserve] = ['textarea','pre','code']
+Haml::Template.options[:preserve] = ['textarea', 'pre', 'code']
 WillPaginate::ViewHelpers.pagination_options[:previous_label] = 'Précédent'
 WillPaginate::ViewHelpers.pagination_options[:next_label] = 'Suivant'
 
