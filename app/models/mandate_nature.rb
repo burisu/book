@@ -3,13 +3,13 @@
 # Table name: mandate_natures
 #
 #  code           :string(8)     not null
-#  created_at     :datetime      not null
+#  created_at     :datetime      
 #  id             :integer       not null, primary key
-#  lock_version   :integer       default(0), not null
+#  lock_version   :integer       default(0)
 #  name           :string(255)   not null
 #  parent_id      :integer       
 #  rights         :text          
-#  updated_at     :datetime      not null
+#  updated_at     :datetime      
 #  zone_nature_id :integer       
 #
 

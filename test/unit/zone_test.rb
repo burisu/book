@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ZoneTest < Test::Unit::TestCase
+class ZoneTest < ActiveSupport::TestCase
   fixtures :zones
 
   # Replace this with your real tests.

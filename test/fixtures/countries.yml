@@ -2,18 +2,14 @@
 #
 # Table name: countries
 #
-#  created_at   :datetime      not null
+#  created_at   :datetime      
 #  id           :integer       not null, primary key
 #  iso3166      :string(2)     not null
 #  language_id  :integer       not null
-#  lock_version :integer       default(0), not null
+#  lock_version :integer       default(0)
 #  name         :string(255)   not null
 #  native_name  :string(255)   
-#  updated_at   :datetime      not null
+#  updated_at   :datetime      
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
-  id: 1
-two:
-  id: 2

@@ -87,7 +87,7 @@ module Ekylibre
             code += "end\n"
 
             File.open("/tmp/test.rb", "wb") {|f| f.write(code)}
-            list = code.split("\n"); list.each_index{|x| puts((x+1).to_s.rjust(4)+": "+list[x])}
+            # list = code.split("\n"); list.each_index{|x| puts((x+1).to_s.rjust(4)+": "+list[x])}
 
             module_eval(code)
           end

@@ -4,11 +4,11 @@
 #
 #  answer_id    :integer       not null
 #  content      :text          
-#  created_at   :datetime      not null
+#  created_at   :datetime      
 #  id           :integer       not null, primary key
-#  lock_version :integer       default(0), not null
+#  lock_version :integer       default(0)
 #  question_id  :integer       not null
-#  updated_at   :datetime      not null
+#  updated_at   :datetime      
 #
 
 class AnswerItem < ActiveRecord::Base

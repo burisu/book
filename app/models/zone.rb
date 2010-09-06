@@ -4,14 +4,14 @@
 #
 #  code         :text          not null
 #  country_id   :integer       
-#  created_at   :datetime      not null
+#  created_at   :datetime      
 #  id           :integer       not null, primary key
-#  lock_version :integer       default(0), not null
+#  lock_version :integer       default(0)
 #  name         :string(255)   not null
 #  nature_id    :integer       
 #  number       :integer       not null
 #  parent_id    :integer       
-#  updated_at   :datetime      not null
+#  updated_at   :datetime      
 #
 
 class Zone < ActiveRecord::Base

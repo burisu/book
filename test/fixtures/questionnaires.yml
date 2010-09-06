@@ -3,21 +3,15 @@
 # Table name: questionnaires
 #
 #  comment      :text          
-#  created_at   :datetime      not null
+#  created_at   :datetime      
 #  id           :integer       not null, primary key
 #  intro        :text          
-#  lock_version :integer       default(0), not null
+#  lock_version :integer       default(0)
 #  name         :string(64)    not null
 #  promotion_id :integer       
 #  started_on   :date          
 #  stopped_on   :date          
-#  updated_at   :datetime      not null
+#  updated_at   :datetime      
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
-#
-# two:
-#   column: value

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class EmailTest < Test::Unit::TestCase
+class EmailTest < ActiveSupport::TestCase
   fixtures :emails
 
   # Replace this with your real tests.

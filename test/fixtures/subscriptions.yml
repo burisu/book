@@ -9,11 +9,11 @@
 #  card_expired_on      :date          
 #  card_type            :string(255)   
 #  country              :string(255)   
-#  created_at           :datetime      not null
+#  created_at           :datetime      
 #  error_code           :string(255)   
 #  finished_on          :date          not null
 #  id                   :integer       not null, primary key
-#  lock_version         :integer       default(0), not null
+#  lock_version         :integer       default(0)
 #  note                 :text          
 #  number               :string(16)    
 #  payer_country        :string(255)   
@@ -24,13 +24,7 @@
 #  signature            :string(255)   
 #  state                :string(1)     default("I"), not null
 #  transaction_number   :string(255)   
-#  updated_at           :datetime      not null
+#  updated_at           :datetime      
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
-#
-# two:
-#   column: value

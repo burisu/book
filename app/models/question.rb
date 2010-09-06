@@ -2,15 +2,15 @@
 #
 # Table name: questions
 #
-#  created_at       :datetime      not null
+#  created_at       :datetime      
 #  explanation      :text          
 #  id               :integer       not null, primary key
-#  lock_version     :integer       default(0), not null
+#  lock_version     :integer       default(0)
 #  name             :string(255)   not null
 #  position         :integer       
 #  questionnaire_id :integer       
 #  theme_id         :integer       
-#  updated_at       :datetime      not null
+#  updated_at       :datetime      
 #
 
 class Question < ActiveRecord::Base

@@ -2,15 +2,15 @@
 #
 # Table name: answers
 #
-#  created_at       :datetime      not null
+#  created_at       :datetime      
 #  created_on       :date          
 #  id               :integer       not null, primary key
-#  lock_version     :integer       default(0), not null
+#  lock_version     :integer       default(0)
 #  locked           :boolean       not null
 #  person_id        :integer       not null
 #  questionnaire_id :integer       not null
 #  ready            :boolean       not null
-#  updated_at       :datetime      not null
+#  updated_at       :datetime      
 #
 
 class Answer < ActiveRecord::Base

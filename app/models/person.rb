@@ -8,7 +8,7 @@
 #  born_on              :date          not null
 #  comment              :text          
 #  country_id           :integer       not null
-#  created_at           :datetime      not null
+#  created_at           :datetime      
 #  departure_country_id :integer       
 #  departure_person_id  :integer       
 #  email                :string(255)   not null
@@ -23,7 +23,7 @@
 #  is_user              :boolean       not null
 #  is_validated         :boolean       not null
 #  latitude             :float         
-#  lock_version         :integer       default(0), not null
+#  lock_version         :integer       default(0)
 #  longitude            :float         
 #  mobile               :string(32)    
 #  patronymic_name      :string(255)   not null
@@ -41,7 +41,7 @@
 #  started_on           :date          
 #  stopped_on           :date          
 #  student              :boolean       not null
-#  updated_at           :datetime      not null
+#  updated_at           :datetime      
 #  user_name            :string(32)    not null
 #  validation           :string(255)   
 #
@@ -56,6 +56,7 @@ class Person < ActiveRecord::Base
   attr_accessor :forced
   attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   has_many :orders, :class_name=>Subscription.name, :conditions=>{:state=>'C'}
+  has_many :versions, :class_name=>PersonVersion.name, :dependent=>:delete_all
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9_]{4,32}/

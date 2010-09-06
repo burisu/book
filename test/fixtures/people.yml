@@ -8,7 +8,7 @@
 #  born_on              :date          not null
 #  comment              :text          
 #  country_id           :integer       not null
-#  created_at           :datetime      not null
+#  created_at           :datetime      
 #  departure_country_id :integer       
 #  departure_person_id  :integer       
 #  email                :string(255)   not null
@@ -23,7 +23,7 @@
 #  is_user              :boolean       not null
 #  is_validated         :boolean       not null
 #  latitude             :float         
-#  lock_version         :integer       default(0), not null
+#  lock_version         :integer       default(0)
 #  longitude            :float         
 #  mobile               :string(32)    
 #  patronymic_name      :string(255)   not null
@@ -41,13 +41,9 @@
 #  started_on           :date          
 #  stopped_on           :date          
 #  student              :boolean       not null
-#  updated_at           :datetime      not null
+#  updated_at           :datetime      
 #  user_name            :string(32)    not null
 #  validation           :string(255)   
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
-  id: 1
-two:
-  id: 2
+
