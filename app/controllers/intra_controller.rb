@@ -547,12 +547,10 @@ class IntraController < ApplicationController
   def people
     return unless try_to_access :users
     @title = "Liste des personnes"
-    if request.post?
-      session[:person_key] = params[:person_key]||params[:key]
-      session[:person_mode] = params[:mode]
-      session[:person_proposer_zone_id] = params[:proposer_zone_id].to_i
-      session[:person_arrival_country_id] = params[:arrival_country_id].to_i
-    end
+    session[:person_key] = params[:person_key]||params[:key]
+    session[:person_mode] = params[:mode]
+    session[:person_proposer_zone_id] = params[:proposer_zone_id].to_i
+    session[:person_arrival_country_id] = params[:arrival_country_id].to_i
     # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
