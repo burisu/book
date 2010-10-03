@@ -5,13 +5,13 @@
 #  arrived_at     :datetime      not null
 #  bcc            :text          
 #  cc             :text          
-#  created_at     :datetime      
+#  created_at     :datetime      not null
 #  from           :text          not null
 #  from_person_id :integer       
 #  from_valid     :boolean       not null
 #  id             :integer       not null, primary key
 #  identifier     :text          not null
-#  lock_version   :integer       default(0)
+#  lock_version   :integer       default(0), not null
 #  manual_sent    :boolean       not null
 #  message        :text          
 #  sent_at        :datetime      
@@ -19,7 +19,7 @@
 #  subject        :string(255)   not null
 #  to             :text          
 #  unvalid        :boolean       not null
-#  updated_at     :datetime      
+#  updated_at     :datetime      not null
 #
 
 class Email < ActiveRecord::Base

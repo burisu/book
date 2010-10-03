@@ -9,11 +9,11 @@
 #  card_expired_on      :date          
 #  card_type            :string(255)   
 #  country              :string(255)   
-#  created_at           :datetime      
+#  created_at           :datetime      not null
 #  error_code           :string(255)   
 #  finished_on          :date          not null
 #  id                   :integer       not null, primary key
-#  lock_version         :integer       default(0)
+#  lock_version         :integer       default(0), not null
 #  note                 :text          
 #  number               :string(16)    
 #  payer_country        :string(255)   
@@ -24,7 +24,7 @@
 #  signature            :string(255)   
 #  state                :string(1)     default("I"), not null
 #  transaction_number   :string(255)   
-#  updated_at           :datetime      
+#  updated_at           :datetime      not null
 #
 
 class Subscription < ActiveRecord::Base
@@ -130,6 +130,9 @@ class Subscription < ActiveRecord::Base
   end
 
   def terminate
+    unless self.person.approved?
+      Maily.deliver_notification(:approval, self.person)
+    end
     self.update_attribute(:state, 'P')
   end
 

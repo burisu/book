@@ -1,5 +1,23 @@
 %h1=@title
 
+
+-form_tag({}, :class=>"search") do 
+  %table.search
+    %tr
+      %td Filtrer sur
+      %td=text_field_tag("person_key", session[:person_key])
+      %td.action{:rowspan=>4}=submit_tag("Rechercher")
+    %tr
+      %td Mode
+      %td=select_tag("mode", options_for_select([[], ["En attente d'approbation", "not_approved"], ["Student-Exchange", "student"], ["Non Student-Exchange", "not_student"], ["Verrouillés", "locked"]], session[:person_mode]))
+    %tr
+      %td Club d'origine
+      %td=select_tag("proposer_zone_id", options_for_select([[]]+Zone.list, session[:person_proposer_zone_id]))
+    %tr
+      %td Pays d'arrivée
+      %td=select_tag("arrival_country_id", options_for_select([[]]+Country.find(:all, :order=>:name).collect{|c| [c.name, c.id]}, session[:person_arrival_country_id]))
+  
+
 %ul.aclist
   %li=link_to "Ajouter une personne", :action=>:person_create
 

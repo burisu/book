@@ -3,12 +3,13 @@
 # Table name: people
 #
 #  address              :text          not null
+#  approved             :boolean       not null
 #  arrival_country_id   :integer       
 #  arrival_person_id    :integer       
 #  born_on              :date          not null
 #  comment              :text          
 #  country_id           :integer       not null
-#  created_at           :datetime      
+#  created_at           :datetime      not null
 #  departure_country_id :integer       
 #  departure_person_id  :integer       
 #  email                :string(255)   not null
@@ -23,7 +24,7 @@
 #  is_user              :boolean       not null
 #  is_validated         :boolean       not null
 #  latitude             :float         
-#  lock_version         :integer       default(0)
+#  lock_version         :integer       default(0), not null
 #  longitude            :float         
 #  mobile               :string(32)    
 #  patronymic_name      :string(255)   not null
@@ -41,7 +42,7 @@
 #  started_on           :date          
 #  stopped_on           :date          
 #  student              :boolean       not null
-#  updated_at           :datetime      
+#  updated_at           :datetime      not null
 #  user_name            :string(32)    not null
 #  validation           :string(255)   
 #
@@ -211,6 +212,20 @@ class Person < ActiveRecord::Base
     self.family_name+" "+self.first_name
   end
 
+  def approve!
+    unless self.approved
+      Maily.deliver_approval(@person)
+    end
+    self.update_attribute(:approved, true)
+    self.update_attribute(:is_locked, false)
+  end
+
+  def disapprove!
+    self.update_attribute(:approved, true)
+    self.update_attribute(:is_locked, true)
+    self.update_attribute(:comment, "Verrouillée car inconnue au sein de l'association")
+  end
+
   def story?
     self.articles.find(:all, :conditions=>["status=? AND rubric_id= ? AND done_on IS NOT NULL", 'P', Configuration.parameter(:news_rubric_id)]).size>0
   end
@@ -220,7 +235,7 @@ class Person < ActiveRecord::Base
   end
 
   def has_subscribed_on?(verified_on=Date.today)
-    Subscription.count(:conditions=>["person_id=? AND ? BETWEEN begun_on AND finished_on", self.id, verified_on])>0
+    Subscription.count(:conditions=>["person_id=? AND state=? AND ? BETWEEN begun_on AND finished_on", self.id, "P", verified_on])>0
   end
 
   def has_subscribed?(delay=2.months)

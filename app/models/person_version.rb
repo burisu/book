@@ -3,12 +3,13 @@
 # Table name: person_versions
 #
 #  address              :text          
+#  approved             :boolean       
 #  arrival_country_id   :integer       
 #  arrival_person_id    :integer       
 #  born_on              :date          
 #  comment              :text          
 #  country_id           :integer       
-#  created_at           :datetime      
+#  created_at           :datetime      not null
 #  departure_country_id :integer       
 #  departure_person_id  :integer       
 #  email                :string(255)   
@@ -23,7 +24,7 @@
 #  is_user              :boolean       
 #  is_validated         :boolean       
 #  latitude             :float         
-#  lock_version         :integer       default(0)
+#  lock_version         :integer       default(0), not null
 #  longitude            :float         
 #  mobile               :string(255)   
 #  patronymic_name      :string(255)   
@@ -43,7 +44,7 @@
 #  started_on           :date          
 #  stopped_on           :date          
 #  student              :boolean       not null
-#  updated_at           :datetime      
+#  updated_at           :datetime      not null
 #  user_name            :string(255)   
 #  validation           :string(255)   
 #

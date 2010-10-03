@@ -4,14 +4,14 @@
 #
 #  code         :text          not null
 #  country_id   :integer       
-#  created_at   :datetime      
+#  created_at   :datetime      not null
 #  id           :integer       not null, primary key
-#  lock_version :integer       default(0)
+#  lock_version :integer       default(0), not null
 #  name         :string(255)   not null
 #  nature_id    :integer       
 #  number       :integer       not null
 #  parent_id    :integer       
-#  updated_at   :datetime      
+#  updated_at   :datetime      not null
 #
 
 class Zone < ActiveRecord::Base
@@ -57,6 +57,14 @@ class Zone < ActiveRecord::Base
     if self.parent
       return true if self.parent.in_zone?(zone)
     end
+  end
+
+  def self.list(conditions={})
+    Zone.find(:all, 
+              :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", 
+              :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", 
+              :conditions=>conditions, 
+              :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
   end
   
 end

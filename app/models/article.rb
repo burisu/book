@@ -5,17 +5,17 @@
 #  author_id    :integer       not null
 #  bad_natures  :text          
 #  body         :text          not null
-#  created_at   :datetime      
+#  created_at   :datetime      not null
 #  document     :string(255)   
 #  done_on      :date          
 #  id           :integer       not null, primary key
 #  intro        :string(512)   not null
 #  language_id  :integer       not null
-#  lock_version :integer       default(0)
+#  lock_version :integer       default(0), not null
 #  rubric_id    :integer       
 #  status       :string(255)   default("W"), not null
 #  title        :string(255)   not null
-#  updated_at   :datetime      
+#  updated_at   :datetime      not null
 #
 
 

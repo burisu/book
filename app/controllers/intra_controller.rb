@@ -13,6 +13,28 @@ class IntraController < ApplicationController
     render :action=>:profile
   end
   
+  def approve
+    @person = Persone.find_by_id(params[:id])
+    if @person and @person.salt==params[:xid]
+      @person.approve!
+      flash[:notice] = "La personne a été acceptée."
+    else
+      flash[:error] = "Vous n'avez pas le droit de faire cela."
+    end
+    redirect_to :action=>:index
+  end
+
+  def disapprove
+    @person = Persone.find_by_id(params[:id])
+    if @person and @person.salt==params[:xid]
+      @person.disapprove!
+      flash[:notice] = "La personne a été verrouillée."
+    else
+      flash[:error] = "Vous n'avez pas le droit de faire cela."
+    end
+    redirect_to :action=>:index
+  end
+
   def configurate
     @configuration = @@configuration
     if request.post?
@@ -95,7 +117,7 @@ class IntraController < ApplicationController
     @person = @current_person
     @person.attributes = params[:person]
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
-    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    @zones = Zone.list(["zones.nature_id=?",@zone_nature.id]) # find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
       redirect_to :action=>:profile 
@@ -122,7 +144,7 @@ class IntraController < ApplicationController
     end
     @person = Person.find(:first, :conditions=>{:id=>params[:id]}) # session[:current_person_id]
     @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'club'"])
-    @zones = Zone.find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+    @zones = Zone.list(["zones.nature_id=?",@zone_nature.id]) # find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
       redirect_to :action=>:profile 
@@ -485,38 +507,32 @@ class IntraController < ApplicationController
 
   end
 
+  def self.people_conditions
+    code = search_conditions(:people, [:family_name, :first_name, :patronymic_name, :email, :comment, :address, :second_name, :user_name])
+    code += "\n"
+    code += "if session[:person_mode]=='not_approved'\n"
+    code += "  c[0]+=' AND NOT approved'\n"
+    code += "elsif session[:person_mode]=='student'\n"
+    code += "  c[0]+=' AND student'\n"
+    code += "elsif session[:person_mode]=='not_student'\n"
+    code += "  c[0]+=' AND NOT student'\n"
+    code += "elsif session[:person_mode]=='locked'\n"
+    code += "  c[0]+=' AND is_locked'\n"
+    code += "end\n"
+    code += "if session[:person_proposer_zone_id] > 0\n"
+    code += "  c[0]+=' AND proposer_zone_id=?'\n"
+    code += "  c << session[:person_proposer_zone_id]\n"
+    code += "end\n"
+    code += "if session[:person_arrival_country_id] > 0\n"
+    code += "  c[0]+=' AND arrival_country_id=?'\n"
+    code += "  c << session[:person_arrival_country_id]\n"
+    code += "end\n"
+    code += "c"
+    return code
+  end
 
 
-
-  
-#   def person_create
-#     if request.post?
-#       @person = Person.new(params[:person])
-#       if @person.save
-#         redirect_to :action=>:persons
-#       end
-#     else
-#       @person = Person.new
-#     end
-#     render_form
-#   end
-  
-#   def person_update
-#     @person = Person.find(params[:id])
-#     if request.post?
-#       if params[:person][:password].blank? and params[:person][:password_confirmation].blank?
-#         params[:person].delete :password
-#         params[:person].delete :password_confirmation
-#       end
-#       if @person.update_attributes(params[:person])
-#         redirect_to :action=>:persons
-#       end
-#     end
-#     render_form
-#   end
-
-
-  dyta(:people, :order=>"family_name, first_name", :per_page=>20, :line_class=>"(RECORD.is_locked ? 'error' : (RECORD.has_subscribed? ? 'notice' : (RECORD.has_subscribed_on? ? 'warning' : '')))") do |t|
+  dyta(:people, :conditions=>people_conditions, :order=>"family_name, first_name", :per_page=>20, :line_class=>"(RECORD.is_locked ? 'error' : (RECORD.has_subscribed? ? 'notice' : (RECORD.has_subscribed_on? ? 'warning' : '')))") do |t|
     t.column :family_name, :url=>{:action=>:person}
     t.column :first_name, :url=>{:action=>:person}
     t.column :user_name
@@ -531,6 +547,12 @@ class IntraController < ApplicationController
   def people
     return unless try_to_access :users
     @title = "Liste des personnes"
+    if request.post?
+      session[:person_key] = params[:person_key]||params[:key]
+      session[:person_mode] = params[:mode]
+      session[:person_proposer_zone_id] = params[:proposer_zone_id].to_i
+      session[:person_arrival_country_id] = params[:arrival_country_id].to_i
+    end
     # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
@@ -651,6 +673,7 @@ class IntraController < ApplicationController
       @subscription.person_id = @person.id
       @subscription.responsible = @current_person
       if @subscription.save
+        @subscription.person.approve!
         session[:last_finished_on] = @subscription.finished_on
         redirect_to :action=>:person, :id=>@person.id
       end

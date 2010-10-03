@@ -46,6 +46,7 @@ class AuthenticationController < ApplicationController
       @person = Person.new params[:person]
       @person.email = params[:person][:email]
       @person.is_validated = false
+      @person.approved  = false
       @person.is_locked = true
       @person.is_user   = true
       if @person.save_with_captcha
@@ -60,7 +61,7 @@ class AuthenticationController < ApplicationController
         end
       end
     else
-      @person = Person.new
+      @person = Person.new()
     end
   end
   

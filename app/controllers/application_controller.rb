@@ -67,6 +67,29 @@ class ApplicationController < ActionController::Base
 
   protected
   
+  def self.search_conditions(model_name, columns)
+    model = model_name.to_s.classify.constantize
+    columns = [columns] if [String, Symbol].include? columns.class 
+    columns = columns.collect{|k,v| v.collect{|x| "#{k}.#{x}"}} if columns.is_a? Hash
+    columns.flatten!
+    raise Exception.new("Bad columns: "+columns.inspect) unless columns.is_a? Array
+    code = ""
+    code+="c=['true']\n"
+    code+="session[:#{model.name.underscore}_key].to_s.lower.split(/\\s+/).each{|kw| kw='%'+kw+'%';"
+    # This line is incompatible with MySQL...
+    # code+="c[0]+=' AND (#{columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS TEXT)) LIKE ?'}.join(' OR ')})';c+=[#{(['kw']*columns.size).join(',')}]}\n"
+    if ActiveRecord::Base.connection.adapter_name == "MySQL"
+      code+="c[0]+=' AND ("+columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS CHAR)) LIKE ?'}.join(' OR ')+")';\n"
+    else
+      code+="c[0]+=' AND ("+columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS VARCHAR)) LIKE ?'}.join(' OR ')+")';\n"
+    end
+    code+="c+=[#{(['kw']*columns.size).join(',')}]"
+    code+="}\n"
+    code+="c"
+    code
+  end
+
+
   def try_to_access(right=:all)
     unless access? right
       redirect_to :action=>:access_denied 

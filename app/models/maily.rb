@@ -20,6 +20,16 @@ class Maily < ActionMailer::Base
     @headers      = {}
   end
   
+  def approval(person)
+    @subject      = '[ROTEX1690] '+person.first_name+', votre accès a été autorisé'
+    @body[:person] = person
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
+  
+
   def notification(nature, person, resp=nil)
     @subject      = '[ROTEX1690] Notification : '+
       if nature==:subscription
@@ -30,6 +40,8 @@ class Maily < ActionMailer::Base
         "Enregistrement de cotisation effectué pour #{person.label}"
       elsif nature==:waiting_payment
         "Commande effectuée par #{person.label}"
+      elsif nature==:approval
+        "Demande d'acceptation pour #{person.label}"
       else
         "Inconnue"
       end
