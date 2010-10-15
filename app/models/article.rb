@@ -66,7 +66,7 @@ class Article < ActiveRecord::Base
   end  
   
   def published?
-    status=='P'
+    self.status=='P'
   end
 
   def label

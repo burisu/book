@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
   end  
   
 
-  hide_action :access
+  hide_action :access?
   def access?(right=:all)
     session[:rights] ||= []
     if session[:rights].include? :all
