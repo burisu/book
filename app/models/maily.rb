@@ -28,6 +28,19 @@ class Maily < ActionMailer::Base
     @sent_on      = Time.now
     @headers      = {}
   end
+
+  def chase(subscription, message)
+    person = subscription.person
+    @subject      = '[ROTEX1690] '+person.first_name+', pensez à renouveler votre cotisation'
+    @body[:subscription] = subscription
+    @body[:message] = message
+    people = Person.mandated_for(['tresor', 'admin'])
+    @bcc          = people.collect{|p| "#{p.label} <#{p.email}>"}
+    @recipients   = "#{person.label} <#{person.email}>"
+    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @sent_on      = Time.now
+    @headers      = {}
+  end
   
 
   def notification(nature, person, resp=nil)

@@ -14,7 +14,7 @@ class IntraController < ApplicationController
   end
   
   def approve
-    @person = Persone.find_by_id(params[:id])
+    @person = Person.find_by_id(params[:id])
     if @person and @person.salt==params[:xid]
       @person.approve!
       flash[:notice] = "La personne a été acceptée."
@@ -25,7 +25,7 @@ class IntraController < ApplicationController
   end
 
   def disapprove
-    @person = Persone.find_by_id(params[:id])
+    @person = Person.find_by_id(params[:id])
     if @person and @person.salt==params[:xid]
       @person.disapprove!
       flash[:notice] = "La personne a été verrouillée."
@@ -659,6 +659,8 @@ class IntraController < ApplicationController
     return unless try_to_access :subscribing
     if request.post?
       Subscription.delete_all(["state=? AND created_at<=? ", "I", Time.now - 48.hours])
+    elsif request.put?
+      @people = Subscription.chase_up
     end
   end
 
@@ -822,8 +824,8 @@ class IntraController < ApplicationController
 
 
   dyta(:rubrics) do |t|
-    t.column :name, :url=>{:action=>:rubric}
-    t.column :code, :url=>{:action=>:rubric}
+    t.column :name, :url=>{:action=>:rubric, :id=>"RECORD.code"}
+    t.column :code, :url=>{:action=>:rubric, :id=>"RECORD.code"}
     t.column :description
     t.column :name, :through=>:parent
     t.action :rubric_update
@@ -850,7 +852,8 @@ class IntraController < ApplicationController
   end
 
   def rubric
-    @rubric = Rubric.find_by_id(params[:id])
+    @rubric = Rubric.find_by_id(params[:id]) if params[:id].to_i > 0
+    @rubric ||= Rubric.find_by_code(params[:id])
     session[:current_rubric_id] = @rubric.id
   end
 

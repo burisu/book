@@ -204,7 +204,7 @@ class ApplicationController < ActionController::Base
         value = "(#{value}.nil? ? nil : ::I18n.localize(#{value}))" if [:date, :datetime].include? c.type
         ":#{c.name}=>#{value}"
       end.join(", ")
-      code += "  @title = {#{values}}\n"
+      # code += "  @title = {#{values}}\n"
       code += "  render_form\n"
       code += "end\n"
     end

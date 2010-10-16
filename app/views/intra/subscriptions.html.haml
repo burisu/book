@@ -1,5 +1,17 @@
 %h1 Historique des cotisations
 %ul.aclist
   %li=link_to("Supprimer les vieux devis (>48h)", {}, :method=>:post)
+  %li=link_to("Relancer les personnes à #{Configuration.the_one.chasing_up_days_array.to_sentence} jours", {}, :method=>:put)
+
+-if @people.size > 0
+  %h2 Personnes relancées
+  -for day, people in @people
+    %h3="À #{day} jours"
+    %ul
+      -for person in people
+        %li=link_to(person.label, :action=>:person, :id=>person.id)
+  %h2 Cotisations
+-else
+  %p Personne n'a été relancé
 
 =dyta(:subscriptions)

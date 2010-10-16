@@ -20,7 +20,7 @@ class HomeController < ApplicationController
   end
   
   def special
-    if ["contact","about","legals"].include?(params[:id])
+    if ["contact", "about", "legals", "help"].include?(params[:id])
       @article = Article.find_by_id(conf.send(params[:id]+"_article_id"))
       if @article.nil?
         flash[:warning] = "La page que vous demandez est en construction."

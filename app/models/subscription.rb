@@ -157,6 +157,32 @@ class Subscription < ActiveRecord::Base
     PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}[0]
   end
 
+
+  def self.chase_up(done_on=nil)
+    done_on ||= Date.today
+    conf = Configuration.the_one
+    days = conf.chasing_up_days_array
+    ps = {}
+    for day in days
+      original_message = (day >= 0 ? conf.chasing_up_letter_after_expiration : conf.chasing_up_letter_before_expiration)
+      expired_on = done_on+day
+      for sub in self.find(:all, :conditions=>["finished_on = ? AND person_id NOT IN (SELECT person_id FROM subscriptions WHERE finished_on > ?)", expired_on, expired_on])
+        person = sub.person
+        message = original_message.gsub(/\[[^\]]+\]/) do |m|
+          m = m[1..-2]
+          if m == "count"
+            days.abs.to_s
+          elsif person.respond_to? m
+            person.send(m).to_s
+          end
+        end
+        Maily.deliver_chase(sub, message)
+        ps[day.to_s] ||= []
+        ps[day.to_s] << person
+      end
+    end
+    return ps
+  end
       
 
 
