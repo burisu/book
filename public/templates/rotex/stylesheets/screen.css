@@ -106,7 +106,7 @@ td.hint {color: #789; font-style:italic; padding: 1px 4px;}
 .infos.formu .label { color: #888; }
 
 .subbody h1{ font-variant: small-caps2 ; margin: 4px 4px 12px; font-family: Georgia, serif; font-weight:normal; color: #555}
-.subbody h2{ margin: 8px 8px; border-bottom: 1px dotted #00288d; font-weight:normal; }
+.subbody h2{ margin: 8px 0px; border-bottom: 1px dotted #00288d; font-weight:normal; }
 .subbody ul{ margin-left:8px; }
 
 #main {
@@ -227,7 +227,7 @@ h1.subtitle { font-variant: normal; color: #111; font-size: 20px; border-bottom:
 .content div.align.right { float:right; }
 .content div.align.left { float:left; }
 .content div.align.center { text-align:center; }
-.content p { text-indent: 1.5em }
+/*.content p { text-indent: 1.5em } */
 
 table.folder { width: 100%; }
 

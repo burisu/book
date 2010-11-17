@@ -270,7 +270,11 @@ fr-FR:
       other: '{{count}} années : du {{start}} au {{finish}} ({{amount}})'
 
 
-
+  labels:
+    x_articles_of_author:
+      zero: 'Aucun article de {{author}}'
+      one: 'Un article de {{author}}'
+      other: '{{count}} articles de {{author}}'
 
 
 

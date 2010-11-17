@@ -27,7 +27,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem "haml"
+  config.gem "haml", :version => '2.0.9'
   config.gem "fastercsv"
   config.gem 'will_paginate', :version => '2.3.11'
   config.gem 'scaffolding_extensions'
@@ -82,7 +82,9 @@ end
 
 #simple_localization :languages => [:fr, :en, :es, :de, :nl], :lang_file_dir => "#{RAILS_ROOT}/app/languages", :debug=>false, :except=>[:localized_templates]
 require "#{RAILS_ROOT}/lib/safe_string"
-Haml::Template.options[:preserve] = ['textarea', 'pre', 'code']
+if defined? Haml
+  Haml::Template.options[:preserve] = ['textarea', 'pre', 'code']
+end
 if defined? WillPaginate
   WillPaginate::ViewHelpers.pagination_options[:previous_label] = 'Précédent'
   WillPaginate::ViewHelpers.pagination_options[:next_label] = 'Suivant'

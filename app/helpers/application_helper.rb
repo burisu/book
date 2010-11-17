@@ -25,6 +25,20 @@ module ApplicationHelper
     end
   end
 
+  def list_of_articles(author, options={})
+    articles = author.articles.find(:all, :conditions=>["status='P'"], :order=>"done_on, created_at DESC")
+    nb = articles.size
+    return unless nb > 1
+    code = ""
+    for article in articles
+      code += "<li>"+link_to_if(article.id!=@article.id, article.title, :controller=>:home, :action=>:article, :id=>article.id){ h @article.title}+"</li>"
+    end
+    code = content_tag(:ul, code)
+    code = content_tag(:h3, ::I18n.t("labels.x_articles_of_author", :count=>nb, :author=>article.author.label)) + code
+    return content_tag(:div, code, :class=>"toc")
+  end
+  
+
   def toolbar0(input_id)
     selector = input_id+'_iselector'
     code = ''

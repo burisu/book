@@ -44,7 +44,7 @@ class IntraController < ApplicationController
   end
 
   dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:current_person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
-    t.column :title, :url=>{:action=>:artic2le}
+    t.column :title, :url=>{:action=>:article}
     t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
     t.column :updated_at
     # t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}

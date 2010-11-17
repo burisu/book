@@ -1,11 +1,2 @@
-- articles = @article.author.articles.find(:all, :conditions=>["status='P'"], :order=>"done_on, created_at DESC")
-- nb = articles.size
--if nb > 1
-  .toc
-    %h3=(nb>1 ? nb.to_s+" articles" : "Un article")+" de "+@article.author.label
-    %ul
-      -for article in articles
-        %li
-          =link_to_if(article.id!=@article.id, article.title, :controller=>:home, :action=>:article, :id=>article.id) do
-            -h @article.title
+=list_of_articles(@article.author)
 =render :partial=>'shared/article'

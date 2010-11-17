@@ -89,7 +89,7 @@ class Article < ActiveRecord::Base
 
   def public?
     conf = Configuration.the_one
-    self.rubric_id == conf.home_rubric_id or (self.rubric_id == conf.agenda_rubric_id and self.mandate_natures.empty?) or self.id == conf.about_article_id or self.id == conf.contact_article_id or self.id == conf.legals_article_id
+    self.rubric_id == conf.home_rubric_id or (self.rubric_id == conf.agenda_rubric_id and self.mandate_natures.empty?) or self.id == conf.about_article_id or self.id == conf.contact_article_id or self.id == conf.legals_article_id or self.id == conf.help_article_id
   end
 
 
