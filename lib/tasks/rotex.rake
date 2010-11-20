@@ -1,5 +1,12 @@
 namespace :rotex do
 
+  desc "Send an email in order to chae up every subscribers which have to be"
+  task :chase_up => :environment do 
+    people = Subscription.chase_up
+    puts people.inspect
+  end
+
+
   task :migration => :environment do
     class LoadDefaultData < ActiveRecord::Migration
       def self.up

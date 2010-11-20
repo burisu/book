@@ -519,6 +519,14 @@ class IntraController < ApplicationController
     code += "elsif session[:person_mode]=='locked'\n"
     code += "  c[0]+=' AND is_locked'\n"
     code += "end\n"
+    code += "if session[:person_state]=='valid'\n"
+    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
+    code += "elsif session[:person_state]=='not'\n"
+    code += "  c[0]+=\" AND NOT id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
+    code += "elsif session[:person_state]=='end'\n"
+    code += "  conf = Configuration.the_one\n"
+    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE - finished_on BETWEEN \#\{conf.first_chasing_up\} AND \#\{conf.last_chasing_up\}) AND NOT id IN (SELECT person_id FROM subscriptions WHERE state='P' AND finished_on > CURRENT_DATE + '\#\{conf.last_chasing_up\} days'::INTERVAL)\"\n"
+    code += "end\n"
     code += "if session[:person_proposer_zone_id] > 0\n"
     code += "  c[0]+=' AND proposer_zone_id=?'\n"
     code += "  c << session[:person_proposer_zone_id]\n"
@@ -549,6 +557,7 @@ class IntraController < ApplicationController
     @title = "Liste des personnes"
     session[:person_key] = params[:person_key]||params[:key]
     session[:person_mode] = params[:mode]
+    session[:person_state] = params[:state]
     session[:person_proposer_zone_id] = params[:proposer_zone_id].to_i
     session[:person_arrival_country_id] = params[:arrival_country_id].to_i
     # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
