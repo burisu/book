@@ -31,7 +31,7 @@ Rails::Initializer.run do |config|
   config.gem "fastercsv"
   config.gem 'will_paginate', :version => '~> 2.3'
   config.gem 'scaffolding_extensions', :version => '1.3.12'
-  config.gem "rmagick", :version=>'~> 1', :lib=>false
+  # config.gem "rmagick", :version=>'~> 1', :lib=>false
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
