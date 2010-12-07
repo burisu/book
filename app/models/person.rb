@@ -55,7 +55,8 @@ class Person < ActiveRecord::Base
   attr_accessor :test_password
   attr_accessor :terms_of_use
   attr_accessor :forced
-  attr_protected :email, :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
+  attr_protected :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
+  file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
   has_many :orders, :class_name=>Subscription.name, :conditions=>{:state=>'C'}
   has_many :versions, :class_name=>PersonVersion.name, :dependent=>:delete_all
   validates_acceptance_of :terms_of_use
@@ -106,17 +107,13 @@ class Person < ActiveRecord::Base
 
   def validate
     errors.add(:password, "ne peut être vide") if self.hashed_password.blank?
-    if self.proposer_zone and self.host_zone
+    if self.proposer_zone and self.host_zone and self.student
       errors.add_to_base("Le club d'origine et le club hôte ne peuvent pas être tous les deux en France") if self.proposer_zone.country.iso3166.lower == 'fr' and self.host_zone.country.iso3166.lower == 'fr'
       errors.add_to_base("Le club d'origine et le club hôte ne peuvent pas être tous les deux à l'étranger") if self.proposer_zone.country.iso3166.lower != 'fr' and self.host_zone.country.iso3166.lower != 'fr'
     end
 
   end
   
-  def before_save
-    self.rotex_email = self.user_name+'@rotex1690.org'
-  end
-
   def after_save
     PersonVersion.create!(self.attributes.merge(:person_id=>self.id))
   end

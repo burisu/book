@@ -45,6 +45,10 @@
   %tr
     %th{:colspan=>"3"} Coordonnées
 %tr
+  %td.label Photo
+  %td.value=file_column_field "person", "photo"
+  %td.hint Photo qui apparait sur la carte de visite. PNG ou JPEG seulement !
+%tr
   %td.label Adresse
   %td.value=text_area :person, :address, :cols=>20, :rows=>4
   %td.hint Ex.&nbsp;:<br/> 17 rue de la Révolution<br/>33000 BORDEAUX

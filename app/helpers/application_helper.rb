@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
-module ApplicationHelper
 
+module ApplicationHelper
 
   def access?(right=:all)
     self.controller.access?(right)
@@ -161,6 +161,11 @@ module ApplicationHelper
     sentence += ' ?'
     sentence
   end
+
+
+  
+
+
 
   
   def operation(object, operation, controller_path=self.controller.controller_path)
