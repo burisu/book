@@ -11,7 +11,8 @@
 
 %table.infos.formu
   %tr
-    %td{:rowspan=>6}=image_tag(url_for_file_column(@person, :photo, "thumb"))
+    -if @person.photo
+      %td{:rowspan=>6}=image_tag(url_for_file_column(@person, :photo, "thumb"))
     %td.label Adresse
     %td.value=@person.address
   %tr
