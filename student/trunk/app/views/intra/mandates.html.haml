@@ -1,0 +1,12 @@
+%h1 Liste des personnes mandatées
+%ul.aclist
+  %li=link_to "Ajouter un mandat",{:action=>:mandates_create}
+
+=print_table :mandates do |t|
+  -t.datum :name, :through=>:nature, :label=>"Mandat"
+  -t.datum :label, :through=>:person, :url=>{:action=>:person}, :label=>"Personne"
+  -t.datum :begun_on
+  -t.datum :finished_on
+  -t.datum :name, :through=>:zone
+  -t.action :action=>:mandates_update, :image=>:edit
+  -t.action :action=>:mandates_delete, :image=>:destroy, :method=>:post, :confirm=>"Are you sure?"

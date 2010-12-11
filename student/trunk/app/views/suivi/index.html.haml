@@ -1,0 +1,5 @@
+%h1 Mes comptes-rendus
+
+%ul.questionnaires
+  -for q in @questionnaires
+    %li{:class=>q.state_for(@current_person)}=link_to q.name, :action=>:answer, :id=>q.id

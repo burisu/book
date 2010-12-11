@@ -1,0 +1,26 @@
+%tr
+  %td{:colspan=>3}=error_messages_for 'mandate'
+%tr
+  %td.label Personne
+  %td.value=select :mandate, :person_id, Person.find(:all, :order=>"family_name, first_name").collect{|p| [ p.label, p.id ] }
+  %td.hint
+%tr
+  %td.label Mandat
+  %td.value=select :mandate, :nature_id, MandateNature.find(:all, :order=>:name).collect{|p| [ p.name, p.id ] }
+  %td.hint
+%tr
+  %td.label Du (AAAA-MM-JJ)
+  %td.value=text_field :mandate, :begun_on, :size=>10
+  %td.hint
+%tr
+  %td.label Au (AAAA-MM-JJ)
+  %td.value=text_field :mandate, :finished_on, :size=>10
+  %td.hint
+%tr
+  %td.label N'expire jamais
+  %td.value=check_box :mandate, :dont_expire
+  %td.hint
+%tr
+  %td.label Zone concernée
+  %td.value=select :mandate, :zone_id, Zone.find(:all, :order=>:code).collect{|p| [ p.parents.collect{|z| z.name}.join(" :: "), p.id ] }, :include_blank=>true
+  %td.hint

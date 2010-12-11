@@ -1,0 +1,7 @@
+%h1 Modifier les informations de mon compte
+-form_tag({}, :multipart=>true) do
+  = error_messages_for "person"
+  %table.formu
+    = render :partial=>'shared/person_form'
+    %tr
+      %td{:colspan=>3, :align=>"center"}=submit_tag "Enregistrer les modifications"
