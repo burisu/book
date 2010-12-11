@@ -1,6 +1,0 @@
-%h1=h @image.title
-.medium{:align=>:center}
-  =link_to(image_tag(url_for_file_column(@image, :document, "medium")), url_for_file_column(@image, :document))
-  .detail
-    .description=@image.desc
-    =link_to "Télécharger le format d'origine", url_for_file_column(@image, :document)

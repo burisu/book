@@ -25,7 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "home"
+  map.root :controller => "suivi"
 
   # See how all your routes lay out with "rake routes"
   map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'

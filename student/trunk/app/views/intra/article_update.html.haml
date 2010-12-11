@@ -1,7 +1,0 @@
-%h1="Modifier l'article : "+h(truncate(@article.title, :length=>56))
-
--form_tag do
-  =render :partial=>'article_form'
-  .actions
-    =submit_tag "Enregistrer", :name=>"save_and_exit"
-    =link_to "Annuler", :back
