@@ -1,0 +1,45 @@
+%h1 Gérer les zones géographiques
+.aclist
+  %ul
+    %li
+      =link_to 'Tous les districts', :action=>:zones_create, :id=>''
+      -for parent in @parents
+        &raquo;
+        =link_to parent.name, :action=>:zones_create, :id=>parent.id
+    %li=link_to "Mettre à jour les codes zones", :action=>:zones_refresh
+
+
+%h2 Ajouter une zone fille
+-form_tag do
+  =error_messages_for 'zone'
+  %table.formu
+    %tr
+      %td Nom
+      %td=text_field :zone, :name
+      %td Numéro
+      %td=text_field :zone, :number, :size=>6
+    %tr
+      %td Pays
+      %td=select :zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] }
+      %td Nature
+      %td=select :zone, :nature_id, @natures.collect {|p| [ p.name, p.id ] }
+    %tr
+      %td{:colspan=>4}=submit_tag 'Enregistrer la zone'
+
+%h2 Zones
+.futo 
+  %table.list
+    %tr
+      %th Nom
+      %th Numéro
+      %th Nature
+      %th Pays
+      %th
+    -for zone in @zones
+      %tr
+        %td=link_to(zone.name, :action=>:zones_create, :id=>zone.id)
+        %td=zone.number
+        %td=zone.nature.name if zone.nature
+        %td=image_tag("country/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
+        %td=link_to('Modifier', :controller=>:admin, :action=>:edit_zone, :id=>zone.id)
+

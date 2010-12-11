@@ -1,0 +1,10 @@
+%h1='Ajouter un mandat'
+
+-form_tag do
+  %table.formu
+    =render :partial=>"mandates_form"
+    %tr
+      %td.label
+      %td.value=submit_tag "Ajouter"
+      %td.hint
+

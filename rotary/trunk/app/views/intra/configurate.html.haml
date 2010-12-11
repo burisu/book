@@ -1,0 +1,24 @@
+%h1 Configuration du site
+
+-form_tag do 
+  %table.formu.flex
+    =tt "Rubriques"
+    -rubrics = Rubric.find(:all, :order=>:name).collect{|x| [x.name, x.id]}
+    =tl "Rubrique pour l'agenda", select(:configuration, :agenda_rubric_id, rubrics)
+    =tl "Rubrique pour les articles de la page d'accueil", select(:configuration, :home_rubric_id, rubrics)
+    =tl "Rubrique pour les nouvelles", select(:configuration, :news_rubric_id, rubrics)
+    =tt "Articles"
+    -articles = Article.find(:all, :order=>:title).collect{|x| [truncate(x.title, :length=>20)+" (#{x.author.label}) #{::I18n.localize(x.created_at.to_date)}", x.id]}
+    =tl "Article <em>À propos</em>", select(:configuration, :about_article_id, articles)
+    =tl "Article <em>Mentions légales</em>", select(:configuration, :legals_article_id, articles)
+    =tl "Article <em>Contact</em>", select(:configuration, :contact_article_id, articles)
+    =tl "Article <em>Aide</em>", select(:configuration, :help_article_id, articles)
+    =tt "Vente en ligne"
+    =tl "Prix à l'année de l'adhésion", text_field(:configuration, :subscription_price)
+    =tl "Texte d'introduction du module vente", toolbar('configuration_store_introduction')+text_area(:configuration, :store_introduction, {:rows=>5, :maxlength=>255})
+    =tt "Relance d'abonnements"
+    =tl "Jours de relance", text_field(:configuration, :chasing_up_days), :example=>"-60, -30, -15, -7, -2, 2, 7, 15, 30, 60"
+    =tl "Texte de relance avant échéance", text_area(:configuration, :chasing_up_letter_before_expiration, {:rows=>10}), :example=>"Bonjour [first_name]\n\nVotre cotisation arrive à échéance dans [count] jour(s). Pensez à la renouveler sur http://#{request.domain}".gsub(/\n/, "<br/>")
+    =tl "Texte de relance après échéance", text_area(:configuration, :chasing_up_letter_after_expiration, {:rows=>10}), :example=>"Bonjour [first_name]\n\nVotre cotisation a expirée depuis [count] jour(s). Pensez à la renouveler sur http://#{request.domain}".gsub(/\n/, "<br/>")
+
+  .actions=submit_tag "Sauvegarder la configuration"

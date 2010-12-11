@@ -1,0 +1,20 @@
+=error_messages_for 'image'
+-form_tag({}, :multipart=>true) do
+  %table.formu
+    %tr
+      %td.label Titre
+      %td.value=text_field :image, :title
+      %td.hint 
+    %tr
+      %td.label Description
+      %td.value=text_area :image, :desc, :cols=>40, :rows=>3
+      %td.hint 
+    - if @image.new_record?
+      %tr
+        %td.label Image à télécharger
+        %td.value=file_column_field 'image', 'document'
+        %td.hint 
+    %tr
+      %td.label
+      %td.value=submit_tag 'Enregistrer'
+      %td.hint

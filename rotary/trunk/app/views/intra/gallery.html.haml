@@ -1,0 +1,14 @@
+%h1 Galerie
+
+
+
+%h2 Ajouter une image
+-if @addable
+  =render :partial=>"image_form"
+-else
+  .warning="Vous ne pouvez pas avoir plus de #{controller.class.images_count_per_person} images dans votre galerie."
+
+-if @current_person.images.size>0
+  %h2='Mes images ('+@current_person.images.size.to_s+')'
+  #gallery
+    =render :partial=>'diapo', :collection=>@images

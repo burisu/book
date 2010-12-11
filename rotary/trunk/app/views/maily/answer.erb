@@ -1,0 +1,21 @@
+Bonjour,
+
+La personne <%=@person.label-%> (<%=@person.id-%>) vient de remplir son questionnaire :
+
+<%for item in @answer.items.find(:all, :joins=>"join questions on (questions.id=question_id)", :order=>:position)-%>
+<%=item.question.position.to_s+'. '+item.question.name%>
+  <%=item.content%>
+
+<%end-%>
+
+<%if @person-%>
+Coordonnées de la personne : <%=@person.email-%>, <%=@person.address%>
+Cotisations :
+<%for s in @person.subscriptions.find(:all, :order=>:begun_on)-%>
+ - <%=s.amount.to_s.rjust(7,' ')+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
+<%end-%>
+<%end-%>
+
+Cordialement,
+
+L'equipe du Rotex 1690.

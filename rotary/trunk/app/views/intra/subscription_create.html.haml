@@ -1,0 +1,12 @@
+%h2="Ajouter une cotisation pour "+@person.label
+= error_messages_for "subscription"
+
+-form_tag({}, :multipart=>true) do
+  %table.formu
+    =tl("Du", date_select(:subscription, :begun_on, {:order => [:day, :month, :year], :start_year=>1970}))
+    =tl("Au", date_select(:subscription, :finished_on, {:order => [:day, :month, :year], :start_year=>1970}))
+    =tl("Montant (€)", text_field(:subscription, :amount))
+    =tl("Mode de paiement", select(:subscription, :payment_mode, Subscription::PAYMENT_MODES))
+    =tl("Note", text_area(:subscription, :note, :cols=>20, :rows=>4))
+  .actions=submit_tag "Enregistrer"
+

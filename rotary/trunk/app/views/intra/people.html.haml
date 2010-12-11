@@ -1,0 +1,26 @@
+%h1=@title
+
+-conf = Configuration.the_one
+-form_tag({}, :class=>"search") do 
+  %table.search
+    %tr
+      %td Filtrer sur
+      %td=text_field_tag("person_key", session[:person_key])
+      %td Pays d'arrivée
+      %td=select_tag("arrival_country_id", options_for_select([[]]+Country.find(:all, :order=>:name).collect{|c| [c.name, c.id]}, session[:person_arrival_country_id]))
+      %td.action{:rowspan=>3}=submit_tag("Rechercher")
+    %tr
+      %td Mode
+      %td=select_tag("mode", options_for_select([[], ["En attente d'approbation", "not_approved"], ["Student-Exchange", "student"], ["Non Student-Exchange", "not_student"], ["Verrouillés", "locked"]], session[:person_mode]))
+      %td Statut
+      %td=select_tag("state", options_for_select([[], ["Adhérent", "valid"], ["Non-adhérent", "not"], ["En fin d'adhésion (de #{conf.first_chasing_up} à #{conf.last_chasing_up} jours)", "end"]], session[:person_state]))
+    %tr
+      %td Club d'origine
+      %td{:colspan=>3}=select_tag("proposer_zone_id", options_for_select([[]]+Zone.list, session[:person_proposer_zone_id]))
+  
+
+%ul.aclist
+  %li=link_to "Ajouter une personne", :action=>:person_create
+
+=dyta :people
+

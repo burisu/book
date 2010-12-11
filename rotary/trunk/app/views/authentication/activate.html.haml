@@ -1,0 +1,13 @@
+-if @activation==0
+  %h1 Activation déjà faite ou code d'activation erroné !
+  p L'activation a déjà eu lieu ou ce code d'activation est faux. Pour plus de renseignements, contactez un administrateur.
+-else
+  %h1 Votre activation a réussi
+  -if @activation==1
+    %p='Bienvenue '+@person.first_name
+    %p="Vous aurez accès à la partie membre dès que le trésorier aura enregistré votre cotisation."
+    %p="Pour cela rendez-vous dans la partie #{link_to('souscription', :controller=>:store)}."
+      
+  -if @activation==2
+    %p='Votre nouvelle adresse '+@person.email+' a été validée et prise en compte.'
+
