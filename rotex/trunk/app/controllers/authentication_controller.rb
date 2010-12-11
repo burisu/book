@@ -35,11 +35,6 @@ class AuthenticationController < ApplicationController
   end
 
   def subscribe
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
-
     @register = true
     @self_subscribing = true
     if request.post?
@@ -66,10 +61,6 @@ class AuthenticationController < ApplicationController
   end
   
   def activate
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
     clean_people
     @person = Person.find_by_validation params[:id]
     @person.forced = true
@@ -116,10 +107,6 @@ class AuthenticationController < ApplicationController
   end
   
   def change_password
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
     @person = @current_person
     if request.post?
       @person.test_password = params[:person][:test_password]
@@ -133,10 +120,6 @@ class AuthenticationController < ApplicationController
   end
 
   def change_email
-    if @vision!=:rotex
-      redirect_to :controller=>:suivi
-      return
-    end
     @person = @current_person
     if request.post?
       @person.test_password = params[:person][:test_password]

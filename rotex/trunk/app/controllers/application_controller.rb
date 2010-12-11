@@ -27,12 +27,6 @@ class ApplicationController < ActionController::Base
     @action_name = action_name
     @action = @controller_name+':'+@action_name
     @title = 'Bienvenue'
-    domain = request.domain
-    @vision = if ['student-exchange-rotary.org', 'rotary1690.org', 'localhost'].include? request.domain
-                :rotary
-              else
-                :rotex
-              end
     session[:last_request] = Time.now.to_i
     session[:history] ||= []
     session[:history].delete_at(0) if session[:no_history]
@@ -99,14 +93,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    if @vision!=:rotex and self.controller_name=='intra'
-      redirect_to :controller=>:suivi 
-      return
-    end
-    if @vision==:rotex and self.controller_name=='suivi'
-      redirect_to :controller=>:intra 
-      return
-    end
     unless session[:current_person_id]
       session[:last_url] = request.url
       session[:original_uri] = request.request_uri
@@ -125,18 +111,9 @@ class ApplicationController < ActionController::Base
     if @current_person
       unless @current_person.has_subscribed_on? or @current_person.rights.include?(:all)
         flash[:warning] = "Vous n'êtes pas à jour de votre cotisation"
-        if @vision==:rotex
-          redirect_to :controller=>:store, :action=>:index
-        else
-          redirect_to :controller=>:authentication, :action=>:logout
-        end
+        redirect_to :controller=>:store, :action=>:index
         return
       end
-    end
-
-    if @vision==:rotary and not access?(:suivi) and not (@current_person and @current_person.student?)
-      redirect_to :controller=>:suivi, :action=>:access_denied
-      return
     end
 
   end

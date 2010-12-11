@@ -93,7 +93,7 @@ module ApplicationHelper
 
 
   def menu_tag
-    render :partial=>"shared/top_#{@vision}"
+    render :partial=>"shared/top_rotex"
   end
 
 
