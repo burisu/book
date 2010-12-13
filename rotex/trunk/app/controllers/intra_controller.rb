@@ -147,7 +147,7 @@ class IntraController < ApplicationController
       if @current_person.admin?
         params2 = params[:person]||{}
       else
-        [:address, :phone, :phone2, :fax, :mobile].each {|x| params2[x] = params[:person][x]}
+        [:address, :phone, :phone2, :fax, :mobile, :photo].each {|x| params2[x] = params[:person][x]}
       end
       @person.attributes = params2
       @person.forced = true
