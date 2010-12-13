@@ -20,6 +20,17 @@
   <defs
      id="defs2417">
     <linearGradient
+       id="linearGradient3312">
+      <stop
+         style="stop-color:#585858;stop-opacity:1;"
+         offset="0"
+         id="stop3314" />
+      <stop
+         style="stop-color:#b8b8b8;stop-opacity:1;"
+         offset="1"
+         id="stop3316" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3306">
       <stop
          id="stop3308"
@@ -551,6 +562,24 @@
        y1="320.80859"
        x2="106.03571"
        y2="300.80859" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3312"
+       id="linearGradient3318"
+       x1="446.5"
+       y1="356.39285"
+       x2="446.5"
+       y2="321.64285"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3312"
+       id="linearGradient3326"
+       x1="393.5"
+       y1="319.64285"
+       x2="393.5"
+       y2="270.14285"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1038,5 +1067,27 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        inkscape:label="#rect2427" />
+    <path
+       transform="translate(109.78571,73.790756)"
+       style="fill:url(#linearGradient3318);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 446.5,356.39285 L 387.5,356.39285 C 387.5,337.21085 400.716,321.64285 417,321.64285 C 433.284,321.64285 446.5,337.21085 446.5,356.39285 z"
+       id="path2539"
+       sodipodi:nodetypes="ccsc"
+       inkscape:export-filename="/home/brice/dev/rothead/rotex/trunk/public/images/nobody.png"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:url(#linearGradient3326);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2537"
+       sodipodi:cx="411.5"
+       sodipodi:cy="294.89285"
+       sodipodi:rx="18"
+       sodipodi:ry="24.75"
+       d="M 429.5,294.89285 A 18,24.75 0 1 1 393.5,294.89285 A 18,24.75 0 1 1 429.5,294.89285 z"
+       transform="translate(114.28571,83.790756)"
+       inkscape:export-filename="/home/brice/dev/rothead/rotex/trunk/public/images/nobody.png"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
   </g>
 </svg>

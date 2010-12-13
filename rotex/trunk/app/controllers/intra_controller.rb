@@ -102,7 +102,7 @@ class IntraController < ApplicationController
             end
 
             pdf.bounding_box([c*width, (l+1)*height], :width=>width, :height=>height) do
-              pdf.image(person.photo("portrait"), :at=>[5, height-5], :fit=>[0.4*width-10, 0.8*height]) # , :width=>width, :height=>height)              
+              pdf.image((person.photo("portrait") ? person.photo("portrait") : File.join(RAILS_ROOT, "public", "images", "nobody.png")), :at=>[5, height-5], :fit=>[0.4*width-10, 0.8*height]) 
               # pdf.image(File.join(RAILS_ROOT, "public", "images", "rotex.png"), :at=>[(width-0.8*height)/2, 0.9*height], :height=>0.8*height) # , :width=>width, :height=>height)
               pdf.image(File.join(RAILS_ROOT, "public", "images", "rotex.png"), :at=>[0.4*width+5, 0.9*height], :height=>0.8*height) # , :width=>width, :height=>height)
               if country = person.arrival_country
