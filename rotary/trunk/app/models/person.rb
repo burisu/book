@@ -73,8 +73,9 @@ class Person < ActiveRecord::Base
     self.family_name = self.family_name.to_s.upcase
     self.family_name = self.patronymic_name if self.family_name.blank?
     self.forced = false if self.forced.nil?
-    self.user_name.gsub!(/(-|\.|\ )/,'')
-    self.rotex_email = self.first_name.lower_ascii+'.'+patronymic_name.lower_ascii+'@rotex1690.org'
+    self.user_name.gsub!(/(-|\.|\ )/, '')
+    self.rotex_email = self.first_name.strip.squeeze.gsub(/\s*\-\s*/, '-').gsub(/\s+/, '_').lower_ascii+'.'+patronymic_name.strip.squeeze.gsub(/\s*\-\s*/, '-').gsub(/\s+/, '_').lower_ascii+'@rotex1690.org'
+
     self.validation = Person.generate_password(73+2*(10*rand).to_i) unless self.is_validated or !self.replacement_email.blank?
     if self.latitude.blank?
       pm = Geocoding.get(self.address)
