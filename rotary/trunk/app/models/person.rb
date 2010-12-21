@@ -212,7 +212,7 @@ class Person < ActiveRecord::Base
 
   def approve!
     unless self.approved
-      Maily.deliver_approval(@person)
+      Maily.deliver_approval(self)
     end
     self.update_attribute(:approved, true)
     self.update_attribute(:is_locked, false)
