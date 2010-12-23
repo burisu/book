@@ -1,7 +1,7 @@
 class StoreController < ApplicationController
   ssl_required :index, :summary, :cancelled, :refused, :finished
 
-  before_filter :check
+  before_filter :check, :except=>:check_payment
 
   def index
     @unit_price = conf.subscription_price
