@@ -8,19 +8,19 @@
 %table.infos.formu
   %tr
     %td.label Du
-    %td.value=I18n.localize(@person.started_on, :format=>:long)
+    %td.value=I18n.localize(@person.started_on, :format=>:long) unless @person.started_on.nil?
   %tr
     %td.label Au
-    %td.value=I18n.localize(@person.stopped_on, :format=>:long)
+    %td.value=I18n.localize(@person.stopped_on, :format=>:long) unless @person.stopped_on.nil?
   %tr
     %td.label Pays de départ
-    %td.value=@person.departure_country.name
+    %td.value=@person.departure_country.name unless @person.departure_country.nil?
   %tr
     %td.label Pays d'accueil
-    %td.value=@person.arrival_country.name
+    %td.value=@person.arrival_country.name unless @person.arrival_country.nil?
   %tr
     %td.label Promotion
-    %td.value=@person.promotion.name
+    %td.value=@person.promotion.name unless @person.promotion.nil?
   %tr
     %td.label Club d'origine
     %td.value=@person.proposer_zone.name if @person.proposer_zone
