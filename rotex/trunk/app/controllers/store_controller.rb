@@ -82,7 +82,7 @@ class StoreController < ApplicationController
       end
       @subscription.responsible = @current_person
       @subscription.save
-      if error_code == "00000"
+      if @subscription.error_code == "00000"
         flash[:notice] = "La transaction a été validée."
         @subscription.terminate 
       else
