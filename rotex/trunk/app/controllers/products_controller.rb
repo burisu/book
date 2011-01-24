@@ -7,6 +7,7 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    @title = "Nouveau produit"
     render_form
   end
 
@@ -15,16 +16,19 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to products_url
     end
+    @title = "Nouveau produit"
     render_form
   end
 
   def edit
     @product = Product.find(params[:id])
+    @title = "Modifier le produit #{@product.name}"
     render_form
   end
 
   def update
     @product = Product.find(params[:id])
+    @title = "Modifier le produit #{@product.name}"
     if @product.update_attributes(params[:product])
       redirect_to products_url
     end
