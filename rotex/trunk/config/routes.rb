@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.resources :products, :as=>"produits"
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -28,7 +31,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "home"
 
   # See how all your routes lay out with "rake routes"
-  map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
+  map.simple_captcha '/captcha/:action', :controller => 'simple_captcha'
 
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'
