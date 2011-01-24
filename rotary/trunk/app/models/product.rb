@@ -23,4 +23,10 @@
 #
 
 class Product < ActiveRecord::Base
+
+  named_scope :usable, :conditions=>["NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
+
+  named_scope :unusable, :conditions=>["deadlined AND NOT CURRENT_DATE BETWEEN started_on AND stopped_on"], :order=>:name
+
+
 end

@@ -233,7 +233,7 @@ class Person < ActiveRecord::Base
   end
 
   def has_subscribed_on?(verified_on=Date.today)
-    Subscription.count(:conditions=>["person_id=? AND state=? AND ? BETWEEN begun_on AND finished_on", self.id, "P", verified_on])>0
+    Subscription.count(:joins=>"LEFT JOIN sales ON (sale_id=sales.id)", :conditions=>["person_id=? AND (state=? OR state IS NULL) AND ? BETWEEN begun_on AND finished_on", self.id, "P", verified_on])>0
   end
 
   def has_subscribed?(delay=2.months)

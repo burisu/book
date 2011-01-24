@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :products, :as=>"produits"
+  map.resources :products, :as=>"produits", :except=>[:show]
 
   # The priority is based upon order of creation: first created -> highest priority.
 

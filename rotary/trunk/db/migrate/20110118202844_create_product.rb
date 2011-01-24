@@ -1,5 +1,5 @@
 class CreateProduct < ActiveRecord::Migration
-  PAYMENT_COLS = [:sequential_number, :authorization_number, :payment_type, :card_type, :transaction_number, :country, :error_code, :card_expired_on, :payer_country, :signature, :bin6]
+  PAYMENT_COLS = [:number, :sequential_number, :authorization_number, :payment_type, :card_type, :transaction_number, :country, :error_code, :card_expired_on, :payer_country, :signature, :bin6]
 
 
   def self.up
@@ -46,7 +46,7 @@ class CreateProduct < ActiveRecord::Migration
     add_index :payments, :payer_id
     add_index :payments, :mode
 
-    execute "INSERT INTO payments (number, payer_id, payer_email, amount, used_amount, mode, sid, #{PAYMENT_COLS.join(', ')}) SELECT 'R'||number, person_id, people.email, amount, amount, payment_mode, subscriptions.id, #{PAYMENT_COLS.join(', ')} FROM subscriptions JOIN people ON (person_id=people.id) WHERE state = 'P'"
+    execute "INSERT INTO payments (payer_id, payer_email, amount, used_amount, mode, sid, #{PAYMENT_COLS.join(', ')}) SELECT person_id, people.email, amount, amount, payment_mode, subscriptions.id, #{PAYMENT_COLS.join(', ')} FROM subscriptions JOIN people ON (person_id=people.id) WHERE state = 'P'"
     
     for column in PAYMENT_COLS
       remove_column :subscriptions, column

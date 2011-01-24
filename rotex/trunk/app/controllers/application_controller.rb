@@ -131,19 +131,31 @@ class ApplicationController < ActionController::Base
     record
   end
 
-
   def render_form(options={})
     a = action_name.split '_'
-    @operation    = a[-1].to_sym
-    @partial = options[:partial]||a[0..-2].join('_')+'_form'
-    @options = options
+    @_operation    = options[:operation]||a[-1].to_sym
+    @_operation = :edit if @_operation == :update
+    @_operation = :new if @_operation == :create
+    @_partial = options[:partial]||a[0..-2].join('_')
+    @_partial += "_" unless @_partial.blank?
+    @_partial += "form"
+    @_options = options
     begin
-      render :template=>options[:template]||'shared/form_'+@operation.to_s
+      render :template=>options[:template]||'shared/form_'+@_operation.to_s
     rescue ActionController::DoubleRenderError
     end
   end
 
-
+#   def render_form(options={})
+#     a = action_name.split '_'
+#     @operation    = a[-1].to_sym
+#     @partial = options[:partial]||a[0..-2].join('_')+'_form'
+#     @options = options
+#     begin
+#       render :template=>options[:template]||'shared/form_'+@operation.to_s
+#     rescue ActionController::DoubleRenderError
+#     end
+#   end
 
 
   # Build standard actions to manage records of a model

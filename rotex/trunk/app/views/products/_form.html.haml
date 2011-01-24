@@ -1,0 +1,18 @@
+= error_messages_for "product"
+
+%table.form
+  =tl "Nom", text_field(:product, :name)
+  =tl "Description", text_field(:product, :description)
+  =tl "Montant (HT&TTC)", text_field(:product, :amount)
+  =tl "Unité de mesure", text_field(:product, :unit)
+  =tl "Temporaire", check_box(:product, :deadlined)
+  =tl "Publié du", date_select(:product, :started_on)
+  =tl "Publié jusqu'au", date_select(:product, :stopped_on)
+  =tl "Stockable", check_box(:product, :storable)
+  =tl "Quantité initiale", text_field(:product, :initial_quantity)
+  =tl "Cotisant (crée des cotisations)", check_box(:product, :subscribing)
+  =tl "Pour une adhésion du", date_select(:product, :subscribing_started_on)
+  =tl "Pour une adhésion jusqu'au", date_select(:product, :subscribing_stopped_on)
+  =tl "Personnel (nécessite pseudo-inscription avec nom et prénom)", check_box(:product, :personal)
+
+

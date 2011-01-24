@@ -16,5 +16,5 @@
 #  zone_id      :integer       
 #
 
-class Guests < ActiveRecord::Base
+class Guest < ActiveRecord::Base
 end
