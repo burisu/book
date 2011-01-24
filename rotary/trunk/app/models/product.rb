@@ -29,4 +29,8 @@ class Product < ActiveRecord::Base
   named_scope :unusable, :conditions=>["deadlined AND NOT CURRENT_DATE BETWEEN started_on AND stopped_on"], :order=>:name
 
 
+  def before_validation
+    self.personal = false if self.subcribing?
+    return true
+  end
 end
