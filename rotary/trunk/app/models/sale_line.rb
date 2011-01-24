@@ -1,0 +1,19 @@
+# == Schema Information
+#
+# Table name: sale_lines
+#
+#  amount       :decimal(16, 2 default(0.0), not null
+#  created_at   :datetime      
+#  description  :text          
+#  id           :integer       not null, primary key
+#  lock_version :integer       default(0)
+#  name         :string(255)   not null
+#  product_id   :integer       not null
+#  quantity     :decimal(16, 2 default(0.0), not null
+#  sale_id      :integer       not null
+#  unit_amount  :decimal(16, 2 default(0.0), not null
+#  updated_at   :datetime      
+#
+
+class SaleLine < ActiveRecord::Base
+end
