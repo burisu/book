@@ -13,6 +13,6 @@
   =tl "Cotisant (crée des cotisations)", check_box(:product, :subscribing)
   =tl "Pour une adhésion du", date_select(:product, :subscribing_started_on)
   =tl "Pour une adhésion jusqu'au", date_select(:product, :subscribing_stopped_on)
-  =tl "Personnel (nécessite pseudo-inscription avec nom et prénom)", check_box(:product, :personal)
+  =tl "Personnel (nécessite pseudo-inscription avec nom et prénom)", check_box(:product, :personal), :info=>"Ne peut être utilisé que si le produit ne sert pas pour les adhésions."
 
 
