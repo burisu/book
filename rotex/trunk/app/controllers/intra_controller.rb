@@ -60,8 +60,8 @@ class IntraController < ApplicationController
     t.column :number, :class=>"code"
     t.column :begun_on
     t.column :finished_on
-    t.column :payment_mode_label
-    t.column :state_label
+    # t.column :payment_mode_label
+    # t.column :state_label
   end
 
 

@@ -84,10 +84,60 @@ class MandateNature < ActiveRecord::Base
     :specials=>"Manage special articles"
   }
 
+  class << self
+    def rights_file; Rails.root.join("config", "rights.yml"); end
+    def minimum_right; :__minimum__; end
+    def rights; @@rights; end
+    def rights_list; @@rights_list; end
+    def useful_rights; @@useful_rights; end
+  end
+
+
+  def self.rights_for(controller, action)
+    return ((self.rights[controller.to_sym]||{})[action.to_sym]||{})||[]
+  end
+
+
   list_column :rights, RIGHTS
 
   def before_validation
     self.rights = self.rights_string
   end
+
+  def self.initialize_rights
+    definition = YAML.load_file(self.rights_file)
+    # Expand actions
+    for right, attributes in definition
+      if attributes
+        attributes['actions'].each_index do |index|
+          unless attributes['actions'][index].match(/\:\:/)
+            attributes['actions'][index] = attributes['controller'].to_s+"::"+attributes['actions'][index] 
+          end
+        end if attributes['actions'].is_a? Array
+      end
+    end
+    definition.delete_if{|k, v| k == "__not_used__" }
+    @@rights_list = definition.keys.sort.collect{|x| x.to_sym}.delete_if{|k, v| k == self.minimum_right.to_s}
+    @@rights = {}
+    @@useful_rights = {}
+    for right, attributes in definition
+      if attributes.is_a? Hash
+        unless attributes["controller"].blank?
+          controller = attributes["controller"].to_sym
+          @@useful_rights[controller] ||= []
+          @@useful_rights[controller] << right.to_sym
+        end
+        for uniq_action in attributes["actions"]
+          controller, action = uniq_action.split(/\W+/)[0..1].collect{|x| x.to_sym}
+          @@rights[controller] ||= {}
+          @@rights[controller][action] ||= []
+          @@rights[controller][action] << right.to_sym
+        end if attributes["actions"].is_a? Array
+      end
+    end
+  end
+  
+  self.initialize_rights
+
   
 end
