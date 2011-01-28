@@ -1,7 +1,5 @@
 class SalesController < ApplicationController
 
-  before_filter :authorize
-
   def index
   end
 

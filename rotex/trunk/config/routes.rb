@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
     sales.resources :sale_lines, :as=>"lignes", :except=>[:show, :index]
   end
 
-
+  map.login 'connexion', :controller=>"authentication", :action=>"index"
 
   # The priority is based upon order of creation: first created -> highest priority.
 

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   # Pick a unique cookie name to distinguish our session data from others'
   # session :session_key => '_rotex_session_id'
-  before_filter :init
+  before_filter :authorize
 
   @@configuration = Configuration.the_one
 
@@ -17,29 +17,6 @@ class ApplicationController < ActionController::Base
   def conf()
     @@configuration
   end
-
-  def init()
-    if session[:current_person_id]
-      @current_person=Person.find(session[:current_person_id])
-      @current_person_id = @current_person.id
-    end
-    @controller_name  = self.controller_name
-    @action_name = action_name
-    @action = @controller_name+':'+@action_name
-    @title = 'Bienvenue'
-    session[:last_request] = Time.now.to_i
-    session[:history] ||= []
-    session[:history].delete_at(0) if session[:no_history]
-    if request.get? and not request.xhr?
-      if session[:history][1]==request.url
-        session[:history].delete_at(0)
-      elsif session[:history][0]!=request.url
-        session[:history].insert(0, request.url)
-      end
-      session[:no_history] = false
-    end
-
-  end  
   
 
   hide_action :access?
@@ -84,38 +61,85 @@ class ApplicationController < ActionController::Base
   end
 
 
-  def try_to_access(right=:all)
-    unless access? right
-      redirect_to :action=>:access_denied 
-      return false
-    end
-    return true
-  end
+#   def try_to_access(right=:all)
+#     unless access? right
+#       redirect_to :action=>:access_denied 
+#       return false
+#     end
+#     return true
+#   end
+
+
+
+#   def init()
+#     if session[:current_person_id]
+#       @current_person=Person.find(session[:current_person_id])
+#       @current_person_id = @current_person.id
+#     end
+#     @controller_name  = self.controller_name
+#     @action_name = action_name
+#     @action = @controller_name+':'+@action_name
+#     @title = 'Bienvenue'
+#     session[:last_request] = Time.now.to_i
+#     session[:history] ||= []
+#     session[:history].delete_at(0) if session[:no_history]
+#     if request.get? and not request.xhr?
+#       if session[:history][1]==request.url
+#         session[:history].delete_at(0)
+#       elsif session[:history][0]!=request.url
+#         session[:history].insert(0, request.url)
+#       end
+#       session[:no_history] = false
+#     end
+
+#   end  
+
 
   def authorize()
-    unless session[:current_person_id]
-      session[:last_url] = request.url
-      session[:original_uri] = request.request_uri
-      redirect_to :controller=>:authentication, :action=>:login
+    @title = 'Bienvenue'
+
+    # Chargement de la personne connectée
+    @current_person = Person.find(session[:current_person_id]) if session[:current_person_id]
+
+    # Verification public
+    current_rights = MandateNature.rights_for(self.controller_name, action_name)
+    return if current_rights.include? :__public__
+
+    # Verification utilisateur
+    unless @current_person
+      flash[:warning] = 'Veuillez vous connecter.'
+      redirect_to login_url(:url=>request.url)
       return
     end
-    session[:last_request] ||= Time.now.to_i
+
+    # Verification expiration
+    session[:last_request] ||= 0
     if Time.now.to_i-session[:last_request]>3600
       reset_session
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
-      redirect_to :controller=>:authentication, :action=>:login
+      redirect_to login_url(:url=>request.url)
+      return
+    end
+    session[:last_request] = Time.now.to_i
+
+    # Autorisation immédiate pour un administrateur
+    return if session[:rights].include?(:all) or current_rights.include? :__protected__
+
+    # Verification des cotisations
+    unless @current_person.has_subscribed_on?
+      flash[:warning] = "Vous n'êtes pas à jour de votre cotisation pour pouvoir utiliser cette partie du site"
+      redirect_to :controller=>:store, :action=>:index
       return
     end
 
-    # Verification des cotisations
-    if @current_person
-      unless @current_person.has_subscribed_on? or @current_person.rights.include?(:all)
-        flash[:warning] = "Vous n'êtes pas à jour de votre cotisation"
-        redirect_to :controller=>:store, :action=>:index
-        return
-      end
-    end
+    return if current_rights.include? :__private__
 
+    # Verification droits
+    unless (session[:rights] & current_rights).size > 0
+      flash[:warning] = "Accès réservé"
+      redirect_to root_url
+      return      
+    end
   end
 
 

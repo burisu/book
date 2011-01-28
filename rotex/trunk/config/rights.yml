@@ -28,8 +28,8 @@ __admin__:
   - sales::index
   - sales::new
   - sales::update
-# translation missing: fr-FR, rights, __minimum__
-__minimum__:
+# translation missing: fr-FR, rights, __private__
+__private__:
   actions:
   - intra::authors_dyli
   - intra::folder
@@ -59,15 +59,15 @@ __minimum__:
   - intra::story
   - intra::students
   - intra::students_dyta
+# translation missing: fr-FR, rights, __protected__
+__protected__:
+  actions:
   - store::cancelled
   - store::check
-  - store::check_payment
   - store::finished
   - store::index
   - store::refused
   - store::summary
-# translation missing: fr-FR, rights, __not_used__
-__not_used__:
 # translation missing: fr-FR, rights, __public__
 __public__:
   controller: home
@@ -89,6 +89,7 @@ __public__:
   - intra::approve
   - intra::disapprove
   - special
+  - store::check_payment
 # translation missing: fr-FR, rights, mandates
 mandates:
   actions:

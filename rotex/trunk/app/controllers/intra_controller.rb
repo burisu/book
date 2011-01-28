@@ -1,7 +1,5 @@
 class IntraController < ApplicationController
   ssl_only
-
-  before_filter :authorize
   cattr_reader :images_count_per_person
   @@images_count_per_person = 100
 
@@ -627,7 +625,6 @@ class IntraController < ApplicationController
 
 
   def people
-    return unless try_to_access :users
     @title = "Liste des personnes"
     session[:person_key] = params[:person_key]||params[:key]
     session[:person_mode] = params[:mode]
@@ -638,7 +635,6 @@ class IntraController < ApplicationController
   end
 
   def person
-    return unless try_to_access [:users, :promotions]
     @person = Person.find_by_id(params[:id])
     redirect_to :action=>:people if @person.nil?
     @subscriptions = @person.subscriptions
@@ -647,7 +643,6 @@ class IntraController < ApplicationController
   end
   
   def person_create
-    return unless try_to_access :users
     if request.post?
       @person = Person.new params[:person]
       @person.email = params[:person][:email]
@@ -674,7 +669,7 @@ class IntraController < ApplicationController
   end
   
   def person_update
-    return unless try_to_access :users
+    # >> :users
     @person = Person.find(params[:id])
     if request.post?
       unless access? :all 
@@ -692,7 +687,7 @@ class IntraController < ApplicationController
   end
   
   def person_lock
-    return unless try_to_access :users
+    # >> :users
     p = Person.find(params[:id])
     p.is_locked = true
     p.forced    = true
@@ -701,7 +696,7 @@ class IntraController < ApplicationController
   end
   
   def person_unlock
-    return unless try_to_access :users
+    # >> :users
     p = Person.find(params[:id])
     p.is_locked = false
     p.forced    = true
@@ -710,7 +705,7 @@ class IntraController < ApplicationController
   end
   
   def person_delete
-    return unless try_to_access :users
+    # >> :users
     if request.post? or request.delete?
       begin
         Person.find(params[:id]).destroy 
@@ -739,7 +734,7 @@ class IntraController < ApplicationController
   end
 
   def subscriptions
-    return unless try_to_access :subscribing
+    # >> :subscribing
     if request.post?
       Subscription.delete_all(["state=? AND created_at<=? ", "I", Time.now - 48.hours])
     elsif request.put?
@@ -749,7 +744,7 @@ class IntraController < ApplicationController
 
 
   def subscription_create
-    return unless try_to_access :subscribing
+    # >> :subscribing
     @person = Person.find(params[:id])
     if request.post?
       @subscription = Subscription.new(params[:subscription])
@@ -769,7 +764,7 @@ class IntraController < ApplicationController
   end
 
   def subscription_update
-    return unless try_to_access :subscribing
+    # >> :subscribing
     @subscription = Subscription.find(params[:id])
     if request.post?
       @subscription.attributes = params[:subscription]
@@ -783,28 +778,28 @@ class IntraController < ApplicationController
   end
 
   def subscription_delete
-    return unless try_to_access :subscribing
+    # >> :subscribing
     s = Subscription.find(params[:id])
     s.destroy if request.post? or request.delete?
     redirect_to :action=>:person, :id=>s.person_id
   end
 
 #   def subscribers
-#     return unless try_to_access :subscribing
+#     # >> :subscribing
 #     @title = "Liste des adhérents actuels"
 #     @people = Person.paginate(:all, :joins=>"JOIN subscriptions ON (people.id=person_id)", :conditions=>["CURRENT_DATE BETWEEN begun_on AND finished_on"], :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
 #   end
 
 #   def non_subscribers
-#     return unless try_to_access :subscribing
+#     # >> :subscribing
 #     @title = "Liste des non-adhérents actuels"
 #     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
 #   end
 
 #   def new_non_subscribers
-#     return unless try_to_access :subscribing
+#     # >> :subscribing
 #     @title = "Liste des futurs non-adhérents (à 2 mois)"
 #     @people = Person.paginate(:all, :conditions=>"id NOT IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE+'2 months'::INTERVAL BETWEEN begun_on AND finished_on) AND id IN (SELECT person_id FROM subscriptions WHERE CURRENT_DATE BETWEEN begun_on AND finished_on)", :order=>:family_name, :page=>params[:page], :per_page=>50)
 #     render :action=>:people
@@ -815,7 +810,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_create
-    return unless try_to_access :all
+    # >> :all
     @mandate = Mandate.new :person_id=>params[:id]
 
     if request.post?
@@ -827,7 +822,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_update
-    return unless try_to_access :all
+    # >> :all
     @mandate = Mandate.find_by_id params[:id]
     redirect_to :action=>:mandates if @mandate.nil?
     if request.post?
@@ -839,7 +834,7 @@ class IntraController < ApplicationController
   end
 
   def mandates_delete
-    return unless try_to_access :all
+    # >> :all
     @mandate = Mandate.find(params[:id])
     if @mandate and request.post?
       Mandate.destroy(@mandate.id)
@@ -865,7 +860,7 @@ class IntraController < ApplicationController
 
 
   def promotions
-    return unless try_to_access :promotions
+    # >> :promotions
     session[:current_promotion_id] = params[:id]
     @promotion = Promotion.find_by_id(session[:current_promotion_id]) unless session[:current_promotion_id].blank?
   end
@@ -884,7 +879,7 @@ class IntraController < ApplicationController
 
 
   def articles
-    return unless try_to_access :publishing
+    # >> :publishing
     @title = "Tous les articles"
     if request.post?
       @article = Article.new(params[:article])
@@ -893,13 +888,13 @@ class IntraController < ApplicationController
 
 
   def article_activate
-    return unless try_to_access :publishing
+    # >> :publishing
     Article.find(params[:id]).publish
     redirect_to :back
   end
 
   def article_deactivate
-    return unless try_to_access :publishing
+    # >> :publishing
     Article.find(params[:id]).unpublish
     redirect_to :back
   end
@@ -916,7 +911,7 @@ class IntraController < ApplicationController
   end
 
   def rubrics
-    return unless try_to_access :publishing
+    # >> :publishing
   end
 
   def self.rubric_articles_conditions
