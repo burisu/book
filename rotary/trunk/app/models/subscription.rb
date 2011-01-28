@@ -7,7 +7,7 @@
 #  finished_on  :date          not null
 #  id           :integer       not null, primary key
 #  lock_version :integer       default(0), not null
-#  number       :string(16)    
+#  number       :string(64)    
 #  person_id    :integer       not null
 #  sale_id      :integer       
 #  sale_line_id :integer       

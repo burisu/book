@@ -12,4 +12,12 @@
 #
 
 class Language < ActiveRecord::Base
+
+  validates_uniqueness_of :iso639
+
+  def to_param
+    self.iso639
+  end
+
+
 end

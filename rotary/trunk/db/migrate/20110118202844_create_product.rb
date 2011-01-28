@@ -48,10 +48,13 @@ class CreateProduct < ActiveRecord::Migration
 
     execute "INSERT INTO payments (payer_id, payer_email, amount, used_amount, mode, sid, #{PAYMENT_COLS.join(', ')}) SELECT person_id, people.email, amount, amount, payment_mode, subscriptions.id, #{PAYMENT_COLS.join(', ')} FROM subscriptions JOIN people ON (person_id=people.id) WHERE state = 'P'"
     
+    add_column :subscriptions, :code, :string, :limit=>64
+    execute "UPDATE subscriptions SET code = number"
     for column in PAYMENT_COLS
       remove_column :subscriptions, column
     end
     remove_column :subscriptions, :payment_mode
+    rename_column :subscriptions, :code, :number
 
     create_table :sales do |t|
       t.column :number,       :string,  :null=>false
@@ -141,12 +144,14 @@ class CreateProduct < ActiveRecord::Migration
 
     drop_table :sales
 
+    rename_column :subscriptions, :number, :code
     add_column :subscriptions, :payment_mode, :string
     for column in PAYMENT_COLS.reverse
       add_column :subscriptions, column, (column.to_s.match(/_on$/) ? :date : :string)
     end
-
+    execute "UPDATE subscriptions SET number = code"
     execute "UPDATE subscriptions SET payment_mode = p.mode, "+PAYMENT_COLS.collect{|x| "#{x} = p.#{x}"}.join(', ')+" FROM payments AS p WHERE p.sid=subscriptions.id"
+    remove_column :subscriptions, :code
  
     drop_table :payments
 
