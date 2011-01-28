@@ -5,7 +5,7 @@ class AdminController < ApplicationController
   scaffold_all_models
   before_filter :authorize
 
-  def authorize
+  def authorize()
     unless session[:current_person_id]
       redirect_to :controller=>:home
     else

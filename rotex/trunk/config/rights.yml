@@ -1,0 +1,144 @@
+# translation missing: fr-FR, rights, __admin__
+__admin__:
+  actions:
+  - countries::create
+  - countries::destroy
+  - countries::edit
+  - countries::index
+  - countries::new
+  - countries::update
+  - intra::configurate
+  - intra::zones_create
+  - intra::zones_refresh
+  - languages::create
+  - languages::destroy
+  - languages::edit
+  - languages::index
+  - languages::new
+  - languages::update
+  - products::create
+  - products::destroy
+  - products::edit
+  - products::index
+  - products::new
+  - products::update
+  - sales::create
+  - sales::destroy
+  - sales::edit
+  - sales::index
+  - sales::new
+  - sales::update
+# translation missing: fr-FR, rights, __minimum__
+__minimum__:
+  actions:
+  - intra::authors_dyli
+  - intra::folder
+  - intra::folder_create
+  - intra::folder_delete
+  - intra::folder_update
+  - intra::gallery
+  - intra::image_delete
+  - intra::image_detail
+  - intra::image_download
+  - intra::image_update
+  - intra::index
+  - intra::member
+  - intra::message_send
+  - intra::period
+  - intra::period_add_member
+  - intra::period_delete
+  - intra::period_display
+  - intra::period_remove_member
+  - intra::pick_image
+  - intra::preview
+  - intra::profile
+  - intra::profile_update
+  - intra::report
+  - intra::report_help
+  - intra::reports
+  - intra::story
+  - intra::students
+  - intra::students_dyta
+  - store::cancelled
+  - store::check
+  - store::check_payment
+  - store::finished
+  - store::index
+  - store::refused
+  - store::summary
+# translation missing: fr-FR, rights, __not_used__
+__not_used__:
+# translation missing: fr-FR, rights, __public__
+__public__:
+  controller: home
+  actions:
+  - article
+  - authentication::activate
+  - authentication::change_email
+  - authentication::change_password
+  - authentication::clean_people
+  - authentication::index
+  - authentication::login
+  - authentication::logout
+  - authentication::lost_login
+  - authentication::lost_password
+  - authentication::subscribe
+  - authentication::test
+  - index
+  - intra::access_denied
+  - intra::approve
+  - intra::disapprove
+  - special
+# translation missing: fr-FR, rights, mandates
+mandates:
+  actions:
+  - intra::mandates
+  - intra::mandates_create
+  - intra::mandates_delete
+  - intra::mandates_update
+# translation missing: fr-FR, rights, promotions
+promotions:
+  actions: [intra::promotion_people_dyta, intra::promotions]
+# translation missing: fr-FR, rights, publishing
+publishing:
+  actions:
+  - intra::article
+  - intra::article_activate
+  - intra::article_create
+  - intra::article_deactivate
+  - intra::article_delete
+  - intra::article_edit
+  - intra::article_to_publish
+  - intra::article_update
+  - intra::articles
+  - intra::articles_dyta
+  - intra::rubric
+  - intra::rubric_articles_dyta
+  - intra::rubric_create
+  - intra::rubric_delete
+  - intra::rubric_update
+  - intra::rubrics
+  - intra::rubrics_dyta
+# translation missing: fr-FR, rights, subscribing
+subscribing:
+  actions:
+  - intra::subscription_create
+  - intra::subscription_delete
+  - intra::subscription_update
+  - intra::subscriptions
+  - intra::subscriptions_dyta
+# translation missing: fr-FR, rights, users
+users:
+  controller: intra
+  actions:
+  - people
+  - people_dyta
+  - person
+  - person_articles_dyta
+  - person_create
+  - person_delete
+  - person_lock
+  - person_mandates_dyta
+  - person_subscriptions_dyta
+  - person_unlock
+  - person_update
