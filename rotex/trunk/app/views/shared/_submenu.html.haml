@@ -19,6 +19,9 @@
     %ul
       %li=link_to("Admin (Mode Expert)", {:controller=>:admin, :action=>:index})
       %li=link_to("Gérer les zones", {:controller=>:intra, :action=>:zones_create, :id=>""})
+      %li=link_to("Produits", products_url)
+      %li=link_to("Pays", countries_url)
+      %li=link_to("Langues", languages_url)
       %li=link_to("Configuration", {:controller=>:intra, :action=>:configurate})
   -if access? [:publishing,:specials,:home,:agenda]
     %h3 Publication

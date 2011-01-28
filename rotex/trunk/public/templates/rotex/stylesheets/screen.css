@@ -293,3 +293,7 @@ div.dyli_complete ul li {background-color: #EEF; margin:0; padding:3px;} /*#C9D7
 div.dyli_complete ul li.selected {background-color: #B1D1F9;}
 div.dyli_complete ul strong.highlight {color: #800; margin:0; padding:0;}
 /*input.dyli { background: #FFF url(../images/buttons/dyli.png) right center no-repeat; padding-right: 18px;}*/
+
+
+ul.index li { margin-bottom: 8px; }
+ul.index li h3 { font-size: 16px; color: #333; }
