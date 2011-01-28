@@ -31,6 +31,8 @@ __admin__:
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
+  - intra::article
+  - intra::rubric
   - intra::authors_dyli
   - intra::folder
   - intra::folder_create
@@ -103,7 +105,6 @@ promotions:
 # translation missing: fr-FR, rights, publishing
 publishing:
   actions:
-  - intra::article
   - intra::article_activate
   - intra::article_create
   - intra::article_deactivate
@@ -113,7 +114,6 @@ publishing:
   - intra::article_update
   - intra::articles
   - intra::articles_dyta
-  - intra::rubric
   - intra::rubric_articles_dyta
   - intra::rubric_create
   - intra::rubric_delete
