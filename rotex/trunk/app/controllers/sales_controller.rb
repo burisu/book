@@ -1,15 +1,10 @@
 class SalesController < ApplicationController
 
-
-  before_filter :find, :except=>[:index, :new, :create]
-
   def index
   end
 
-
   def show
   end
-
 
   def new
     @sale = Sale.new
@@ -45,18 +40,5 @@ class SalesController < ApplicationController
     Sale.find_by_number(params[:id]).destroy
     redirect_to sales_url
   end
-
-  protected
-
-  def find()
-    @sale = nil
-    begin
-      @sale = Sale.find(params[:id])
-    rescue
-      flash[:error] = "La vente est introuvable"
-      return false
-    end
-  end
-
 
 end

@@ -11,42 +11,37 @@ class SaleLinesController < ApplicationController
   def create
     @sale_line = SaleLine.new(params[:sale_line])
     if @sale_line.save
-      redirect_to sale_url
+      redirect_to sale_url(@sale)
     end
     @title = "Nouvelle ligne de vente"
     render_form
   end
 
   def edit
-    @sale_line = SaleLine.find_by_number(params[:id])
-    @title = "Modifier la vente #{@sale_line.name}"
+    return unless @sale_line = SaleLine.find_by_id_and_sale_id(params[:id], @sale.id)
+    @title = "Modifier la vente #{@sale_line.id}"
     render_form
   end
 
   def update
-    @sale_line = SaleLine.find_by_number(params[:id])
-    @title = "Modifier la vente #{@sale_line.name}"
+    return unless @sale_line = SaleLine.find_by_id_and_sale_id(params[:id], @sale.id)
+    @title = "Modifier la vente #{@sale_line.id}"
     if @sale_line.update_attributes(params[:sale_line])
-      redirect_to sale_url
+      redirect_to sale_url(@sale)
     end
     render_form
   end
 
   def destroy
-    SaleLine.find_by_number(params[:id]).destroy
-    redirect_to sale_url
+    return unless @sale_line = SaleLine.find_by_id_and_sale_id(params[:id], @sale.id)
+    @sale_line.destroy
+    redirect_to sale_url(@sale)
   end
 
   protected
 
   def find()
-    @sale = nil
-    begin
-      @sale = Sale.find(params[:id])
-    else
-      flash[:error] = "La vente est introuvable"
-      return false
-    end
+    raise "Stop" unless @sale = Sale.find_by_number(params[:id])
   end
 
 end

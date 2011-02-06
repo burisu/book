@@ -66,6 +66,11 @@ class Sale < ActiveRecord::Base
   def state_class
     {"I"=>"error", "C"=>"warning", "P"=>"notice"}[self.state]
   end
+  
+  # Identifiant utilisé par les contrôleurs 
+  def to_param
+    self.number
+  end
 
   
 end

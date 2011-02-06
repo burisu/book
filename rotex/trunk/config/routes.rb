@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products, :as=>"produits", :except=>[:show]
+  map.resources :payments, :as=>"paiements", :except=>[:show]
 
   map.resources :sales, :as=>"ventes" do |sales|
     sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]

@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
 
 
 
-
+  # Check record existence
   def find_and_check(model, id, options={})
     model = model.to_s
     record = model.classify.constantize.find_by_id(id)
