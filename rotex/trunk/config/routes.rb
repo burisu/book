@@ -1,7 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
 
-
-
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products, :as=>"produits", :except=>[:show]

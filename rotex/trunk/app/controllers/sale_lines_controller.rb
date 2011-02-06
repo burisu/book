@@ -37,7 +37,16 @@ class SaleLinesController < ApplicationController
     redirect_to sale_url
   end
 
+  protected
+
   def find()
+    @sale = nil
+    begin
+      @sale = Sale.find(params[:id])
+    else
+      flash[:error] = "La vente est introuvable"
+      return false
+    end
   end
 
 end
