@@ -16,5 +16,5 @@
   -for line in @sale.saleable_lines_for(@current_person)
     %tr
       %td=render :partial=>"products/product", :object=>line.product
-      %td=text_field(line, :quantity, :size=>3)
+      %td=text_field("line[]", :quantity, :size=>5, :object=>line)
       %td.dec=line.amount
