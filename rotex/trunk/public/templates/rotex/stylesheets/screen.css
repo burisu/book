@@ -300,3 +300,7 @@ div.dyli_complete ul strong.highlight {color: #800; margin:0; padding:0;}
 
 ul.index li { margin-bottom: 8px; }
 ul.index li h3 { font-size: 16px; color: #333; }
+
+
+table .dec {text-align: right;}
+table .total {border-top: 1px solid black;}
