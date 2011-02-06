@@ -5,15 +5,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :products, :as=>"produits", :except=>[:show]
   map.resources :payments, :as=>"paiements", :except=>[:show]
 
-  map.resources :sales, :as=>"ventes" do |sales|
+  map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get]} do |sales|
     sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
   end
   
-  map.resource :myself, :as=>"mon-compte" do |myself|
-    myself.resources :sales, :as=>"ventes" do |sales|
-      sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
-    end
-  end  
+  #map.resource :myself, :as=>"mon-compte" do |myself|
+  #  myself.resources :sales, :as=>"ventes" do |sales|
+  #    sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
+  #  end
+  #end  
 
   map.login 'connexion', :controller=>"authentication", :action=>"index"
 

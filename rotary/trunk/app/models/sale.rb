@@ -18,11 +18,18 @@
 
 class Sale < ActiveRecord::Base
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   validates_uniqueness_of :number
   attr_readonly :number
+  attr_accessor :client_email_confirmation
+  validates_confirmation_of :client_email
 
 
   def before_validation_on_create
+    self.state ||= STATES[0][1]
+    if self.client
+      self.client_email_confirmation = self.client_email = self.client.email
+    end
     last = self.class.find(:first, :order=>"id DESC")
     self.number = Time.now.to_i.to_s(36)+(last ? last.id+1 : 0).to_s(36).rjust(6, '0')
     self.number.upcase!

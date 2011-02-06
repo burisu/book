@@ -38,6 +38,9 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 #footer {background: url(../images/background_footer.png) no-repeat bottom center; height:160px; text-align:center; }
 */
 
+table.flex {width: 100%;}
+table.flex tr td { vertical-align: top}
+table.cells {border-spacing: 16px;}
 
 #header > div {background: #00288d url(../images/header.png) no-repeat top left; height:72px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;}
 #header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:72px;width:170px;-moz-border-radius-bottomright: 8px;}

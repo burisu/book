@@ -22,17 +22,7 @@ __admin__:
   - products::index
   - products::new
   - products::update
-  - sale_lines::create
-  - sale_lines::destroy
-  - sale_lines::edit
-  - sale_lines::new
-  - sale_lines::update
-  - sales::create
-  - sales::destroy
-  - sales::edit
   - sales::index
-  - sales::new
-  - sales::update
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
@@ -96,6 +86,17 @@ __public__:
   - intra::disapprove
   - special
   - store::check_payment
+  - sale_lines::create
+  - sale_lines::destroy
+  - sale_lines::edit
+  - sale_lines::new
+  - sale_lines::update
+  - sales::create
+  - sales::destroy
+  - sales::edit
+  - sales::new
+  - sales::fill
+  - sales::update
 # translation missing: fr-FR, rights, mandates
 mandates:
   actions:

@@ -10,7 +10,8 @@
     =" &bull; Nécessite l'inscription d'invités"
   -if product.subscribing?
     =" &bull; Crée des cotisations (du #{::I18n.localize(product.subscribing_started_on)} au #{::I18n.localize(product.subscribing_stopped_on)})"
-.admin
-  =link_to("Modifer", edit_product_url(product), :class=>"icon im-edit")
-  =" &nbsp; "
-  =link_to "Supprimer", product_url(product), :method=>:delete, :confirm=>"Are you sure?", :class=>"icon im-destroy"
+-if @current_person and @current_person.admin?
+  .admin
+    =link_to("Modifer", edit_product_url(product), :class=>"icon im-edit")
+    =" &bull; "
+    =link_to "Supprimer", product_url(product), :method=>:delete, :confirm=>"Are you sure?", :class=>"icon im-destroy"
