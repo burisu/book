@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   end
 
   def new
-    @product = Product.new
+    @product = Product.new(:password=>Person.generate_password(8).upper)
     @title = "Nouveau produit"
     render_form
   end

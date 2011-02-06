@@ -1,0 +1,2 @@
+class MyselvesController < ApplicationController
+end

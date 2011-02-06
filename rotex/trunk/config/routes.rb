@@ -8,6 +8,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :sales, :as=>"ventes" do |sales|
     sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
   end
+  
+  map.resource :myself, :as=>"mon-compte" do |myself|
+    myself.resources :sales, :as=>"ventes" do |sales|
+      sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
+    end
+  end  
 
   map.login 'connexion', :controller=>"authentication", :action=>"index"
 
