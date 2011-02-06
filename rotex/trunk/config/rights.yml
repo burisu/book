@@ -22,6 +22,11 @@ __admin__:
   - products::index
   - products::new
   - products::update
+  - sale_lines::create
+  - sale_lines::destroy
+  - sale_lines::edit
+  - sale_lines::new
+  - sale_lines::update
   - sales::create
   - sales::destroy
   - sales::edit
@@ -32,7 +37,6 @@ __admin__:
 __private__:
   actions:
   - intra::article
-  - intra::rubric
   - intra::authors_dyli
   - intra::folder
   - intra::folder_create
@@ -58,6 +62,7 @@ __private__:
   - intra::report
   - intra::report_help
   - intra::reports
+  - intra::rubric
   - intra::story
   - intra::students
   - intra::students_dyta
@@ -65,7 +70,6 @@ __private__:
 __protected__:
   actions:
   - store::cancelled
-  - store::check
   - store::finished
   - store::index
   - store::refused

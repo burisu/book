@@ -132,6 +132,7 @@ class ApplicationController < ActionController::Base
       return
     end
 
+    # Réservé au membres seulement
     return if current_rights.include? :__private__
 
     # Verification droits

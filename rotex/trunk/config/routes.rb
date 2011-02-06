@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :products, :as=>"produits", :except=>[:show]
 
   map.resources :sales, :as=>"ventes" do |sales|
-    sales.resources :sale_lines, :as=>"lignes", :except=>[:show, :index]
+    sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
   end
 
   map.login 'connexion', :controller=>"authentication", :action=>"index"
