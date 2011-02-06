@@ -23,9 +23,12 @@ class Sale < ActiveRecord::Base
   attr_readonly :number
   attr_accessor :client_email_confirmation
   validates_confirmation_of :client_email
+  validates_numericality_of :amount
+  validates_presence_of :amount
 
 
   def before_validation_on_create
+    self.amount ||= 0.0
     self.state ||= STATES[0][1]
     if self.client
       self.client_email_confirmation = self.client_email = self.client.email
