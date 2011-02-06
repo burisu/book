@@ -25,6 +25,9 @@
 class Product < ActiveRecord::Base
 
   named_scope :usable, :conditions=>["active AND NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
+  named_scope :saleable_to, lambda { |p|
+    {:conditions=>["active AND (subscribing = ? OR subscribing IS FALSE) AND NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)", !p.nil?], :order=>:name} 
+  }
 
   named_scope :unusable, :conditions=>["NOT active OR (deadlined AND NOT CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
 
