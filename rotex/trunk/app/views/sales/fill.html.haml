@@ -1,0 +1,7 @@
+%h1=@title
+="Veuillez sélectionner vos produits puis valider"
+
+
+%ul
+  -for product in Product.usable_for(@current_person)
+    %li=render :partial=>"products/product", :object=>product
