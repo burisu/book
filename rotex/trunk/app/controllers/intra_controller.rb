@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class IntraController < ApplicationController
   ssl_only
   cattr_reader :images_count_per_person
@@ -416,12 +417,12 @@ class IntraController < ApplicationController
 
   hide_action :redirect_to_back
   def redirect_to_back()
-    if session[:history][1]
-      session[:history].delete_at(0)
-      redirect_to session[:history][0]
-    else
-      redirect_to :back
-    end
+    # if session[:history][1]
+    #   session[:history].delete_at(0)
+    #   redirect_to session[:history][0]
+    # else
+    redirect_to :back
+    # end
   end
   
 
