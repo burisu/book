@@ -8,14 +8,19 @@ __admin__:
   - countries::new
   - countries::update
   - intra::configurate
-  - intra::zones_create
-  - intra::zones_refresh
   - languages::create
   - languages::destroy
   - languages::edit
   - languages::index
   - languages::new
   - languages::update
+  - payments::create
+  - payments::destroy
+  - payments::edit
+  - payments::index
+  - payments::new
+  - payments::show
+  - payments::update
   - products::create
   - products::destroy
   - products::edit
@@ -23,6 +28,21 @@ __admin__:
   - products::new
   - products::update
   - sales::index
+  - sales::show
+  - zones::create
+  - zones::destroy
+  - zones::edit
+  - zones::index
+  - zones::new
+  - zones::refresh
+  - zones::show
+  - zones::update
+# translation missing: fr-FR, rights, __not_used__
+__not_used__:
+  actions:
+  - subscriptions::people_dyli
+  - subscriptions::subscriptions_dyta
+  - subscriptions::unroll # UNEXISTENT ACTION !!!
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
@@ -84,8 +104,6 @@ __public__:
   - intra::access_denied
   - intra::approve
   - intra::disapprove
-  - special
-  - store::check_payment
   - sale_lines::create
   - sale_lines::destroy
   - sale_lines::edit
@@ -94,9 +112,11 @@ __public__:
   - sales::create
   - sales::destroy
   - sales::edit
-  - sales::new
   - sales::fill
+  - sales::new
   - sales::update
+  - special
+  - store::check_payment
 # translation missing: fr-FR, rights, mandates
 mandates:
   actions:
@@ -127,12 +147,8 @@ publishing:
   - intra::rubrics_dyta
 # translation missing: fr-FR, rights, subscribing
 subscribing:
-  actions:
-  - intra::subscription_create
-  - intra::subscription_delete
-  - intra::subscription_update
-  - intra::subscriptions
-  - intra::subscriptions_dyta
+  controller: subscriptions
+  actions: [create, destroy, edit, index, new, update, chase_up]
 # translation missing: fr-FR, rights, users
 users:
   controller: intra

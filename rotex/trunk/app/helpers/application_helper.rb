@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Methods added to this helper will be available to all templates in the application.
 
 module ApplicationHelper
@@ -163,6 +164,10 @@ module ApplicationHelper
   end
 
 
+  def theme_button(name, theme=nil)
+    theme ||= @current_theme || :rotex
+    compute_public_path("#{name}.png", "templates/#{theme}/images/buttons")
+  end
   
 
 

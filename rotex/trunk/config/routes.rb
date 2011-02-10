@@ -1,9 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :people
+
+
+
 
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
-  map.resources :products, :as=>"produits", :except=>[:show]
-  map.resources :payments, :as=>"paiements", :except=>[:show]
+  map.resources :products,  :as=>"produits", :except=>[:show]
+  map.resources :payments,  :as=>"paiements", :except=>[:show]
+  map.resources :zones, :collection=>{:refresh=>:post}
+  map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
 
   map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get]} do |sales|
     sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]

@@ -251,6 +251,7 @@ fr-FR:
         payment_mode: Mode Regl.
         payment_mode_label: Mode Regl.
         number: Numéro
+        sale_id: Vente
         state_label: État
         state: État
         person_id: Adhérent
@@ -399,6 +400,14 @@ nu-LL:
       n months: %i mois
       about 1 year: environ 1 an
       over n years: plus de %i ans
+
+  dyta:
+    export:
+      title: Exporter
+      csv: CSV
+      xcsv: CSV Excel
+
+
   
   # Add your the model translations as descriped in the
   # localized_models_by_lang_file feature to the model section.
@@ -412,6 +421,7 @@ nu-LL:
   #       name: Localized name
   #       description: Localized description
   
+
   models:
     article:
       name: Article

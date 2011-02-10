@@ -117,21 +117,21 @@ def actions_in_file(path)
     elsif line.match(/^\s*dy(li|ta)[\s\(]+\:\w+/)
       dyxx = line.split(/[\s\(\)\,\:]+/)
       actions << dyxx[1]+'_'+dyxx[0]
-#     elsif line.match(/^\s*dyli[\s\(]+\:\w+/)
-#       # dyxx = line.split(/[\s\(\)\,\:]+/)
-#       # actions << dyxx[1]+'_'+dyxx[0]
-#       actions << "unroll"
-#     elsif line.match(/^\s*dyta[\s\(]+\:\w+/)
-#       a = line.split(/[\(\)\=\>\s\:\,]+/)
-#       #puts a.inspect
-#       #if a.include?("name")
-#       #  actions << a[a.index("name")+1] 
-#       #els
-#       if a.include?("model")
-#         actions << a[a.index("model")+1]
-#       else
-#         actions << "list"
-#       end
+    # elsif line.match(/^\s*dyli[\s\(]+\:\w+/)
+    #   # dyxx = line.split(/[\s\(\)\,\:]+/)
+    #   # actions << dyxx[1]+'_'+dyxx[0]
+    #   actions << "unroll"
+    # elsif line.match(/^\s*dyta[\s\(]+\:\w+/)
+    #   a = line.split(/[\(\)\=\>\s\:\,]+/)
+    #   #puts a.inspect
+    #   #if a.include?("name")
+    #   #  actions << a[a.index("name")+1] 
+    #   #els
+    #   if a.include?("model")
+    #     actions << a[a.index("model")+1]
+    #   else
+    #     actions << "list"
+    #   end
     elsif line.match(/^\s*create_kame[\s\(]+\:\w+/)
       dyxx = line.split(/[\s\(\)\,\:]+/)
       actions << dyxx[1]+'_kame'

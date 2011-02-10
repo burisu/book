@@ -720,70 +720,6 @@ class IntraController < ApplicationController
 
 
 
-  dyta(:subscriptions, :order=>"state, created_at DESC", :line_class=>'RECORD.state_class' ) do |t|
-    t.column :number, :class=>:code, :url=>{:action=>:subscription_update}
-    # t.column :family_name, :through=>:person, :url=>{:action=>:person}
-    # t.column :first_name, :through=>:person, :url=>{:action=>:person}
-    t.column :label, :through=>:person, :url=>{:action=>:person}
-    t.column :created_at
-    t.column :amount
-    t.column :begun_on
-    t.column :finished_on
-    t.column :state
-    t.column :payment_mode
-    t.action :subscription_delete, :method=>:delete, :confirm=>:are_you_sure
-  end
-
-  def subscriptions
-    # >> :subscribing
-    if request.post?
-      Subscription.delete_all(["state=? AND created_at<=? ", "I", Time.now - 48.hours])
-    elsif request.put?
-      @people = Subscription.chase_up
-    end
-  end
-
-
-  def subscription_create
-    # >> :subscribing
-    @person = Person.find(params[:id])
-    if request.post?
-      @subscription = Subscription.new(params[:subscription])
-      @subscription.person_id = @person.id
-      @subscription.responsible = @current_person
-      if @subscription.save
-        @subscription.person.approve!
-        session[:last_finished_on] = @subscription.finished_on
-        redirect_to :action=>:person, :id=>@person.id
-      end
-    else
-      @subscription = Subscription.new
-      @subscription.finished_on = session[:last_finished_on] if session[:last_finished_on]
-    end
-    @title = "Enregistrement d'une cotisation"
-    render_form
-  end
-
-  def subscription_update
-    # >> :subscribing
-    @subscription = Subscription.find(params[:id])
-    if request.post?
-      @subscription.attributes = params[:subscription]
-      @subscription.responsible = @current_person
-      if @subscription.save
-        redirect_to :action=>:subscriptions
-      end
-    end
-    @title = "Modification de la cotisation #{@subscription.number}"
-    render_form
-  end
-
-  def subscription_delete
-    # >> :subscribing
-    s = Subscription.find(params[:id])
-    s.destroy if request.post? or request.delete?
-    redirect_to :action=>:person, :id=>s.person_id
-  end
 
 #   def subscribers
 #     # >> :subscribing
@@ -943,41 +879,6 @@ class IntraController < ApplicationController
     @current_user = nil
     render :partial=>'preview' if request.xhr?
   end
-
-
-
-
-  def zones_create
-    @parent = Zone.find_by_id(params[:id])
-    if @parent
-      @natures = ZoneNature.find(:all, :conditions=>["parent_id=?", @parent.nature_id ], :order=>:name) 
-    else
-      @natures = ZoneNature.find(:all, :conditions=>["parent_id IS NULL"], :order=>:name) 
-    end
-    @parents = (@parent.nil? ? [] : @parent.parents)
-
-    if request.post?
-      @zone = Zone.new(params[:zone])
-      @zone.parent_id = @parent.id if @parent
-      @zone.save
-    else
-      @zone = Zone.new
-      @zone.country_id = @parent.country_id if @parent
-    end
-    @zones = Zone.find(:all, :conditions=>(params[:id].nil? ? "parent_id IS NULL" : ["parent_id=?", params[:id]]), :order=>:name)
-  end
-
-
-
-  def zones_refresh
-    zones = Zone.find(:all, :conditions=>["parent_id IS NULL"])
-    for zone in zones
-      zone.save
-    end
-    redirect_to :action=>:zones_create
-  end
-
-
 
 
 

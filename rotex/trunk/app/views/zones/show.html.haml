@@ -1,0 +1,12 @@
+%h1=@zone.name
+
+%ul.aclist
+  %li
+    =link_to "Tous les districts", zones_url
+    -for parent in @zone.parents
+      &raquo;
+      =link_to parent.name, zone_url(parent)
+  %li=link_to("Ajouter une zone", new_zone_url(:parent_id=>@zone.id))
+
+%h2 Zones
+=render :partial=>"zones", :object=>@zone.children
