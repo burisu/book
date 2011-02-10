@@ -16,15 +16,27 @@
 #
 
 class SaleLine < ActiveRecord::Base
+  attr_accessor :password
+
 
   def before_validation
     if self.product
-      self.unit_amount ||= self.product.amount
+      self.unit_amount = self.product.amount
       self.name ||= self.product.name
       self.description ||= self.product.description
     end
     self.quantity ||= 0.0
+    self.quantity = self.guests.count if self.product.personal?
+    self.quantity = 0.0 if self.quantity < 0
     self.amount = self.quantity * self.unit_amount
+  end
+
+  def after_save
+    self.sale.save
+  end
+
+  def after_destroy
+    self.sale.save
   end
 
 end

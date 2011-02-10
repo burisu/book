@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -18,6 +19,7 @@
 
 class Sale < ActiveRecord::Base
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+  has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   validates_uniqueness_of :number
   attr_readonly :number
@@ -37,6 +39,10 @@ class Sale < ActiveRecord::Base
     self.number = Time.now.to_i.to_s(36)+(last ? last.id+1 : 0).to_s(36).rjust(6, '0')
     self.number.upcase!
     return true
+  end
+
+  def before_validation
+    self.amount = self.lines.sum(:amount)
   end
 
   def before_save

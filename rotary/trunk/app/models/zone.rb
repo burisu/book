@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: zones
@@ -15,6 +16,8 @@
 #
 
 class Zone < ActiveRecord::Base
+  # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
+  named_scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name
   
   def before_validation
     self.code = self.parent ? self.parent.code : ''
@@ -47,9 +50,17 @@ class Zone < ActiveRecord::Base
     parents << self
     parents
   end
-
+  
   def children
-    self.class.find(:all, :conditions=>{:parent_id => self.id})
+    self.class.find(:all, :conditions=>["parent_id = ?", self.id], :order=>:number)
+  end
+
+  def natures
+    if self.parent
+      ZoneNature.find(:all, :conditions=>["parent_id=?", @parent.nature_id ], :order=>:name)
+    else
+      ZoneNature.find(:all, :conditions=>["parent_id IS NULL"], :order=>:name)
+    end
   end
 
   def in_zone?(zone)

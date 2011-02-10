@@ -17,4 +17,24 @@
 #
 
 class Guest < ActiveRecord::Base
+
+  def before_validation
+    if self.sale_line
+      self.sale = self.sale_line.sale 
+      self.product = self.sale_line.product
+    end
+  end
+
+  def after_save
+    self.sale_line.save
+  end
+
+  def after_destroy
+    self.sale_line.save
+  end
+
+  def label
+    "#{self.first_name} #{self.last_name}"
+  end
+
 end

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: payments
@@ -26,7 +27,7 @@
 #
 
 class Payment < ActiveRecord::Base
-  PAYMENT_MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"]]
+  MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"], ["A payer", "none"]]
   ERROR_CODES = {
     "00000"=>"opération réussie.",
     "00003"=>"erreur e-transactions.",
@@ -88,12 +89,17 @@ class Payment < ActiveRecord::Base
     "00199"=>"incident domaine initiateur."
   }
 
+  has_many :sales
+
   def self.transaction_columns
     return {:amount=>"M", :number=>"R", :authorization_number=>"A", :sequential_number=>"T", :payment_type=>"P", :card_type=>"C", :transaction_number=>"S", :country=>"Y", :error_code=>"E", :card_expired_on=>"D", :payer_country=>"I", :bin6=>"N", :signature=>"K"}
   end
 
+  def before_validation
+  end
+
   def validate
-    errors.add(:payment_mode, :invalid) unless PAYMENT_MODES.collect{|x| x[1]}.include?(self.payment_mode)
+    errors.add(:mode, :invalid) unless MODES.collect{|x| x[1]}.include?(self.mode)
   end
 
   def error_message
@@ -101,7 +107,7 @@ class Payment < ActiveRecord::Base
   end
 
   def payment_mode_label
-    PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}[0]
+    MODES.detect{|x| x[1] == self.mode}[0]
   end
 
 
