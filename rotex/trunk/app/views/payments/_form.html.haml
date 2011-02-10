@@ -6,19 +6,19 @@
 %table#modes
   %tr
     %td.mode{:valign=>:top}
-      =radio_button(:subscription, :payment_mode, :cash)
-      %label{:for=>"subscription_payment_mode_cash"} Paiement en espèce
+      =radio_button(:payment, :mode, :cash)
+      %label{:for=>"payment_mode_cash"} Paiement en espèce
       .info Veuillez prendre contact avec notre trésorier qui sera informé de votre adhésion.
       .logo=image_tag("cash.png")
     %td.mode.nf{:valign=>:top}
-      =radio_button(:subscription, :payment_mode, :check)
-      %label{:for=>"subscription_payment_mode_check"} Paiement par chèque*
+      =radio_button(:payment, :mode, :check)
+      %label{:for=>"payment_mode_check"} Paiement par chèque*
       .info 
         ="Veuillez envoyer votre chèque à l'adresse du trésorier ("+Person.mandated_for(['tresor']).collect{|p| "<em>"+p.label+", "+p.address.gsub("\n", ", ")+"</em>"}.join(" ou ")+")"
       .logo=image_tag("check.png")
     %td.mode.nf{:valign=>:top}
-      =radio_button(:subscription, :payment_mode, :card)
-      %label{:for=>"subscription_payment_mode_card"} Paiement par carte bancaire
+      =radio_button(:payment, :mode, :card)
+      %label{:for=>"payment_mode_card"} Paiement par carte bancaire
       .info Vous serez automatiquement redirigé vers le site paiement en ligne de notre banque.
       .logo=image_tag("cbvisamaster.gif")
 
