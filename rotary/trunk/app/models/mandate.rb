@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: mandates
@@ -15,6 +16,7 @@
 #
 
 class Mandate < ActiveRecord::Base
+  belongs_to :nature, :class_name=>MandateNature.name
 
   def validate
     if self.nature and self.zone

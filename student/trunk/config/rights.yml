@@ -1,0 +1,180 @@
+# translation missing: fr-FR, rights, __admin__
+__admin__:
+  actions:
+  - countries::create
+  - countries::destroy
+  - countries::edit
+  - countries::index
+  - countries::new
+  - countries::update
+  - intra::configurate
+  - languages::create
+  - languages::destroy
+  - languages::edit
+  - languages::index
+  - languages::new
+  - languages::update
+  - products::create
+  - products::destroy
+  - products::edit
+  - products::index
+  - products::new
+  - products::update
+  - sales::index
+  - sales::sales_dyta
+  - sales::show
+  - zones::create
+  - zones::destroy
+  - zones::edit
+  - zones::index
+  - zones::new
+  - zones::refresh
+  - zones::show
+  - zones::update
+# translation missing: fr-FR, rights, __not_used__
+__not_used__:
+  actions: []
+# translation missing: fr-FR, rights, __private__
+__private__:
+  actions:
+  - intra::article
+  - intra::authors_dyli
+  - intra::folder
+  - intra::folder_create
+  - intra::folder_delete
+  - intra::folder_update
+  - intra::gallery
+  - intra::image_delete
+  - intra::image_detail
+  - intra::image_download
+  - intra::image_update
+  - intra::index
+  - intra::member
+  - intra::message_send
+  - intra::period
+  - intra::period_add_member
+  - intra::period_delete
+  - intra::period_display
+  - intra::period_remove_member
+  - intra::pick_image
+  - intra::preview
+  - intra::profile
+  - intra::profile_update
+  - intra::report
+  - intra::report_help
+  - intra::reports
+  - intra::rubric
+  - intra::story
+  - intra::students
+  - intra::students_dyta
+# translation missing: fr-FR, rights, __protected__
+__protected__:
+  actions:
+  - store::cancelled
+  - store::finished
+  - store::index
+  - store::refused
+  - store::summary
+# translation missing: fr-FR, rights, __public__
+__public__:
+  controller: home
+  actions:
+  - article
+  - authentication::activate
+  - authentication::change_email
+  - authentication::change_password
+  - authentication::clean_people
+  - authentication::index
+  - authentication::login
+  - authentication::logout
+  - authentication::lost_login
+  - authentication::lost_password
+  - authentication::subscribe
+  - authentication::test
+  - guests::create
+  - guests::destroy
+  - guests::edit
+  - guests::new
+  - guests::update
+  - payments::create
+  - payments::destroy
+  - payments::edit
+  - payments::index
+  - payments::new
+  - payments::show
+  - payments::update
+  - index
+  - intra::access_denied
+  - intra::approve
+  - intra::disapprove
+  - sale_lines::create
+  - sale_lines::decrement
+  - sale_lines::destroy
+  - sale_lines::edit
+  - sale_lines::increment
+  - sale_lines::new
+  - sale_lines::update
+  - sales::create
+  - sales::destroy
+  - sales::edit
+  - sales::fill
+  - sales::new
+  - sales::update
+  - special
+  - store::check_payment
+# translation missing: fr-FR, rights, mandates
+mandates:
+  actions:
+  - intra::mandates
+  - intra::mandates_create
+  - intra::mandates_delete
+  - intra::mandates_update
+# translation missing: fr-FR, rights, promotions
+promotions:
+  actions: [intra::promotion_people_dyta, intra::promotions]
+# translation missing: fr-FR, rights, publishing
+publishing:
+  actions:
+  - intra::article_activate
+  - intra::article_create
+  - intra::article_deactivate
+  - intra::article_delete
+  - intra::article_edit
+  - intra::article_to_publish
+  - intra::article_update
+  - intra::articles
+  - intra::articles_dyta
+  - intra::rubric_articles_dyta
+  - intra::rubric_create
+  - intra::rubric_delete
+  - intra::rubric_update
+  - intra::rubrics
+  - intra::rubrics_dyta
+# translation missing: fr-FR, rights, subscribing
+subscribing:
+  controller: subscriptions
+  actions:
+  - chase_up
+  - create
+  - destroy
+  - edit
+  - index
+  - new
+  - people_dyli
+  - subscriptions_dyta
+  - update
+# translation missing: fr-FR, rights, users
+users:
+  controller: intra
+  actions:
+  - people
+  - people_dyta
+  - person
+  - person_articles_dyta
+  - person_create
+  - person_delete
+  - person_lock
+  - person_mandates_dyta
+  - person_subscriptions_dyta
+  - person_unlock
+  - person_update

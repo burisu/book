@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: people
@@ -57,7 +58,8 @@ class Person < ActiveRecord::Base
   attr_accessor :forced
   attr_protected :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
-  has_many :orders, :class_name=>Subscription.name, :conditions=>{:state=>'C'}
+  has_many :orders, :class_name=>Sale.name, :conditions=>{:state=>'C'}
+  has_many :mandates
   has_many :versions, :class_name=>PersonVersion.name, :dependent=>:delete_all
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
