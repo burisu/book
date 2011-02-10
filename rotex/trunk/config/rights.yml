@@ -14,13 +14,6 @@ __admin__:
   - languages::index
   - languages::new
   - languages::update
-  - payments::create
-  - payments::destroy
-  - payments::edit
-  - payments::index
-  - payments::new
-  - payments::show
-  - payments::update
   - products::create
   - products::destroy
   - products::edit
@@ -28,6 +21,7 @@ __admin__:
   - products::new
   - products::update
   - sales::index
+  - sales::sales_dyta
   - sales::show
   - zones::create
   - zones::destroy
@@ -39,10 +33,7 @@ __admin__:
   - zones::update
 # translation missing: fr-FR, rights, __not_used__
 __not_used__:
-  actions:
-  - subscriptions::people_dyli
-  - subscriptions::subscriptions_dyta
-  - subscriptions::unroll # UNEXISTENT ACTION !!!
+  actions: []
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
@@ -100,13 +91,27 @@ __public__:
   - authentication::lost_password
   - authentication::subscribe
   - authentication::test
+  - guests::create
+  - guests::destroy
+  - guests::edit
+  - guests::new
+  - guests::update
+  - payments::create
+  - payments::destroy
+  - payments::edit
+  - payments::index
+  - payments::new
+  - payments::show
+  - payments::update
   - index
   - intra::access_denied
   - intra::approve
   - intra::disapprove
   - sale_lines::create
+  - sale_lines::decrement
   - sale_lines::destroy
   - sale_lines::edit
+  - sale_lines::increment
   - sale_lines::new
   - sale_lines::update
   - sales::create
@@ -148,7 +153,16 @@ publishing:
 # translation missing: fr-FR, rights, subscribing
 subscribing:
   controller: subscriptions
-  actions: [create, destroy, edit, index, new, update, chase_up]
+  actions:
+  - chase_up
+  - create
+  - destroy
+  - edit
+  - index
+  - new
+  - people_dyli
+  - subscriptions_dyta
+  - update
 # translation missing: fr-FR, rights, users
 users:
   controller: intra

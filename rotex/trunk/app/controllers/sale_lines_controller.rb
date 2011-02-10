@@ -38,10 +38,25 @@ class SaleLinesController < ApplicationController
     redirect_to sale_url(@sale)
   end
 
+  def increment
+    return unless @sale_line = SaleLine.find_by_id_and_sale_id(params[:id], @sale.id)
+    @sale_line.quantity += 1
+    @sale_line.save
+    redirect_to fill_sale_url(@sale)
+  end
+
+  def decrement
+    return unless @sale_line = SaleLine.find_by_id_and_sale_id(params[:id], @sale.id)
+    @sale_line.quantity -= 1
+    @sale_line.save
+    redirect_to fill_sale_url(@sale)
+  end
+
+
   protected
 
   def find()
-    raise "Stop" unless @sale = Sale.find_by_number(params[:id])
+    raise "Stop" unless @sale = Sale.find_by_number(params[:sale_id])
   end
 
 end

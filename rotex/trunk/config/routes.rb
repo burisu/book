@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :people
 
 
 
@@ -7,13 +6,19 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products,  :as=>"produits", :except=>[:show]
-  map.resources :payments,  :as=>"paiements", :except=>[:show]
+  map.resources :payments,  :as=>"paiements"
   map.resources :zones, :collection=>{:refresh=>:post}
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
 
-  map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get]} do |sales|
-    sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index]
+  map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get, :post]} do |sales|
+    sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index], :member=>{:increment=>:post, :decrement=>:post} do |line|
+      line.resources :guests, :as=>"invites", :except=>[:show, :index]
+    end
   end
+
+
+  map.resources :people
+
   
   #map.resource :myself, :as=>"mon-compte" do |myself|
   #  myself.resources :sales, :as=>"ventes" do |sales|

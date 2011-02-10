@@ -243,6 +243,8 @@ fr-FR:
         questions_size: Nb. Quest.
       rubric:
         parent_id: Parent
+      sale:
+        client_id: Client
       subscription:
         begun_on: Du
         finished_on: Au

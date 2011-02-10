@@ -1,7 +1,14 @@
 class SalesController < ApplicationController
 
+  dyta(:sales) do |t|
+    t.column :number, :url=>{:action=>:show}
+    t.column :label, :through=>:client, :url=>{:controller=>:intra, :action=>:person}
+    t.column :client_email
+    t.column :comment
+    t.column :state
+  end
+
   def index
-    raise params.inspect
   end
 
   def show
@@ -29,11 +36,25 @@ class SalesController < ApplicationController
   
   def fill
     @sale = Sale.find_by_number(params[:id])
+    @badpass = []
+    if @sale.state == "C"
+      @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer=>@sale.client, :payer_email=>@sale.client_email) unless @sale.payment
+      raise @sale.payment.errors.inspect unless @sale.payment.valid?
+      redirect_to edit_payment_url(@sale.payment)
+      return 
+    end
     @title = "Remplissez votre panier #{@sale.number}"
     if request.post?
-      
-    else
-      
+      for line in @sale.passworded_lines
+        if line.product.password != params[:line][line.id.to_s][:password]
+          @badpass << line.id
+        end
+      end
+      if @badpass.empty?
+        @sale.update_attribute(:state, "C")
+        @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer=>@sale.client, :payer_email=>@sale.client_email)
+        redirect_to edit_payment_url(@sale.payment)
+      end
     end
   end
   

@@ -44,7 +44,7 @@ table.cells {border-spacing: 16px;}
 
 #header > div {background: #00288d url(../images/header.png) no-repeat top left; height:72px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;}
 #header > div .flag {float:right; background: url(../images/flag.png) repeat-y center; height:72px;width:170px;-moz-border-radius-bottomright: 8px;}
-#header .menu { position:relative; top:47px; left: 84px; width: 512px;}
+#header .menu { position:relative; top:47px; left: 84px; overflow: auto;}
 #header .menu a { color: white; }
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
 /*#bodier {background: url(../images/background.png) center top no-repeat;}*/
@@ -304,3 +304,8 @@ ul.index li h3 { font-size: 16px; color: #333; }
 
 table .dec {text-align: right;}
 table .total {border-top: 1px solid black;}
+
+table.products {border-collapse: collapse}
+table.products td {padding: 2px}
+table.products tr.p td {border-bottom: 1px solid #AAA;}
+table.products tr.p td .opt {padding:  2px; margin-left: 40px; border-top: 1px dotted #AAA;}
