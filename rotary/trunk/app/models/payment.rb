@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: payments
@@ -19,6 +18,7 @@
 #  payer_email          :string(255)   not null
 #  payer_id             :integer       
 #  payment_type         :string(255)   
+#  received             :boolean       not null
 #  sequential_number    :string(255)   
 #  signature            :string(255)   
 #  transaction_number   :string(255)   
@@ -26,6 +26,7 @@
 #  used_amount          :decimal(16, 2 default(0.0), not null
 #
 
+# -*- coding: utf-8 -*-
 class Payment < ActiveRecord::Base
   MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"], ["A payer", "none"]]
   ERROR_CODES = {

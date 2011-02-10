@@ -2,6 +2,7 @@
 #
 # Table name: products
 #
+#  active                 :boolean       not null
 #  amount                 :decimal(16, 2 default(0.0), not null
 #  created_at             :datetime      
 #  current_quantity       :decimal(16, 2 default(0.0), not null
@@ -11,6 +12,8 @@
 #  initial_quantity       :decimal(16, 2 default(0.0), not null
 #  lock_version           :integer       default(0)
 #  name                   :string(255)   not null
+#  password               :string(255)   
+#  passworded             :boolean       not null
 #  personal               :boolean       not null
 #  started_on             :date          
 #  stopped_on             :date          

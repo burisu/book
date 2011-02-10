@@ -29,7 +29,7 @@ class PaymentsController < ApplicationController
       redirect_to payment_url(@payment)
       return
     end
-    @title = "Modifier le paiement #{@payment.number}"
+    @title = "Choisir le mode de paiement #{@payment.number}"
     render_form
   end
 
@@ -39,7 +39,7 @@ class PaymentsController < ApplicationController
       redirect_to payment_url(@payment)
       return
     end
-    @title = "Modifier le paiement #{@payment.number}"
+    @title = "Choisir le mode de paiement #{@payment.number}"
     if @payment.update_attributes(params[:payment])
       case @payment.mode.to_sym
       when :cash, :check

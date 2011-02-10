@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: zones
@@ -15,6 +14,7 @@
 #  updated_at   :datetime      not null
 #
 
+# -*- coding: utf-8 -*-
 class Zone < ActiveRecord::Base
   # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
   named_scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name

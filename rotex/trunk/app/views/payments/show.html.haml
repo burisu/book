@@ -1,8 +1,12 @@
 %h1="Paiement #{@payment.number}(#{@payment.mode}) de #{@payment.amount}€"
 %h3="Ventes : "+@payment.sales.collect{|s| s.number}.to_sentence
 
-%table
--for column, letter in Payment.transaction_columns
-  %tr
-    %td=column
-    %td=payment.send(column)
+-if @payment.received?
+  %strong Paiement reçu
+  %table
+    -for column, letter in Payment.transaction_columns
+      %tr
+        %td=column
+        %td=@payment.send(column)
+-else
+  %strong Paiement non reçu

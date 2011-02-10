@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -17,6 +16,7 @@
 #  updated_at   :datetime      
 #
 
+# -*- coding: utf-8 -*-
 class Sale < ActiveRecord::Base
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
   has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product

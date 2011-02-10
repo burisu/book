@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class StoreController < ApplicationController
   ssl_required :index, :summary, :cancelled, :refused, :finished
 
@@ -69,22 +70,22 @@ class StoreController < ApplicationController
   protected
 
   def validate_payment(no_redirect = false)
-    unless @subscription = Subscription.find_by_number(params["R"])
+    unless @payment = Payment.find_by_number(params["R"])
       flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réeessayer."
       redirect_to :action=>:index unless no_redirect
       return 
     end
-    if @subscription.state != "P" and @subscription.payment_mode == "card"
-      for k, v in Subscription.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
-        @subscription.send("#{k}=", params[v])
+    if @payment.mode == "card"
+      for k, v in Payment.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
+        @payment.send("#{k}=", params[v])
       end
-      @subscription.responsible = @current_person
-      @subscription.save
-      if @subscription.error_code == "00000"
+      @payment.save
+      if @payment.error_code == "00000"
         flash[:notice] = "La transaction a été validée."
-        @subscription.terminate 
+        @payment.received = true
+        @payment.save
       else
-        flash[:error] = "Une erreur s'est produite #{@subscription.error_message}"
+        flash[:error] = "Une erreur s'est produite #{@payment.error_message}"
       end
     end    
   end
