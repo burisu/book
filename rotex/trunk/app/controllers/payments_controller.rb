@@ -59,7 +59,7 @@ class PaymentsController < ApplicationController
         Maily.deliver_notification(:waiting_payment, @current_person) if @current_person
         redirect_to payment_url(@payment)
       when :card
-        redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@payment.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@payment.number, :PBX_PORTEUR=>@current_person.email, :PBX_RETOUR=>Payment.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>url_for(:controller=>:store, :action=>:finished), :PBX_REFUSE=>url_for(:controller=>:store, :action=>:refused), :PBX_ANNULE=>url_for(:controller=>:store, :action=>:cancelled)
+        redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@payment.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@payment.number, :PBX_PORTEUR=>@payment.payer_email, :PBX_RETOUR=>Payment.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>url_for(:controller=>:store, :action=>:finished), :PBX_REFUSE=>url_for(:controller=>:store, :action=>:refused), :PBX_ANNULE=>url_for(:controller=>:store, :action=>:cancelled)
       end
     end
     render_form
