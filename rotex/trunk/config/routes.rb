@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products,  :as=>"produits", :except=>[:show]
-  map.resources :payments,  :as=>"paiements"
+  map.resources :payments,  :as=>"paiements", :member=>{:receive=>:post}
   map.resources :zones, :collection=>{:refresh=>:post}
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
 

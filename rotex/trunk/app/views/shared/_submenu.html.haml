@@ -36,6 +36,8 @@
         %li=link_to("Personnes", {:controller=>:intra, :action=>:people})
       -if access? :subscribing
         %li=link_to("Adhésions", subscriptions_url)
+        %li=link_to("Ventes", sales_url)
+        %li=link_to("Paiements", payments_url)
       -if false # access? :subscribing
         %li=link_to("Adhérents", {:controller=>:intra, :action=>:subscribers})
         %li=link_to("Non-adhérents", {:controller=>:intra, :action=>:non_subscribers})

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: payments
@@ -97,6 +98,8 @@ class Payment < ActiveRecord::Base
   end
 
   def before_validation
+    self.number ||= self.class.maximum(:number).succ
+    self.used_amount = self.sales.sum(:amount)
   end
 
   def validate

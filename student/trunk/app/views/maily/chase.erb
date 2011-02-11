@@ -2,7 +2,7 @@
 
 Récapitulatif de vos anciennes cotisations :
 <%for s in @subscription.person.subscriptions.find(:all, :order=>"begun_on DESC")-%>
- - <%=s.amount.to_s.rjust(7,' ')+'€ pour la période du '+::I18n.localize(s.begun_on)+' au '+::I18n.localize(s.finished_on)+" ("+s.state_label+"/"+s.payment_mode_label+")"%>
+ - <%='Période du '+::I18n.localize(s.begun_on)+' au '+::I18n.localize(s.finished_on)%>
 <%end-%>
 
 

@@ -22,13 +22,7 @@ Notification d'origine inconnue (<%=@nature.inspect-%>).
 <%=@responsible.label-%> a effectué l'opération.
 <%end-%>
 
-<%if @person-%>
-Coordonnées de la personne : <%=@person.email-%>, <%=@person.address%>
-Cotisations :
-<%for s in @person.subscriptions.find(:all, :order=>"begun_on DESC")-%>
- - <%=s.amount.to_s.rjust(7,' ')+'€ pour la période du '+::I18n.localize(s.begun_on)+' au '+::I18n.localize(s.finished_on)+" ("+s.state_label+"/"+s.payment_mode_label+")"%>
-<%end-%>
-<%end-%>
+<%=render :partial=>"person"%>
 
 Cordialement,
 

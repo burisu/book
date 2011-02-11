@@ -225,6 +225,8 @@ fr-FR:
         person_id: Étudiant
         promotion_id: Promotion
         proposer_zone_id: Origine
+      payment:
+        payer_id: Payeur
 
       promotion:
         name: Promo

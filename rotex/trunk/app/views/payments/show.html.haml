@@ -10,3 +10,5 @@
         %td=@payment.send(column)
 -else
   %strong Paiement non reçu
+  -if [:cash, :check].include? @payment.mode.to_sym
+    %p="Veuillez remettre votre règlement au trésorier ("+Person.mandated_for(['tresor']).collect{|p| "<em>"+p.label+", "+p.address.gsub("\n", ", ")+"</em>"}.join(" ou ")+") pour que votre achat puisse être pris en compte" 
