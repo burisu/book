@@ -38,7 +38,7 @@ class SalesController < ApplicationController
     @sale = Sale.find_by_number(params[:id])
     @badpass = []
     if @sale.state == "C"
-      @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer=>@sale.client, :payer_email=>@sale.client_email) unless @sale.payment
+      @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer_id=>@sale.client_id, :payer_email=>@sale.client_email) unless @sale.payment
       @sale.save
       redirect_to edit_payment_url(@sale.payment)
       return 
@@ -52,7 +52,7 @@ class SalesController < ApplicationController
       end
       if @badpass.empty?
         @sale.update_attribute(:state, "C")
-        @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer=>@sale.client, :payer_email=>@sale.client_email)
+        @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer_id=>@sale.client_id, :payer_email=>@sale.client_email)
         @sale.save
         redirect_to edit_payment_url(@sale.payment)
       end

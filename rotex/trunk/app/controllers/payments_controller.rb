@@ -52,7 +52,7 @@ class PaymentsController < ApplicationController
       return
     end
     @title = "Choisir le mode de paiement #{@payment.number}"
-    if @payment.update_attributes(params[:payment])
+    if @payment.update_attribute(:mode, params[:payment][:mode])
       case @payment.mode.to_sym
       when :cash, :check
         flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."

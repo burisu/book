@@ -98,6 +98,7 @@ class Payment < ActiveRecord::Base
   end
 
   def before_validation
+    self.payer_email = self.payer.email if self.payer
     self.number ||= self.class.maximum(:number).succ
     self.used_amount = self.sales.sum(:amount)
   end
