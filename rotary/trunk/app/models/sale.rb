@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -16,9 +17,9 @@
 #  updated_at   :datetime      
 #
 
-# -*- coding: utf-8 -*-
 class Sale < ActiveRecord::Base
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+  has_many :lines, :class_name=>SaleLine.name, :dependent=>:destroy
   has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   validates_uniqueness_of :number
