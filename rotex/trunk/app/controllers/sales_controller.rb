@@ -13,7 +13,17 @@ class SalesController < ApplicationController
   def index
   end
 
+  dyta(:sale_lines, :conditions=>{:sale_id=>['session[:current_sale_id]']}, :export=>false) do |t|
+    t.column :name
+    t.column :description
+    t.column :quantity
+    t.column :unit_amount
+    t.column :amount
+  end
+
   def show
+    @sale = Sale.find_by_number(params[:id])
+    session[:current_sale_id] = @sale.id
   end
 
   def new
@@ -68,10 +78,9 @@ class SalesController < ApplicationController
       redirect_to (@sale.state == "P" ? sale_url(@sale) : fill_sale_url(@sale))
       return
     end
-    @title = "Choisir le mode de paiement #{@sale.number}"
     if request.post?
       if @sale.update_attribute(:payment_mode, params[:sale][:payment_mode])
-        case @sale.mode.to_sym
+        case @sale.payment_mode.to_sym
         when :cash, :check
           flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."
           Maily.deliver_notification(:waiting_sale, @current_person) if @current_person
@@ -81,7 +90,6 @@ class SalesController < ApplicationController
         end
       end
     end
-    render_form
   end
   
 

@@ -22,7 +22,6 @@ __admin__:
   - products::update
   - sales::index
   - sales::sales_dyta
-  - sales::show
   - zones::create
   - zones::destroy
   - zones::edit
@@ -113,6 +112,7 @@ __public__:
   - sales::fill
   - sales::new
   - sales::update
+  - sales::show
   - special
   - store::check_payment
 # translation missing: fr-FR, rights, mandates

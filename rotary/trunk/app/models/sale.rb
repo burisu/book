@@ -122,6 +122,7 @@ class Sale < ActiveRecord::Base
   end
 
   def before_validation
+    self.payment_mode ||= 'none'
     self.amount = self.lines.sum(:amount)
   end
 
@@ -161,7 +162,7 @@ class Sale < ActiveRecord::Base
   end
 
   def payment_mode_label
-    PAYMENT_MODES.detect{|x| x[1] == self.mode}[0]
+    PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}[0]
   end
 
   def state_label
