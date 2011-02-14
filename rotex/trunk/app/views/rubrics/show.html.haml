@@ -7,7 +7,7 @@
   -if @rubric.parent
     .parent="A pour rubrique parente "+link_to(@rubric.parent.name, :action=>:rubric, :id=>@rubric.parent_id)
   %ul.aclist
-    %li=link_to "Modifier", :action=>:rubric_update, :id=>@rubric.id
+    %li=link_to "Modifier", edit_rubric_url(@rubric)
   %h2 Articles de la rubrique
 
 =dyta(:rubric_articles)

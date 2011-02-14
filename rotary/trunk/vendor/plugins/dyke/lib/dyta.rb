@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Dyta
 module Ekylibre
   module Dyke
@@ -275,7 +276,7 @@ module Ekylibre
                       datum = "(#{datum}.nil? ? '' : number_to_currency(#{datum}, :separator=>',', :delimiter=>'&nbsp;', :unit=>'', :precision=>#{column.options[:precision]||2}))"
                     end
                     if column.options[:url] and nature==:body
-                    datum = "("+datum+".blank? ? '' : link_to("+datum+', url_for('+column.options[:url].inspect+'.merge({:id=>'+column.record(record)+'.id}))))'
+                    datum = "("+datum+".blank? ? '' : link_to("+datum+', url_for('+column.options[:url].inspect+'.merge({:id=>'+column.record(record)+'.to_param}))))'
                       css_class += ' url'
                     elsif column.options[:mode] == :download# and !datum.nil?
                       datum = "("+datum+".blank? ? '' : link_to("+value_image(:download)+", url_for_file_column("+record+",'#{column.name}')))"
@@ -604,7 +605,7 @@ module Ekylibre
             remote_options = remote_options.inspect.to_s
             remote_options = remote_options[1..-2]
             code  = "link_to_remote(#{image}"
-            code += ", {:url=>{:action=>:"+@name.to_s+", :id=>"+record+".id"+format+"}"
+            code += ", {:url=>{:action=>:"+@name.to_s+", :id=>"+record+".to_param"+format+"}"
             code += ", "+remote_options+"}"
             code += ", {:alt=>::I18n.t('general.#{verb}'), :title=>::I18n.t('general.#{verb}')}"
             code += ")"
@@ -614,7 +615,7 @@ module Ekylibre
             for a in @options[:actions]
               v = a[1][:action].to_s.split('_')[-1]
               cases << record+"."+@name.to_s+".to_s=="+a[0].inspect+"\nlink_to(image_tag('buttons/"+v+".png', :border=>0, :alt=>'"+a[0].to_s+"')"+
-                ", {"+(a[1][:controller] ? ':controller=>:'+a[1][:controller].to_s+', ' : '')+":action=>'"+a[1][:action].to_s+"', :id=>"+record+".id"+format+"}"+
+                ", {"+(a[1][:controller] ? ':controller=>:'+a[1][:controller].to_s+', ' : '')+":action=>'"+a[1][:action].to_s+"', :id=>"+record+".to_param"+format+"}"+
                 ", {:id=>'"+@name.to_s+"_'+"+record+".id.to_s"+(link_options.blank? ? '' : ", "+link_options)+", :alt=>::I18n.t('general.#{v}'), :title=>::I18n.t('general.#{v}')}"+
                 ")\n"
             end
@@ -624,7 +625,7 @@ module Ekylibre
             url = @options[:url] ||= {}
             url[:controller] ||= @options[:controller]
             url[:action] ||= @name
-            url[:id] ||= "RECORD.id"
+            url[:id] ||= "RECORD.to_param"
             url.delete_if{|k, v| v.nil?}
             url = "{"+url.collect{|k, v| ":#{k}=>"+(v.is_a?(String) ? v.gsub(/RECORD/, record) : v.inspect)}.join(", ")+format+"}"
             code = "{:id=>'"+@name.to_s+"_'+"+record+".id.to_s"+(link_options.blank? ? '' : ", "+link_options)+", :alt=>::I18n.t('general.#{verb}'), :title=>::I18n.t('general.#{verb}')}"

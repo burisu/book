@@ -15,4 +15,14 @@
 #
 
 class Rubric < ActiveRecord::Base
+  validates_uniqueness_of :code
+
+  def before_validation
+    self.code = self.name if self.code.blank?
+    self.code = self.code.to_s.parameterize
+  end
+
+  def to_param
+    self.code
+  end
 end

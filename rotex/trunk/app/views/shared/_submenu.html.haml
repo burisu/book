@@ -13,7 +13,7 @@
     %li=link_to "Écrire un article", {:controller=>:intra, :action=>:article_create}
     %li=link_to controller.conf.news_rubric.name, {:controller=>:intra, :action=>:reports}
     -for rubric in Rubric.find(:all, :order=>"name", :conditions=>["id != ?", controller.conf.news_rubric_id])
-      %li=link_to rubric.name, {:controller=>:intra, :action=>:rubric, :id=>rubric.code}
+      %li=link_to rubric.name, rubric_url(rubric)
   -if access?(:all)
     %h3 Administration
     %ul
@@ -28,7 +28,7 @@
     %ul
       -if access? :publishing
         %li=link_to("Articles", {:controller=>:intra, :action=>:articles})
-        %li=link_to("Rubriques", {:controller=>:intra, :action=>:rubrics})
+        %li=link_to("Rubriques", rubrics_url)
   -if access? [:users,:subscribing, :folders]
     %h3 Adhérents
     %ul

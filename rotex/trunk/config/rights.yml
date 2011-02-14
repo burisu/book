@@ -33,7 +33,9 @@ __admin__:
   - zones::update
 # translation missing: fr-FR, rights, __not_used__
 __not_used__:
-  actions: []
+  actions:
+  - payments::payments_dyta
+  - payments::receive
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
@@ -96,6 +98,10 @@ __public__:
   - guests::edit
   - guests::new
   - guests::update
+  - index
+  - intra::access_denied
+  - intra::approve
+  - intra::disapprove
   - payments::create
   - payments::destroy
   - payments::edit
@@ -103,10 +109,6 @@ __public__:
   - payments::new
   - payments::show
   - payments::update
-  - index
-  - intra::access_denied
-  - intra::approve
-  - intra::disapprove
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy
@@ -144,12 +146,15 @@ publishing:
   - intra::article_update
   - intra::articles
   - intra::articles_dyta
-  - intra::rubric_articles_dyta
-  - intra::rubric_create
-  - intra::rubric_delete
-  - intra::rubric_update
-  - intra::rubrics
-  - intra::rubrics_dyta
+  - rubrics::create
+  - rubrics::destroy
+  - rubrics::edit
+  - rubrics::index
+  - rubrics::new
+  - rubrics::rubric_articles_dyta
+  - rubrics::rubrics_dyta
+  - rubrics::show
+  - rubrics::update
 # translation missing: fr-FR, rights, subscribing
 subscribing:
   controller: subscriptions
