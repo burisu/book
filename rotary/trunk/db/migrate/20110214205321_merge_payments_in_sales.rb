@@ -5,11 +5,11 @@ class MergePaymentsInSales < ActiveRecord::Migration
     for column in PAYMENT_COLS
       add_column :sales, column, (column == :card_expired_on ? :date : :string)
     end
-    add_column :sales, :payment_mode, :string
+    add_column :sales, :payment_mode, :string, :null=>false, :default=>"none"
     add_index :sales, :payment_mode
     add_column :sales, :payment_number, :string
 
-    execute "UPDATE sales SET state=CASE WHEN p.received THEN 'P' ELSE state END, payment_mode = p.mode, payment_number=p.number, "+PAYMENT_COLS.collect{|c| "#{c}=p.#{c}"}.join(", ")+" FROM payments AS p WHERE sales.payment_id = p.id AND received"
+    execute "UPDATE sales SET state=CASE WHEN p.received IS TRUE THEN 'P' ELSE state END, payment_mode = p.mode, payment_number=p.number, "+PAYMENT_COLS.collect{|c| "#{c}=p.#{c}"}.join(", ")+" FROM payments AS p WHERE sales.payment_id = p.id"
     
     remove_column :sales, :payment_id
     drop_table :payments
