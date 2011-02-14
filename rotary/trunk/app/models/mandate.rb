@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: mandates
@@ -15,6 +14,7 @@
 #  zone_id      :integer       
 #
 
+# -*- coding: utf-8 -*-
 class Mandate < ActiveRecord::Base
   belongs_to :nature, :class_name=>MandateNature.name
 

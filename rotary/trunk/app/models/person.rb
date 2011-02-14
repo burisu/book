@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: people
@@ -48,6 +47,7 @@
 #  validation           :string(255)   
 #
 
+# -*- coding: utf-8 -*-
 require 'digest/sha2'
 
 class Person < ActiveRecord::Base

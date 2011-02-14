@@ -34,8 +34,6 @@ __admin__:
 # translation missing: fr-FR, rights, __not_used__
 __not_used__:
   actions:
-  - payments::payments_dyta
-  - payments::receive
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
@@ -65,7 +63,6 @@ __private__:
   - intra::report
   - intra::report_help
   - intra::reports
-  - intra::rubric
   - intra::story
   - intra::students
   - intra::students_dyta
@@ -102,13 +99,7 @@ __public__:
   - intra::access_denied
   - intra::approve
   - intra::disapprove
-  - payments::create
-  - payments::destroy
-  - payments::edit
-  - payments::index
-  - payments::new
-  - payments::show
-  - payments::update
+  - sales::pay
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy

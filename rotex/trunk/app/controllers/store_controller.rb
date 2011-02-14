@@ -12,7 +12,7 @@ class StoreController < ApplicationController
         flash.now[:error] = "Attention le nombre d'années doit être strictement positif"
         return
       end
-      @subscription = Subscription.create!(:person_id=>@current_person.id, :payment_mode=>"card", :begun_on=>@start, :finished_on=>@start+duration.years-1, :amount=>duration*@unit_price, :state=>"I")
+      @subscription = Subscription.create!(:person_id=>@current_person.id, :sale_mode=>"card", :begun_on=>@start, :finished_on=>@start+duration.years-1, :amount=>duration*@unit_price, :state=>"I")
       redirect_to :action=>:summary, :id=>@subscription.id
     else
       Subscription.delete_all(:person_id=>@current_person.id, :state=>'I')
@@ -70,22 +70,21 @@ class StoreController < ApplicationController
   protected
 
   def validate_payment(no_redirect = false)
-    unless @payment = Payment.find_by_number(params["R"])
+    unless @sale = Sale.find_by_number(params["R"])
       flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réeessayer."
       redirect_to :action=>:index unless no_redirect
       return 
     end
-    if @payment.mode == "card"
-      for k, v in Payment.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
-        @payment.send("#{k}=", params[v])
+    if @sale.payment_mode == "card"
+      for k, v in Sale.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
+        @sale.send("#{k}=", params[v])
       end
-      @payment.save
-      if @payment.error_code == "00000"
+      @sale.save
+      if @sale.error_code == "00000"
         flash[:notice] = "La transaction a été validée."
-        @payment.received = true
-        @payment.save
+        @sale.terminate
       else
-        flash[:error] = "Une erreur s'est produite #{@payment.error_message}"
+        flash[:error] = "Une erreur s'est produite #{@sale.error_message}"
       end
     end    
   end

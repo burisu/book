@@ -6,6 +6,8 @@ class SalesController < ApplicationController
     t.column :client_email
     t.column :comment
     t.column :state
+    t.column :payment_mode
+    t.column :payment_number
   end
 
   def index
@@ -38,9 +40,8 @@ class SalesController < ApplicationController
     @sale = Sale.find_by_number(params[:id])
     @badpass = []
     if @sale.state == "C"
-      @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer_id=>@sale.client_id, :payer_email=>@sale.client_email) unless @sale.payment
       @sale.save
-      redirect_to edit_payment_url(@sale.payment)
+      redirect_to pay_sale_url(@sale)
       return 
     end
     @title = "Remplissez votre panier #{@sale.number}"
@@ -52,11 +53,35 @@ class SalesController < ApplicationController
       end
       if @badpass.empty?
         @sale.update_attribute(:state, "C")
-        @sale.create_payment(:amount=>@sale.amount, :mode=>"none", :payer_id=>@sale.client_id, :payer_email=>@sale.client_email)
         @sale.save
-        redirect_to edit_payment_url(@sale.payment)
+        for line in @sale.lines
+          line.destroy if line.quantity.zero?
+        end
+        redirect_to pay_sale_url(@sale)
       end
     end
+  end
+  
+  def pay
+    @sale = Sale.find_by_number(params[:id])
+    if @sale.state != "C"
+      redirect_to (@sale.state == "P" ? sale_url(@sale) : fill_sale_url(@sale))
+      return
+    end
+    @title = "Choisir le mode de paiement #{@sale.number}"
+    if request.post?
+      if @sale.update_attribute(:payment_mode, params[:sale][:payment_mode])
+        case @sale.mode.to_sym
+        when :cash, :check
+          flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."
+          Maily.deliver_notification(:waiting_sale, @current_person) if @current_person
+          redirect_to sale_url(@sale)
+        when :card
+          redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.payer_email, :PBX_RETOUR=>Payment.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>url_for(:controller=>:store, :action=>:finished), :PBX_REFUSE=>url_for(:controller=>:store, :action=>:refused), :PBX_ANNULE=>url_for(:controller=>:store, :action=>:cancelled)
+        end
+      end
+    end
+    render_form
   end
   
 
