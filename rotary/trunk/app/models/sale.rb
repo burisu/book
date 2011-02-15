@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -140,9 +141,9 @@ class Sale < ActiveRecord::Base
   end
   
   def after_save
-    if @deliver_mail
-      Maily.deliver_has_subscribed(self.person, self)
-      Maily.deliver_notification(:has_subscribed, self.person, self.responsible)
+    if @deliver_mail and self.client
+      Maily.deliver_has_subscribed(self.client, self)
+      Maily.deliver_notification(:has_subscribed, self.client, self.responsible)
     end
   end
 
