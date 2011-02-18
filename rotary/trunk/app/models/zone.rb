@@ -16,6 +16,10 @@
 
 # -*- coding: utf-8 -*-
 class Zone < ActiveRecord::Base
+  belongs_to :country
+  belongs_to :nature, :class_name=>ZoneNature.name
+  belongs_to :parent, :class_name=>Zone.name
+
   # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
   named_scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name
   

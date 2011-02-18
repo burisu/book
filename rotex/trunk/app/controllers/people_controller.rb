@@ -59,13 +59,7 @@ class PeopleController < ApplicationController
 
 
 
-
-
-
-
-
-
-  dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:current_person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
+  dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
     t.column :title, :url=>{:action=>:article}
     t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
     t.column :updated_at
@@ -74,13 +68,13 @@ class PeopleController < ApplicationController
     t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
   end
 
-  dyta(:person_mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
+  dyta(:person_mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
     t.column :name, :through=>:nature
     t.column :begun_on
     t.column :finished_on
   end
 
-  dyta(:person_subscriptions, :model=>:subscriptions, :conditions=>{:person_id=>['session[:current_person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
+  dyta(:person_subscriptions, :model=>:subscriptions, :conditions=>{:person_id=>['session[:person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
     t.column :number, :class=>"code"
     t.column :begun_on
     t.column :finished_on
@@ -94,6 +88,7 @@ class PeopleController < ApplicationController
 
   def show
     @person = Person.find_by_id(params[:id])
+    session[:person_id] = @person.id    
     redirect_to people_url if @person.nil?
     @subscriptions = @person.subscriptions
     @mandates = @person.mandates
@@ -148,6 +143,33 @@ class PeopleController < ApplicationController
     end
     render_form
   end
+  
+
+  def myself
+    @person = Person.find(session[:current_person_id])
+    session[:person_id] = @person.id
+    if params[:mode] == "card"
+      send_file visit_card(@person), :filename=>"#{@person.label}.pdf", :type=>"application/pdf"
+    end
+  end
+
+  def update_myself
+    @person = Person.find(session[:current_person_id])
+    if request.post?
+      params2 = {}
+      if @current_person.admin?
+        params2 = params[:person]||{}
+      else
+        [:address, :phone, :phone2, :fax, :mobile, :photo].each {|x| params2[x] = params[:person][x] if params[:person].has_key? x}
+      end
+      @person.attributes = params2
+      @person.forced = true
+      if @person.save
+        redirect_to :action=>:profile
+      end
+    end
+  end
+
   
   def lock
     # >> :users

@@ -20,6 +20,9 @@
 
 
 class Article < ActiveRecord::Base
+  belongs_to :author, :class_name=>Person.name
+  belongs_to :language
+  belongs_to :rubric
     
   validates_presence_of :rubric_id
 

@@ -17,6 +17,9 @@
 
 class SaleLine < ActiveRecord::Base
   attr_accessor :password
+  belongs_to :product
+  belongs_to :sale
+  has_many :guests
 
 
   def before_validation
@@ -30,6 +33,10 @@ class SaleLine < ActiveRecord::Base
     self.quantity = 0.0 if self.quantity < 0
     self.amount = self.quantity * self.unit_amount
   end
+  
+  def validate
+    errors.add(:quantity, :less_than_or_equal_to, :count=>self.product.current_quantity) if self.quantity > self.product.current_quantity
+  end 
 
   def after_save
     self.sale.save

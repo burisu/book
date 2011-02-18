@@ -19,7 +19,9 @@ ActionController::Routing::Routes.draw do |map|
 
   
   map.resources :mandates, :as=>"mandats", :except=>[:show]
-  map.resources :people, :as=>"personnes"
+  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post]}
+
+  # map.resource :myself, :as=>"mon-compte"
 
   
   #map.resource :myself, :as=>"mon-compte" do |myself|

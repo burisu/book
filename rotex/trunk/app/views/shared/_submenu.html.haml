@@ -1,7 +1,7 @@
 %td.submenu{:valign=>"top"}
   %h3=@current_person.label
   %ul
-    %li=link_to "Mon compte", {:controller=>:intra, :action=>:profile}
+    %li=link_to "Mon compte", myself_people_url
     -if @current_person.student
       %li=link_to "Mon voyage", (@current_person.promotion ? {:controller=>:intra, :action=>:folder, :id=>@current_person.id} : {:controller=>:intra, :action=>:folder_create})
       %li=link_to "Ma galerie", {:controller=>:intra, :action=>:gallery}

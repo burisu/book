@@ -26,6 +26,8 @@
 #
 
 class Product < ActiveRecord::Base
+  has_many :guests
+  has_many :sale_lines
 
   named_scope :usable, :conditions=>["active AND NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
   named_scope :saleable_to, lambda { |p|
@@ -39,4 +41,10 @@ class Product < ActiveRecord::Base
     self.personal = false if self.subscribing?
     return true
   end
+  
+  def empty_stock?
+    # return (self.storable? and SaleLine.sum(:quantity, :joins=>:sale, :conditions=>["product_id=? AND sale.state IN (?)", self.id, ['C', 'P']])<= self.initial_quantity) or not self.storable?
+    return ((self.storable? and self.current_quantity > 0) or not self.storable? ? true : false)
+  end
+  
 end

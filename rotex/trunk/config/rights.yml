@@ -57,8 +57,8 @@ __private__:
   - intra::period_remove_member
   - intra::pick_image
   - intra::preview
-  - intra::profile
-  - intra::profile_update
+  - people::myself
+  - people::update_myself
   - intra::report
   - intra::report_help
   - intra::reports

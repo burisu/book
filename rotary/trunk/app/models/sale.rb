@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -29,6 +28,7 @@
 #  updated_at           :datetime      
 #
 
+# -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 class Sale < ActiveRecord::Base
   PAYMENT_MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"], ["A payer", "none"]]
@@ -94,6 +94,8 @@ class Sale < ActiveRecord::Base
     "00199"=>"incident domaine initiateur."
   }
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+  belongs_to :client, :class_name=>Person.name
+  has_many :guests
   has_many :lines, :class_name=>SaleLine.name, :dependent=>:destroy
   has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true

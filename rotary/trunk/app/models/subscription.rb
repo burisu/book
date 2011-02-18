@@ -15,8 +15,11 @@
 #
 
 class Subscription < ActiveRecord::Base
-  validates_uniqueness_of :number
   attr_readonly :number
+  belongs_to :person
+  belongs_to :sale
+  belongs_to :sale_line
+  validates_uniqueness_of :number
 
   def before_validation_on_create
     last = self.class.find(:first, :order=>"id DESC")

@@ -8,8 +8,7 @@ class IntraController < ApplicationController
 
 
   def index
-    profile
-    render :action=>:profile
+    redirect_to myself_people_url
   end
   
   def approve
@@ -109,31 +108,6 @@ class IntraController < ApplicationController
 
 
 
-  def profile
-    @person = Person.find(session[:current_person_id])
-    if params[:mode] == "card"
-      send_file visit_card(@person), :filename=>"#{@person.label}.pdf", :type=>"application/pdf"
-    end
-  end
-
-  def profile_update
-    @person = Person.find(session[:current_person_id])
-    if request.post?
-      params2 = {}
-      if @current_person.admin?
-        params2 = params[:person]||{}
-      else
-        [:address, :phone, :phone2, :fax, :mobile, :photo].each {|x| params2[x] = params[:person][x] if params[:person].has_key? x}
-      end
-      @person.attributes = params2
-      @person.forced = true
-      if @person.save
-        redirect_to :action=>:profile
-      end
-    end
-  end
-
-
 
   def folder
     if params[:id].blank? or (not access?(:folders) and params[:id] != session[:current_person_id].to_s)
@@ -170,7 +144,7 @@ class IntraController < ApplicationController
     @zones = Zone.list(["zones.nature_id=?",@zone_nature.id]) # find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
-      redirect_to :action=>:profile 
+      redirect_to myself_people_url 
       return
     end
     if request.post?
@@ -197,7 +171,7 @@ class IntraController < ApplicationController
     @zones = Zone.list(["zones.nature_id=?",@zone_nature.id]) # find(:all, :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=?",@zone_nature.id], :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
     if @zones.empty?    
       flash[:warning] = 'Vous ne pouvez pas modifier votre voyage actuellement. Réessayez plus tard.'
-      redirect_to :action=>:profile 
+      redirect_to myself_people_url 
       return
     end
     if request.post?
@@ -432,7 +406,7 @@ class IntraController < ApplicationController
         for k,v in params[:mandate_natures]||[]
           @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
         end
-        redirect_to :action=>:profile
+        redirect_to myself_people_url
       end 
     else
       @article = Article.new(:rubric_id=>params[:rubric_id])
@@ -708,7 +682,7 @@ class IntraController < ApplicationController
         begin
           Maily.deliver_message(@current_person, params[:mail])
           flash[:notice] = 'Votre message a été envoyé.'
-          redirect_to :action=>:profile
+          redirect_to myself_people_url
         rescue
           flash[:error] = "Votre message n'a pas pu être envoyé."
         end

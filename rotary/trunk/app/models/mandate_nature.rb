@@ -69,7 +69,9 @@ end
 
 
 class MandateNature < ActiveRecord::Base
-
+  belongs_to :parent, :class_name=>MandateNature.name
+  belongs_to :zone_nature
+  has_many :mandate
   RIGHTS = {:all=>"Administrator", 
     :home=>"Manage articles of the home page",
     :blog=>"Gérer les articles de blog",

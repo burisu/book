@@ -21,7 +21,13 @@
 #
 
 class Configuration < ActiveRecord::Base
-
+  belongs_to :about_article, :class_name=>Article.name
+  belongs_to :agenda_rubric, :class_name=>Rubric.name
+  belongs_to :contact_article, :class_name=>Article.name
+  belongs_to :help_article, :class_name=>Article.name
+  belongs_to :home_rubric, :class_name=>Rubric.name
+  belongs_to :legals_article, :class_name=>Article.name
+  belongs_to :news_rubric, :class_name=>Rubric.name
 
   def self.parameter(*args)
     self.find(:first, :order=>"id").send(*args)

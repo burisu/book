@@ -23,6 +23,8 @@
 #
 
 class Period < ActiveRecord::Base
+  belongs_to :country
+  belongs_to :person
   
   attr_readonly :person_id
 

@@ -18,23 +18,26 @@
       %tr.p
         %td
           =render :partial=>"products/product", :object=>line.product
-          -if line.product.passworded?
-            .opt 
-              ="Veuillez saisir le code confidentiel qui vous est fourni pour cet achat"
-              =text_field("line[]", :password, :size=>15, :object=>line)
-              -if @badpass.include? line.id
-                %strong=" Mot de passe erroné"
           .opt
-            -if line.product.personal?
-              ="Liste des invités :"
-              %ul
-                -for guest in line.guests
-                  %li
-                    ="#{guest.first_name} #{guest.last_name}, #{guest.email}, #{guest.annotation}, "+link_to("Modifier", edit_sale_line_guest_url(@sale, line, guest))+", "+link_to("Supprimer", sale_line_guest_url(@sale, line, guest), :method=>:delete)
-                %li=link_to("Ajouter un invité", new_sale_line_guest_url(@sale, line))
+            -if line.product.empty_stock?
+              -if line.product.personal?
+                ="Liste des invités :"
+                %ul
+                  -for guest in line.guests
+                    %li
+                      ="#{guest.first_name} #{guest.last_name}, #{guest.email}, #{guest.annotation}, "+link_to("Modifier", edit_sale_line_guest_url(@sale, line, guest))+", "+link_to("Supprimer", sale_line_guest_url(@sale, line, guest), :method=>:delete)
+                  %li=link_to("Ajouter un invité", new_sale_line_guest_url(@sale, line))
+              -else
+                =link_to("Ajouter un élément (+1)", increment_sale_line_url(@sale, line), :method=>:post)+", "
+                =link_to("Enlever un élément (-1)", decrement_sale_line_url(@sale, line), :method=>:post)
+              -if line.product.passworded?
+                .opt 
+                  ="Veuillez saisir le code confidentiel qui vous est fourni pour cet achat juste avant de valider cotre commande"
+                  =text_field("line[]", :password, :size=>15, :object=>line)
+                  -if @badpass.include? line.id
+                    %strong=" Mot de passe erroné"
             -else
-              =link_to("Ajouter un élément (+1)", increment_sale_line_url(@sale, line), :method=>:post)+", "
-              =link_to("Enlever un élément (-1)", decrement_sale_line_url(@sale, line), :method=>:post)
+              %strong="Produit non disponible en stock"
         %td=line.quantity.to_i.to_s+" "+line.product.unit
         %td.dec=line.amount.to_s+" €"
   .actions

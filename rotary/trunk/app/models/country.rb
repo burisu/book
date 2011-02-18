@@ -13,6 +13,8 @@
 #
 
 class Country < ActiveRecord::Base
+  belongs_to :language
+  has_many :zones
   validates_uniqueness_of :iso3166
 
   def available_authors(conditions={})

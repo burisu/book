@@ -15,6 +15,9 @@
 
 class Question < ActiveRecord::Base
   acts_as_list :scope=>:questionnaire
+  belongs_to :questionnaire
+  belongs_to :theme
+  has_many :answer_items
   validates_presence_of :theme_id
 
   def validate

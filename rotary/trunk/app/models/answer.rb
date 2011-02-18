@@ -14,8 +14,10 @@
 #
 
 class Answer < ActiveRecord::Base
-  validates_uniqueness_of :person_id, :scope=>:questionnaire_id
+  belongs_to :person
+  belongs_to :questionnaire
   has_many :items, :class_name=>AnswerItem.name, :dependent=>:destroy
+  validates_uniqueness_of :person_id, :scope=>:questionnaire_id
 
   def before_validation
     self.created_on ||= Date.today

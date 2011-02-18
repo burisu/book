@@ -15,6 +15,8 @@
 #
 
 class Rubric < ActiveRecord::Base
+  belongs_to :parent, :class_name=>Rubric.name
+  has_many :articles
   validates_uniqueness_of :code
 
   def before_validation

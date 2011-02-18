@@ -17,6 +17,10 @@
 #
 
 class Guest < ActiveRecord::Base
+  belongs_to :product
+  belongs_to :sale
+  belongs_to :sale_line
+  belongs_to :zone
 
   def before_validation
     if self.sale_line

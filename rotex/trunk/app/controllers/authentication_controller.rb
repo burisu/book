@@ -14,13 +14,13 @@ class AuthenticationController < ApplicationController
         session[:current_person_id]=person.id
         session[:rights] = person.rights
         @@configuration.reload
-          redirect_to :controller=>:intra, :action=>:profile
+          redirect_to myself_people_url
       else
         flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
     else
       if session[:current_person_id]
-        redirect_to :controller=>:intra
+        redirect_to myself_people_url
       end
     end
   end
@@ -111,7 +111,7 @@ class AuthenticationController < ApplicationController
       @person.password_confirmation = params[:person][:password_confirmation]
       if @person.save
         flash[:notice] = 'Votre mot de passe a été mis à jour avec succès !'
-        redirect_to :controller=>:intra, :action=>:profile
+        redirect_to myself_people_url
       end
     end
   end
@@ -125,7 +125,7 @@ class AuthenticationController < ApplicationController
       if @person.save
         Maily.deliver_new_mail(@person)
         flash[:notice] = 'L\'e-mail à valider a été envoyé à l\'adresse '+@person.replacement_email
-        redirect_to :controller=>:intra, :action=>:profile
+        redirect_to myself_people_url
       end
     end
   end

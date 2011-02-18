@@ -21,6 +21,7 @@
 #
 
 class Member < ActiveRecord::Base
+  belongs_to :person
 
   def name
     self.first_name+' '+self.last_name

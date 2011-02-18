@@ -39,29 +39,13 @@
 -if access? :subscribing
   %ul.aclist
     %li=link_to "Ajouter une cotisation", {:action=>:subscription_create, :id=>@person.id}
-=print_table :subscriptions do |t|
-  -t.datum :number
-  -t.datum :begun_on
-  -t.datum :finished_on
-  -# t.datum :amount
-  -# t.datum :payment_mode_label
-  -# t.datum :state_label
-  -# t.action :action=>:destroy, :controller=>:subscriptions, :method=>:delete, :confirm=>'Are you sure?' if access? :subscribing
+  =dyta :person_subscriptions
 
 %h2 Articles
-=print_table :articles do |t|
-  -t.datum :title
-  -t.datum :done_on
-  -t.datum :name, :through=>:rubric, :label=>"Rubrique"
-  -t.action :action=>:article_update, :image=>:edit if access? :publishing
+=dyta :person_articles
 
 %h2 Mandats
 -if access?
   %ul.aclist
     %li=link_to "Ajouter un mandat",{:action=>:mandates_create, :id=>@person.id}
-=print_table :mandates do |t|
-  -t.datum :begun_on
-  -t.datum :finished_on
-  -t.datum :name, :through=>:nature
-  -# t.action :controller=>:admin, :action=>:edit_mandate, :image=>:edit if access?
-  -t.action :action=>:mandates_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?' if access?
+=dyta :person_mandates

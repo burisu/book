@@ -12,7 +12,8 @@
 #
 
 class Theme < ActiveRecord::Base
-  
+  has_many :questions
+
   def foreground_color
     Theme.gradient(self.color+"FF", "#00002260")
   end

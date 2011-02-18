@@ -15,6 +15,8 @@
 #
 
 class Questionnaire < ActiveRecord::Base
+  belongs_to :promotion
+  has_many :answers
   has_many :questions, :dependent => :destroy
   validates_presence_of :started_on, :stopped_on, :promotion_id
   

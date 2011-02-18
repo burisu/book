@@ -58,6 +58,23 @@ class Person < ActiveRecord::Base
   attr_accessor :forced
   attr_protected :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
+  belongs_to :arrival_country, :class_name=>Country.name
+  belongs_to :arrival_person, :class_name=>Person.name
+  belongs_to :country
+  belongs_to :departure_country, :class_name=>Country.name
+  belongs_to :departure_person, :class_name=>Person.name
+  # belongs_to :family
+  belongs_to :host_zone, :class_name=>Zone.name
+  belongs_to :promotion
+  belongs_to :proposer_zone, :class_name=>Zone.name
+  belongs_to :sponsor_zone, :class_name=>Zone.name
+  has_many :answers
+  has_many :articles, :foreign_key=>:author_id
+  has_many :images
+  has_many :members
+  has_many :periods
+  has_many :sales
+  has_many :subscriptions
   has_many :orders, :class_name=>Sale.name, :conditions=>{:state=>'C'}
   has_many :mandates
   has_many :versions, :class_name=>PersonVersion.name, :dependent=>:delete_all

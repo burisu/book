@@ -12,6 +12,9 @@
 #
 
 class Promotion < ActiveRecord::Base
+  has_many :people
+  has_many :questionnaires
+  
   def code
     self.name.gsub(/\s+/,'')
   end
