@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: mandates
@@ -14,7 +15,6 @@
 #  zone_id      :integer       
 #
 
-# -*- coding: utf-8 -*-
 class Mandate < ActiveRecord::Base
   belongs_to :nature, :class_name=>MandateNature.name
 
@@ -26,6 +26,10 @@ class Mandate < ActiveRecord::Base
         errors.add(:zone_id, "doit être du type #{self.nature.zone_nature.inspect}")
       end
     end
+  end
+
+  def active?(active_on=Date.today)
+    self.dont_expire? or ((self.begun_on||active_on) <= active_on and active_on <= (self.finished_on||active_on))
   end
 
   def self.all_current(options={})

@@ -43,10 +43,10 @@
   -t.datum :number
   -t.datum :begun_on
   -t.datum :finished_on
-  -t.datum :amount
-  -t.datum :payment_mode_label
-  -t.datum :state_label
-  -t.action :action=>:subscription_delete, :image=>:destroy, :method=>:post, :confirm=>'Are you sure?' if access? :subscribing
+  -# t.datum :amount
+  -# t.datum :payment_mode_label
+  -# t.datum :state_label
+  -# t.action :action=>:destroy, :controller=>:subscriptions, :method=>:delete, :confirm=>'Are you sure?' if access? :subscribing
 
 %h2 Articles
 =print_table :articles do |t|

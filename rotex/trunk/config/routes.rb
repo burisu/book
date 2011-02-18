@@ -1,10 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.simple_captcha '/captcha/:action', :controller => 'simple_captcha'
+
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products,  :as=>"produits", :except=>[:show]
   map.resources :zones, :collection=>{:refresh=>:post}
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
+
 
   map.resources :rubrics, :as=>"rubriques"
 
@@ -14,8 +17,9 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
 
-
-  map.resources :people
+  
+  map.resources :mandates, :as=>"mandats", :except=>[:show]
+  map.resources :people, :as=>"personnes"
 
   
   #map.resource :myself, :as=>"mon-compte" do |myself|
@@ -55,7 +59,6 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "home"
 
   # See how all your routes lay out with "rake routes"
-  map.simple_captcha '/captcha/:action', :controller => 'simple_captcha'
 
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'

@@ -33,15 +33,11 @@
     %h3 Adhérents
     %ul
       -if access? :users
-        %li=link_to("Personnes", {:controller=>:intra, :action=>:people})
+        %li=link_to("Personnes", people_url)
       -if access? :subscribing
         %li=link_to("Adhésions", subscriptions_url)
         %li=link_to("Ventes", sales_url)
-      -if false # access? :subscribing
-        %li=link_to("Adhérents", {:controller=>:intra, :action=>:subscribers})
-        %li=link_to("Non-adhérents", {:controller=>:intra, :action=>:non_subscribers})
-        %li=link_to("Futurs non-adhérents", {:controller=>:intra, :action=>:new_non_subscribers})
       -if access?
-        %li=link_to("Mandats", {:controller=>:intra, :action=>:mandates})
+        %li=link_to("Mandats", mandates_url)
       -if access? [:folders, :promotions]
         %li=link_to("Promotions", {:controller=>:intra, :action=>:promotions})

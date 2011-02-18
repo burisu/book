@@ -1,4 +1,4 @@
-# translation missing: fr-FR, rights, __admin__
+# Réservé aux administrateurs
 __admin__:
   actions:
   - countries::create
@@ -30,10 +30,10 @@ __admin__:
   - zones::refresh
   - zones::show
   - zones::update
-# translation missing: fr-FR, rights, __not_used__
+# Actions sans droits
 __not_used__:
-  actions:
-# translation missing: fr-FR, rights, __private__
+  actions: []
+# Réservé aux membres en règle
 __private__:
   actions:
   - intra::article
@@ -65,7 +65,7 @@ __private__:
   - intra::story
   - intra::students
   - intra::students_dyta
-# translation missing: fr-FR, rights, __protected__
+# Réservé à tous les membres (en règle ou pas)
 __protected__:
   actions:
   - store::cancelled
@@ -73,7 +73,7 @@ __protected__:
   - store::index
   - store::refused
   - store::summary
-# translation missing: fr-FR, rights, __public__
+# Accès public sans restrictions
 __public__:
   controller: home
   actions:
@@ -98,7 +98,6 @@ __public__:
   - intra::access_denied
   - intra::approve
   - intra::disapprove
-  - sales::pay
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy
@@ -111,21 +110,27 @@ __public__:
   - sales::edit
   - sales::fill
   - sales::new
-  - sales::update
+  - sales::pay
+  - sales::sale_lines_dyta
   - sales::show
+  - sales::update
   - special
   - store::check_payment
-# translation missing: fr-FR, rights, mandates
+# Gérer les mandats
 mandates:
   actions:
-  - intra::mandates
-  - intra::mandates_create
-  - intra::mandates_delete
-  - intra::mandates_update
-# translation missing: fr-FR, rights, promotions
+  - mandates::create
+  - mandates::destroy
+  - mandates::edit
+  - mandates::index
+  - mandates::mandates_dyta
+  - mandates::new
+  - mandates::people_dyli
+  - mandates::update
+# Gérer les promotions
 promotions:
   actions: [intra::promotion_people_dyta, intra::promotions]
-# translation missing: fr-FR, rights, publishing
+# Gérer la publication
 publishing:
   actions:
   - intra::article_activate
@@ -146,7 +151,7 @@ publishing:
   - rubrics::rubrics_dyta
   - rubrics::show
   - rubrics::update
-# translation missing: fr-FR, rights, subscribing
+# Gérer les adhésions
 subscribing:
   controller: subscriptions
   actions:
@@ -159,18 +164,20 @@ subscribing:
   - people_dyli
   - subscriptions_dyta
   - update
-# translation missing: fr-FR, rights, users
+# Gérer les personnes/utilisateurs
 users:
-  controller: intra
+  controller: people
   actions:
-  - people
+  - create
+  - destroy
+  - edit
+  - index
+  - lock
+  - new
   - people_dyta
-  - person
   - person_articles_dyta
-  - person_create
-  - person_delete
-  - person_lock
   - person_mandates_dyta
   - person_subscriptions_dyta
-  - person_unlock
-  - person_update
+  - show
+  - unlock
+  - update

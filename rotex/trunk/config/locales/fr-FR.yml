@@ -185,6 +185,7 @@ fr-FR:
         begun_on: Du
         finished_on: Au
         nature_id: Nature
+        zone_id: Zone
       period:
         begun_on: Date de début
         finished_on: Date de fin
@@ -260,7 +261,21 @@ fr-FR:
         state: État
         person_id: Adhérent
         created_at: Créée le
-      
+
+  rights:
+    __admin__: Réservé aux administrateurs
+    __not_used__: Actions sans droits
+    __private__: Réservé aux membres en règle
+    __protected__: Réservé à tous les membres (en règle ou pas)
+    __public__: Accès public sans restrictions
+    mandates: Gérer les mandats
+    promotions: Gérer les promotions
+    subscribing: Gérer les adhésions
+    publishing: Gérer la publication
+    users: Gérer les personnes/utilisateurs
+
+
+    
   app:
     no_records: 'Pas d''enregistrements'    
     
