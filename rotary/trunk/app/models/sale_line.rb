@@ -20,6 +20,7 @@ class SaleLine < ActiveRecord::Base
   belongs_to :product
   belongs_to :sale
   has_many :guests
+  has_one :subscription
 
 
   def before_validation

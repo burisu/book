@@ -2,6 +2,13 @@ class ProductsController < ApplicationController
 
   def index
   end
+  
+  def check
+    for product in Product.storables
+      product.refresh_stock
+    end
+    redirect_to products_url
+  end
 
   def new
     @product = Product.new(:password=>Person.generate_password(8).upper)

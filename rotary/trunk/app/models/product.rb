@@ -28,7 +28,9 @@
 class Product < ActiveRecord::Base
   has_many :guests
   has_many :sale_lines
+  has_many :order_lines, :class_name=>SaleLine.name, :include=>:sale, :conditions=>["sales.state IN (?)", ["C", "P"]]
 
+  named_scope :storables, :conditions=>{:storable=>true}, :order=>:name
   named_scope :usable, :conditions=>["active AND NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
   named_scope :saleable_to, lambda { |p|
     {:conditions=>["active AND (subscribing = ? OR subscribing IS FALSE) AND NOT deadlined OR (deadlined AND CURRENT_DATE BETWEEN started_on AND stopped_on)", !p.nil?], :order=>:name} 
@@ -45,6 +47,12 @@ class Product < ActiveRecord::Base
   def empty_stock?
     # return (self.storable? and SaleLine.sum(:quantity, :joins=>:sale, :conditions=>["product_id=? AND sale.state IN (?)", self.id, ['C', 'P']])<= self.initial_quantity) or not self.storable?
     return ((self.storable? and self.current_quantity > 0) or not self.storable? ? true : false)
+  end
+
+  def refresh_stock
+    self.current_quantity = self.initial_quantity - self.order_lines.sum(:quantity)
+    self.save
+    return self
   end
   
 end

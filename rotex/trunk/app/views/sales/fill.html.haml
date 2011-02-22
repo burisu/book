@@ -27,9 +27,16 @@
                     %li
                       ="#{guest.first_name} #{guest.last_name}, #{guest.email}, #{guest.annotation}, "+link_to("Modifier", edit_sale_line_guest_url(@sale, line, guest))+", "+link_to("Supprimer", sale_line_guest_url(@sale, line, guest), :method=>:delete)
                   %li=link_to("Ajouter un invité", new_sale_line_guest_url(@sale, line))
+              -elsif line.product.subscribing?
+                -if line.quantity > 0
+                  =link_to("Je ne souhaite pas adhérer pour cette période", decrement_sale_line_url(@sale, line), :method=>:post)
+                -else
+                  =link_to("Je souhaite adhérer pour cette période", increment_sale_line_url(@sale, line), :method=>:post)
               -else
-                =link_to("Ajouter un élément (+1)", increment_sale_line_url(@sale, line), :method=>:post)+", "
-                =link_to("Enlever un élément (-1)", decrement_sale_line_url(@sale, line), :method=>:post)
+                -if line.quantity <= line.product.current_quantity
+                  =link_to("Ajouter un élément (+1)", increment_sale_line_url(@sale, line), :method=>:post)
+                -if line.quantity > 0
+                  =link_to("Enlever un élément (-1)", decrement_sale_line_url(@sale, line), :method=>:post)
               -if line.product.passworded?
                 .opt 
                   ="Veuillez saisir le code confidentiel qui vous est fourni pour cet achat juste avant de valider cotre commande"

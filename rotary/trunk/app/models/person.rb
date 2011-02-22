@@ -73,7 +73,7 @@ class Person < ActiveRecord::Base
   has_many :images
   has_many :members
   has_many :periods
-  has_many :sales
+  has_many :sales, :foreign_key=>"client_id"
   has_many :subscriptions
   has_many :orders, :class_name=>Sale.name, :conditions=>{:state=>'C'}
   has_many :mandates

@@ -30,7 +30,8 @@ class SalesController < ApplicationController
 
   def new
     if @current_person
-      sale = Sale.create(:client=>@current_person)
+      sale = @current_person.sales.find(:first, :conditions=>{:state=>'I'}, :order=>"id DESC")
+      sale ||= Sale.create(:client=>@current_person)
       redirect_to fill_sale_url(sale)
       return
     end

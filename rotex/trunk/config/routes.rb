@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
-  map.resources :products,  :as=>"produits", :except=>[:show]
+  map.resources :products,  :as=>"produits", :except=>[:show], :collection=>{:check=>:post}
   map.resources :zones, :collection=>{:refresh=>:post}
   map.resources :mandate_natures, :as=>"types-de-mandat", :except=>[:show]
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}

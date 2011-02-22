@@ -98,6 +98,7 @@ class Sale < ActiveRecord::Base
   has_many :guests
   has_many :lines, :class_name=>SaleLine.name, :dependent=>:destroy
   has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product
+  has_many :subscriptions, :dependent=>:destroy
   apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   validates_uniqueness_of :number
   attr_readonly :number
@@ -147,6 +148,18 @@ class Sale < ActiveRecord::Base
       Maily.deliver_has_subscribed(self.client, self)
       Maily.deliver_notification(:has_subscribed, self.client, self.responsible)
     end
+    if self.state == 'P'
+      for line in self.lines    
+        if line.quantity > 0 and line.product.subscribing?
+          line.build_subscription unless self.subscription
+          line.subscription.update_attributes(:begun_on=>line.product.subscribing_started_on, :finished_on=>line.product.subscribing_stopped_on, :person_id=>self.client_id, :sale_id=>self.id)
+          line.subscription.save
+        end
+      end
+    else
+      self.subscriptions.clear
+    end
+
   end
 
   def confirm
