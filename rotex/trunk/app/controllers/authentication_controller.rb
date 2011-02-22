@@ -14,7 +14,7 @@ class AuthenticationController < ApplicationController
         session[:current_person_id]=person.id
         session[:rights] = person.rights
         @@configuration.reload
-          redirect_to myself_people_url
+        redirect_to(params[:redirect] ? params[:redirect] : myself_people_url)
       else
         flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end

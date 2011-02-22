@@ -1,4 +1,6 @@
 class SalesController < ApplicationController
+  ssl_required
+
 
   dyta(:sales) do |t|
     t.column :number, :url=>{:action=>:show}

@@ -38,7 +38,7 @@ ActionController::Routing::Routes.draw do |map|
   #  end
   #end  
 
-  map.login 'connexion', :controller=>"authentication", :action=>"index"
+  map.login 'connexion', :controller=>"authentication", :action=>"login"
 
   # The priority is based upon order of creation: first created -> highest priority.
 

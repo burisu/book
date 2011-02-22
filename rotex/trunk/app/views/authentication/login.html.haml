@@ -1,9 +1,8 @@
 %h1 Connectez-vous
 
-.contact{:style=>"font-style:italic; padding 10px; color: red;"}="Si votre nom d'utilisateur comportait des majuscules, des espaces ou des caratères accentués, il a été simplifié lors d'une opération de maintenance. Vous pouvez le #{link_to 'redemander', {:action=>:lost_login}}. Une fois connecté, vous pourrez modifier à nouveau votre nom d'utilisateur." 
-
 .login
   -form_tag do
+    =hidden_field_tag(:redirect, params[:redirect])
     %table#auth.formu
       %tr
         %td.label Nom d'utilisateur
