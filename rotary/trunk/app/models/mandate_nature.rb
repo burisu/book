@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: mandate_natures
@@ -76,8 +77,8 @@ class MandateNature < ActiveRecord::Base
   RIGHTS = {:all=>"Administrator", 
     :home=>"Manage articles of the home page",
     :blog=>"Gérer les articles de blog",
-    :promotions=>"Manage promotions",
-    :suivi=>"Manage questionnaires and answers",
+    :promotions=>"Gérer les promotions",
+    :suivi=>"Gérer les questionnaires et les réponses",
     :publishing=>"Can edit and publish blog articles",
     :users=>"Manage accounts",
     :folders=>"Manage folders",
@@ -98,6 +99,14 @@ class MandateNature < ActiveRecord::Base
 
   def self.rights_for(controller, action)
     return ((self.rights[controller.to_sym]||{})[action.to_sym]||{})||[]
+  end
+
+  def human_rights
+    self.rights.to_s.strip.split(/\s+/).collect{|r|'<em>'+::I18n.translate("rights.#{r}")+'</em>'}.to_sentence
+  end
+
+  def to_param
+    self.code
   end
 
 

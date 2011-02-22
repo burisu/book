@@ -23,6 +23,7 @@ class Article < ActiveRecord::Base
   belongs_to :author, :class_name=>Person.name
   belongs_to :language
   belongs_to :rubric
+  has_and_belongs_to_many :mandate_natures
     
   validates_presence_of :rubric_id
 
@@ -89,6 +90,24 @@ class Article < ActiveRecord::Base
   def self.authors
     Person.find(:all, :conditions=>["id IN (SELECT author_id FROM articles)"]).collect{|a| [a.label, a.id]}
   end
+
+
+  def preload(params, person)
+    self.author_id ||= params["author_id"]||person.id
+    self.author = person if self.author.nil? 
+    self.language_id = params["language_id"]
+    self.title = params["title"]
+    self.intro = params["intro"]
+    self.body  = params["body"]
+    self.ready = params["ready"]
+    self.rubric_id = params["rubric_id"]
+    self.status = 'W' if self.new_record?
+    self.status = params["status"] if person.rights.include? :publishing
+    # raise params["agenda"]+' '+params["agenda"].class.to_s
+    self.done_on = params["done_on"]
+  end
+
+
 
   def public?
     conf = Configuration.the_one

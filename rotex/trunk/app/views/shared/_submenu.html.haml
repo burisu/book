@@ -4,13 +4,13 @@
     %li=link_to "Mon compte", myself_people_url
     -if @current_person.student
       %li=link_to "Mon voyage", (@current_person.promotion ? {:controller=>:intra, :action=>:folder, :id=>@current_person.id} : {:controller=>:intra, :action=>:folder_create})
-      %li=link_to "Ma galerie", {:controller=>:intra, :action=>:gallery}
+      %li=link_to "Ma galerie", images_url
     %li=#link_to "Tous les students", {:controller=>:intra, :action=>:students}
     %li=link_to "Envoyer un message", {:controller=>:intra, :action=>:message_send}
     %li=link_to "Se déconnecter", {:controller=>:authentication, :action=>:logout}
   %h3 Articles
   %ul
-    %li=link_to "Écrire un article", {:controller=>:intra, :action=>:article_create}
+    %li=link_to "Écrire un article", new_article_url
     %li=link_to controller.conf.news_rubric.name, {:controller=>:intra, :action=>:reports}
     -for rubric in Rubric.find(:all, :order=>"name", :conditions=>["id != ?", controller.conf.news_rubric_id])
       %li=link_to rubric.name, rubric_url(rubric)
@@ -21,13 +21,14 @@
       %li=link_to("Configuration", {:controller=>:intra, :action=>:configurate})
       %li=link_to("Produits", products_url)
       %li=link_to("Zones", zones_url)
+      %li=link_to("Types de mandat", mandate_natures_url)
       %li=link_to("Pays", countries_url)
       %li=link_to("Langues", languages_url)
   -if access? [:publishing,:specials,:home,:agenda]
     %h3 Publication
     %ul
       -if access? :publishing
-        %li=link_to("Articles", {:controller=>:intra, :action=>:articles})
+        %li=link_to("Articles", articles_url)
         %li=link_to("Rubriques", rubrics_url)
   -if access? [:users,:subscribing, :folders]
     %h3 Adhérents
@@ -40,4 +41,4 @@
       -if access?
         %li=link_to("Mandats", mandates_url)
       -if access? [:folders, :promotions]
-        %li=link_to("Promotions", {:controller=>:intra, :action=>:promotions})
+        %li=link_to("Promotions", promotions_url)

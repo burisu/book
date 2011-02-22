@@ -10,7 +10,7 @@
         =image_tag("country/#{country.iso3166.lower}.png")
         =country.name
         =" (#{country.native_name})" unless country.native_name.blank?
-      .dsc="#{country.iso3166}, langue : #{link_to(country.language.name, country.language)}"
+      .dsc="#{country.iso3166}, langue : #{country.language.name}"
       .dsc
         =link_to("Modifier", edit_country_url(country), :class=>"icon im-edit")
         =" &bull; "

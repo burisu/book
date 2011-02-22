@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 class IntraController < ApplicationController
   ssl_only
-  cattr_reader :images_count_per_person
-  @@images_count_per_person = 100
 
   dyli(:authors, [:first_name, :family_name, :user_name, :address], :model=>:people)
 
@@ -376,134 +374,11 @@ class IntraController < ApplicationController
     # end
   end
   
-
-  hide_action :init_article
-  def init_article(article, params, person)
-    article.author_id = params[:author_id]||person.id
-    article.language_id = params[:language_id]
-    article.title = params[:title]
-    article.intro = params[:intro]
-    article.body  = params[:body]
-    article.ready  = params[:ready]
-    article.rubric_id  = params[:rubric_id]
-    article.status = 'W' if article.new_record?
-    article.status = params[:status] if access? :publishing
-    # raise params[:agenda]+' '+params[:agenda].class.to_s
-    article.done_on = params[:done_on]
-  end
-
-
-  def article_create
-    if request.post?
-      @article = Article.new
-      # params[:article][:done_on] = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
-      init_article(@article, params[:article], @current_person)
-      @article.done_on = session[:report_done_on] if session[:report_done_on].is_a? Date and !access?(:publishing)
-      # @article.natures = 'default' unless access? :publishing
-      if @article.save
-        # Mandate Nature à implémenter
-        @article.mandate_natures.clear
-        for k,v in params[:mandate_natures]||[]
-          @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
-        end
-        redirect_to myself_people_url
-      end 
-    else
-      @article = Article.new(:rubric_id=>params[:rubric_id])
-      @article.done_on = session[:report_done_on] if session[:report_done_on]
-    end
-  end
-  
   def pick_image
     # @images = (access? ? Image.all : @current_person.images)
     @images = Image.all
     render :partial=>'pick_image'
   end
-
-
-  def article_update
-    @article = Article.find(params[:id])
-    unless @article
-      flash[:error] = "L'article demandé n'est pas disponible."
-      redirect_to_back
-      return
-    end
-    redirect_to :action=>:access_denied unless @article.author_id==@current_person.id or access? :publishing
-    @article.to_correct if @article.ready?
-    if @article.locked? and !access? :publishing
-      flash[:warning] = "L'article a été validé par le rédacteur en chef et ne peut plus être modifié. Merci de votre compréhension."
-      redirect_to :back
-      return
-    end
-    if request.post?
-      init_article(@article, params[:article], @current_person)
-      if @article.save
-        # Mandate Nature à implémenter
-        @article.mandate_natures.clear
-        for k,v in params[:mandate_natures]||[]
-          @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
-        end
-        expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
-        expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
-        flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
-        if params[:save_and_exit]
-          redirect_to_back
-        else
-          redirect_to :back
-        end
-      end
-    end
-  end
-
-  
-  def article_edit
-    redirect_to :action=>:article_update, :id=>params[:id]
-  end
-  
-  def article_to_publish
-    @article = Article.find(params[:id])
-    if @article.author_id==@current_person.id or access? :publishing
-      @article.to_publish
-      redirect_to :back
-    else
-      redirect_to :action=>:access_denied 
-    end
-  end
-
-  # copie de Home#article
-  def article
-    @article = Article.find(params[:id])
-    if @article.nil?
-      flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:index
-    end
-    if @current_person.nil? and not @article.public?
-      flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to :controller=>:authentication, :action=>:login
-    elsif @current_person
-      # @article.published?
-      unless @article.author_id == @current_person.id or @article.can_be_read_by?(@current_person) or access? :publishing
-        @article = nil
-        flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
-        redirect_to :back
-      end
-    end
-  end  
-
-
-  def article_delete
-    if request.post? or request.delete?
-      @article = Article.find(params[:id])
-      if @article.nil?
-        flash[:error] = "La page que vous demandez n'existe pas"
-      else
-        Article.destroy(@article)
-        flash[:notice] = "Article supprimé"
-      end
-    end
-    redirect_to :back
-  end
-
 
 
   def reports
@@ -558,118 +433,8 @@ class IntraController < ApplicationController
 
 
 
-  dyta(:promotion_people, :model=>:people, :order=>"family_name, first_name", :conditions=>"(session[:current_promotion_id].blank? ? {} : {:promotion_id=>session[:current_promotion_id]}).merge(:student=>true)", :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on") do |t|
-    t.action :folder, :image=>:show
-    t.column :family_name, :url=>{:action=>:person}
-    t.column :first_name, :url=>{:action=>:person}
-    t.column :code, :through=>:promotion
-    t.column :started_on, :label=>"Du"
-    t.column :stopped_on, :label=>"Au"
-    t.column :name, :through=>:proposer_zone
-    t.column :name, :through=>:departure_country
-    t.column :name, :through=>:arrival_country
-    t.action :folder_delete, :method=>:delete, :confirm=>:are_you_sure, :if=>'!RECORD.student'
-  end
 
 
-  def promotions
-    # >> :promotions
-    session[:current_promotion_id] = params[:id]
-    @promotion = Promotion.find_by_id(session[:current_promotion_id]) unless session[:current_promotion_id].blank?
-  end
-
-
-
-  # :conditions=>{:status=>['session[:articles_status]']}, 
-  dyta(:articles, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))") do |t|
-    t.column :title, :url=>{:action=>:article}
-    t.column :name, :through=>:rubric, :url=>{:action=>:rubric}
-    t.column :label, :through=>:author, :url=>{:action=>:person}
-    t.column :updated_at
-    t.action :status, :actions=>{"P"=>{:action=>:article_deactivate}, "R"=>{:action=>:article_activate}, "U"=>{:action=>:article_activate}, "W"=>{:action=>:article_update}, "C"=>{:action=>:article_update}}
-    t.action :article_delete, :method=>:post,  :confirm=>"Sûr(e)\?"
-  end
-
-
-  def articles
-    # >> :publishing
-    @title = "Tous les articles"
-    if request.post?
-      @article = Article.new(params[:article])
-    end
-  end
-
-
-  def article_activate
-    # >> :publishing
-    Article.find(params[:id]).publish
-    redirect_to :back
-  end
-
-  def article_deactivate
-    # >> :publishing
-    Article.find(params[:id]).unpublish
-    redirect_to :back
-  end
-
-
-
-  def preview
-    @textile = params[:textile]||''
-    @current_user = nil
-    render :partial=>'preview' if request.xhr?
-  end
-
-
-
-
-  def gallery
-    if request.post?
-      @image = Image.new(params[:image])
-      @image.person_id =  session[:current_person_id]
-      @image = Image.new if @image.save
-    else
-      @image = Image.new
-    end
-    
-    @addable = (@current_person.images.size < @@images_count_per_person)
-    @images = Image.find(:all, :conditions=>{:person_id=>session[:current_person_id]}, :order=>:title)
-    render :partial=>'pick_image' if request.xhr?
-  end
-
-
-  def image_detail
-    # @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    @image = Image.find_by_id(params[:id])
-    redirect_to :action=>:gallery if @image.nil?
-  end
-
-  def image_download
-    # @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    @image = Image.find_by_id(params[:id])
-    redirect_to :action=>:gallery unless @image
-  end
-
-  def image_update
-    @image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    if request.post?
-      if @image.update_attributes(params[:image])
-        redirect_to :action=>:gallery 
-        return
-      end
-    end
-    render :partial=>"image_form", :layout=>true
-  end
-
-
-
-  def image_delete
-    image = Image.find_by_id_and_person_id(params[:id], session[:current_person_id])
-    if image and image.deletable?
-      Image.destroy(image.id) if request.delete?
-    end
-    redirect_to :action=>:gallery
-  end
 
 
   def message_send

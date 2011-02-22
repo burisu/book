@@ -75,7 +75,7 @@ module ApplicationHelper
                ['link',      ' [[http://www.exemple.fr|', ']]' , 'site web'],
               ]
     code += content_tag(:div, nil, :id=>selector, :style=>"display:none;", :class=>'iselector')
-    code += link_to_remote(image_tag('buttons/image.png'), {:url=>{:action=>:pick_image, :id=>input_id}, :update=>"#{selector}", :success=>"$('#{selector}').show()"}, :class=>:tool)
+    code += link_to_remote(image_tag('buttons/image.png'), {:url=>images_url(:editor=>input_id), :method=>:get,  :update=>"#{selector}", :success=>"$('#{selector}').show()"}, :class=>:tool)
 
     for markup, start, finish, middle in markups
       code += link_to_function(image_tag("buttons/#{markup}.png", :alt=>::I18n.t('general.layout.'+markup), :title=>::I18n.t('general.layout.'+markup)), "insertion($('#{input_id}'), '#{start}', '#{finish}', '#{middle}')", :class=>:tool)

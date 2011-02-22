@@ -8,7 +8,7 @@ class SubscriptionsController < ApplicationController
     t.column :number, :class=>:code, :url=>{:action=>:edit}
     # t.column :family_name, :through=>:person, :url=>{:action=>:person}
     # t.column :first_name, :through=>:person, :url=>{:action=>:person}
-    t.column :label, :through=>:person, :url=>{:controller=>:intra, :action=>:person}
+    t.column :label, :through=>:person, :url=>{:controller=>:people, :action=>:show}
     t.column :number, :through=>:sale, :url=>{:action=>:show, :controller=>:sales}
     t.column :begun_on
     t.column :finished_on

@@ -35,7 +35,9 @@ class SaleLine < ActiveRecord::Base
   end
   
   def validate
-    errors.add(:quantity, :less_than_or_equal_to, :count=>self.product.current_quantity) if self.quantity > self.product.current_quantity
+    if self.product.storable?
+      errors.add(:quantity, :less_than_or_equal_to, :count=>self.product.current_quantity) if self.quantity > self.product.current_quantity
+    end
   end 
 
   def after_save

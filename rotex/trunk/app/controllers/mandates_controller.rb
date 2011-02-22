@@ -4,7 +4,7 @@ class MandatesController < ApplicationController
 
   dyta(:mandates, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id) JOIN people p ON (person_id=p.id)", :order=>"(dont_expire OR CURRENT_DATE BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) DESC, mn.name, p.family_name, p.first_name", :line_class=>"(RECORD.active? ? 'notice' : '')") do |t|
     t.column :name, :through=>:nature, :label=>"Mandat"
-    t.column :label, :through=>:person, :url=>{:controller=>:intra, :action=>:person}, :label=>"Personne"
+    t.column :label, :through=>:person, :url=>{:controller=>:people, :action=>:show}, :label=>"Personne"
     t.column :begun_on
     t.column :finished_on
     t.column :name, :through=>:zone, :url=>{:controller=>:zones, :action=>:show}

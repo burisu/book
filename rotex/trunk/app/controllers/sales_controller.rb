@@ -2,7 +2,7 @@ class SalesController < ApplicationController
 
   dyta(:sales) do |t|
     t.column :number, :url=>{:action=>:show}
-    t.column :label, :through=>:client, :url=>{:controller=>:intra, :action=>:person}
+    t.column :label, :through=>:client, :url=>{:controller=>:people, :action=>:show}
     t.column :client_email
     t.column :comment
     t.column :state
@@ -48,6 +48,10 @@ class SalesController < ApplicationController
   
   def fill
     @sale = Sale.find_by_number(params[:id])
+    if params[:mode] == "refill"
+      @sale.state = "I"
+      @sale.save
+    end
     @badpass = []
     if @sale.state == "C"
       @sale.save

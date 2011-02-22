@@ -14,8 +14,8 @@ class RubricsController < ApplicationController
   end
 
   dyta(:rubric_articles, :model=>:articles, :conditions=>["rubric_id=? AND status = 'P' AND (amn.article_id IS NULL OR (amn.article_id IS NOT NULL AND m.person_id=? AND CURRENT_DATE BETWEEN COALESCE(m.begun_on, CURRENT_DATE) AND COALESCE(m.finished_on, CURRENT_DATE)))", ['session[:current_rubric_id]'], ['session[:current_person_id]']],  :joins=>"JOIN people ON (people.id=author_id) LEFT JOIN articles_mandate_natures AS amn ON (amn.article_id=articles.id) LEFT JOIN mandates AS m ON (m.nature_id=amn.mandate_nature_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20) do |t|
-    t.column :title, :url=>{:action=>:article}
-    t.column :label, :through=>:author, :url=>{:action=>:person}
+    t.column :title, :url=>{:controller=>:articles, :action=>:show}
+    t.column :label, :through=>:author, :url=>{:controller=>:people, :action=>:show}
     t.column :updated_at
     t.column :created_at
   end

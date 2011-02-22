@@ -1,0 +1,6 @@
+=error_messages_for 'image'
+%table.formu
+  =tl "Titre", text_field(:image, :title)
+  =tl "Description", text_area(:image, :desc, :cols=>40, :rows=>3)
+  -if @image.new_record?
+    =tl "Image à téléverser", file_column_field('image', 'document')

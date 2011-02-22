@@ -238,6 +238,7 @@ table.folder { width: 100%; }
 
 .diapo { padding:3px; float:left; margin: 5px; border:1px solid #888; background: white; }
 .diapo .image { height:128px; width: 128px; margin:5px; }
+.diapo .image a img {display: block;}
 .diapo .title { color: #888; padding:4px;}
 
 .diapo:hover { margin: 2px; border-width: 4px; border-color: black; }

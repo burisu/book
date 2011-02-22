@@ -29,7 +29,7 @@ class Image < ActiveRecord::Base
   end
 
   def before_validation_on_create
-    self.name = self.title.lower_ascii.gsub(/\W/, '').to_s
+    self.name = self.title.to_s.lower_ascii.gsub(/\W/, '').to_s
     # while Image.find(:first, :conditions=>['id!=? AND name=?', self.id||0, self.name])
     while Image.find_by_name(self.name)
       self.name.succ!

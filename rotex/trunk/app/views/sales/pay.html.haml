@@ -23,6 +23,7 @@
         .info Vous serez automatiquement redirigé vers le site paiement en ligne de notre banque.
         .logo=image_tag("cbvisamaster.gif")
   .actions
+    =link_to "Annuler", fill_sale_url(:mode=>:refill) 
     =submit_tag "Payer l'achat"
 
 %p="* Le chèque doit être à l'ordre du <strong>Rotex 1690</strong>. Veuillez inscrire le numéro <strong>#{@sale.number}</strong> au dos du chèque."

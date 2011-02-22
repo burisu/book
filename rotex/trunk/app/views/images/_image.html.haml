@@ -1,0 +1,7 @@
+.diapo
+  .image
+    =link_to(image_tag(url_for_file_column(image, :document, "thumb")), image_url(image))
+  .title
+    =link_to(image_tag('buttons/update.png'), edit_image_url(image))
+    =link_to(image_tag('buttons/delete.png'), image_url(image.id), :confirm=>confirm(:delete), :method=>:delete)
+

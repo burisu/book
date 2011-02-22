@@ -14,6 +14,12 @@ __admin__:
   - languages::index
   - languages::new
   - languages::update
+  - mandate_natures::create
+  - mandate_natures::destroy
+  - mandate_natures::edit
+  - mandate_natures::index
+  - mandate_natures::new
+  - mandate_natures::update
   - products::create
   - products::destroy
   - products::edit
@@ -36,17 +42,11 @@ __not_used__:
 # Réservé aux membres en règle
 __private__:
   actions:
-  - intra::article
   - intra::authors_dyli
   - intra::folder
   - intra::folder_create
   - intra::folder_delete
   - intra::folder_update
-  - intra::gallery
-  - intra::image_delete
-  - intra::image_detail
-  - intra::image_download
-  - intra::image_update
   - intra::index
   - intra::member
   - intra::message_send
@@ -56,15 +56,14 @@ __private__:
   - intra::period_display
   - intra::period_remove_member
   - intra::pick_image
-  - intra::preview
-  - people::myself
-  - people::update_myself
   - intra::report
   - intra::report_help
   - intra::reports
   - intra::story
   - intra::students
   - intra::students_dyta
+  - people::myself
+  - people::update_myself
 # Réservé à tous les membres (en règle ou pas)
 __protected__:
   actions:
@@ -78,6 +77,7 @@ __public__:
   controller: home
   actions:
   - article
+  - articles::show
   - authentication::activate
   - authentication::change_email
   - authentication::change_password
@@ -118,30 +118,33 @@ __public__:
   - store::check_payment
 # Gérer les mandats
 mandates:
+  controller: mandates
   actions:
-  - mandates::create
-  - mandates::destroy
-  - mandates::edit
-  - mandates::index
-  - mandates::mandates_dyta
-  - mandates::new
-  - mandates::people_dyli
-  - mandates::update
+  - create
+  - destroy
+  - edit
+  - index
+  - mandates_dyta
+  - new
+  - people_dyli
+  - update
 # Gérer les promotions
 promotions:
-  actions: [intra::promotion_people_dyta, intra::promotions]
+  controller: promotions
+  actions: [index, people_dyta, show]
 # Gérer la publication
 publishing:
   actions:
-  - intra::article_activate
-  - intra::article_create
-  - intra::article_deactivate
-  - intra::article_delete
-  - intra::article_edit
-  - intra::article_to_publish
-  - intra::article_update
-  - intra::articles
-  - intra::articles_dyta
+  - articles::activate
+  - articles::articles_dyta
+  - articles::create
+  - articles::deactivate
+  - articles::destroy
+  - articles::edit
+  - articles::index
+  - articles::new
+  - articles::preview
+  - articles::publish
   - rubrics::create
   - rubrics::destroy
   - rubrics::edit
@@ -151,6 +154,15 @@ publishing:
   - rubrics::rubrics_dyta
   - rubrics::show
   - rubrics::update
+  - images::create
+  - images::destroy
+  - images::edit
+  - images::index
+  - images::new
+  - images::show
+  - images::update
+  - articles::show
+  - articles::update
 # Gérer les adhésions
 subscribing:
   controller: subscriptions

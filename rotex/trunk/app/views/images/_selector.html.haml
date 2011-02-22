@@ -1,7 +1,7 @@
 =link_to_function("Fermer", "$('#{params[:id]}_iselector').hide();")
 .image-list
   -for image in @images
-    .image=link_to_function(image_tag(url_for_file_column(image, :document, "thumb"), :alt=>image.title, :title=>image.title), "insertion($('#{params[:id]}'), '{{#{image.name}|#{image.title}}}', '', ''); $('#{params[:id]}_iselector').hide();")
+    .image=link_to_function(image_tag(url_for_file_column(image, :document, "thumb"), :alt=>image.title, :title=>image.title), "insertion($('#{params[:editor]}'), '{{#{image.name}|#{image.title}}}', '', ''); $('#{params[:editor]}_iselector').hide();")
 -#.add-image
 -#  -form_remote_tag(:url=>{:action=>:gallery}, :multipart=>true, :update=>params[:id]) do
 -#    =file_column_field 'image', 'document'  
