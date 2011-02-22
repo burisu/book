@@ -2,7 +2,8 @@ class SalesController < ApplicationController
   ssl_required
 
 
-  dyta(:sales) do |t|
+  dyta(:sales, :order=>"id DESC") do |t|
+    t.column :id
     t.column :number, :url=>{:action=>:show}
     t.column :label, :through=>:client, :url=>{:controller=>:people, :action=>:show}
     t.column :client_email
@@ -10,6 +11,7 @@ class SalesController < ApplicationController
     t.column :state
     t.column :payment_mode
     t.column :payment_number
+    t.action :edit
   end
 
   def index
@@ -102,17 +104,17 @@ class SalesController < ApplicationController
 
   def edit
     @sale = Sale.find_by_number(params[:id])
-    @title = "Modifier la vente #{@sale.name}"
-    render_form
+    @title = "Modifier la vente #{@sale.number}"
+    render_form :partial=>:edit
   end
 
   def update
     @sale = Sale.find_by_number(params[:id])
-    @title = "Modifier la vente #{@sale.name}"
+    @title = "Modifier la vente #{@sale.number}"
     if @sale.update_attributes(params[:sale])
       redirect_to sales_url
     end
-    render_form
+    render_form :partial=>:edit
   end
 
   def destroy

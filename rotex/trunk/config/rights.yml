@@ -38,7 +38,7 @@ __admin__:
   - zones::update
 # Actions sans droits
 __not_used__:
-  actions: []
+  actions: [products::check]
 # Réservé aux membres en règle
 __private__:
   actions:
@@ -145,6 +145,15 @@ publishing:
   - articles::new
   - articles::preview
   - articles::publish
+  - articles::show
+  - articles::update
+  - images::create
+  - images::destroy
+  - images::edit
+  - images::index
+  - images::new
+  - images::show
+  - images::update
   - rubrics::create
   - rubrics::destroy
   - rubrics::edit
@@ -154,15 +163,6 @@ publishing:
   - rubrics::rubrics_dyta
   - rubrics::show
   - rubrics::update
-  - images::create
-  - images::destroy
-  - images::edit
-  - images::index
-  - images::new
-  - images::show
-  - images::update
-  - articles::show
-  - articles::update
 # Gérer les adhésions
 subscribing:
   controller: subscriptions

@@ -146,12 +146,12 @@ class Sale < ActiveRecord::Base
   def after_save
     if @deliver_mail and self.client
       Maily.deliver_has_subscribed(self.client, self)
-      Maily.deliver_notification(:has_subscribed, self.client, self.responsible)
+      Maily.deliver_notification(:has_subscribed, self.client)
     end
     if self.state == 'P'
       for line in self.lines    
         if line.quantity > 0 and line.product.subscribing?
-          line.build_subscription unless self.subscription
+          line.build_subscription unless line.subscription
           line.subscription.update_attributes(:begun_on=>line.product.subscribing_started_on, :finished_on=>line.product.subscribing_stopped_on, :person_id=>self.client_id, :sale_id=>self.id)
           line.subscription.save
         end

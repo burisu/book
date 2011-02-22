@@ -161,7 +161,7 @@ class ApplicationController < ActionController::Base
     @_operation    = options[:operation]||a[-1].to_sym
     @_operation = :edit if @_operation == :update
     @_operation = :new if @_operation == :create
-    @_partial = options[:partial]||a[0..-2].join('_')
+    @_partial = (options[:partial]||a[0..-2].join('_')).to_s
     @_partial += "_" unless @_partial.blank?
     @_partial += "form"
     @_options = options
