@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.resources :rubrics, :as=>"rubriques"
-  map.resources :articles, :member=>{:activate=>:post, :deactivate=>:post}, :collection=>{:preview=>:get}
+  map.resources :articles, :member=>{:activate=>:post, :deactivate=>:post}, :collection=>{:preview=>:get, :help=>:get}
   map.resources :images
 
   map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get, :post], :pay=>[:get, :post], :finish=>:get, :refuse=>:get, :cancel=>:get, :check=>:get} do |sales|

@@ -45,6 +45,7 @@ __private__:
   actions:
   - articles::create
   - articles::edit
+  - articles::help
   - articles::new
   - articles::show
   - articles::update
@@ -68,7 +69,6 @@ __private__:
   - intra::period_display
   - intra::period_remove_member
   - intra::report
-  - intra::report_help
   - intra::reports
   - intra::story
   - people::myself

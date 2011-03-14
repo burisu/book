@@ -86,7 +86,7 @@ module ApplicationHelper
 
     markup = 'show'
     code += link_to_remote(image_tag('buttons/show.png'), {:url=>{:action=>:preview}, :with=>"'textile=' + encodeURIComponent($('#{input_id}').value)", :update=>viewer, :success=>"$('#{viewer}').show()"}, :class=>:tool)
-    code += link_to(image_tag('buttons/unknown.png'), {:action=>:report_help}, :class=>:tool)
+    code += link_to(image_tag('buttons/unknown.png'), help_articles_url, :class=>:tool)
     code = content_tag(:div, code, :class=>:editor)
     code = content_tag(:div, nil, :id=>viewer, :style=>"display:none;", :class=>'viewer')+code
   end

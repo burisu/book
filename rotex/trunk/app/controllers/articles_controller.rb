@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class ArticlesController < ApplicationController
 
   # :conditions=>{:status=>['session[:articles_status]']}, 
@@ -149,5 +150,30 @@ class ArticlesController < ApplicationController
     Article.find(params[:id]).unpublish
     redirect_to :back
   end
+
+
+  def help
+    @samples = [ "un texte en **gras**...",
+                 "en //italique//...", 
+                 "en __souligné__...",
+                 "en ''monospace''",
+                 "ou **//__''tous à la fois''__//**",
+                 "===== Titre de niveau 2 =====",
+                 "==== Titre de niveau 3 ====",
+                 "=== Titre de niveau 4 ===",
+                 "Caractères spèciaux : * -> => <=> <= <- (C) (R)...",
+                 "un exemple de site www.rotex1690.org",
+                 "ou [[www.rotex1690.org]]",
+                 "ou le site du [[www.rotex1690.org|Rotex 1690]]",
+                 "un petit mail : <exemple@rotex1690.org>",
+                 "un image centrée {{ image1 }}",
+                 "un image alignée à gauche {{image1 |Titre de remplacement}}",
+                 "un image alignée à droite {{ image1}}",
+                 "  Texte largeur fixe avec 2 espace en début de ligne"
+               ]
+    
+  end
+
+
 
 end
