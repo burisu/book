@@ -10,10 +10,6 @@ La personne <%=@person.label-%> (<%=@person.id-%>) vient de remplir son question
 
 <%if @person-%>
 Coordonnées de la personne : <%=@person.email-%>, <%=@person.address%>
-Cotisations :
-<%for s in @person.subscriptions.find(:all, :order=>:begun_on)-%>
- - <%=s.amount.to_s.rjust(7,' ')+' pour la période du '+s.begun_on.to_s+' au '+s.finished_on.to_s%>
-<%end-%>
 <%end-%>
 
 Cordialement,
