@@ -33,12 +33,12 @@
     %td.value=link_to('Voir le récit du voyage', :action=>:story, :id=>@person.id) if @person.promotion
   %tr
     %td.label Dossier complet
-    %td.value=link_to('Consulter', :action=>:folder, :id=>@person.id) if @person.promotion
+    %td.value=link_to('Consulter', :controller=>:intra, :action=>:folder, :id=>@person.id) if @person.promotion
 
 %h2 Cotisations
 -if access? :subscribing
   %ul.aclist
-    %li=link_to "Ajouter une cotisation", {:action=>:subscription_create, :id=>@person.id}
+    %li=link_to "Ajouter une cotisation", new_subscription_url(:person_id=>@person.id)
   =dyta :person_subscriptions
 
 %h2 Articles
@@ -47,5 +47,5 @@
 %h2 Mandats
 -if access?
   %ul.aclist
-    %li=link_to "Ajouter un mandat",{:action=>:mandates_create, :id=>@person.id}
+    %li=link_to "Ajouter un mandat", new_mandate_url(:person_id=>@person.id)
 =dyta :person_mandates

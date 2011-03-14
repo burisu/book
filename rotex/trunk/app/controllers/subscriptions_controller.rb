@@ -19,7 +19,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def new
-    @subscription = Subscription.new
+    @subscription = Subscription.new :person_id=>params[:person_id]
     @title = "Nouvelle adhésion"
     render_form
   end
