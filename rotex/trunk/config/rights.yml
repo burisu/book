@@ -69,11 +69,11 @@ __private__:
   - intra::period_display
   - intra::period_remove_member
   - intra::report
-  - intra::reports
-  - intra::story
   - people::myself
+  - people::story
   - people::update_myself
   - promotions::write
+  - rubrics::news
   - rubrics::show
 # Réservé à tous les membres (en règle ou pas)
 __protected__:

@@ -15,7 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post]}
 
 
-  map.resources :rubrics, :as=>"rubriques"
+  map.resources :rubrics, :as=>"rubriques", :collection=>{:news=>:get}
   map.resources :articles, :member=>{:activate=>:post, :deactivate=>:post}, :collection=>{:preview=>:get, :help=>:get}
   map.resources :images
 
@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
 
   
   map.resources :mandates, :as=>"mandats", :except=>[:show]
-  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post]}
+  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post]}, :member=>{:story=>:get}
 
   # map.resource :myself, :as=>"mon-compte"
 

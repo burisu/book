@@ -56,9 +56,6 @@ class PeopleController < ApplicationController
     # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
 
-
-
-
   dyta(:person_articles, :model=>:articles, :conditions=>{:author_id=>['session[:person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
     t.column :title, :url=>{:controller=>:articles, :action=>:show}
     t.column :name, :through=>:rubric, :url=>{:controller=>:rubrics, :action=>:show}
@@ -282,6 +279,15 @@ class PeopleController < ApplicationController
       flash[:error] = "Vous n'avez pas le droit de faire cela."
     end
     redirect_to :action=>:index
+  end
+
+
+  def story
+    person_id = session[:current_person_id]
+    person_id = params[:id] if params[:id] # and access?
+    @author = Person.find_by_id(person_id)
+    @reports = @author.reports
+    expire_fragment(:controller=>:intra, :action=>:story, :id=>@author.id)
   end
 
 

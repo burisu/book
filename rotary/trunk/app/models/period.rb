@@ -25,6 +25,7 @@
 class Period < ActiveRecord::Base
   belongs_to :country
   belongs_to :person
+  has_and_belongs_to_many :members
   
   attr_readonly :person_id
 

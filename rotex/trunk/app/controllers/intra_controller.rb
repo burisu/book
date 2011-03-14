@@ -127,13 +127,6 @@ class IntraController < ApplicationController
     end
   end
 
-  def story
-    person_id = session[:current_person_id]
-    person_id = params[:id] if params[:id] # and access?
-    @author = Person.find_by_id(person_id)
-    @reports = @author.reports
-    expire_fragment(:controller=>:intra, :action=>:story, :id=>@author.id)
-  end
 
   def period
     @person = Person.find_by_id(session[:current_person_id])
@@ -230,7 +223,7 @@ class IntraController < ApplicationController
 
 
   def member
-    @person = Person.find(:first, :conditions=>{:person_id=>session[:current_person_id]})
+    @person = Person.find(:first, :conditions=>{:id=>session[:current_person_id]})
     if params[:id]
       @member = Member.find_by_person_id_and_id(@current_person.id, params[:id])
       unless @member
@@ -269,16 +262,6 @@ class IntraController < ApplicationController
   #   render :partial=>'pick_image'
   # end
 
-
-  def reports
-    # expires_in 6.hours
-    expires_now
-    @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN people ON (countries.id=arrival_country_id)', :order=>:name)
-    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'zone se'"])
-    @zones = Zone.find(:all, :joins=>"join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=? AND LOWER(co.iso3166) LIKE 'fr'",@zone_nature.id], :order=>"number").collect {|p| [ p[:name], p[:id].to_i ] }||[]
-    @zones.insert(0, ["-- Surligner les students d'une zone --",""])
-    @zone = Zone.find_by_id(params[:id].to_i)
-  end
 
 #   def subscribers
 #     # >> :subscribing

@@ -10,7 +10,7 @@
   %h3 Articles
   %ul
     %li=link_to "Écrire un article", new_article_url
-    %li=link_to controller.conf.news_rubric.name, {:controller=>:intra, :action=>:reports}
+    %li=link_to controller.conf.news_rubric.name, news_rubrics_url
     -for rubric in Rubric.find(:all, :order=>"name", :conditions=>["id != ?", controller.conf.news_rubric_id])
       %li=link_to rubric.name, rubric_url(rubric)
   -if access?(:all)

@@ -63,4 +63,16 @@ class RubricsController < ApplicationController
     redirect_to rubrics_url
   end
 
+
+
+  def news
+    # expires_in 6.hours
+    expires_now
+    @countries = Country.find(:all, :select=>'distinct countries.*', :joins=>'JOIN people ON (countries.id=arrival_country_id)', :order=>:name)
+    @zone_nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE 'zone se'"])
+    @zones = Zone.find(:all, :joins=>"join countries AS co ON (zones.country_id=co.id)", :conditions=>["zones.nature_id=? AND LOWER(co.iso3166) LIKE 'fr'",@zone_nature.id], :order=>"number").collect {|p| [ p[:name], p[:id].to_i ] }||[]
+    @zones.insert(0, ["-- Surligner les students d'une zone --",""])
+    @zone = Zone.find_by_id(params[:id].to_i)
+  end
+
 end
