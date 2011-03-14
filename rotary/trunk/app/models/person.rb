@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: people
@@ -227,6 +228,11 @@ class Person < ActiveRecord::Base
 
   def title
     self.family_name+" "+self.first_name
+  end
+
+
+  def hashed_salt
+    self.class.encrypt(self.salt, self.salt)
   end
 
   def approve!

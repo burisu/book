@@ -12,14 +12,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :zones, :collection=>{:refresh=>:post}
   map.resources :mandate_natures, :as=>"types-de-mandat", :except=>[:show]
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
-  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post]}
+  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post]}
 
 
   map.resources :rubrics, :as=>"rubriques"
   map.resources :articles, :member=>{:activate=>:post, :deactivate=>:post}, :collection=>{:preview=>:get}
   map.resources :images
 
-  map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get, :post], :pay=>[:get, :post]} do |sales|
+  map.resources :sales, :as=>"ventes", :member=>{:fill=>[:get, :post], :pay=>[:get, :post], :finish=>:get, :refuse=>:get, :cancel=>:get, :check=>:get} do |sales|
     sales.resources :lines, :as=>"lignes", :controller=>:sale_lines, :except=>[:show, :index], :member=>{:increment=>:post, :decrement=>:post} do |line|
       line.resources :guests, :as=>"invites", :except=>[:show, :index]
     end

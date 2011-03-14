@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
@@ -128,7 +129,7 @@ class ApplicationController < ActionController::Base
     # Verification des cotisations
     unless @current_person.has_subscribed_on?
       flash[:warning] = "Vous n'êtes pas à jour de votre cotisation pour pouvoir utiliser cette partie du site"
-      redirect_to :controller=>:store, :action=>:index
+      redirect_to new_sale_url
       return
     end
 

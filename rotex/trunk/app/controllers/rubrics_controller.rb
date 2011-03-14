@@ -30,7 +30,7 @@ class RubricsController < ApplicationController
 
   def new
     @rubric = Rubric.new
-    @title = "Nouvelle langue"
+    @title = "Nouvelle rubrique"
     render_form
   end
 
@@ -39,19 +39,19 @@ class RubricsController < ApplicationController
     if @rubric.save
       redirect_to rubrics_url
     end
-    @title = "Nouvelle langue"
+    @title = "Nouvelle rubrique"
     render_form
   end
 
   def edit
     @rubric = Rubric.find_by_code(params[:id])
-    @title = "Modifier la langue #{@rubric.name}"
+    @title = "Modifier la rubrique #{@rubric.name}"
     render_form
   end
 
   def update
     @rubric = Rubric.find_by_code(params[:id])
-    @title = "Modifier la langue #{@rubric.name}"
+    @title = "Modifier la rubrique #{@rubric.name}"
     if @rubric.update_attributes(params[:rubric])
       redirect_to rubrics_url
     end

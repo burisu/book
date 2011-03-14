@@ -198,4 +198,28 @@ class PeopleController < ApplicationController
   end 
 
 
+  def approve
+    @person = Person.find_by_id(params[:id])
+    if @person and @person.hashed_salt==params[:xid]
+      @person.approve!
+      flash[:notice] = "La personne a été acceptée."
+    else
+      flash[:error] = "Vous n'avez pas le droit de faire cela."
+    end
+    redirect_to :action=>:index
+  end
+
+  def disapprove
+    @person = Person.find_by_id(params[:id])
+    if @person and @person.hashed_salt==params[:xid]
+      @person.disapprove!
+      flash[:notice] = "La personne a été verrouillée."
+    else
+      flash[:error] = "Vous n'avez pas le droit de faire cela."
+    end
+    redirect_to :action=>:index
+  end
+
+
+
 end

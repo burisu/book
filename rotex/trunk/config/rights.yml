@@ -20,6 +20,7 @@ __admin__:
   - mandate_natures::index
   - mandate_natures::new
   - mandate_natures::update
+  - products::check
   - products::create
   - products::destroy
   - products::edit
@@ -38,10 +39,22 @@ __admin__:
   - zones::update
 # Actions sans droits
 __not_used__:
-  actions: [products::check]
+  actions: []
 # Réservé aux membres en règle
 __private__:
   actions:
+  - articles::create
+  - articles::edit
+  - articles::new
+  - articles::show
+  - articles::update
+  - images::create
+  - images::destroy
+  - images::edit
+  - images::index
+  - images::new
+  - images::show
+  - images::update
   - intra::authors_dyli
   - intra::folder
   - intra::folder_create
@@ -49,29 +62,22 @@ __private__:
   - intra::folder_update
   - intra::index
   - intra::member
-  - intra::message_send
   - intra::period
   - intra::period_add_member
   - intra::period_delete
   - intra::period_display
   - intra::period_remove_member
-  - intra::pick_image
   - intra::report
   - intra::report_help
   - intra::reports
   - intra::story
-  - intra::students
-  - intra::students_dyta
   - people::myself
   - people::update_myself
+  - promotions::write
+  - rubrics::show
 # Réservé à tous les membres (en règle ou pas)
 __protected__:
-  actions:
-  - store::cancelled
-  - store::finished
-  - store::index
-  - store::refused
-  - store::summary
+  actions: []
 # Accès public sans restrictions
 __public__:
   controller: home
@@ -96,8 +102,8 @@ __public__:
   - guests::update
   - index
   - intra::access_denied
-  - intra::approve
-  - intra::disapprove
+  - people::approve
+  - people::disapprove
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy
@@ -105,12 +111,16 @@ __public__:
   - sale_lines::increment
   - sale_lines::new
   - sale_lines::update
+  - sales::cancel
+  - sales::check
   - sales::create
   - sales::destroy
   - sales::edit
   - sales::fill
+  - sales::finish
   - sales::new
   - sales::pay
+  - sales::refuse
   - sales::sale_lines_dyta
   - sales::show
   - sales::update
@@ -137,23 +147,11 @@ publishing:
   actions:
   - articles::activate
   - articles::articles_dyta
-  - articles::create
   - articles::deactivate
   - articles::destroy
-  - articles::edit
   - articles::index
-  - articles::new
   - articles::preview
   - articles::publish
-  - articles::show
-  - articles::update
-  - images::create
-  - images::destroy
-  - images::edit
-  - images::index
-  - images::new
-  - images::show
-  - images::update
   - rubrics::create
   - rubrics::destroy
   - rubrics::edit
@@ -161,7 +159,6 @@ publishing:
   - rubrics::new
   - rubrics::rubric_articles_dyta
   - rubrics::rubrics_dyta
-  - rubrics::show
   - rubrics::update
 # Gérer les adhésions
 subscribing:

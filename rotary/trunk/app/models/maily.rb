@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Maily < ActionMailer::Base
 
 
@@ -52,7 +53,7 @@ class Maily < ActionMailer::Base
       elsif nature==:has_subscribed
         "Enregistrement de cotisation effectué pour #{person.label}"
       elsif nature==:waiting_payment
-        "Commande effectuée par #{person.label}"
+        "Commande effectuée par #{person.is_a?(Sale) ? person.client_email : person.label}"
       elsif nature==:approval
         "Demande d'acceptation pour #{person.label}"
       else

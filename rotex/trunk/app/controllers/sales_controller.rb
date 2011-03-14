@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 class SalesController < ApplicationController
-  ssl_required
+  ssl_only
 
 
   dyta(:sales, :order=>"id DESC") do |t|
@@ -92,10 +93,10 @@ class SalesController < ApplicationController
         case @sale.payment_mode.to_sym
         when :cash, :check
           flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."
-          Maily.deliver_notification(:waiting_sale, @current_person) if @current_person
+          Maily.deliver_notification(:waiting_payment, @sale.client || @sale)
           redirect_to sale_url(@sale)
         when :card
-          redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.client_email, :PBX_RETOUR=>Sale.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>url_for(:controller=>:store, :action=>:finished), :PBX_REFUSE=>url_for(:controller=>:store, :action=>:refused), :PBX_ANNULE=>url_for(:controller=>:store, :action=>:cancelled)
+          redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.client_email, :PBX_RETOUR=>Sale.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>finish_sale_url(@sale), :PBX_REFUSE=>refuse_sale_url(@sale), :PBX_ANNULE=>cancel_sale_url(@sale)
         end
       end
     end
@@ -120,6 +121,52 @@ class SalesController < ApplicationController
   def destroy
     Sale.find_by_number(params[:id]).destroy
     redirect_to sales_url
+  end
+
+
+  def cancel
+    flash[:warning] = "La transaction a été annulée."
+    sale = Sale.find_by_number(params[:id])
+    redirect_to sale_url(sale)
+  end
+
+  def refuse
+    flash[:error] = "La transaction a été refusée."
+    sale = Sale.find_by_number(params[:id])
+    redirect_to sale_url(sale)
+  end
+
+  def finish
+    validate_payment
+    sale = Sale.find_by_number(params[:id])
+    redirect_to root_url
+  end
+
+  def check
+    validate_payment(true)
+    render :text=>""
+  end
+
+  protected
+
+  def validate_payment(no_redirect = false)
+    unless @sale = Sale.find_by_number(params["R"])
+      flash[:error] = "Une erreur est survenue lors de la précédente opération. Veuillez réeessayer."
+      redirect_to root_url unless no_redirect
+      return 
+    end
+    if @sale.payment_mode == "card"
+      for k, v in Sale.transaction_columns.delete_if{|k,v| [:amount, :number].include? k}
+        @sale.send("#{k}=", params[v])
+      end
+      @sale.save
+      if @sale.error_code == "00000"
+        flash[:notice] = "La transaction a été validée."
+        @sale.terminate
+      else
+        flash[:error] = "Une erreur s'est produite #{@sale.error_message}"
+      end
+    end
   end
 
 end

@@ -9,28 +9,6 @@ class IntraController < ApplicationController
     redirect_to myself_people_url
   end
   
-  def approve
-    @person = Person.find_by_id(params[:id])
-    if @person and @person.salt==params[:xid]
-      @person.approve!
-      flash[:notice] = "La personne a été acceptée."
-    else
-      flash[:error] = "Vous n'avez pas le droit de faire cela."
-    end
-    redirect_to :action=>:index
-  end
-
-  def disapprove
-    @person = Person.find_by_id(params[:id])
-    if @person and @person.salt==params[:xid]
-      @person.disapprove!
-      flash[:notice] = "La personne a été verrouillée."
-    else
-      flash[:error] = "Vous n'avez pas le droit de faire cela."
-    end
-    redirect_to :action=>:index
-  end
-
   def configurate
     @configuration = @@configuration
     if request.post?
@@ -374,11 +352,11 @@ class IntraController < ApplicationController
     # end
   end
   
-  def pick_image
-    # @images = (access? ? Image.all : @current_person.images)
-    @images = Image.all
-    render :partial=>'pick_image'
-  end
+  # def pick_image
+  #   # @images = (access? ? Image.all : @current_person.images)
+  #   @images = Image.all
+  #   render :partial=>'pick_image'
+  # end
 
 
   def reports
@@ -390,23 +368,6 @@ class IntraController < ApplicationController
     @zones.insert(0, ["-- Surligner les students d'une zone --",""])
     @zone = Zone.find_by_id(params[:id].to_i)
   end
-
-  dyta(:students, :model=>:people, :conditions=>{:student=>true}, :order=>"family_name, first_name") do |t|
-    t.column :first_name
-    t.column :family_name
-    t.column :name, :through=>:promotion
-  end
-
-
-
-  def students
-    
-
-    # @students = Person.find(:all, :conditions=>conditions, :order=>
-
-  end
-
-
 
 #   def subscribers
 #     # >> :subscribing
@@ -429,31 +390,6 @@ class IntraController < ApplicationController
 #     render :action=>:people
 #   end
 
-
-
-
-
-
-
-
-
-  def message_send
-    if request.xhr?
-      render :inline=>"<%=options_for_select(Promotion.find(:all, :conditions=>['id IN (SELECT promotion_id FROM people WHERE arrival_country_id=?)', params[:country_id]], :order=>:name).collect{|p| [p.name, p.id]}.insert(0, ['-- Toutes les promotions --', '']))-%>"
-    else
-      @countries = Country.find(:all, :conditions=>["id IN (SELECT arrival_country_id from people)"], :order=>:name)
-      @promotions = Promotion.find(:all, :conditions=>['id IN (SELECT promotion_id FROM people WHERE arrival_country_id=?)', @countries[0].id], :order=>:name) # , :conditions=>{:is_outbound=>true}
-      if request.post?
-        begin
-          Maily.deliver_message(@current_person, params[:mail])
-          flash[:notice] = 'Votre message a été envoyé.'
-          redirect_to myself_people_url
-        rescue
-          flash[:error] = "Votre message n'a pas pu être envoyé."
-        end
-      end
-    end
-  end
 
 
   def access_denied

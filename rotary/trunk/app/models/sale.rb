@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: sales
@@ -192,7 +193,7 @@ class Sale < ActiveRecord::Base
   def error_message
     ERROR_CODES[self.error_code]
   end  
-  
+
   # Identifiant utilisé par les contrôleurs 
   def to_param
     self.number
