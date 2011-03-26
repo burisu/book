@@ -1,8 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
 
-
-
-
+  map.subscribe "inscription", :controller=>"people", :action=>"subscribe"
+  map.lost_password "mot-de-passe-perdu", :controller=>"people", :action=>"lost_password"
+  map.lost_login "nom-utilisateur-perdu", :controller=>"people", :action=>"lost_login"
+  map.activate "activer", :controller=>"people", :action=>"activate"
 
   map.simple_captcha '/captcha/:action', :controller => 'simple_captcha'
 
@@ -10,9 +11,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :products,  :as=>"produits", :except=>[:show], :collection=>{:check=>:post}
   map.resources :zones, :collection=>{:refresh=>:post}
+  map.resources :zone_natures, :as=>"types-de-zone", :except=>[:show]
   map.resources :mandate_natures, :as=>"types-de-mandat", :except=>[:show]
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:list=>[:get, :post], :chase_up=>[:post]}
-  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post]}
+  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post], :people_dyta=>[:get, :post]}
 
 
   map.resources :rubrics, :as=>"rubriques", :collection=>{:news=>:get}
@@ -29,7 +31,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :mandates, :as=>"mandats", :except=>[:show]
   map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post]}, :member=>{:story=>:get}
 
-  # map.resource :myself, :as=>"mon-compte"
+  map.resources :folders, :as=>"dossiers", :only=>[:show, :edit, :update] do |folder|
+    folder.resources :members, :as=>"membres", :except=>[:index]
+    folder.resources :periods, :as=>"periodes", :except=>[:index], :member=>{:memberize=>[:get, :post], :unmemberize=>[:delete]}
+  end
+
+  map.resource :session, :only, [:new, :create, :destroy]
+  map.resource :configuration, :only=>[:edit, :update]
+  map.resource :myself, :as=>"mon-compte", :only=>[:edit, :update, :show], :collection=>{:change_password=>[:get, :post], :change_email=>[:get, :post]}
 
   
   #map.resource :myself, :as=>"mon-compte" do |myself|
@@ -38,32 +47,6 @@ ActionController::Routing::Routes.draw do |map|
   #  end
   #end  
 
-  map.login 'connexion', :controller=>"authentication", :action=>"login"
-
-  # The priority is based upon order of creation: first created -> highest priority.
-
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
-
-  # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
-
-  # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-
-  # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
-  #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home"

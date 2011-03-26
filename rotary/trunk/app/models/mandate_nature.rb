@@ -98,7 +98,7 @@ class MandateNature < ActiveRecord::Base
 
 
   def self.rights_for(controller, action)
-    return ((self.rights[controller.to_sym]||{})[action.to_sym]||{})||[]
+    return ((self.rights[controller.to_sym] || {})[action.to_sym]) || []
   end
 
   def human_rights

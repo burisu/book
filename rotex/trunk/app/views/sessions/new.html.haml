@@ -1,18 +1,17 @@
 %h1 Connectez-vous
-
 .login
-  -form_tag do
+  -form_tag(:action=>:create) do
     =hidden_field_tag(:redirect, params[:redirect])
     %table#auth.formu
       %tr
         %td.label Nom d'utilisateur
         %td.value=text_field :person, :user_name
-        %td.link=link_to "Nom d'utilisateur perdu&nbsp;?", {:action=>:lost_login}, :tabindex=>3
+        %td.link=link_to "Nom d'utilisateur perdu&nbsp;?", lost_login_url, :tabindex=>3
       %tr
         %td.label Mot de passe
         %td.value=password_field :person, :password
-        %td.link=link_to "Mot de passe perdu&nbsp;?", {:action=>:lost_password}, :tabindex=>4
+        %td.link=link_to "Mot de passe perdu&nbsp;?", lost_password_url, :tabindex=>4
       %tr.actions
         %td{:colspan=>3, :align=>"center"}=submit_tag "Se connecter"
       %tr
-        %td.subscribe{:colspan=>3, :align=>"center"}=link_to "S'inscrire à l'association", :action=>:subscribe
+        %td.subscribe{:colspan=>3, :align=>"center"}=link_to "S'inscrire à l'association", subscribe_url

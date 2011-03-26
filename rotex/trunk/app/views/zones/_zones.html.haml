@@ -4,11 +4,11 @@
     %th Numéro
     %th Nature
     %th Pays
-    %th
+    %th.act
   -for zone in zones
     %tr{:class=>cycle(:odd, :even)}
       %td=link_to(zone.name, zone_url(zone))
       %td=zone.number
       %td=zone.nature.name if zone.nature
       %td=image_tag("country/#{zone.country.iso3166.downcase}.png")+" "+zone.country.name if zone.country
-      %td=link_to('Modifier', edit_zone_url(zone))
+      %td.act=link_to('Modifier', edit_zone_url(zone))

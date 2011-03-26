@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: zones
@@ -75,6 +76,9 @@ class Zone < ActiveRecord::Base
   end
 
   def self.list(conditions={})
+    if conditions.is_a?(String) and nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE ?", conditions])
+      conditions = ["zones.nature_id = ? ", nature.id]
+    end
     Zone.find(:all, 
               :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", 
               :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", 

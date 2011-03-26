@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class HomeController < ApplicationController
 
   def index
@@ -34,7 +35,7 @@ class HomeController < ApplicationController
     end
     if @current_person.nil? and not @article.public?
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to :controller=>:authentication, :action=>:login
+      redirect_to new_session_url(:redirect=>request.url)
     elsif @current_person
       unless @article.author_id == @current_person.id or access? :publishing or @article.published?
         @article = nil
@@ -43,5 +44,9 @@ class HomeController < ApplicationController
       end
     end
   end
+
+  def access_denied
+  end
+
 
 end

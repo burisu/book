@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 class ArticlesController < ApplicationController
 
+  dyli(:authors, [:first_name, :family_name, :user_name, :address], :model=>:people)
+
   # :conditions=>{:status=>['session[:articles_status]']}, 
   dyta(:articles, :joins=>"JOIN people ON (people.id=author_id)", :order=>"people.family_name, people.first_name, created_at DESC", :per_page=>20, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))") do |t|
     t.column :title, :url=>{:action=>:show}
@@ -57,7 +59,7 @@ class ArticlesController < ApplicationController
       for k,v in params[:mandate_natures]||[]
         @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
       end
-      redirect_to myself_people_url
+      redirect_to myself_url
     end
     render_form
   end

@@ -1,13 +1,14 @@
 # Réservé aux administrateurs
 __admin__:
   actions:
+  - configurations::edit
+  - configurations::update
   - countries::create
   - countries::destroy
   - countries::edit
   - countries::index
   - countries::new
   - countries::update
-  - intra::configurate
   - languages::create
   - languages::destroy
   - languages::edit
@@ -29,6 +30,12 @@ __admin__:
   - products::update
   - sales::index
   - sales::sales_dyta
+  - zone_natures::create
+  - zone_natures::destroy
+  - zone_natures::edit
+  - zone_natures::index
+  - zone_natures::new
+  - zone_natures::update
   - zones::create
   - zones::destroy
   - zones::edit
@@ -49,6 +56,11 @@ __private__:
   - articles::new
   - articles::show
   - articles::update
+  - folders::destroy
+  - folders::edit
+  - folders::report
+  - folders::show
+  - folders::update
   - images::create
   - images::destroy
   - images::edit
@@ -56,54 +68,52 @@ __private__:
   - images::new
   - images::show
   - images::update
-  - intra::authors_dyli
-  - intra::folder
-  - intra::folder_create
-  - intra::folder_delete
-  - intra::folder_update
-  - intra::index
-  - intra::member
-  - intra::period
-  - intra::period_add_member
-  - intra::period_delete
-  - intra::period_display
-  - intra::period_remove_member
-  - intra::report
-  - people::myself
+  - members::create
+  - members::destroy
+  - members::edit
+  - members::new
+  - members::update
+  - myselves::edit
+  - myselves::person_articles_dyta
+  - myselves::person_mandates_dyta
+  - myselves::person_subscriptions_dyta
+  - myselves::show
+  - myselves::update
   - people::story
-  - people::update_myself
+  - periods::create
+  - periods::destroy
+  - periods::edit
+  - periods::memberize
+  - periods::new
+  - periods::show
+  - periods::unmemberize
+  - periods::update
   - promotions::write
-  - rubrics::news
   - rubrics::show
 # Réservé à tous les membres (en règle ou pas)
 __protected__:
   actions: []
 # Accès public sans restrictions
 __public__:
-  controller: home
   actions:
-  - article
   - articles::show
-  - authentication::activate
-  - authentication::change_email
-  - authentication::change_password
-  - authentication::clean_people
-  - authentication::index
-  - authentication::login
-  - authentication::logout
-  - authentication::lost_login
-  - authentication::lost_password
-  - authentication::subscribe
-  - authentication::test
   - guests::create
   - guests::destroy
   - guests::edit
   - guests::new
   - guests::update
-  - index
-  - intra::access_denied
+  - home::access_denied
+  - home::article
+  - home::index
+  - home::special
+  - myselves::change_email
+  - myselves::change_password
+  - people::activate
   - people::approve
   - people::disapprove
+  - people::lost_login
+  - people::lost_password
+  - people::subscribe
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy
@@ -124,7 +134,9 @@ __public__:
   - sales::sale_lines_dyta
   - sales::show
   - sales::update
-  - special
+  - sessions::create
+  - sessions::destroy
+  - sessions::new
   - store::check_payment
 # Gérer les mandats
 mandates:
@@ -147,6 +159,7 @@ publishing:
   actions:
   - articles::activate
   - articles::articles_dyta
+  - articles::authors_dyli
   - articles::deactivate
   - articles::destroy
   - articles::index

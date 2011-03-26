@@ -141,31 +141,6 @@ class PeopleController < ApplicationController
   end
   
 
-  def myself
-    @person = Person.find(session[:current_person_id])
-    session[:person_id] = @person.id
-    if params[:mode] == "card"
-      send_file visit_card(@person), :filename=>"#{@person.label}.pdf", :type=>"application/pdf"
-    end
-  end
-
-  def update_myself
-    @person = Person.find(session[:current_person_id])
-    if request.post?
-      params2 = {}
-      if @current_person.admin?
-        params2 = params[:person]||{}
-      else
-        [:address, :phone, :phone2, :fax, :mobile, :photo].each {|x| params2[x] = params[:person][x] if params[:person].has_key? x}
-      end
-      @person.attributes = params2
-      @person.forced = true
-      if @person.save
-        redirect_to :action=>:profile
-      end
-    end
-  end
-
   
   def lock
     # >> :users
@@ -194,69 +169,6 @@ class PeopleController < ApplicationController
     redirect_to people_url
   end 
 
-  include Prawn::Measurements
-
-  hide_action :visit_card
-  def visit_card(people)
-    people = [people] unless people.is_a? Array
-    lines = 5
-    columns = 2
-    width = mm2pt(85)
-    height = mm2pt(54)
-    page = [mm2pt(210), mm2pt(297)]
-    wmargin = (page[0]-columns*width)/2 # mm2pt(10)
-    hmargin = (page[1]-lines*height)/2
-    intm = 0.1
-    first = true
-    file = File.join(RAILS_ROOT, "tmp", "vcard#{rand}.pdf")
-    Prawn::Document.generate(file, :page_size=>page, :margin=>[hmargin, wmargin]) do |pdf|
-      for person in people
-        pdf.start_new_page unless first
-        first = false
-        lines.times do |l|
-          columns.times do |c|
-            # Bord de découpe
-            pdf.stroke do
-              pdf.line_width(0.1)
-              pdf.line([c*width, -intm*hmargin], [c*width, -hmargin])
-              pdf.line([(c+1)*width, -intm*hmargin], [(c+1)*width, -hmargin])
-              pdf.line([c*width, page[1]+(intm-2)*hmargin], [c*width, page[1]])
-              pdf.line([(c+1)*width, page[1]+(intm-2)*hmargin], [(c+1)*width, page[1]])
-              pdf.line([-wmargin, l*height], [-intm*wmargin, l*height])
-              pdf.line([-wmargin, (l+1)*height], [-intm*wmargin, (l+1)*height])
-              pdf.line([page[0]+(intm-2)*wmargin, l*height], [page[0], l*height])
-              pdf.line([page[0]+(intm-2)*wmargin, (l+1)*height], [page[0], (l+1)*height])
-            end
-
-            pdf.bounding_box([c*width, (l+1)*height], :width=>width, :height=>height) do
-              pdf.image((person.photo("portrait") ? person.photo("portrait") : File.join(RAILS_ROOT, "public", "images", "nobody.png")), :at=>[5, height-5], :fit=>[0.4*width-10, 0.8*height]) 
-              # pdf.image(File.join(RAILS_ROOT, "public", "images", "rotex.png"), :at=>[(width-0.8*height)/2, 0.9*height], :height=>0.8*height) # , :width=>width, :height=>height)
-              pdf.image(File.join(RAILS_ROOT, "public", "images", "rotex.png"), :at=>[0.4*width+5, 0.9*height], :height=>0.8*height) # , :width=>width, :height=>height)
-              if country = person.arrival_country
-                pdf.image(File.join(RAILS_ROOT, "public", "images", "country", country.iso3166.lower+".png"), :at=>[0.4*width, height-5]) # , :width=>width, :height=>height)
-                pdf.text_box(country.name, :at=>[0.4*width+20, height-7], :overflow=>:shrink_to_fit, :size=>10)
-              end
-              # :at=>[0.4*width, 0.5*height],
-              pdf.bounding_box([0.4*width, 78], :width=>0.6*width-5) do
-                pdf.text_box person.first_name, :size=>14, :style=>:bold, :align=>:center, :overflow=>:shrink_to_fit, :at=>[0, 32]
-                pdf.text_box person.patronymic_name, :size=>14, :style=>:bold, :align=>:center, :overflow=>:shrink_to_fit, :at=>[0, 16]
-              end
-              pdf.bounding_box([0.4*width, 25], :width=>width-10) do
-                pdf.text_box(person.mobile, :at=>[0, 33], :size=>8, :overflow=>:shrink_to_fit)
-                pdf.text_box(person.sponsor_zone.name, :at=>[0, 22], :size=>8, :overflow=>:shrink_to_fit) if person.sponsor_zone
-                pdf.text_box(person.host_zone.name, :at=>[0, 11], :size=>8, :overflow=>:shrink_to_fit) if person.host_zone
-              end
-              pdf.bounding_box([5, 5], :width=>width-10) do
-                pdf.text_box(person.rotex_email, :at=>[0, 17], :size=>8, :overflow=>:shrink_to_fit, :align=>:center)
-                pdf.text_box(person.address.gsub(/\n/, ', '), :at=>[0, 7], :size=>8, :overflow=>:shrink_to_fit, :align=>:center)
-              end
-            end
-          end
-        end
-      end
-    end
-    return file
-  end
 
 
   def approve
@@ -291,5 +203,86 @@ class PeopleController < ApplicationController
   end
 
 
+
+
+
+
+
+
+
+
+
+
+
+  def subscribe
+    @register = true
+    @self_subscribing = true
+    if request.post?
+      @person = Person.new params[:person]
+      @person.email = params[:person][:email]
+      @person.is_validated = false
+      @person.approved  = false
+      @person.is_locked = true
+      @person.is_user   = true
+      if @person.save_with_captcha
+        @register = false
+        begin
+          Maily.deliver_confirmation(@person)
+          Maily.deliver_notification(:subscription, @person)
+        rescue Object=>e
+          @register = true
+          Person.destroy(@person.id)
+          @person.errors.add_to_base("Votre adresse e-mail est invalide : "+e.message)
+        end
+      end
+    else
+      @person = Person.new()
+    end
+  end
+  
+  def activate
+    @person = Person.find_by_validation params[:id]
+    @person.forced = true
+    @activation = 0
+    unless @person.nil?
+      unless @person.is_validated
+        @person.is_validated = true
+        @person.is_locked = false
+        @person.save!
+        @activation = 1
+        Maily.deliver_notification(:activation, @person)
+      end
+      unless @person.replacement_email.blank?
+        @person.email = @person.replacement_email
+        @person.replacement_email = nil
+        @person.save!
+        @activation = 2
+      end
+    end
+  end
+
+  def lost_password
+    if request.post?
+      @person = Person.find_by_user_name params[:person][:user_name]
+      if @person
+        Maily.deliver_lost_password(@person)
+        flash.now[:notice] = 'Votre nouveau mot de passe vous a été envoyé à l\'adresse '+@person.email
+      else
+        flash.now[:notice] = 'Votre nom d\'utilisateur est inconnu'
+      end
+    end
+  end
+  
+  def lost_login
+    if request.post?
+      @person = Person.find_by_email params[:person][:email]
+      if @person
+        Maily.deliver_lost_login @person
+        flash.now[:notice] = 'Votre nom d\'utilisateur vous a été envoyé à l\'adresse '+@person.email
+      else
+        flash.now[:notice] = 'Votre e-mail est inconnu'
+      end
+    end
+  end
 
 end

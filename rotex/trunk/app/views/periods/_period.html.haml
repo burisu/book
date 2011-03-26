@@ -1,0 +1,18 @@
+-if @period
+  -if session[:periods][@period.id.to_s]
+    .period
+      %ul
+        -for member in @period.members
+          %li
+            -if owner_mode
+              =link_to member.name, :action=>:member, :id=>member.id
+              =' '
+              =link_to(image_tag('buttons/update0.png'), edit_folder_member_url(@person, member, :redirect=>request.url))
+              =link_to(image_tag('buttons/delete0.png'), unmemberize_folder_period_url(@period.person, @period, :member_id=>member.id), :confirm=>confirm(:delete), :method=>:delete)
+            -else
+              =member.name
+        -if owner_mode
+          %li.none=link_to 'Ajouter un nouveau membre à la famille', memberize_folder_period_url(@period.person, @period), :class=>:create
+
+
+    

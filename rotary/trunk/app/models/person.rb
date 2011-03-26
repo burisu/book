@@ -72,7 +72,7 @@ class Person < ActiveRecord::Base
   has_many :answers
   has_many :articles, :foreign_key=>:author_id
   has_many :images
-  has_many :members
+  has_many :members, :order=>"last_name, first_name"
   has_many :periods
   has_many :sales, :foreign_key=>"client_id"
   has_many :subscriptions
