@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class SalesController < ApplicationController
-  ssl_only
+  # ssl_only
 
 
   dyta(:sales, :order=>"id DESC") do |t|

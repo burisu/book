@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class SessionsController < ApplicationController
-  ssl_only
+  # ssl_only
 
   def new
     clean_people

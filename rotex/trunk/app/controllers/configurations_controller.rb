@@ -1,5 +1,5 @@
 class ConfigurationsController < ApplicationController
-  ssl_only
+  # ssl_only
 
   def edit
     @configuration = @@configuration
