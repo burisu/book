@@ -1,6 +1,6 @@
 %h1="Tous les articles &laquo;#{controller.conf.news_rubric.name}&raquo; des Students Exchange"
 
-=select_tag :id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil)), :onchange=>"window.location.replace('#{news_rubrics_url}?zone_id='+this.value)"
+=select_tag :id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil)), :onchange=>"window.location.replace('#{rubric_url(@rubric)}?zone_id='+this.value)"
 
 -form_tag do 
   =#submit_tag("Surligner")
@@ -28,7 +28,7 @@
                       -for author in country.available_authors(:promotion_id=>promotion.id)
                         %li{:class=>(@zone and author.in_zone?(@zone) ? "surlined" : "")}
                           -if author.story?
-                            =link_to author.label, {:controller=>:intra, :action=>:story, :id=>author.id}
+                            =link_to author.label, story_person_url(author)
                           -else
                             =author.label
  

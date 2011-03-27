@@ -85,7 +85,7 @@ module ApplicationHelper
 #    code += link_to_function(image_tag("buttons/#{markup}.png", :alt=>::I18n.t('general.layout.'+markup), :title=>::I18n.t('general.layout.'+markup)), "openImagePopup('#{url_for(:action=>:media, :id=>input_id)}', 'preview')", :class=>:tool)
 
     markup = 'show'
-    code += link_to_remote(image_tag('buttons/show.png'), {:url=>{:action=>:preview}, :with=>"'textile=' + encodeURIComponent($('#{input_id}').value)", :update=>viewer, :success=>"$('#{viewer}').show()"}, :class=>:tool)
+    code += link_to_remote(image_tag('buttons/show.png'), {:url=>preview_articles_url, :with=>"'textile=' + encodeURIComponent($('#{input_id}').value)", :update=>viewer, :success=>"$('#{viewer}').show()", :method=>:get}, :class=>:tool)
     code += link_to(image_tag('buttons/unknown.png'), help_articles_url, :class=>:tool)
     code = content_tag(:div, code, :class=>:editor)
     code = content_tag(:div, nil, :id=>viewer, :style=>"display:none;", :class=>'viewer')+code
@@ -94,7 +94,7 @@ module ApplicationHelper
 
 
   def menu_tag
-    render :partial=>"shared/top_rotex"
+    render :partial=>"shared/menu"
   end
 
 
@@ -253,7 +253,7 @@ module ApplicationHelper
         # code += ' align="'+align+'"' if ['left', 'right'].include? align
         code += ' alt="'+alt+'" title="'+alt+'"'
         code += ' src="'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+'"/>'
-        code = link_to(code, {:controller=>:intra, :action=>:image_detail, :id=>image.id}, {:class=>:media})
+        code = link_to(code, image_url(image), {:class=>:media})
         code = '<div class="media media'+align+'">'+code+'<div class="title">'+h(title)+'</div></div>' if title
         code
       end

@@ -179,7 +179,7 @@ class Sale < ActiveRecord::Base
   end
 
   def payment_mode_label
-    PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}[0]
+    (PAYMENT_MODES.detect{|x| x[1] == self.payment_mode}||[]) [0] || "Inconnu"
   end
 
   def state_label

@@ -1,0 +1,10 @@
+.menu
+  %ul
+    %li=link_to "Accueil", root_url
+    -unless @current_person
+      %li=link_to "Espace Membres", myself_url
+    %li=link_to "Achat en ligne", new_sale_url
+    %li=link_to "Contact", special_url(:contact)
+    %li=link_to "À propos de nous", special_url(:about)
+    %li=link_to "Mentions légales", special_url(:legals)
+    %li=link_to "Aide", special_url(:help)

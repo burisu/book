@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 #
 # Table name: articles
@@ -107,6 +108,10 @@ class Article < ActiveRecord::Base
     self.done_on = params["done_on"]
   end
 
+
+  def to_param
+    return "#{self.id}-#{self.title.parameterize[0..99]}"
+  end
 
 
   def public?

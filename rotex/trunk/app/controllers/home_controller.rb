@@ -19,31 +19,31 @@ class HomeController < ApplicationController
       @article = Article.find_by_id(conf.send(params[:id]+"_article_id"))
       if @article.nil?
         flash[:warning] = "La page que vous demandez est en construction."
-        redirect_to :action=>:index
+        redirect_to root_url
       end
     else
       flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:index
+      redirect_to root_url
     end
   end
   
-  def article
-    @article = Article.find(params[:id])
-    if @article.nil?
-      flash[:error] = "La page que vous demandez n'existe pas"
-      redirect_to :action=>:index
-    end
-    if @current_person.nil? and not @article.public?
-      flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to new_session_url(:redirect=>request.url)
-    elsif @current_person
-      unless @article.author_id == @current_person.id or access? :publishing or @article.published?
-        @article = nil
-        flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
-        redirect_to :back
-      end
-    end
-  end
+  # def article
+  #   @article = Article.find(params[:id])
+  #   if @article.nil?
+  #     flash[:error] = "La page que vous demandez n'existe pas"
+  #     redirect_to root_url
+  #   end
+  #   if @current_person.nil? and not @article.public?
+  #     flash[:error] = "Veuillez vous connecter pour accéder à l'article."
+  #     redirect_to new_session_url(:redirect=>request.url)
+  #   elsif @current_person
+  #     unless @article.author_id == @current_person.id or access? :publishing or @article.published?
+  #       @article = nil
+  #       flash[:error] = "Vous n'avez pas le droit d'accéder à cet article."
+  #       redirect_to :back
+  #     end
+  #   end
+  # end
 
   def access_denied
   end

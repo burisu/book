@@ -15,7 +15,6 @@
   -if access?(:all)
     %h3 Administration
     %ul
-      -#%li=link_to("Admin (Mode Expert)", {:controller=>:admin, :action=>:index})
       %li=link_to("Configuration", edit_configuration_url)
       %li=link_to("Produits", products_url)
       %li=link_to("Zones", zones_url)

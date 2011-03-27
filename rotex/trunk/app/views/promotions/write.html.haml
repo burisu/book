@@ -23,5 +23,5 @@
         %td.label
         %td.value=submit_tag 'Envoyer le message'
         %td.hint
-=observe_field("mail_arrival_id", :update=>"mail_promotion_id", :url=>{:action=>:message_send}, :frequency=>0.25, :with=>'country_id')
+=observe_field("mail_arrival_id", :update=>"mail_promotion_id", :url=>write_promotions_url, :frequency=>0.25, :with=>'country_id')
 

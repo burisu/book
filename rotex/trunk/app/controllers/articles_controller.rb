@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
     end
     if @current_person.nil? and not @article.public?
       flash[:error] = "Veuillez vous connecter pour accéder à l'article."
-      redirect_to :controller=>:authentication, :action=>:login
+      redirect_to new_session_url
     elsif @current_person
       # @article.published?
       unless @article.author_id == @current_person.id or @article.can_be_read_by?(@current_person) or access? :publishing

@@ -199,7 +199,7 @@ class PeopleController < ApplicationController
     person_id = params[:id] if params[:id] # and access?
     @author = Person.find_by_id(person_id)
     @reports = @author.reports
-    expire_fragment(:controller=>:intra, :action=>:story, :id=>@author.id)
+    expire_fragment(:controller=>:people, :action=>:story, :id=>@author.id)
   end
 
 
