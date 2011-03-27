@@ -1,5 +1,4 @@
--cache({:controller=>:home, :action=>:article_complete, :id=>@article.id}) do
-  .article
-    %h1=h @article.title
-    .content=dokuwikize(@article.content)
-    .author='&Eacute;crit par '+@article.author.label+' le '+I18n.localize(@article.created_at, :format=>:long)+' et mis à jour le '+I18n.localize(@article.updated_at, :format=>:long)
+.article
+  %h1=h @article.title
+  .content=dokuwikize(@article.content)
+  .author='&Eacute;crit par '+@article.author.label+' le '+I18n.localize(@article.created_at, :format=>:long)+' et mis à jour le '+I18n.localize(@article.updated_at, :format=>:long)

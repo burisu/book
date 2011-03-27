@@ -14,10 +14,9 @@
       .frame.blog
         %h3 Extraits aléatoires
         -for article in @blog
-          -cache({:controller=>:home, :action=>:article_extract, :id=>article.id}) do
-            .extract
-              %h4=article.title
-              .content=dokuwikize(article.intro)+link_to('Lire la suite', article_url(article))
+          .extract
+            %h4=article.title
+            .content=dokuwikize(article.intro)+link_to('Lire la suite', article_url(article))
         .extract{:style=>"text-align:center"}=link_to "Plus d'articles...", rubric_url(controller.conf.news_rubric)
 
 -for @article in @articles
