@@ -93,8 +93,8 @@ class ArticlesController < ApplicationController
       for k,v in params[:mandate_natures]||[]
         @article.mandate_natures << MandateNature.find(k) if v.to_s == "1"
       end
-      expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
-      expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
+      # expire_fragment({:controller=>:home, :action=>:article_complete, :id=>@article.id})
+      # expire_fragment({:controller=>:home, :action=>:article_extract, :id=>@article.id})
       flash[:notice] = 'Vos modifications ont été enregistrées ('+I18n.localize(Time.now)+')'
       if params[:save_and_exit]
         redirect_to_back
