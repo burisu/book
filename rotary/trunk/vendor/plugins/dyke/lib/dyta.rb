@@ -43,10 +43,10 @@ module Ekylibre
             tag_method_name  = list_method_name+'_tag'
 
             if ActionView::Base.public_instance_methods.include? tag_method_name
-              if RAILS_ENV == 'production'
-                raise InvalidName.new(name)
-                return
-              end
+              # if RAILS_ENV == 'production'
+              #   raise InvalidName.new(name)
+              #   return
+              # end
             end
 
 
