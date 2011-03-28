@@ -13,7 +13,7 @@
         %h1.subtitle
           =report.title
           =" "
-          =link_to(image_tag('buttons/update2.png'), {:action=>:article_update, :id=>report.id}) if access?(:publishing) or (report.author_id==@current_person.id and not report.published?)
+          =link_to(image_tag('buttons/update2.png'), edit_article_url(report)) if access?(:publishing) or (report.author_id==@current_person.id and not report.published?)
         .content=dokuwikize(report.content)
         .author="Par #{@author.label}"
   
