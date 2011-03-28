@@ -18,6 +18,7 @@ class RubricsController < ApplicationController
     t.column :label, :through=>:author, :url=>{:controller=>:people, :action=>:show}
     t.column :updated_at
     t.column :created_at
+    # t.action :status, :actions=>{"P"=>{:controller=>:articles, :action=>:deactivate}, "R"=>{:controller=>:articles, :action=>:activate}, "U"=>{:controller=>:articles, :action=>:activate}, "W"=>{:controller=>:articles, :action=>:edit}, "C"=>{:controller=>:articles, :action=>:edit}}, :method=>:post
   end
 
   def index

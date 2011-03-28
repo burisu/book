@@ -40,7 +40,7 @@ class PeopleController < ApplicationController
     t.column :user_name
     t.column :address
     t.column :student
-    t.action :is_locked, :actions=>{"true"=>{:action=>:unlock}, "false"=>{:action=>:lock}}
+    t.action :is_locked, :actions=>{"true"=>{:action=>:unlock}, "false"=>{:action=>:lock}}, :method=>:post
     t.action :edit
     t.action :destroy, :method=>:delete, :confirm=>:are_you_sure
   end

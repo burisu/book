@@ -1,5 +1,8 @@
 %h1=@title
-="Veuillez sélectionner vos produits puis valider"
+
+-intro = controller.conf.store_introduction
+.focus=dokuwikize(intro.blank? ? "Veuillez sélectionner vos produits puis valider" : intro)
+
 
 -form_tag() do
   %table.flex.products

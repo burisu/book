@@ -65,6 +65,10 @@ class Article < ActiveRecord::Base
   def ready?
     self.ready
   end
+
+  def writing?
+    self.status.to_s == 'R' or self.status.to_s == 'C'
+  end
   
   def locked?
     ["R","P","U"].include? self.status
@@ -103,7 +107,7 @@ class Article < ActiveRecord::Base
     self.ready = params["ready"]
     self.rubric_id = params["rubric_id"]
     self.status = 'W' if self.new_record?
-    self.status = params["status"] if person.rights.include? :publishing
+    self.status = params["status"] if person.rights.include? :publishing or person.admin?
     # raise params["agenda"]+' '+params["agenda"].class.to_s
     self.done_on = params["done_on"]
   end

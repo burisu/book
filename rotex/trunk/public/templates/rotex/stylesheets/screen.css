@@ -310,3 +310,8 @@ table.products {border-collapse: collapse}
 table.products td {padding: 2px}
 table.products tr.p td {border-bottom: 1px solid #AAA;}
 table.products tr.p td .opt {padding:  2px; margin-left: 40px; border-top: 1px dotted #AAA;}
+
+
+.focus {padding: 16px;}
+
+.focus * {font-size: 16px; padding: 0; margin: 0;}

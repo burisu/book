@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
     # Verification utilisateur
     unless @current_person
       flash[:warning] = 'Veuillez vous connecter.'
-      redirect_to new_session_url(:url=>request.url)
+      redirect_to new_session_url(:redirect=>request.url)
       return
     end
 
@@ -119,7 +119,7 @@ class ApplicationController < ActionController::Base
     if Time.now.to_i-session[:last_request]>3600
       reset_session
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
-      redirect_to new_session_url(:url=>request.url)
+      redirect_to new_session_url(:redirect=>request.url)
       return
     end
     session[:last_request] = Time.now.to_i

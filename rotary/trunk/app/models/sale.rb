@@ -200,6 +200,8 @@ class Sale < ActiveRecord::Base
   end
   
   def saleable_lines_for(person=nil)
+    self.lines.each{|l| l.destroy if l.quantity.zero? }
+    self.reload
     for product in Product.saleable_to(person)
       self.lines.create(:product_id=>product.id, :quantity=>0) unless self.lines.find_by_product_id(product.id)
     end
