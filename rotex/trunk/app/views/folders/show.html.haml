@@ -42,26 +42,13 @@
         -if @reports.size>1
           %li.none=link_to("Histoire complète", story_person_url(@person), :class=>:report)
         -for report in @reports
-          %li=link_to(report.label, article_url(report))
-        %li.none=link_to('Ajouter un article', new_article_url(:rubric_id=>controller.conf.news_rubric_id), :class=>:create)
-        -for year in @reports2.sort
           %li
-            =year[0].to_s+'&nbsp;:'
-            %ul
-              -for report in year[1]
-                -if report[:class]=='create'
-                  - if @owner_mode
-                    %li.none=link_to('Créer la nouvelle pour '+report[:month].lower, {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-                -else
-                  %li
-                    = report[:month]+"&nbsp;: "
-                    -if @owner_mode
-                      = link_to(report[:title], {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-                      = ' '
-                      = link_to(image_tag('buttons/update0.png'), {:action=>:report, :id=>report[:month_id]}, :class=>report[:class])
-                      = link_to(image_tag('buttons/delete0.png'), {:action=>:article_delete, :id=>report[:id]}, :confirm=>confirm(:delete), :method=>:delete)
-                    -else
-                      = report[:title]
+            =link_to(report.label, article_url(report))
+            -if @owner_mode
+              = ' '
+              =link_to(image_tag('buttons/update0.png'), edit_article_url(report))
+              =link_to(image_tag('buttons/delete0.png'), article_url(report), :confirm=>confirm(:delete), :method=>:delete)
+        %li.none=link_to('Ajouter un article', new_article_url(:rubric_id=>controller.conf.news_rubric_id), :class=>:create)
     %td &nbsp; &nbsp;
     %td#periods{:valign=>:top}
       %h2 Mes familles

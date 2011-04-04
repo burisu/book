@@ -30,7 +30,7 @@
     %td.value=@person.born_on
   %tr
     %td.label Voyage
-    %td.value=link_to('Voir le récit du voyage', :action=>:story, :id=>@person.id) if @person.promotion
+    %td.value=link_to('Voir le récit du voyage', story_person_url(@person)) if @person.promotion
   %tr
     %td.label Dossier complet
     %td.value=link_to('Consulter', folder_url(@person)) if @person.promotion

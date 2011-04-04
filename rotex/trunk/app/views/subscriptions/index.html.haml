@@ -8,7 +8,7 @@
     %h3="À #{day} jours"
     %ul
       -for person in people
-        %li=link_to(person.label, :action=>:person, :id=>person.id)
+        %li=link_to(person.label, person_url(person))
   %h2 Cotisations
 
 =dyta :subscriptions

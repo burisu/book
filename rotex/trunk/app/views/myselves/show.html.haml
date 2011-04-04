@@ -15,7 +15,7 @@
       -if @person.photo
         =image_tag(url_for_file_column(@person, :photo, "thumb"))
       -else
-        =link_to "Mettre ma photo", :action=>:profile_update, :id=>@person.id
+        =link_to "Mettre ma photo", edit_myself_url
     %td.label Adresse
     %td.value=@person.address
   %tr

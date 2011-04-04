@@ -5,7 +5,7 @@
         -for member in @period.members
           %li
             -if owner_mode
-              =link_to member.name, :action=>:member, :id=>member.id
+              =link_to member.name, edit_folder_member_url(@person, member, :redirect=>request.url)
               =' '
               =link_to(image_tag('buttons/update0.png'), edit_folder_member_url(@person, member, :redirect=>request.url))
               =link_to(image_tag('buttons/delete0.png'), unmemberize_folder_period_url(@period.person, @period, :member_id=>member.id), :confirm=>confirm(:delete), :method=>:delete)
