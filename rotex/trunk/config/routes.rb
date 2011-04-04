@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :zone_natures, :as=>"types-de-zone", :except=>[:show]
   map.resources :mandate_natures, :as=>"types-de-mandat", :except=>[:show]
   map.resources :subscriptions, :as=>"adhesions", :except=>[:show], :collection=>{:subscriptions_dyta=>[:get, :post], :chase_up=>[:post], :people_dyli=>[:get, :post]}
-  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post], :people_dyta=>[:get, :post]}
+  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post], :people2_dyta=>[:get, :post]}
 
 
   map.resources :rubrics, :as=>"rubriques", :collection=>{:rubrics_dyta=>[:get, :post], :rubric_articles_dyta=>[:get, :post]}

@@ -153,7 +153,7 @@ mandates:
 # Gérer les promotions
 promotions:
   controller: promotions
-  actions: [index, people_dyta, show]
+  actions: [index, people2_dyta, show]
 # Gérer la publication
 publishing:
   actions:

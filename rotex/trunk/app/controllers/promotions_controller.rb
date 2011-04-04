@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 class PromotionsController < ApplicationController
 
-  dyta(:people, :model=>:people, :order=>"family_name, first_name", :conditions=>"(session[:current_promotion_id].blank? ? {} : {:promotion_id=>session[:current_promotion_id]}).merge(:student=>true)", :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on") do |t|
+  dyta(:people2, :model=>:people, :order=>"family_name, first_name", :conditions=>"(session[:current_promotion_id].blank? ? {} : {:promotion_id=>session[:current_promotion_id]}).merge(:student=>true)", :line_class=>"(RECORD.current? ? 'notice' : '')", :order=>"started_on") do |t|
     t.action :show, :url=>{:controller=>:folders}
     t.column :family_name, :url=>{:controller=>:people, :action=>:show}
     t.column :first_name, :url=>{:controller=>:people, :action=>:show}
