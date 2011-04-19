@@ -13,17 +13,13 @@ class AuthenticationController < ApplicationController
         session[:current_person_id]=person.id
         session[:rights] = person.rights
         @@configuration.reload
-        if session[:history][1].blank?
-          redirect_to :controller=>:intra, :action=>:profile
-        else
-          redirect_to session[:history][1]
-        end
+        redirect_to :controller=>:suivi, :action=>:index
       else
         flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
       end
     else
       if session[:current_person_id]
-        redirect_to :controller=>:intra
+        redirect_to :controller=>:suivi
       end
     end
   end
@@ -31,7 +27,7 @@ class AuthenticationController < ApplicationController
   def logout
     session[:current_person_id] = nil
     reset_session
-    redirect_to :controller=>:home, :action=>:index
+    redirect_to :controller=>:suivi, :action=>:index
   end
 
 
@@ -61,7 +57,7 @@ class AuthenticationController < ApplicationController
     
   
   private
-  def clean_people
+  def clean_people()
     begin
       PersonVersion.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'48 hours'::interval"
       Person.delete_all "NOT is_validated AND CURRENT_TIMESTAMP-created_at>'48 hours'::interval"

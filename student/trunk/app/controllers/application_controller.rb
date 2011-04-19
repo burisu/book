@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
   @@configuration = Configuration.the_one
 
   hide_action :conf
-  def conf
+  def conf()
     @@configuration
   end
 
-  def init
+  def init()
     if session[:current_person_id]
       @current_person=Person.find(session[:current_person_id])
       @current_person_id = @current_person.id
@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  def authorize
+  def authorize()
    unless session[:current_person_id]
       session[:last_url] = request.url
       session[:original_uri] = request.request_uri
