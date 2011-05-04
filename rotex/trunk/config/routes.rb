@@ -33,7 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   
-  map.resources :mandates, :as=>"mandats", :except=>[:show], :collection=>{:mandates_dyta=>[:get, :post]}
+  map.resources :mandates, :as=>"mandats", :except=>[:show], :collection=>{:mandates_dyta=>[:get, :post], :people_dyli=>[:get, :post]}
   map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post], :people_dyta=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post] }, :member=>{:story=>:get, :lock=>:post, :unlock=>:post}
 
   map.resources :folders, :as=>"dossiers", :only=>[:show, :edit, :update] do |folder|

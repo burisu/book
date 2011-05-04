@@ -12,10 +12,11 @@
 %table.infos.formu
   %tr
     %td{:rowspan=>6}
-      -if @person.photo
-        =image_tag(url_for_file_column(@person, :photo, "thumb"))
-      -else
-        =link_to "Mettre ma photo", edit_myself_url
+      -link_to edit_myself_url do
+        -if @person.photo
+          =image_tag(url_for_file_column(@person, :photo, "thumb"))
+        -else
+          ="Mettre ma photo"
     %td.label Adresse
     %td.value=@person.address
   %tr

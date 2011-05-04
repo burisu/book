@@ -41,7 +41,12 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    Product.find(params[:id]).destroy
+    product = Product.find(params[:id])
+    if product.sale_lines.size.zero?
+      product.destroy
+    else
+      product.update_attribute(:active, false)
+    end
     redirect_to products_url
   end
 

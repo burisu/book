@@ -89,7 +89,7 @@ class SalesController < ApplicationController
       return
     end
     if request.post?
-      if @sale.update_attribute(:payment_mode, params[:sale][:payment_mode])
+      if params[:sale] and @sale.update_attribute(:payment_mode, params[:sale][:payment_mode])
         case @sale.payment_mode.to_sym
         when :cash, :check
           flash[:notice] = "Votre commande a été prise en compte. Veuillez effectuer votre paiement dans les plus brefs délais."

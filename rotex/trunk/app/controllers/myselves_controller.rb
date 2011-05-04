@@ -104,7 +104,7 @@ class MyselvesController < ApplicationController
   def edit
     @person = Person.find(session[:current_person_id])
     @title = "Modifier les informations de mon compte"
-    render_form
+    render_form :multipart=>true
   end
 
   def update
@@ -121,7 +121,7 @@ class MyselvesController < ApplicationController
     if @person.save
       redirect_to myself_url
     end
-    render_form
+    render_form :multipart=>true
   end
 
   def change_password

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Be sure to restart your server when you modify this file
 
 # Uncomment below to force Rails into production mode when
@@ -30,6 +31,7 @@ Rails::Initializer.run do |config|
   config.gem "haml"
   config.gem "fastercsv"
   config.gem 'will_paginate', :version => '~> 2.3'
+  config.gem "pg"
   # config.gem 'scaffolding_extensions', :version => '1.3.12'
   # config.gem 'pdf-reader'
   config.gem 'prawn', :version=>'0.8.4'
