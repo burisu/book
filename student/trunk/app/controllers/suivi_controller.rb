@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class SuiviController < ApplicationController
   before_filter :authorize, :except=>[:access_denied, :logout]
   ssl_only
@@ -8,31 +9,6 @@ class SuiviController < ApplicationController
     @questionnaires = @current_person.questionnaires
   end
 
-
-  dyta(:themes, :order=>:name) do |t|
-    t.column :name
-    t.column :color
-    t.column :comment
-    t.action :theme, :image=>:update
-    t.action :theme, :image=>:destroy, :method=>:delete, :confirm=>"Are you sure\?"
-  end
-
-  def themes
-    return unless try_to_access :suivi
-  end
-
-  def theme
-    return unless try_to_access :suivi
-    @theme = Theme.find_by_id(params[:id])
-    @theme ||= Theme.new
-    if request.post?
-      @theme.attributes = params[:theme]
-      redirect_to :action=>:themes if @theme.save
-    elsif request.delete?
-      @theme.destroy
-      redirect_to :action=>:themes
-    end
-  end
 
 
   dyta(:questionnaires, :order=>"started_on DESC, name") do |t|
