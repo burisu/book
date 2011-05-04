@@ -1,0 +1,30 @@
+%h1
+  ="Questionnaire "
+  %em=@questionnaire.name
+
+.dsc
+  %dl
+    %dt Promotion
+    %dd=@questionnaire.promotion_name
+    %dt Période d'activité
+    %dd="du #{I18n.localize(questionnaire.started_on)} au #{I18n.localize(questionnaire.stopped_on)}"
+    %dt Introduction
+    %dd=@questionnaire.introduction
+    %dt Commentaire
+    %dd=@questionnaire.comment
+
+%h2 Questions
+-unless @questionnaire.active
+  %fieldset
+    %legend Ajouter une question
+    -form_remote_tag(:url=>{:action=>:question}, :method=>:post, :update=>'questionnaire_questions', :loaded=>"$('question_name').value=''; $('question_explanation').value=''; $('question_name').focus();") do
+      =render :partial=>'question_form'
+=dyta(:questionnaire_questions)
+
+%h2 État des réponses
+=dyta(:questionnaire_answers)
+
+%h2 Absences de réponse
+%ul.aclist
+  %li=link_to "Envoyer un mail aux absents", wake_up_absents_questionnaire_url(@questionnaire), :method=>:post
+=dyta(:questionnaire_students)
