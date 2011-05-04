@@ -152,7 +152,7 @@ fr-FR:
         odd: "must be odd" 
         even: "must be even"
         # Append your own errors here or at the model/attributes scope.
-
+        record_invalid: 'Validations echouées : {{errors}}'
     models:
       article: Article
       mandate: Mandat
