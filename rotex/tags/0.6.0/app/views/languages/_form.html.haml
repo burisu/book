@@ -1,0 +1,8 @@
+= error_messages_for "language"
+
+%table.form
+  =tl "Nom", text_field(:language, :name)
+  =tl "Nom natif", text_field(:language, :native_name)
+  =tl "Code ISO 3166", text_field(:language, :iso639, :size=>2, :maxlength=>2)
+
+

@@ -1,0 +1,15 @@
+%h1 Tous les types de mandat
+
+%ul.index
+  -for mandate_nature in MandateNature.find(:all, :order=>:name)
+    %li
+      %h3
+        =mandate_nature.name
+        =" (#{mandate_nature.zone_nature.name})" if mandate_nature.zone_nature
+      .dsc="Droits : #{mandate_nature.human_rights}" unless mandate_nature.rights.blank?
+      .dsc="Code : #{mandate_nature.code}"
+      .dsc
+        =link_to("Modifier", edit_mandate_nature_url(mandate_nature), :class=>"icon im-edit")
+        =" &bull; "
+        =link_to("Supprimer", mandate_nature_url(mandate_nature), :method=>:delete, :confirm=>"Are you sure?", :class=>"icon im-destroy")
+  %li=link_to "Ajouter un type de mandat", new_mandate_nature_url

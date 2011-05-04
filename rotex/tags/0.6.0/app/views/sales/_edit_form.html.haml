@@ -1,0 +1,9 @@
+= error_messages_for "sale"
+
+%table.form
+  =tl "État", select(:sale, :state, Sale::STATES)
+  =tl "Mode de paiement", select(:sale, :payment_mode, Sale::PAYMENT_MODES)
+  =tl "N°Paiement (N°Chèque, N° virement...)", text_field(:sale, :payment_number)
+  =tl "Commentaire", text_field(:sale, :comment)
+
+

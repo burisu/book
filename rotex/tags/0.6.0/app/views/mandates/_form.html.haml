@@ -1,0 +1,8 @@
+=error_messages_for 'mandate'
+%table.formu.flex
+  =tl "Personne", dyli(:mandate, :person_id, :people)
+  =tl "Type de mandat", select(:mandate, :nature_id, MandateNature.find(:all, :order=>:name).collect{|p| [ p.name, p.id ] })
+  =tl "Du (AAAA-MM-JJ)", text_field(:mandate, :begun_on, :size=>10)
+  =tl "Au (AAAA-MM-JJ)", text_field(:mandate, :finished_on, :size=>10)
+  =tl "N'expire jamais", check_box(:mandate, :dont_expire)
+  =tl "Zone concernée", select(:mandate, :zone_id, Zone.find(:all, :order=>:code).collect{|p| [ p.parents.collect{|z| z.name}.join(" :: "), p.id ] }, :include_blank=>true)

@@ -1,0 +1,42 @@
+%td.submenu{:valign=>"top"}
+  %h3=@current_person.label
+  %ul
+    %li=link_to "Mon compte", myself_url
+    -if @current_person.student
+      %li=link_to "Mon voyage", (@current_person.promotion ? folder_url(@current_person) : edit_folder_url(@current_person))
+      %li=link_to "Ma galerie", images_url
+    %li=link_to "Envoyer un message", write_promotions_url
+    %li=link_to "Se déconnecter", session_url, :method=>:delete
+  %h3 Articles
+  %ul
+    %li=link_to "Écrire un article", new_article_url
+    -for rubric in Rubric.find(:all, :order=>"name")
+      %li=link_to rubric.name, rubric_url(rubric)
+  -if access?(:all)
+    %h3 Administration
+    %ul
+      %li=link_to("Configuration", edit_configuration_url)
+      %li=link_to("Produits", products_url)
+      %li=link_to("Zones", zones_url)
+      %li=link_to("Types de mandat", mandate_natures_url)
+      %li=link_to("Types de zone", zone_natures_url)
+      %li=link_to("Pays", countries_url)
+      %li=link_to("Langues", languages_url)
+  -if access? [:publishing, :specials, :home, :agenda]
+    %h3 Publication
+    %ul
+      -if access? :publishing
+        %li=link_to("Articles", articles_url)
+        %li=link_to("Rubriques", rubrics_url)
+  -if access? [:users,:subscribing, :folders]
+    %h3 Adhérents
+    %ul
+      -if access? :users
+        %li=link_to("Personnes", people_url)
+      -if access? :subscribing
+        %li=link_to("Adhésions", subscriptions_url)
+        %li=link_to("Ventes", sales_url)
+      -if access?
+        %li=link_to("Mandats", mandates_url)
+      -if access? [:folders, :promotions]
+        %li=link_to("Promotions", promotions_url)

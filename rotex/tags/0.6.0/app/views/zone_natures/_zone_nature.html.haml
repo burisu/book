@@ -1,0 +1,11 @@
+%h3
+  =zone_nature.name
+  =" &bull; "
+  =link_to("Modifier", edit_zone_nature_url(zone_nature), :class=>"icon im-edit")
+  =" &bull; "
+  =link_to("Supprimer", zone_nature_url(zone_nature), :method=>:delete, :confirm=>"Are you sure?", :class=>"icon im-destroy")
+-if zone_nature.children.size > 0
+  %ul
+    -for child in zone_nature.children
+      %li=render :partial=>'zone_nature', :object=>child
+    %li=link_to "Ajouter un sous-type de #{zone_nature.name}", new_zone_nature_url(:parent_id=>zone_nature.id)
