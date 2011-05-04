@@ -1,25 +1,25 @@
 %h1
   ="Questionnaire "
   %em=@questionnaire.name
-
+%ul.aclist
+  %li=link_to "Modifier", edit_questionnaire_url(@questionnaire)
 .dsc
   %dl
     %dt Promotion
     %dd=@questionnaire.promotion_name
     %dt Période d'activité
-    %dd="du #{I18n.localize(questionnaire.started_on)} au #{I18n.localize(questionnaire.stopped_on)}"
+    %dd="du #{I18n.localize(@questionnaire.started_on)} au #{I18n.localize(@questionnaire.stopped_on)}"
     %dt Introduction
-    %dd=@questionnaire.introduction
+    %dd=@questionnaire.intro
     %dt Commentaire
     %dd=@questionnaire.comment
 
 %h2 Questions
 -unless @questionnaire.active
-  %fieldset
-    %legend Ajouter une question
-    -form_remote_tag(:url=>{:action=>:question}, :method=>:post, :update=>'questionnaire_questions', :loaded=>"$('question_name').value=''; $('question_explanation').value=''; $('question_name').focus();") do
-      =render :partial=>'question_form'
+  %ul.aclist
+    %li=link_to "Ajouter une question", new_question_url(:questionnaire_id=>@questionnaire.id)
 =dyta(:questionnaire_questions)
+
 
 %h2 État des réponses
 =dyta(:questionnaire_answers)

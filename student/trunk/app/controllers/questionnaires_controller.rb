@@ -22,10 +22,10 @@ class QuestionnairesController < ApplicationController
     t.column :name, :through=>:theme
     t.column :name
     t.column :explanation
-    t.action :up, :if=>"!RECORD.first\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
-    t.action :down, :if=>"!RECORD.last\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
-    t.action :edit, :if=>"!RECORD.questionnaire.active"
-    t.action :destroy, :method=>:delete, :confirm=>"Are you sure\?", :remote=>true, :update=>:questionnaire_questions, :if=>"!RECORD.questionnaire.active"
+    t.action :up, :url=>{:controller=>:questions}, :if=>"!RECORD.first\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
+    t.action :down, :url=>{:controller=>:questions}, :if=>"!RECORD.last\? and !RECORD.questionnaire.active", :remote=>true, :update=>:questionnaire_questions
+    t.action :edit, :url=>{:controller=>:questions}, :if=>"!RECORD.questionnaire.active"
+    t.action :destroy, :url=>{:controller=>:questions}, :method=>:delete, :confirm=>"Are you sure\?", :remote=>true, :update=>:questionnaire_questions, :if=>"!RECORD.questionnaire.active"
   end
   
 
