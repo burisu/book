@@ -2,8 +2,9 @@
 class SalesController < ApplicationController
   # ssl_only
 
+  
 
-  dyta(:sales, :order=>"id DESC") do |t|
+  dyta(:sales, :conditions=>search_conditions(:sales, [:number, :payment_number, :payment_mode, :client_email, :comment]), :order=>"id DESC") do |t|
     t.column :id
     t.column :number, :url=>{:action=>:show}
     t.column :label, :through=>:client, :url=>{:controller=>:people, :action=>:show}
@@ -16,6 +17,7 @@ class SalesController < ApplicationController
   end
 
   def index
+    session[:sale_key] = params[:sale_key]||params[:key]
   end
 
   dyta(:sale_lines, :conditions=>{:sale_id=>['session[:current_sale_id]']}, :export=>false) do |t|

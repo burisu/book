@@ -1,0 +1,15 @@
+Bonjour,
+
+La personne <%=@person.label-%> (<%=@person.id-%>) vient de remplir son questionnaire :
+
+<%for item in @answer.items.find(:all, :joins=>"join questions on (questions.id=question_id)", :order=>:position)-%>
+<%=item.question.position.to_s+'. '+item.question.name%>
+  <%=item.content%>
+
+<%end-%>
+
+<%=render :partial=>"person"%>
+
+Cordialement,
+
+L'equipe du Rotex 1690.

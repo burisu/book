@@ -1,0 +1,34 @@
+# translation missing: fr-FR.rights.__protected__
+__protected__:
+  actions: [suivi::access_denied, suivi::answer, suivi::index]
+# translation missing: fr-FR.rights.__public__
+__public__:
+  actions:
+  - authentication::index
+  - authentication::login
+  - authentication::logout
+  - authentication::lost_login
+  - authentication::lost_password
+# translation missing: fr-FR.rights.suivi
+suivi:
+  actions:
+  - suivi::absents_wake_up
+  - suivi::answer_delete
+  - suivi::answer_lock
+  - suivi::answer_unlock
+  - suivi::answer_unvalidate
+  - suivi::answer_validate
+  - suivi::answers
+  - suivi::question
+  - suivi::question_down
+  - suivi::question_up
+  - suivi::questionnaire
+  - suivi::questionnaire_answers_dyta
+  - suivi::questionnaire_duplicate
+  - suivi::questionnaire_questions_dyta
+  - suivi::questionnaire_students_dyta
+  - suivi::questionnaires
+  - suivi::questionnaires_dyta
+  - suivi::theme
+  - suivi::themes
+  - suivi::themes_dyta

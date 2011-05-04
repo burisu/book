@@ -1,5 +1,13 @@
 %h1 Ventes
 
+-form_tag(sales_url, :method=>:get, :class=>"search") do 
+  %table.search
+    %tr
+      %td Filtrer sur
+      %td=text_field_tag("sale_key", session[:sale_key])
+      %td.action{:rowspan=>3}=submit_tag("Rechercher", :name=>nil)
+
+
 %ul.aclist
   %li=link_to("Ajouter une vente", new_sale_url)
 
