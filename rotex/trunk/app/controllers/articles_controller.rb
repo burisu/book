@@ -9,7 +9,8 @@ class ArticlesController < ApplicationController
     t.column :name, :through=>:rubric, :url=>{:controller=>:rubrics, :action=>:show}
     t.column :label, :through=>:author, :url=>{:controller=>:people, :action=>:show}
     t.column :updated_at
-    t.action :status, :actions=>{"P"=>{:action=>:deactivate}, "R"=>{:action=>:activate}, "U"=>{:action=>:activate}, "W"=>{:action=>:edit}, "C"=>{:action=>:edit}}, :method=>:post
+    t.action :status, :actions=>{"P"=>{:action=>:deactivate}, "R"=>{:action=>:activate}, "U"=>{:action=>:activate}}, :method=>:post
+    t.action :status, :actions=>{"W"=>{:action=>:edit}, "C"=>{:action=>:edit}}
     t.action :destroy, :method=>:delete, :confirm=>"Sûr(e)\?"
   end
 
