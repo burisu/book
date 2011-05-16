@@ -1,0 +1,168 @@
+# translation missing: fr-FR, rights, __admin__
+__admin__:
+  actions:
+  - products::check # UNEXISTENT ACTION !!!
+  - products::create # UNEXISTENT ACTION !!!
+  - products::destroy # UNEXISTENT ACTION !!!
+  - products::edit # UNEXISTENT ACTION !!!
+  - products::index # UNEXISTENT ACTION !!!
+  - products::new # UNEXISTENT ACTION !!!
+  - products::update # UNEXISTENT ACTION !!!
+  - sales::index # UNEXISTENT ACTION !!!
+  - sales::sales_dyta # UNEXISTENT ACTION !!!
+# translation missing: fr-FR, rights, __not_used__
+__not_used__:
+  actions:
+  - articles::activate
+  - articles::articles_dyta
+  - articles::authors_dyli
+  - articles::create
+  - articles::deactivate
+  - articles::destroy
+  - articles::edit
+  - articles::help
+  - articles::index
+  - articles::new
+  - articles::preview
+  - articles::publish
+  - articles::show
+  - articles::update
+  - configurations::edit
+  - configurations::update
+  - countries::create
+  - countries::destroy
+  - countries::edit
+  - countries::index
+  - countries::new
+  - countries::update
+  - images::create
+  - images::destroy
+  - images::edit
+  - images::index
+  - images::new
+  - images::show
+  - images::update
+  - languages::create
+  - languages::destroy
+  - languages::edit
+  - languages::index
+  - languages::new
+  - languages::update
+  - mandate_natures::create
+  - mandate_natures::destroy
+  - mandate_natures::edit
+  - mandate_natures::index
+  - mandate_natures::new
+  - mandate_natures::update
+  - mandates::create
+  - mandates::destroy
+  - mandates::edit
+  - mandates::index
+  - mandates::mandates_dyta
+  - mandates::new
+  - mandates::people_dyli
+  - mandates::update
+  - people::activate
+  - people::approve
+  - people::create
+  - people::destroy
+  - people::disapprove
+  - people::edit
+  - people::index
+  - people::lock
+  - people::lost_login
+  - people::lost_password
+  - people::new
+  - people::people_dyta
+  - people::person_articles_dyta
+  - people::person_mandates_dyta
+  - people::person_subscriptions_dyta
+  - people::show
+  - people::story
+  - people::subscribe
+  - people::unlock
+  - people::update
+  - rubrics::create
+  - rubrics::destroy
+  - rubrics::edit
+  - rubrics::index
+  - rubrics::new
+  - rubrics::rubric_articles_dyta
+  - rubrics::rubrics_dyta
+  - rubrics::show
+  - rubrics::update
+  - zone_natures::create
+  - zone_natures::destroy
+  - zone_natures::edit
+  - zone_natures::index
+  - zone_natures::new
+  - zone_natures::update
+  - zones::create
+  - zones::destroy
+  - zones::edit
+  - zones::index
+  - zones::new
+  - zones::refresh
+  - zones::show
+  - zones::update
+# translation missing: fr-FR, rights, __private__
+__private__:
+  actions:
+  - myselves::edit
+  - myselves::person_articles_dyta
+  - myselves::person_mandates_dyta
+  - myselves::person_subscriptions_dyta
+  - myselves::show
+  - myselves::update
+# translation missing: fr-FR, rights, __protected__
+__protected__:
+  actions: []
+# translation missing: fr-FR, rights, __public__
+__public__:
+  actions:
+  - guests::create # UNEXISTENT ACTION !!!
+  - guests::destroy # UNEXISTENT ACTION !!!
+  - guests::edit # UNEXISTENT ACTION !!!
+  - guests::new # UNEXISTENT ACTION !!!
+  - guests::update # UNEXISTENT ACTION !!!
+  - home::access_denied # UNEXISTENT ACTION !!!
+  - home::index # UNEXISTENT ACTION !!!
+  - home::special # UNEXISTENT ACTION !!!
+  - myselves::change_email
+  - myselves::change_password
+  - sale_lines::create # UNEXISTENT ACTION !!!
+  - sale_lines::decrement # UNEXISTENT ACTION !!!
+  - sale_lines::destroy # UNEXISTENT ACTION !!!
+  - sale_lines::edit # UNEXISTENT ACTION !!!
+  - sale_lines::increment # UNEXISTENT ACTION !!!
+  - sale_lines::new # UNEXISTENT ACTION !!!
+  - sale_lines::update # UNEXISTENT ACTION !!!
+  - sales::cancel # UNEXISTENT ACTION !!!
+  - sales::check # UNEXISTENT ACTION !!!
+  - sales::create # UNEXISTENT ACTION !!!
+  - sales::destroy # UNEXISTENT ACTION !!!
+  - sales::edit # UNEXISTENT ACTION !!!
+  - sales::fill # UNEXISTENT ACTION !!!
+  - sales::finish # UNEXISTENT ACTION !!!
+  - sales::new # UNEXISTENT ACTION !!!
+  - sales::pay # UNEXISTENT ACTION !!!
+  - sales::refuse # UNEXISTENT ACTION !!!
+  - sales::sale_lines_dyta # UNEXISTENT ACTION !!!
+  - sales::show # UNEXISTENT ACTION !!!
+  - sales::update # UNEXISTENT ACTION !!!
+  - sessions::create # UNEXISTENT ACTION !!!
+  - sessions::destroy # UNEXISTENT ACTION !!!
+  - sessions::new # UNEXISTENT ACTION !!!
+# translation missing: fr-FR, rights, subscribing
+subscribing:
+  controller: subscriptions
+  actions:
+  - chase_up # UNEXISTENT ACTION !!!
+  - create # UNEXISTENT ACTION !!!
+  - destroy # UNEXISTENT ACTION !!!
+  - edit # UNEXISTENT ACTION !!!
+  - index # UNEXISTENT ACTION !!!
+  - new # UNEXISTENT ACTION !!!
+  - people_dyli # UNEXISTENT ACTION !!!
+  - subscriptions_dyta # UNEXISTENT ACTION !!!
+  - update # UNEXISTENT ACTION !!!

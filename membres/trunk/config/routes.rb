@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :myself, :as=>"mon-compte", :only=>[:edit, :update, :show], :collection=>{:change_password=>[:get, :post], :change_email=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post]}
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "home"
+  map.root :controller => "myselves", :action=>:show
 
   # See how all your routes lay out with "rake routes"
 

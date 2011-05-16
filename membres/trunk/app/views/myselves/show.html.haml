@@ -1,0 +1,48 @@
+%h1=@person.first_name+" "+@person.patronymic_name
+
+%ul.aclist
+  %li=link_to 'Modifier mon compte', edit_myself_url
+  %li=link_to 'Changer mon mot de passe', change_password_myself_url
+  %li=link_to 'Mettre à jour mon adresse e-mail', change_email_myself_url
+  -#if @current_person.first_day_as_non_subscriber<=Date.today+2.month
+  %li=link_to 'Payer ma cotisation', new_sale_url
+  %li=link_to "Imprimer mes cartes de visite", myself_url(:format=>:pdf)
+
+
+%table.infos.formu
+  %tr
+    %td{:rowspan=>6}
+      -link_to edit_myself_url do
+        -if @person.photo
+          =image_tag(url_for_file_column(@person, :photo, "thumb"))
+        -else
+          ="Mettre ma photo"
+    %td.label Adresse
+    %td.value=@person.address
+  %tr
+    %td.label Téléphone (domicile)
+    %td.value=@person.phone
+  %tr
+    %td.label Téléphone (travail)
+    %td.value=@person.phone2
+  %tr
+    %td.label Téléphone (mobile)
+    %td.value=@person.mobile
+  %tr
+    %td.label Fax/Télécopie
+    %td.value=@person.fax
+  %tr
+    %td.label Pays d'origine
+    %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name
+
+-if @person.articles.size > 0
+  %h2 Articles
+  =dyta :person_articles
+
+-if @person.mandates.size>0
+  %h2 Mandats
+  =dyta :person_mandates
+
+-if @person.subscriptions.size>0
+  %h2 Cotisations
+  =dyta :person_subscriptions
