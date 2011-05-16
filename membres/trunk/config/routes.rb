@@ -1,36 +1,38 @@
+# routes membres
 ActionController::Routing::Routes.draw do |map|
-  # The priority is based upon order of creation: first created -> highest priority.
 
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
+  map.simple_captcha '/captcha/:action', :controller => 'simple_captcha'
 
-  # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
+  map.subscribe "inscription", :controller=>"people", :action=>"subscribe"
+  map.lost_password "mot-de-passe-perdu", :controller=>"people", :action=>"lost_password"
+  map.lost_login "nom-utilisateur-perdu", :controller=>"people", :action=>"lost_login"
+  map.activate "activer", :controller=>"people", :action=>"activate"
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
+  map.resources :languages, :as=>"langues", :except=>[:show]
+  map.resources :countries, :as=>"pays", :except=>[:show]
+  map.resources :zones, :collection=>{:refresh=>:post}
+  map.resources :zone_natures, :as=>"types-de-zone", :except=>[:show]
+  map.resources :mandate_natures, :as=>"types-de-mandat", :except=>[:show]
+  map.resources :promotions, :only=>[:index, :show], :collection=>{:list=>[:get, :post], :write=>[:get, :post], :people2_dyta=>[:get, :post]}
 
-  # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  map.resources :rubrics, :as=>"rubriques", :collection=>{:rubrics_dyta=>[:get, :post], :rubric_articles_dyta=>[:get, :post]}
+  map.resources :articles, :member=>{:activate=>:post, :deactivate=>:post}, :collection=>{:preview=>:get, :help=>:get, :authors_dyli=>[:get, :post], :articles_dyta=>[:get, :post]}
+  map.resources :images
 
-  # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
+  map.resources :mandates, :as=>"mandats", :except=>[:show], :collection=>{:mandates_dyta=>[:get, :post], :people_dyli=>[:get, :post]}
+  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post], :people_dyta=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post] }, :member=>{:story=>:get, :lock=>:post, :unlock=>:post}
 
-  # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
-  #   end
+
+  map.resource :configuration, :only=>[:edit, :update]
+
+  map.resource :myself, :as=>"mon-compte", :only=>[:edit, :update, :show], :collection=>{:change_password=>[:get, :post], :change_email=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post]}
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home"
 
   # See how all your routes lay out with "rake routes"
-  map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
 
   # Install the default routes as the lowest priority.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  # map.connect ':controller/:action/:id'
+  # map.connect ':controller/:action/:id.:format'
 end
