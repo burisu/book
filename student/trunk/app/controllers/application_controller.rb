@@ -1,15 +1,12 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
+# -*- coding: utf-8 -*-
 class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers  
   include ExceptionNotifiable
   include SslRequirement
 
+  ssl_only
 
-  # Pick a unique cookie name to distinguish our session data from others'
-  # session :session_key => '_rotex_session_id'
-  before_filter :init
+  before_filter :authorize
 
   @@configuration = Configuration.the_one
 
@@ -17,30 +14,6 @@ class ApplicationController < ActionController::Base
   def conf()
     @@configuration
   end
-
-  def init()
-    if session[:current_person_id]
-      @current_person=Person.find(session[:current_person_id])
-      @current_person_id = @current_person.id
-    end
-    @controller_name  = self.controller_name
-    @action_name = action_name
-    @action = @controller_name+':'+@action_name
-    @title = 'Bienvenue'
-    session[:last_request] = Time.now.to_i
-    session[:history] ||= []
-    session[:history].delete_at(0) if session[:no_history]
-    if request.get? and not request.xhr?
-      if session[:history][1]==request.url
-        session[:history].delete_at(0)
-      elsif session[:history][0]!=request.url
-        session[:history].insert(0, request.url)
-      end
-      session[:no_history] = false
-    end
-
-  end  
-  
 
   hide_action :access?
   def access?(right=:all)
@@ -56,7 +29,7 @@ class ApplicationController < ActionController::Base
     end
     return false
   end
- 
+  
   private
 
   protected
@@ -92,33 +65,46 @@ class ApplicationController < ActionController::Base
     return true
   end
 
+
+
   def authorize()
-   unless session[:current_person_id]
-      session[:last_url] = request.url
-      session[:original_uri] = request.request_uri
-      redirect_to :controller=>:authentication, :action=>:login
+    @title = 'Bienvenue'
+
+    # Chargement de l'utilisateur
+    @current_person = Person.find(session[:current_person_id]) if session[:current_person_id] 
+
+    # Verification public
+    current_rights = MandateNature.rights_for(self.controller_name, action_name)
+    return if current_rights.include? :__public__
+
+    # Verification utilisateur
+    unless @current_person
+      flash[:warning] = 'Veuillez vous connecter.'
+      redirect_to new_session_url(:redirect=>request.url)
       return
     end
+    
+    # Verification expiration
     session[:last_request] ||= Time.now.to_i
     if Time.now.to_i-session[:last_request]>3600
       reset_session
       flash[:warning] = 'La session est expirée. Veuillez vous reconnecter.'
-      redirect_to :controller=>:authentication, :action=>:login
+      redirect_to new_session_url(:redirect=>request.url)
       return
     end
+    session[:last_request] = Time.now.to_i
 
-    # Verification des cotisations
-    if @current_person
-      unless @current_person.has_subscribed_on? or @current_person.rights.include?(:all)
-        flash[:warning] = "Vous n'êtes pas à jour de votre cotisation"
-        redirect_to :controller=>:authentication, :action=>:logout
-        return
-      end
-    end
+    # Autorisation immédiate pour un administrateur
+    return if session[:rights].include?(:all) or current_rights.include? :__protected_
 
-    if not access?(:suivi) and not (@current_person and @current_person.student?)
-      redirect_to :controller=>:suivi, :action=>:access_denied
-      return
+    # Réservé au membres seulement
+    return if current_rights.include? :__private__
+
+    # Verification droits
+    unless (session[:rights] & current_rights).size > 0
+      flash[:warning] = "Accès réservé"
+      redirect_to root_url
+      return      
     end
 
   end
@@ -152,79 +138,79 @@ class ApplicationController < ActionController::Base
   end
 
 
-#  def render_form(options={})
-#    a = action_name.split '_'
-#    @operation    = a[-1].to_sym
-#    @partial = options[:partial]||a[0..-2].join('_')+'_form'
-#    @options = options
-#    begin
-#      render :template=>options[:template]||'shared/form_'+@operation.to_s
-#    rescue ActionController::DoubleRenderError
-#    end
-#  end
+  #  def render_form(options={})
+  #    a = action_name.split '_'
+  #    @operation    = a[-1].to_sym
+  #    @partial = options[:partial]||a[0..-2].join('_')+'_form'
+  #    @options = options
+  #    begin
+  #      render :template=>options[:template]||'shared/form_'+@operation.to_s
+  #    rescue ActionController::DoubleRenderError
+  #    end
+  #  end
 
 
 
 
-  # Build standard actions to manage records of a model
-  def self.manage(name, defaults={})
-    operations = [:create, :update, :delete]
+  # # Build standard actions to manage records of a model
+  # def self.manage(name, defaults={})
+  #   operations = [:create, :update, :delete]
 
-    record_name = name.to_s.singularize
-    model = name.to_s.singularize.classify.constantize
-    code = ''
-    methods_prefix = record_name
+  #   record_name = name.to_s.singularize
+  #   model = name.to_s.singularize.classify.constantize
+  #   code = ''
+  #   methods_prefix = record_name
     
-    if operations.include? :create
-      code += "def #{methods_prefix}_create\n"
-      code += "  if request.post?\n"
-      code += "    @#{record_name} = #{model.name}.new(params[:#{record_name}])\n"
-      # code += "    @#{record_name}.company_id = @current_company.id\n"
-      code += "    redirect_to_back if @#{record_name}.save\n"
-      code += "  else\n"
-      values = defaults.collect{|k,v| ":#{k}=>(#{v})"}.join(", ")
-      code += "    @#{record_name} = #{model.name}.new(#{values})\n"
-      code += "  end\n"
-      code += "  render_form\n"
-      code += "end\n"
-    end
+  #   if operations.include? :create
+  #     code += "def #{methods_prefix}_create\n"
+  #     code += "  if request.post?\n"
+  #     code += "    @#{record_name} = #{model.name}.new(params[:#{record_name}])\n"
+  #     # code += "    @#{record_name}.company_id = @current_company.id\n"
+  #     code += "    redirect_to_back if @#{record_name}.save\n"
+  #     code += "  else\n"
+  #     values = defaults.collect{|k,v| ":#{k}=>(#{v})"}.join(", ")
+  #     code += "    @#{record_name} = #{model.name}.new(#{values})\n"
+  #     code += "  end\n"
+  #     code += "  render_form\n"
+  #     code += "end\n"
+  #   end
     
-    if operations.include? :update
-      # this action updates an existing employee with a form.
-      code += "def #{methods_prefix}_update\n"
-      code += "  return unless @#{record_name} = find_and_check(:#{record_name}, params[:id])\n"
-      code += "  if request.post? or request.put?\n"
-      code += "    redirect_to_back if @#{record_name}.update_attributes(params[:#{record_name}])\n"
-      code += "  end\n"
-      values = model.content_columns.collect do |c|
-        value = "@#{record_name}.#{c.name}"
-        value = "(#{value}.nil? ? nil : ::I18n.localize(#{value}))" if [:date, :datetime].include? c.type
-        ":#{c.name}=>#{value}"
-      end.join(", ")
-      # code += "  @title = {#{values}}\n"
-      code += "  render_form\n"
-      code += "end\n"
-    end
+  #   if operations.include? :update
+  #     # this action updates an existing employee with a form.
+  #     code += "def #{methods_prefix}_update\n"
+  #     code += "  return unless @#{record_name} = find_and_check(:#{record_name}, params[:id])\n"
+  #     code += "  if request.post? or request.put?\n"
+  #     code += "    redirect_to_back if @#{record_name}.update_attributes(params[:#{record_name}])\n"
+  #     code += "  end\n"
+  #     values = model.content_columns.collect do |c|
+  #       value = "@#{record_name}.#{c.name}"
+  #       value = "(#{value}.nil? ? nil : ::I18n.localize(#{value}))" if [:date, :datetime].include? c.type
+  #       ":#{c.name}=>#{value}"
+  #     end.join(", ")
+  #     # code += "  @title = {#{values}}\n"
+  #     code += "  render_form\n"
+  #     code += "end\n"
+  #   end
 
-    if operations.include? :delete
-      # this action deletes or hides an existing employee.
-      code += "def #{methods_prefix}_delete\n"
-      code += "  return unless @#{record_name} = find_and_check(:#{record_name}, params[:id])\n"
-      code += "  if request.delete?\n"
-      code += "    #{model.name}.destroy(@#{record_name}.id)\n"
-      code += "    flash[:notice]=::I18n.t('general.record_has_been_correctly_removed')\n"
-      code += "  else\n"
-      code += "    flash[:error]=::I18n.t('general.record_has_not_been_removed')\n"
-      code += "  end\n"
-      code += "  redirect_to :action=>:#{name}\n"
-      code += "end\n"
-    end
+  #   if operations.include? :delete
+  #     # this action deletes or hides an existing employee.
+  #     code += "def #{methods_prefix}_delete\n"
+  #     code += "  return unless @#{record_name} = find_and_check(:#{record_name}, params[:id])\n"
+  #     code += "  if request.delete?\n"
+  #     code += "    #{model.name}.destroy(@#{record_name}.id)\n"
+  #     code += "    flash[:notice]=::I18n.t('general.record_has_been_correctly_removed')\n"
+  #     code += "  else\n"
+  #     code += "    flash[:error]=::I18n.t('general.record_has_not_been_removed')\n"
+  #     code += "  end\n"
+  #     code += "  redirect_to :action=>:#{name}\n"
+  #     code += "end\n"
+  #   end
 
-    # list = code.split("\n"); list.each_index{|x| puts((x+1).to_s.rjust(4)+": "+list[x])}
+  #   # list = code.split("\n"); list.each_index{|x| puts((x+1).to_s.rjust(4)+": "+list[x])}
     
-    class_eval(code)
+  #   class_eval(code)
     
-  end
+  # end
 
 
 

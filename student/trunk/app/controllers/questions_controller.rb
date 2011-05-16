@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 class QuestionsController < ApplicationController
 
   after_filter :redirect_correctly, :except=>[:new, :create, :edit, :update]
   
   def new
-    @question = Question.new(:name=>'?')
+    @question = Question.new(:name=>' ? ')
     render_form
   end
   

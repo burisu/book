@@ -1,14 +1,15 @@
 # translation missing: fr-FR, rights, __protected__
 __protected__:
-  actions: [answers::fill, suivi::access_denied, suivi::index]
+  actions: [answers::fill, myselves::show]
 # translation missing: fr-FR, rights, __public__
 __public__:
   actions:
-  - authentication::index
-  - authentication::login
-  - authentication::logout
-  - authentication::lost_login
-  - authentication::lost_password
+  - myselves::access_denied
+  - myselves::lost_login
+  - myselves::lost_password
+  - sessions::create
+  - sessions::destroy
+  - sessions::new
 # translation missing: fr-FR, rights, suivi
 suivi:
   actions:

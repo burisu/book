@@ -1,8 +1,8 @@
 .menu
   %ul
-    %li=link_to((@current_person.nil? ? "Accueil" : @current_person.label).to_s, {:controller=>:suivi, :action=>:index})
-    - if @current_person
+    %li=link_to((@current_person.nil? ? "Accueil" : @current_person.label).to_s, myself_url)
+    -if @current_person
       -if access? :suivi
         %li=link_to "Questionnaires", questionnaires_url
         %li=link_to "Thèmes", themes_url
-      %li=link_to "Se déconnecter", {:controller=>:authentication, :action=>:logout }
+      %li=link_to "Se déconnecter", session_url, :method=>:delete
