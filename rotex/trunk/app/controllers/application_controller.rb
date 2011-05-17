@@ -63,40 +63,6 @@ class ApplicationController < ActionController::Base
   end
 
 
-#   def try_to_access(right=:all)
-#     unless access? right
-#       redirect_to :action=>:access_denied 
-#       return false
-#     end
-#     return true
-#   end
-
-
-
-#   def init()
-#     if session[:current_person_id]
-#       @current_person=Person.find(session[:current_person_id])
-#       @current_person_id = @current_person.id
-#     end
-#     @controller_name  = self.controller_name
-#     @action_name = action_name
-#     @action = @controller_name+':'+@action_name
-#     @title = 'Bienvenue'
-#     session[:last_request] = Time.now.to_i
-#     session[:history] ||= []
-#     session[:history].delete_at(0) if session[:no_history]
-#     if request.get? and not request.xhr?
-#       if session[:history][1]==request.url
-#         session[:history].delete_at(0)
-#       elsif session[:history][0]!=request.url
-#         session[:history].insert(0, request.url)
-#       end
-#       session[:no_history] = false
-#     end
-
-#   end  
-
-
   def authorize()
     @title = 'Bienvenue'
 

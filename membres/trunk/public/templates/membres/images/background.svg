@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -13,7 +14,7 @@
    height="990"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="0.47 r22583"
    version="1.0"
    sodipodi:docname="background.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
@@ -920,10 +921,11 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1439"
-     inkscape:window-height="851"
+     inkscape:window-width="1432"
+     inkscape:window-height="796"
      inkscape:window-x="0"
-     inkscape:window-y="0">
+     inkscape:window-y="25"
+     inkscape:window-maximized="0">
     <sodipodi:guide
        orientation="0,1"
        position="-76,760"
@@ -977,6 +979,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1065,7 +1068,7 @@
            sodipodi:cy="177.61943"
            sodipodi:rx="148.47874"
            sodipodi:ry="125.81377"
-           d="M 324.71053,177.61943 A 148.47874,125.81377 0 1 1 27.753036,177.61943 A 148.47874,125.81377 0 1 1 324.71053,177.61943 z"
+           d="m 324.71053,177.61943 c 0,69.48503 -66.4762,125.81377 -148.47875,125.81377 -82.002545,0 -148.478744,-56.32874 -148.478744,-125.81377 0,-69.48502 66.476199,-125.813766 148.478744,-125.813766 82.00255,0 148.47875,56.328746 148.47875,125.813766 z"
            transform="matrix(1.2523364,0,0,1.4522058,-13.478817,-32.677835)" />
         <path
            style="opacity:1;fill:url(#linearGradient4440);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1266,40 +1269,21 @@
        height="80"
        x="0"
        y="-390"
-       inkscape:export-filename="/home/brice/dev/rotex/public/templates/rotary/images/header.png"
+       inkscape:export-filename="/home/brice/dev/rothead/membres/trunk/public/templates/membres/images/header.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#eeba1f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="94"
-       y="-362"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#eeba1f;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="95"
+       y="-337"
        id="text3380"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="94"
-         y="-362"
+         x="95"
+         y="-337"
          id="tspan3384"
-         style="font-size:32px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#eeba1f;fill-opacity:1;font-family:Qlassik Bold;-inkscape-font-specification:'Qlassik Bold, Bold'">Rotary District 1690</tspan></text>
-    <rect
-       style="opacity:1;fill:#6a98da;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.44236761"
-       id="rect3388"
-       width="399"
-       height="1"
-       x="96"
-       y="-356" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="92.789383"
-       y="-324.23999"
-       id="text3390"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="92.789383"
-         y="-324.23999"
-         id="tspan3392"
-         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;font-family:Qlassik Bold;-inkscape-font-specification:'Qlassik Bold, Bold'">Student Exchange</tspan></text>
+         style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#eeba1f;fill-opacity:1;font-family:cmr10;-inkscape-font-specification:cmr10">Rotary District 1690</tspan></text>
     <g
        transform="matrix(0.7999974,0,0,0.7999974,-256.52976,-708.06244)"
        id="g3537"

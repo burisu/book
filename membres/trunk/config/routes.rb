@@ -8,6 +8,8 @@ ActionController::Routing::Routes.draw do |map|
   map.lost_login "nom-utilisateur-perdu", :controller=>"people", :action=>"lost_login"
   map.activate "activer", :controller=>"people", :action=>"activate"
 
+  map.resource :session, :only=>[:new, :create, :destroy]
+
   map.resources :languages, :as=>"langues", :except=>[:show]
   map.resources :countries, :as=>"pays", :except=>[:show]
   map.resources :zones, :collection=>{:refresh=>:post}
