@@ -16,6 +16,8 @@ __not_used__:
 # Réservé aux membres en règle
 __private__:
   actions:
+  - myselves::change_email
+  - myselves::change_password
   - myselves::edit
   - myselves::person_articles_dyta
   - myselves::person_mandates_dyta
@@ -36,8 +38,8 @@ __public__:
   - home::access_denied
   - home::index
   - home::special
-  - myselves::change_email
-  - myselves::change_password
+  - myselves::lost_login
+  - myselves::lost_password
   - sale_lines::create
   - sale_lines::decrement
   - sale_lines::destroy
