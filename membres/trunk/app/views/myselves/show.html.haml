@@ -29,6 +29,9 @@
     %td.label Fax/Télécopie
     %td.value=@person.fax
   %tr
+    %td.label Adresse E-mail Rotay
+    %td.value=@person.rotex_email.gsub('rotex1690', 'rotary1690')+" (Non opérationnel)"
+  %tr
     %td.label Adresse E-mail Rotex
     %td.value=@person.rotex_email
   %tr
