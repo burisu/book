@@ -252,3 +252,4 @@ h3.question { color: #888; margin: 8px 0 0; }
 
 fieldset { margin: 8px 0; }
 
+.note {text-style: italic; color: #555; padding: 8px; text-align: center; background: #EEE; }

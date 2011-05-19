@@ -8,7 +8,7 @@
 
 %table.infos.formu
   %tr
-    %td{:rowspan=>8}
+    %td{:rowspan=>9}
       -link_to edit_myself_url do
         -if @person.photo
           =image_tag(url_for_file_column(@person, :photo, "thumb"))
@@ -29,8 +29,8 @@
     %td.label Fax/Télécopie
     %td.value=@person.fax
   %tr
-    %td.label Adresse E-mail Rotay
-    %td.value=@person.rotex_email.gsub('rotex1690', 'rotary1690')+" (Non opérationnel)"
+    %td.label Adresse E-mail Rotary
+    %td.value=@person.rotex_email.gsub('rotex1690', 'rotary1690')+" (Adresse non opérationnelle)"
   %tr
     %td.label Adresse E-mail Rotex
     %td.value=@person.rotex_email
@@ -41,6 +41,8 @@
     %td.label Pays d'origine
     %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name
 
+%h2 Mandats
 -if @person.mandates.size>0
-  %h2 Mandats
   =dyta :person_mandates
+-else
+  .note Sans mandat
