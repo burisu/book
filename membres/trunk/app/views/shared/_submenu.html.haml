@@ -7,11 +7,6 @@
     -#  %li=link_to "Ma galerie", images_url
     -#%li=link_to "Envoyer un message", write_promotions_url
     %li=link_to "Se déconnecter", session_url, :method=>:delete
-  %h3 Articles
-  %ul
-    %li=link_to "Écrire un article", new_article_url
-    -for rubric in Rubric.find(:all, :order=>"name")
-      %li=link_to rubric.name, rubric_url(rubric)
   -if access?(:all)
     %h3 Administration
     %ul
@@ -22,14 +17,8 @@
       %li=link_to("Types de zone", zone_natures_url)
       %li=link_to("Pays", countries_url)
       %li=link_to("Langues", languages_url)
-  -if access? [:publishing, :specials, :home, :agenda]
-    %h3 Publication
-    %ul
-      -if access? :publishing
-        %li=link_to("Articles", articles_url)
-        %li=link_to("Rubriques", rubrics_url)
   -if access? [:users,:subscribing, :folders]
-    %h3 Adhérents
+    %h3 Membres
     %ul
       -if access? :users
         %li=link_to("Personnes", people_url)

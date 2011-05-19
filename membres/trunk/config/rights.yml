@@ -1,18 +1,6 @@
 # translation missing: fr-FR, rights, __admin__
 __admin__:
   actions:
-  - products::check # UNEXISTENT ACTION !!!
-  - products::create # UNEXISTENT ACTION !!!
-  - products::destroy # UNEXISTENT ACTION !!!
-  - products::edit # UNEXISTENT ACTION !!!
-  - products::index # UNEXISTENT ACTION !!!
-  - products::new # UNEXISTENT ACTION !!!
-  - products::update # UNEXISTENT ACTION !!!
-  - sales::index # UNEXISTENT ACTION !!!
-  - sales::sales_dyta # UNEXISTENT ACTION !!!
-# translation missing: fr-FR, rights, __not_used__
-__not_used__:
-  actions:
   - articles::activate
   - articles::articles_dyta
   - articles::authors_dyli
@@ -70,8 +58,6 @@ __not_used__:
   - people::edit
   - people::index
   - people::lock
-  - people::lost_login
-  - people::lost_password
   - people::new
   - people::people_dyta
   - people::person_articles_dyta
@@ -108,61 +94,16 @@ __not_used__:
 # translation missing: fr-FR, rights, __private__
 __private__:
   actions:
+  - myselves::change_email
+  - myselves::change_password
   - myselves::edit
   - myselves::person_articles_dyta
   - myselves::person_mandates_dyta
   - myselves::person_subscriptions_dyta
   - myselves::show
   - myselves::update
-# translation missing: fr-FR, rights, __protected__
-__protected__:
-  actions: []
+  - people::lost_login
+  - people::lost_password
 # translation missing: fr-FR, rights, __public__
 __public__:
-  actions:
-  - guests::create # UNEXISTENT ACTION !!!
-  - guests::destroy # UNEXISTENT ACTION !!!
-  - guests::edit # UNEXISTENT ACTION !!!
-  - guests::new # UNEXISTENT ACTION !!!
-  - guests::update # UNEXISTENT ACTION !!!
-  - home::access_denied # UNEXISTENT ACTION !!!
-  - home::index # UNEXISTENT ACTION !!!
-  - home::special # UNEXISTENT ACTION !!!
-  - myselves::change_email
-  - myselves::change_password
-  - sale_lines::create # UNEXISTENT ACTION !!!
-  - sale_lines::decrement # UNEXISTENT ACTION !!!
-  - sale_lines::destroy # UNEXISTENT ACTION !!!
-  - sale_lines::edit # UNEXISTENT ACTION !!!
-  - sale_lines::increment # UNEXISTENT ACTION !!!
-  - sale_lines::new # UNEXISTENT ACTION !!!
-  - sale_lines::update # UNEXISTENT ACTION !!!
-  - sales::cancel # UNEXISTENT ACTION !!!
-  - sales::check # UNEXISTENT ACTION !!!
-  - sales::create # UNEXISTENT ACTION !!!
-  - sales::destroy # UNEXISTENT ACTION !!!
-  - sales::edit # UNEXISTENT ACTION !!!
-  - sales::fill # UNEXISTENT ACTION !!!
-  - sales::finish # UNEXISTENT ACTION !!!
-  - sales::new # UNEXISTENT ACTION !!!
-  - sales::pay # UNEXISTENT ACTION !!!
-  - sales::refuse # UNEXISTENT ACTION !!!
-  - sales::sale_lines_dyta # UNEXISTENT ACTION !!!
-  - sales::show # UNEXISTENT ACTION !!!
-  - sales::update # UNEXISTENT ACTION !!!
-  - sessions::create # UNEXISTENT ACTION !!!
-  - sessions::destroy # UNEXISTENT ACTION !!!
-  - sessions::new # UNEXISTENT ACTION !!!
-# translation missing: fr-FR, rights, subscribing
-subscribing:
-  controller: subscriptions
-  actions:
-  - chase_up # UNEXISTENT ACTION !!!
-  - create # UNEXISTENT ACTION !!!
-  - destroy # UNEXISTENT ACTION !!!
-  - edit # UNEXISTENT ACTION !!!
-  - index # UNEXISTENT ACTION !!!
-  - new # UNEXISTENT ACTION !!!
-  - people_dyli # UNEXISTENT ACTION !!!
-  - subscriptions_dyta # UNEXISTENT ACTION !!!
-  - update # UNEXISTENT ACTION !!!
+  actions: [sessions::create, sessions::destroy, sessions::new]
