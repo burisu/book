@@ -1,4 +1,4 @@
-%h1=@person.first_name+" "+@person.patronymic_name
+%h1=@person.first_name+" "+@person.family_name
 
 %ul.aclist
   %li=link_to 'Modifier mon compte', edit_myself_url
@@ -8,7 +8,7 @@
 
 %table.infos.formu
   %tr
-    %td{:rowspan=>6}
+    %td{:rowspan=>8}
       -link_to edit_myself_url do
         -if @person.photo
           =image_tag(url_for_file_column(@person, :photo, "thumb"))
@@ -28,6 +28,12 @@
   %tr
     %td.label Fax/Télécopie
     %td.value=@person.fax
+  %tr
+    %td.label Adresse E-mail Rotex
+    %td.value=@person.rotex_email
+  %tr
+    %td.label Adresse E-mail
+    %td.value=@person.email
   %tr
     %td.label Pays d'origine
     %td.value=image_tag("country/"+@person.country.iso3166.downcase+".png")+' '+@person.country.name
