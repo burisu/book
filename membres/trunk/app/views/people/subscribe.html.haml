@@ -1,9 +1,11 @@
 -if @register
-  %h1 S'inscrire sur le site Rotex1690.org
+  %h1="S'inscrire sur les sites membres.rotary1690.org, student-exchange.rotary1690.org et www.rotex1690.org"
 
   -form_tag({}, :multipart=>true) do
     =render :partial=>"people/form"
-    .action=submit_tag "Valider l'inscription"
+    .action
+      =submit_tag "Valider l'inscription"
+      =link_to("Annuler", root_url)
 
 -else
   %h1 Votre inscription est en passe d'être validée

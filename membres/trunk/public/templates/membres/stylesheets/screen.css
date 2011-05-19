@@ -40,6 +40,7 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 /*#menu .label{ float:right; padding:3px; font-weight:bold; }*/
 /*#bodier {background: url(../images/background.png) center top no-repeat;}*/
 #footer > div {text-align: center; padding:16px 0; border-top: 1px dotted #00288d;}
+#footer p {text-align: center; }
 #footer * { color: #888; }
 /*#bodier > div > div {padding:0px 1px;}*/
 /*#footer > div { padding:20px; color: #BDF;} */
