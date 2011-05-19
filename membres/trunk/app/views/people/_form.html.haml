@@ -28,6 +28,9 @@
   =tt "Compte"
   -if @self_subscribing or @admin
     =tl "E-mail", text_field(:person, :email)
+  -else
+    =tl "E-mail", link_to("Changer d'e-mail", change_email_myself_url, :confirm=>"Attention vos modifications ne sont pas enregistrées. Cliquez sur OK si vous souhaitez quand même continuer.")
+
   =tl "Nom d'utilisateur", text_field(:person, :user_name), :hint=>"Seuls les caractères en minuscule non accentués ainsi que les chiffres sont autorisés pour composer le nom d'utilisateur"
   -if @self_subscribing or @admin
     =tl "Mot de passe", password_field(:person, :password)

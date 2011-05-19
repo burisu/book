@@ -76,6 +76,12 @@
     %td.label E-mail
     %td.value=text_field :person, :email
     %td.hint 
+-if not @self_subscribing
+  %tr
+    %td.label E-mail
+    %td.value=link_to("Changer d'e-mail", change_email_myself_url, :confirm=>"Attention vos modifications ne sont pas enregistrées. Cliquez sur OK si vous souhaitez quand même continuer.")
+    %td.hint 
+  
 %tr
   %td.label Nom d'utilisateur
   %td.value=text_field :person, :user_name
