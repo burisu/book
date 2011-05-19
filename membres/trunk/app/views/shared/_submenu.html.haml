@@ -15,13 +15,13 @@
   -if access?(:all)
     %h3 Administration
     %ul
-      -#%li=link_to("Configuration", edit_configuration_url)
+      %li=link_to("Configuration", edit_configuration_url)
       -#%li=link_to("Produits", products_url)
-      -#%li=link_to("Zones", zones_url)
-      -#%li=link_to("Types de mandat", mandate_natures_url)
-      -#%li=link_to("Types de zone", zone_natures_url)
-      -#%li=link_to("Pays", countries_url)
-      -#%li=link_to("Langues", languages_url)
+      %li=link_to("Zones", zones_url)
+      %li=link_to("Types de mandat", mandate_natures_url)
+      %li=link_to("Types de zone", zone_natures_url)
+      %li=link_to("Pays", countries_url)
+      %li=link_to("Langues", languages_url)
   -if access? [:publishing, :specials, :home, :agenda]
     %h3 Publication
     %ul
@@ -32,11 +32,8 @@
     %h3 Adhérents
     %ul
       -if access? :users
-        -#%li=link_to("Personnes", people_url)
-      -if access? :subscribing
-        %li=link_to("Adhésions", subscriptions_url)
-        %li=link_to("Ventes", sales_url)
+        %li=link_to("Personnes", people_url)
       -if access?
-        -#%li=link_to("Mandats", mandates_url)
+        %li=link_to("Mandats", mandates_url)
       -if access? [:folders, :promotions]
-        -#%li=link_to("Promotions", promotions_url)
+        %li=link_to("Promotions", promotions_url)

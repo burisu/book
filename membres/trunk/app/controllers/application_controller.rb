@@ -19,6 +19,23 @@ class ApplicationController < ActionController::Base
   end
   
 
+  hide_action :access?
+  def access?(right=:all)
+    session[:rights] ||= []
+    if session[:rights].include? :all
+      return true
+    elsif right.is_a? Array
+      for r in right
+        return true if session[:rights].include?(r)
+      end
+    else
+      return session[:rights].include?(right)
+    end
+    return false
+  end
+ 
+
+
   protected
 
   def authorize()

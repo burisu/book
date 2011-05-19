@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def access?(right=:all)
+    self.controller.access?(right)
+  end
+
   def template_link_tag(name)
     code = ''
     ['screen', 'print'].each do |media|
@@ -8,7 +12,6 @@ module ApplicationHelper
     end
     code
   end
-
 
   def flash_tag(key=:error)
     if flash[key]
