@@ -1,15 +1,6 @@
 # Réservé aux administrateurs
 __admin__:
   actions:
-  - products::check
-  - products::create
-  - products::destroy
-  - products::edit
-  - products::index
-  - products::new
-  - products::update
-  - sales::index
-  - sales::sales_dyta
   - people::activate
   - people::approve
   - people::create
@@ -28,13 +19,27 @@ __admin__:
   - people::subscribe
   - people::unlock
   - people::update
+  - products::check
+  - products::create
+  - products::destroy
+  - products::edit
+  - products::index
+  - products::new
+  - products::update
+  - sales::index
+  - sales::sales_dyta
 # Réservé aux membres en règle
 __private__:
   actions:
-  - articles::show
-  - rubrics::show
-  - rubrics::rubric_articles_dyta
   - articles::authors_dyli
+  - articles::create
+  - articles::destroy
+  - articles::edit
+  - articles::help
+  - articles::new
+  - articles::preview
+  - articles::show
+  - articles::update
   - myselves::change_email
   - myselves::change_password
   - myselves::edit
@@ -45,6 +50,8 @@ __private__:
   - myselves::update
   - people::show
   - people::story
+  - rubrics::rubric_articles_dyta
+  - rubrics::show
 # Réservé à tous les membres (en règle ou pas)
 __protected__:
   actions: []
@@ -84,6 +91,21 @@ __public__:
   - sessions::create
   - sessions::destroy
   - sessions::new
+# Gérer la publication
+publishing:
+  actions:
+  - articles::activate
+  - articles::articles_dyta
+  - articles::deactivate
+  - articles::index
+  - articles::publish
+  - rubrics::create
+  - rubrics::destroy
+  - rubrics::edit
+  - rubrics::index
+  - rubrics::new
+  - rubrics::rubrics_dyta
+  - rubrics::update
 # Gérer les adhésions
 subscribing:
   controller: subscriptions
@@ -97,25 +119,3 @@ subscribing:
   - people_dyli
   - subscriptions_dyta
   - update
-publishing:
-  actions:
-  - rubrics::create
-  - rubrics::destroy
-  - rubrics::edit
-  - rubrics::index
-  - rubrics::new
-  - rubrics::rubrics_dyta
-  - rubrics::update
-  - articles::activate
-  - articles::articles_dyta
-  - articles::create
-  - articles::deactivate
-  - articles::destroy
-  - articles::edit
-  - articles::help
-  - articles::index
-  - articles::new
-  - articles::preview
-  - articles::publish
-  - articles::update
-
