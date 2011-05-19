@@ -1,0 +1,1 @@
+../../membres/app/controllers/rubrics_controller.rb

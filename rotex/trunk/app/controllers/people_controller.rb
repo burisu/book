@@ -1,0 +1,1 @@
+../../membres/app/controllers/people_controller.rb

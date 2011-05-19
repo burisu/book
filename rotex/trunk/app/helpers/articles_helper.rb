@@ -1,0 +1,1 @@
+../../membres/app/helpers/articles_helper.rb

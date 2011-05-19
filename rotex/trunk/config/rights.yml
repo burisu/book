@@ -10,12 +10,31 @@ __admin__:
   - products::update
   - sales::index
   - sales::sales_dyta
-# Actions sans droits
-__not_used__:
-  actions: []
+  - people::activate
+  - people::approve
+  - people::create
+  - people::destroy
+  - people::disapprove
+  - people::edit
+  - people::index
+  - people::lock
+  - people::lost_login
+  - people::lost_password
+  - people::new
+  - people::people_dyta
+  - people::person_articles_dyta
+  - people::person_mandates_dyta
+  - people::person_subscriptions_dyta
+  - people::subscribe
+  - people::unlock
+  - people::update
 # Réservé aux membres en règle
 __private__:
   actions:
+  - articles::show
+  - rubrics::show
+  - rubrics::rubric_articles_dyta
+  - articles::authors_dyli
   - myselves::change_email
   - myselves::change_password
   - myselves::edit
@@ -24,6 +43,8 @@ __private__:
   - myselves::person_subscriptions_dyta
   - myselves::show
   - myselves::update
+  - people::show
+  - people::story
 # Réservé à tous les membres (en règle ou pas)
 __protected__:
   actions: []
@@ -76,3 +97,25 @@ subscribing:
   - people_dyli
   - subscriptions_dyta
   - update
+publishing:
+  actions:
+  - rubrics::create
+  - rubrics::destroy
+  - rubrics::edit
+  - rubrics::index
+  - rubrics::new
+  - rubrics::rubrics_dyta
+  - rubrics::update
+  - articles::activate
+  - articles::articles_dyta
+  - articles::create
+  - articles::deactivate
+  - articles::destroy
+  - articles::edit
+  - articles::help
+  - articles::index
+  - articles::new
+  - articles::preview
+  - articles::publish
+  - articles::update
+

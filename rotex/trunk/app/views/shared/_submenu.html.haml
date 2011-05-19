@@ -12,16 +12,6 @@
     %li=link_to "Écrire un article", new_article_url
     -for rubric in Rubric.find(:all, :order=>"name")
       %li=link_to rubric.name, rubric_url(rubric)
-  -if access?(:all)
-    %h3 Administration
-    %ul
-      -#%li=link_to("Configuration", edit_configuration_url)
-      -#%li=link_to("Produits", products_url)
-      -#%li=link_to("Zones", zones_url)
-      -#%li=link_to("Types de mandat", mandate_natures_url)
-      -#%li=link_to("Types de zone", zone_natures_url)
-      -#%li=link_to("Pays", countries_url)
-      -#%li=link_to("Langues", languages_url)
   -if access? [:publishing, :specials, :home, :agenda]
     %h3 Publication
     %ul

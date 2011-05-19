@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
       line.resources :guests, :as=>"invites", :except=>[:show, :index]
     end
   end
+  
+  map.resources :people, :as=>"personnes", :only=>[:show], :member=>{:story=>:get}, :collection=>{:person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post] }
 
   map.resource :session, :only=>[:new, :create, :destroy]
   map.resource :myself, :as=>"mon-compte", :only=>[:edit, :update, :show], :collection=>{:change_password=>[:get, :post], :change_email=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post], :lost_login=>[:get, :post], :lost_password=>[:get, :post]}
