@@ -215,6 +215,10 @@ class PeopleController < ApplicationController
 
 
   def subscribe
+    if @current_person
+      redirect_to root_url
+      return
+    end
     @register = true
     @self_subscribing = true
     if request.post?
