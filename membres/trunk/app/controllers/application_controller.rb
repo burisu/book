@@ -1,4 +1,4 @@
-# -*- coding: undecided -*-
+# -*- coding: utf-8 -*-
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
@@ -11,6 +11,13 @@ class ApplicationController < ActionController::Base
 
   before_filter :authorize
 
+  @@configuration = Configuration.the_one
+
+  hide_action :conf
+  def conf()
+    @@configuration
+  end
+  
 
   protected
 

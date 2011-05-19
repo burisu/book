@@ -5,7 +5,7 @@
   %li=link_to 'Changer mon mot de passe', change_password_myself_url
   %li=link_to 'Mettre à jour mon adresse e-mail', change_email_myself_url
   -#if @current_person.first_day_as_non_subscriber<=Date.today+2.month
-  %li=link_to 'Payer ma cotisation', new_sale_url
+  -#%li=link_to 'Payer ma cotisation', new_sale_url
   %li=link_to "Imprimer mes cartes de visite", myself_url(:format=>:pdf)
 
 
