@@ -3,10 +3,10 @@ class Maily < ActionMailer::Base
 
 
   def confirmation(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', il est temps de confirmer de votre inscription'
+    @subject      = '[ROTARY1690] '+person.first_name+', il est temps de confirmer de votre inscription'
     @body[:person] = person
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -22,10 +22,10 @@ class Maily < ActionMailer::Base
   end
   
   def approval(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', votre accès a été autorisé'
+    @subject      = '[ROTARY1690] '+person.first_name+', votre accès a été autorisé'
     @body[:person] = person
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -45,7 +45,7 @@ class Maily < ActionMailer::Base
   
 
   def notification(nature, person, resp=nil)
-    @subject      = '[ROTEX1690] Notification : '+
+    @subject      = '[ROTARY1690] Notification : '+
       if nature==:subscription
         "Enregistrement d'un nouveau membre (#{person.label})"
       elsif nature==:activation
@@ -64,7 +64,7 @@ class Maily < ActionMailer::Base
     @body[:responsible] = resp
     people = Person.mandated_for(['tresor', 'admin'])
     @recipients   = people.collect{|p| "#{p.label} <#{p.email}>"}
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -93,35 +93,35 @@ class Maily < ActionMailer::Base
     @body[:answer] = ans
     people = Person.mandated_for(['yeoout', 'yeo'])
     @recipients   = people.collect{|p| "#{p.label} <#{p.email}>"}
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
 
   def lost_login(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'
+    @subject      = '[ROTARY1690] '+person.first_name+', voici votre nom d\'utilisateur'
     @body[:person] = person
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
 
   def lost_password(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nouveau mot de passe'
+    @subject      = '[ROTARY1690] '+person.first_name+', voici votre nouveau mot de passe'
     @body[:person]   = person
     @body[:password] = person.change_password
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
 
   def new_mail(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', vous pouvez activer votre nouvel adresse e-mail'
+    @subject      = '[ROTARY1690] '+person.first_name+', vous pouvez activer votre nouvel adresse e-mail'
     @body[:person]   = person
     @recipients   = "#{person.label} <#{person.replacement_email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -131,7 +131,7 @@ class Maily < ActionMailer::Base
     @subject      = "[ROTARY1690] Invalidation de votre questionnaire #{answer.questionnaire.name}"
     @body[:message]   = message
     @recipients   = "#{answer.person.label} <#{answer.person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -145,7 +145,7 @@ class Maily < ActionMailer::Base
     @body[:sleepers] = mails
     @recipients   = mails
     @bcc          = expedier.email
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -153,20 +153,20 @@ class Maily < ActionMailer::Base
 
 
   def password(person,password)
-    @subject      = '[ROTEX1690] '+person.first_name+", voici vos codes d'accès au site du Rotex 1690"
+    @subject      = '[ROTARY1690] '+person.first_name+", voici vos codes d'accès aux sites Jeunesse du District 1690"
     @body[:person]   = person
     @body[:password] = password
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
 
   def test(person)
-    @subject      = '[ROTEX1690] '+person.first_name+", ceci est un test"
+    @subject      = '[ROTARY1690] '+person.first_name+", ceci est un test"
     @body[:person]   = person
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
@@ -187,10 +187,10 @@ class Maily < ActionMailer::Base
    end
 
   def lost_login(person)
-    @subject      = '[ROTEX1690] '+person.first_name+', voici votre nom d\'utilisateur'
+    @subject      = '[ROTARY1690] '+person.first_name+', voici votre nom d\'utilisateur'
     @body[:person] = person
     @recipients   = "#{person.label} <#{person.email}>"
-    @from         = 'Rotex 1690 <no-reply@rotex1690.org>'
+    @from         = 'Rotary 1690 <no-reply@rotary1690.org>'
     @sent_on      = Time.now
     @headers      = {}
   end
