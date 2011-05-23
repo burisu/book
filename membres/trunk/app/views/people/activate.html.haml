@@ -6,7 +6,7 @@
   -if @activation==1
     %p='Bienvenue '+@person.first_name
     %p="Vous aurez accès à la partie membre dès que le trésorier aura enregistré votre cotisation."
-    %p="Pour cela rendez-vous dans la partie #{link_to('achat en ligne', new_sale_url)}."
+    -#%p="Pour cela rendez-vous dans la partie #{link_to('achat en ligne', new_sale_url)}."
       
   -if @activation==2
     %p='Votre nouvelle adresse '+@person.email+' a été validée et prise en compte.'
