@@ -163,8 +163,8 @@ class PeopleController < ApplicationController
   def destroy
     begin
       Person.find(params[:id]).destroy 
-    rescue
-      flash[:warning] = "La personne n'a pas pu être supprimée"
+    rescue Exception => e
+      flash[:warning] = "La personne n'a pas pu être supprimée (#{e.message})"
     end
     redirect_to people_url
   end 
