@@ -2,9 +2,7 @@
 !!! Strict
 %html{:xmlns=>"http://www.w3.org/1999/xhtml"}
   %head
-  %title
-    ='Student-Exchange - Rotary District 1690'
-    =' - '+@title.to_s
+  %title='Student Exchange - Rotary District 1690 - '+@title.to_s
   = template_link_tag :rotary
   = stylesheet_link_tag 'dyta', 'dyta-colors'
   = stylesheet_link_tag 'print', :media=>"print"
@@ -25,7 +23,4 @@
               %td.subbody{:valign=>"top"}=yield
     #footer
       .column
-        .legals 
-          ='Rotary District 1690'
-          =" - Copyright 2008-2010 - "
-          =request.domain
+        .legals="Rotary District 1690 - Copyright 2008-2011 - "+request.domain
