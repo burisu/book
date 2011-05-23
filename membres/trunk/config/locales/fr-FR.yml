@@ -81,6 +81,7 @@ fr-FR:
       sentence_connector: "et" 
       words_connector: ', '
       last_word_connector: ' et '
+      two_words_connector: ' et '
 
 
   # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
