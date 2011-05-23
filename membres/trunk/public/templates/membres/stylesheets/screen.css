@@ -33,7 +33,7 @@ body { background:#FFF url(../images/background2.png) center top repeat-x;}
 */
 
 
-#header {background:#00288d; }
+#header {background: #00288d; /*box-shadow: 0 0 20px #555; -moz-box-shadow: 0 0 20px #555;  -webkit-box-shadow: 0 0 20px #555;*/ }
 #header > div {background: #00288d url(../images/header.png) no-repeat top left; height:80px; }
 #header > div .flag {display: none; float:right; background: url(../images/flag.png) repeat-y center; height:80px;width:170px}
 #header .menu { clear: both; background: #EEF7FF;}   /* ffc20f */
@@ -253,3 +253,12 @@ h3.question { color: #888; margin: 8px 0 0; }
 fieldset { margin: 8px 0; }
 
 .note {text-style: italic; color: #555; padding: 8px; text-align: center; background: #EEE; }
+
+
+/*all the styles used by the plugin Dyli.*/
+div.dyli_complete {width: 350px;}
+div.dyli_complete ul {position: fixed; border:1px solid #888; margin:0; padding:0; width:30%; list-style-type:none;}
+div.dyli_complete ul li {background-color: #EEF; margin:0; padding:3px;} /*#C9D7F1*/
+div.dyli_complete ul li.selected {background-color: #B1D1F9;}
+div.dyli_complete ul strong.highlight {color: #800; margin:0; padding:0;}
+/*input.dyli { background: #FFF url(../images/buttons/dyli.png) right center no-repeat; padding-right: 18px;}*/

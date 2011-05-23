@@ -186,6 +186,7 @@ fr-FR:
         begun_on: Du
         finished_on: Au
         nature_id: Nature
+        zone_id: Zone concernée
       period:
         begun_on: Date de début
         finished_on: Date de fin

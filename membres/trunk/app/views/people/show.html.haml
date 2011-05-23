@@ -28,9 +28,9 @@
   %tr
     %td.label Date de naissance
     %td.value=@person.born_on
-  %tr
-    %td.label Voyage
-    %td.value=link_to('Voir le récit du voyage', story_person_url(@person)) if @person.promotion
+  -#%tr
+  -#  %td.label Voyage
+  -#  %td.value=link_to('Voir le récit du voyage', story_person_url(@person)) if @person.promotion
   -#%tr
   -#  %td.label Dossier complet
   -#  %td.value=link_to('Consulter', folder_url(@person)) if @person.promotion

@@ -1,4 +1,4 @@
-# -*- coding: undecided -*-
+# -*- coding: utf-8 -*-
 module ApplicationHelper
 
   def access?(right=:all)
@@ -78,6 +78,84 @@ module ApplicationHelper
     code  = content_tag(:tr, code)
     code
   end
+
+
+  
+  ENTITIES = {'(C)'=>'&copy;', '(R)'=>'&reg;', '(TM)'=>'<sup>TM</sup>', '(tm)'=>'<sup>tm</sup>','~'=>'&sim;', '->'=>'&rarr;', '<-'=>'&larr;', '<->'=>'&harr;', '=>'=>'&rArr;', '<='=>'&lArr;', '>>'=>'&raquo;', '<<'=>'&laquo;', '...'=>'&hellip;'}
+  ALIGNS = {'  '=>'center', ' x'=>'right', 'x '=>'left', 'xx'=>''}
+
+  def dokuwikize(text)
+    content = text.to_s.dup
+    content.gsub!(/\r/, '')
+    content.gsub!('<=>', '&hArr;')
+    ENTITIES.each{ |k,v| content.gsub!(k,v) }
+
+    content.gsub!(/\-\-\-/, '&mdash;')
+    content.gsub!(/\-\-/, '&ndash;')
+    content.gsub!(/([^\=])\"([^\s][^\"]+[^\s])\"([^\>])/, '\1&ldquo;\2&rdquo;\3')
+
+    content.gsub!(/\<([\w\-\.]+\@[\w\-\.]+)\>/) do |data|
+   #   , '\1<a class="mail" href="http://\2" title="http://\2">\2</a>')
+      data = data[1..-2]
+#      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data.gsub('@','%20%5Bat%5D%20').gsub('.', '%20%5Bdot%5D%20')+'">'+data+'</a>'
+      '<a class="mail" title="'+data.gsub('@',' [at] ').gsub('.', ' [dot] ')+'" href="mailto:'+data+'">'+data+'</a>'
+    end
+
+    content.gsub!(/\[\[([^\]\|]+)(\|[^\]]+)?\]\]/) do |data|
+      data = data.squeeze(' ')[2..-3].split('|')
+      url = data[0].strip
+      caption = data[1] ? data[1].strip : url
+      url = 'http://'+url unless url.match(/^[a-z]+\:\/\//)
+      '<a class="urlextern" href="'+url+'" title="'+url+'">'+caption+'</a>'
+    end    
+    content.gsub!(/(\s|^)([a-z]+\:\/\/www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="\2" title="\2">\2</a>')
+    content.gsub!(/([^\/])(www\.[\w\-]+(\.[\w\-]+)+)/, '\1<a class="urlextern" href="http://\2" title="http://\2">\2</a>')
+    content.gsub!(/^  \* (.*)$/ , '<ul><li>\1</li></ul>')
+    content.gsub!(/<\/ul>\n<ul>/ , '')
+    content.gsub!(/^  \- (.*)$/ , '<ol><li>\1</li></ol>')
+    content.gsub!(/<\/ol>\n<ol>/ , '')
+
+
+
+    content.gsub!(/\{\{\ *(\w*)\ *(\|[^\}]+)?\}\}/) do |data|
+      data = data.squeeze(' ')[2..-3].split('|')
+      align = ALIGNS[(data[0][0..0]+data[0][-1..-1]).gsub(/[^\ ]/,'x')]
+      image = Image.find_by_name(data[0].strip)
+      title = data[1]
+      if image.nil?
+        "**<span class=\"e\">Image introuvable (#{data})</span>**"
+      else
+        alt = title||image.title
+        code  = '<img class="media'+align+'"'
+        # code += ' align="'+align+'"' if ['left', 'right'].include? align
+        code += ' alt="'+alt+'" title="'+alt+'"'
+        code += ' src="'+ActionController::Base.relative_url_root.to_s+'/'+image.document_options[:base_url]+'/'+image.document_relative_path('thumb')+'"/>'
+        code = link_to(code, image_url(image), {:class=>:media})
+        code = '<div class="media media'+align+'">'+code+'<div class="title">'+h(title)+'</div></div>' if title
+        code
+      end
+    end
+
+    for x in 2..5
+      n = 7-x
+      content.gsub!(/\={#{n}}([^\=]+)\={#{n}}/, "<h#{x}>\\1</h#{x}>")
+    end
+
+    content.gsub!(/^\ \ (.+)$/, '  <pre>\1</pre>')
+    # content.gsub!("</pre>\n  <pre>", "\n")
+
+    content.gsub!(/(^|[^\*])\*([^\*]|$)/, '\1&lowast;\2')
+    content.gsub!(/([^\:])\/\/([^\s][^\/]+)\/\//, '\1<em>\2</em>')
+    content.gsub!(/\'\'([^\s][^\']+)\'\'/, '<code>\1</code>')
+    content.gsub!(/\_\_([^\s][^\_]+)\_\_/, '<span class="u">\1</span>')
+    content.gsub!(/(^)([^\s\<][^\s].*)($)/, '<p>\2</p>')
+    content.gsub!("</p>\n<p>", "\n")
+    content.gsub!(/\*\*([^\s][^\*]+)\*\*/, '<strong>\1</strong>')
+    return content+'<div style="height:8px; clear:both;"></div>'
+  end
+  
+
+
 
 
 end

@@ -38,6 +38,7 @@ class MandatesController < ApplicationController
   end
 
   def update
+    @mandate = Mandate.find params[:id]
     @mandate.attributes = params[:mandate]
     redirect_to mandates_url if @mandate.save
   end
