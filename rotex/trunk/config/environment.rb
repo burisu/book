@@ -65,7 +65,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_rotex_session',
+    :key => '_rotex_session',
     :secret      => 'd2637f3b24740d89f0ae6db44f51ef0073c8111d55d6a1bd80a0fed3257e7d9b933040ae8cdb212fdf34ecfb04558a9a3f744ff192960c5483c96a50d8c18767'
   }
 
