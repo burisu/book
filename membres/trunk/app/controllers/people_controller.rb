@@ -233,6 +233,7 @@ class PeopleController < ApplicationController
         begin
           Maily.deliver_confirmation(@person)
           Maily.deliver_notification(:subscription, @person)
+          Maily.deliver_notification(:approval, self.client)
         rescue Object=>e
           @register = true
           Person.destroy(@person.id)
