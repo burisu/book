@@ -245,7 +245,7 @@ class PeopleController < ApplicationController
   end
   
   def activate
-    @person = Person.find_by_validation params[:id]
+    @person = Person.find_by_validation params[:validation]
     @person.forced = true
     @activation = 0
     unless @person.nil?

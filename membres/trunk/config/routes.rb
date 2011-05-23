@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.subscribe "inscription", :controller=>"people", :action=>"subscribe"
   map.lost_password "mot-de-passe-perdu", :controller=>"people", :action=>"lost_password"
   map.lost_login "nom-utilisateur-perdu", :controller=>"people", :action=>"lost_login"
-  map.activate "activer", :controller=>"people", :action=>"activate"
+  map.activate "activer/:validation", :controller=>"people", :action=>"activate"
 
   map.resource :session, :only=>[:new, :create, :destroy]
 
