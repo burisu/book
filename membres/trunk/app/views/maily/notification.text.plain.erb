@@ -11,9 +11,9 @@ La vente de la personne <%=@person.is_a?(Sale) ? @person.client_email : @person.
 <%elsif @nature==:approval%>
 La personne <%=@person.label-%> (<%=@person.id-%>) s'est enregistré et a payé une cotisation sans être identifiée en tant que potentiel adhérent. 
 Pour valider son compte et lui autoriser l'accès au site, cliquez sur le lien ci-dessous :
-https://www.rotex1690.org/personnes/approve/<%=@person.id-%>?xid=<%=@person.hashed_salt-%>
+https://membres.rotary1690.org/personnes/approve/<%=@person.id-%>?xid=<%=@person.hashed_salt-%>
 Sinon pour verrouiller son compte (presque) définitivement, cliquez sur le lien ci-dessous :
-https://www.rotex1690.org/personnes/disapprove/<%=@person.id-%>?xid=<%=@person.hashed_salt-%>
+https://membres.rotary1690.org/personnes/disapprove/<%=@person.id-%>?xid=<%=@person.hashed_salt-%>
 <%else-%>
 Notification d'origine inconnue (<%=@nature.inspect-%>).
 <%end-%>
@@ -26,4 +26,4 @@ Notification d'origine inconnue (<%=@nature.inspect-%>).
 
 Cordialement,
 
-L'équipe du Rotex 1690.
+L'équipe de la Jeunesse du District 1690.
