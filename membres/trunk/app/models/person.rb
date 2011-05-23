@@ -146,7 +146,7 @@ class Person < ActiveRecord::Base
     if self.subscriptions.size<=0
       # PersonVersion.delete_all(:person_id=>self.id)
       self.articles = {}
-      self.emails   = {}
+      # self.emails   = {}
       self.images   = {}
       self.mandates = {}
       self.members  = {}
