@@ -31,9 +31,9 @@
   %tr
     %td.label Voyage
     %td.value=link_to('Voir le récit du voyage', story_person_url(@person)) if @person.promotion
-  %tr
-    %td.label Dossier complet
-    %td.value=link_to('Consulter', folder_url(@person)) if @person.promotion
+  -#%tr
+  -#  %td.label Dossier complet
+  -#  %td.value=link_to('Consulter', folder_url(@person)) if @person.promotion
 
 %h2 Cotisations
 -if access? :subscribing
