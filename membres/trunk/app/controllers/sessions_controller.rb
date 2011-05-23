@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
       redirect_to(params[:redirect] ? params[:redirect] : myself_url)
       return
     else
-      flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect ou vous n'êtes pas à jour de votre cotisation."
+      flash.now[:warning] = "Votre nom d'utilisateur ou votre mot de passe est incorrect."
     end
     render :template=>"sessions/new"
   end
