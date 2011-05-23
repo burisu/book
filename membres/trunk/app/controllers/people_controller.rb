@@ -240,7 +240,7 @@ class PeopleController < ApplicationController
         end
       end
     else
-      @person = Person.new()
+      @person = Person.new(:country=>Country.find_by_iso3166('FR'))
     end
   end
   
