@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :images
 
   map.resources :mandates, :as=>"mandats", :except=>[:show], :collection=>{:mandates_dyta=>[:get, :post], :people_dyli=>[:get, :post]}
-  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post], :people_dyta=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post] }, :member=>{:story=>:get, :lock=>:post, :unlock=>:post}
+  map.resources :people, :as=>"personnes", :collection=>{:myself=>:get, :update_myself=>[:get, :post], :people_dyta=>[:get, :post], :person_subscriptions_dyta=>[:get, :post], :person_articles_dyta=>[:get, :post], :person_mandates_dyta=>[:get, :post] }, :member=>{:story=>:get, :lock=>:post, :unlock=>:post, :approve=>:get, :disapprove=>:get}
 
 
   map.resource :configuration, :only=>[:edit, :update]
