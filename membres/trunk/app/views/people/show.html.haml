@@ -35,12 +35,6 @@
   -#  %td.label Dossier complet
   -#  %td.value=link_to('Consulter', folder_url(@person)) if @person.promotion
 
-%h2 Cotisations
--if access? :subscribing
-  %ul.aclist
-    %li=link_to "Ajouter une cotisation", new_subscription_url(:person_id=>@person.id)
-  =dyta :person_subscriptions
-
 %h2 Articles
 =dyta :person_articles
 
