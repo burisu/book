@@ -1,0 +1,54 @@
+%h1=@title
+
+-intro = controller.conf.store_introduction
+.focus=dokuwikize(intro.blank? ? "Veuillez sélectionner vos produits puis valider" : intro)
+
+
+-form_tag() do
+  %table.flex.products
+    %thead
+      %tr
+        %th="Produit"
+        %th="Quantité"
+        %th="Montant"
+    %tfoot
+      %tr
+        %td
+        %td
+        %td.total
+          %strong=@sale.amount.to_s+" €"
+    -for line in @sale.saleable_lines_for(@current_person)
+      %tr.p
+        %td
+          =render :partial=>"products/product", :object=>line.product
+          .opt
+            -if line.product.empty_stock?
+              -if line.product.personal?
+                ="Liste des invités :"
+                %ul
+                  -for guest in line.guests
+                    %li
+                      ="#{guest.first_name} #{guest.last_name}, #{guest.email}, #{guest.annotation}, "+link_to("Modifier", edit_sale_line_guest_url(@sale, line, guest))+", "+link_to("Supprimer", sale_line_guest_url(@sale, line, guest), :method=>:delete)
+                  %li=link_to("Ajouter un invité", new_sale_line_guest_url(@sale, line))
+              -elsif line.product.subscribing?
+                -if line.quantity > 0
+                  =link_to("Je ne souhaite pas adhérer pour cette période", decrement_sale_line_url(@sale, line), :method=>:post)
+                -else
+                  =link_to("Je souhaite adhérer pour cette période", increment_sale_line_url(@sale, line), :method=>:post)
+              -else
+                -if line.quantity <= line.product.current_quantity
+                  =link_to("Ajouter un élément (+1)", increment_sale_line_url(@sale, line), :method=>:post)
+                -if line.quantity > 0
+                  =link_to("Enlever un élément (-1)", decrement_sale_line_url(@sale, line), :method=>:post)
+              -if line.product.passworded?
+                .opt 
+                  ="Veuillez saisir le code confidentiel qui vous est fourni pour cet achat juste avant de valider cotre commande"
+                  =text_field("line[]", :password, :size=>15, :object=>line)
+                  -if @badpass.include? line.id
+                    %strong=" Mot de passe erroné"
+            -else
+              %strong="Produit non disponible en stock"
+        %td=line.quantity.to_i.to_s+" "+line.product.unit
+        %td.dec=line.amount.to_s+" €"
+  .actions
+    =submit_tag "Enregistrer votre commande et passer au paiement"

@@ -1,0 +1,7 @@
+<%if person-%>
+Coordonnées de la personne : <%=person.email-%>, <%=person.address%>
+Cotisations :
+<%for s in person.subscriptions.find(:all, :order=>"begun_on DESC")-%>
+  - <%='Période du '+::I18n.localize(s.begun_on)+' au '+::I18n.localize(s.finished_on)%>
+<%end-%>
+<%end-%>

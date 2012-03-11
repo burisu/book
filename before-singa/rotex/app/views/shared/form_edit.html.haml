@@ -1,0 +1,8 @@
+-if @title
+  %h1=@title
+- form_tag({:action=>:update}, {:id=>@_options[:id], :method=>:put, :multipart=>@_options[:multipart]}) do
+  =render :partial=>@_partial
+  .actions
+    =submit_tag(::I18n.t("general."+(@_options[:submit]||:update).to_s))
+    -#=link_to_back :label=>@_options[:cancel]||:cancel
+

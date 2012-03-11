@@ -1,0 +1,2 @@
+module SuiviHelper
+end

@@ -1,0 +1,43 @@
+%td.submenu{:valign=>"top"}
+  %h3=@current_person.label
+  %ul
+    %li=link_to "Mon compte", {:controller=>:intra, :action=>:profile}
+    -if @current_person.student
+      %li=link_to "Mon voyage", (@current_person.promotion ? {:controller=>:intra, :action=>:folder, :id=>@current_person.id} : {:controller=>:intra, :action=>:folder_create})
+      %li=link_to "Ma galerie", {:controller=>:intra, :action=>:gallery}
+    %li=#link_to "Tous les students", {:controller=>:intra, :action=>:students}
+    %li=link_to "Envoyer un message", {:controller=>:intra, :action=>:message_send}
+    %li=link_to "Se déconnecter", {:controller=>:authentication, :action=>:logout}
+  %h3 Articles
+  %ul
+    %li=link_to "Écrire un article", {:controller=>:intra, :action=>:article_create}
+    %li=link_to controller.conf.news_rubric.name, {:controller=>:intra, :action=>:reports}
+    -for rubric in Rubric.find(:all, :order=>"name", :conditions=>["id != ?", controller.conf.news_rubric_id])
+      %li=link_to rubric.name, {:controller=>:intra, :action=>:rubric, :id=>rubric.code}
+  -if access?(:all)
+    %h3 Administration
+    %ul
+      %li=link_to("Admin (Mode Expert)", {:controller=>:admin, :action=>:index})
+      %li=link_to("Gérer les zones", {:controller=>:intra, :action=>:zones_create, :id=>""})
+      %li=link_to("Configuration", {:controller=>:intra, :action=>:configurate})
+  -if access? [:publishing,:specials,:home,:agenda]
+    %h3 Publication
+    %ul
+      -if access? :publishing
+        %li=link_to("Articles", {:controller=>:intra, :action=>:articles})
+        %li=link_to("Rubriques", {:controller=>:intra, :action=>:rubrics})
+  -if access? [:users,:subscribing, :folders]
+    %h3 Adhérents
+    %ul
+      -if access? :users
+        %li=link_to("Personnes", {:controller=>:intra, :action=>:people})
+      -if access? :subscribing
+        %li=link_to("Cotisations", {:controller=>:intra, :action=>:subscriptions})
+      -if false # access? :subscribing
+        %li=link_to("Adhérents", {:controller=>:intra, :action=>:subscribers})
+        %li=link_to("Non-adhérents", {:controller=>:intra, :action=>:non_subscribers})
+        %li=link_to("Futurs non-adhérents", {:controller=>:intra, :action=>:new_non_subscribers})
+      -if access?
+        %li=link_to("Mandats", {:controller=>:intra, :action=>:mandates})
+      -if access? [:folders, :promotions]
+        %li=link_to("Promotions", {:controller=>:intra, :action=>:promotions})

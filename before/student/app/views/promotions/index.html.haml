@@ -1,0 +1,8 @@
+%h1=@promotion ? 'Promotion '+@promotion.name : 'Toutes les promotions'
+
+-form_tag({}, :method=>:get) do
+  .aclist
+    =select_tag "id", options_for_select(Promotion.find(:all, :order=>"name DESC").collect{|x| [x.name, x.id]}.insert(0,['-- Toutes les promotions --', '']), (@promotion ? @promotion.id : nil))
+    =submit_tag 'Afficher la promotion'
+
+=dyta :people2

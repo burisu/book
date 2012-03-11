@@ -1,0 +1,39 @@
+%h1="Tous les articles &laquo;#{controller.conf.news_rubric.name}&raquo; des Students Exchange"
+
+=select_tag :id, options_for_select(@zones, :selected=>(@zone ? @zone.id : nil)), :onchange=>"window.location.replace('#{rubric_url(@rubric)}?zone_id='+this.value)"
+
+-form_tag do 
+  =#submit_tag("Surligner")
+
+
+.article
+  .content
+    -@countries
+    -col=3
+    -q = (@countries.size/col).ceil+1
+    %table.formu
+      %tr
+        -offset = 0
+        -for x in 1..col
+          -countries = @countries[offset..offset+q-1]
+          -offset += q
+          %td{:valign=>:top}
+            -for country in countries
+              %h2=image_tag("country/#{country.iso3166.downcase}.png")+" "+country.name
+              %ul
+                -for promotion in country.available_promotions
+                  %li
+                    = promotion.name
+                    %ul
+                      -for author in country.available_authors(:promotion_id=>promotion.id)
+                        %li{:class=>(@zone and author.in_zone?(@zone) ? "surlined" : "")}
+                          -if author.story?
+                            =link_to author.label, story_person_url(author)
+                          -else
+                            =author.label
+ 
+
+
+
+
+ 

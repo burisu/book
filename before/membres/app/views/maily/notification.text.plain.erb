@@ -1,0 +1,29 @@
+Bonjour,
+
+<%if @nature==:subscription-%>
+La personne <%=@person.label-%> (<%=@person.id-%>) vient de s'inscrire en ligne. Elle devrait activer son compte sous peu, vous recevrez un nouvel e-mail à ce moment-là.
+<%elsif @nature==:activation-%>
+La personne <%=@person.label-%> (<%=@person.id-%>) vient d'activer son compte. Sa cotisation est enregistrable.
+<%elsif @nature==:has_subscribed-%>
+La cotisation pour la personne <%=@person.label-%> (<%=@person.id-%>) a été enregistrée.
+<%elsif @nature==:waiting_payment%>
+La vente de la personne <%=@person.is_a?(Sale) ? @person.client_email : @person.label-%> est en attente de réglement. N'hésitez pas à prendre contact avec la personne en question pour récupérer le réglement.
+<%elsif @nature==:approval%>
+La personne <%=@person.label-%> (<%=@person.id-%>) s'est enregistré et a payé une cotisation sans être identifiée en tant que potentiel adhérent. 
+Pour valider son compte et lui autoriser l'accès au site, cliquez sur le lien ci-dessous :
+https://membres.rotary1690.org/personnes/<%=@person.id-%>/approve?xid=<%=@person.hashed_salt%>
+Sinon pour verrouiller son compte (presque) définitivement, cliquez sur le lien ci-dessous :
+https://membres.rotary1690.org/personnes/<%=@person.id-%>/disapprove?xid=<%=@person.hashed_salt-%>
+<%else-%>
+Notification d'origine inconnue (<%=@nature.inspect-%>).
+<%end-%>
+
+<%if @responsible -%>
+<%=@responsible.label-%> a effectué l'opération.
+<%end-%>
+
+<%=render :partial=>"person"%>
+
+Cordialement,
+
+L'équipe de la Jeunesse du District 1690.

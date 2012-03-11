@@ -1,0 +1,6 @@
+%h1 Tous les types de zone
+
+%ul.index
+  -for zone_nature in ZoneNature.find(:all, :order=>:name, :conditions=>{:parent_id=>nil})
+    %li=render :partial=>'zone_nature', :object=>zone_nature
+  %li=link_to "Ajouter un type de zone", new_zone_nature_url

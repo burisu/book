@@ -1,0 +1,27 @@
+%h1 Envoyer un message
+
+%div
+  -form_tag({}, :multipart=>true) do
+    %table.formu
+      %tr
+        %td.label Pays d'arrivée
+        %td.value=select :mail, :arrival_id, @countries.collect{|x| [x.name, x.id]}
+        %td.hint 
+      %tr
+        %td.label Promotion
+        %td.value=select :mail, :promotion_id, @promotions.collect{|x| [x.name, x.id]}.insert(0, ['-- Toutes les promotions --', ''])
+        %td.hint 
+      %tr
+        %td.label Sujet
+        %td.value=text_field :mail, :subject
+        %td.hint 
+      %tr
+        %td.label Message
+        %td.value=text_area :mail, :body
+        %td.hint 
+      %tr
+        %td.label
+        %td.value=submit_tag 'Envoyer le message'
+        %td.hint
+=observe_field("mail_arrival_id", :update=>"mail_promotion_id", :url=>write_promotions_url, :frequency=>0.25, :with=>'country_id')
+

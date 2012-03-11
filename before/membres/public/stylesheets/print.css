@@ -1,0 +1,6 @@
+* { font-family: Times; page-break-before: avoid; page-break-after: avoid; }
+p { text-align: justify;}
+h1 { float:left; width: 19cm; border-bottom: 1pt solid #000;}
+h3.question { margin: 0; padding 3mm 0 1mm; }
+#header, #footer, td.submenu, .aclist, .right_menu, .flash, h2 a { display:none; }
+.author { font-style: italic }

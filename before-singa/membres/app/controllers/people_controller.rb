@@ -1,0 +1,1 @@
+../../../../../rotex1690/apps/rotex/app/controllers/people_controller.rb

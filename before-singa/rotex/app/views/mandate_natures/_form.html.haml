@@ -1,0 +1,9 @@
+= error_messages_for "mandate_nature"
+
+%table.form
+  =tl "Nom", text_field(:mandate_nature, :name)
+  =tl "Code", text_field(:mandate_nature, :code, :size=>3, :maxlength=>3)
+  =tl "Droits", text_field(:mandate_nature, :rights)
+  =tl "Type de zone", select(:mandate_nature, :zone_nature_id, ZoneNature.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] })
+
+

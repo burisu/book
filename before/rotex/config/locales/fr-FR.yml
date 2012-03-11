@@ -1,0 +1,507 @@
+fr-FR:
+  number:
+    # Used in number_with_delimiter()
+    # These are also the defaults for 'currency', 'percentage', 'precision', and 'human'
+    format:
+      # Sets the separator between the units, for more precision (e.g. 1.0 / 2.0 == 0.5)
+      separator: "," 
+      # Delimets thousands (e.g. 1,000,000 is a million) (always in groups of three)
+      delimiter: " " 
+      # Number of decimals, behind the separator (1 with a precision of 2 gives: 1.00)
+      precision: 3
+
+    # Used in number_to_currency()
+    currency:
+      format:
+        # Where is the currency sign? %u is the currency unit, %n the number (default: $5.00)
+        format: "%u%n" 
+        unit: "$" 
+        # These three are to override number.format and are optional
+        separator: "." 
+        delimiter: "," 
+        precision: 2
+
+    # Used in number_to_percentage()
+    percentage:
+      format:
+        # These three are to override number.format and are optional
+        # separator: 
+        delimiter: "" 
+        # precision: 
+
+    # Used in number_to_precision()
+    precision:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: "" 
+        # precision:
+
+    # Used in number_to_human_size()
+    human:
+      format:
+        # These three are to override number.format and are optional
+        # separator: 
+        delimiter: "" 
+        precision: 1
+
+#ActiveSupport
+  date:
+    formats:
+      # Use the strftime parameters for formats.
+      # When no format has been given, it uses default.
+      # You can provide other formats here if you like!
+      dbx: '%Y-%m-%d'
+      db: "%d/%m/%Y"
+      default: "%d/%m/%Y"
+      short: "%b %d" 
+      long: "%d %B %Y" 
+
+    day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
+    abbr_day_names: [Dim, Lun, Mar, Mer, Jeu, Ven, Sam]
+
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre]
+    abbr_month_names: [~, Janv, Févr, Mars, Avr, Mai, Juin, Juil, Août, Sept, Oct, Nov, Déc]
+    # Used in date_select and datime_select.
+    order: [ :day, :month, :year ]
+
+  time:
+    formats:
+      default: "%d/%m/%Y-%H:%M:%S" 
+      defaultx: "%A %d %b %Y à %H:%M:%S" 
+      short: "%d %b %H:%M" 
+      long: "%d %B %Y à %H:%M" 
+    am: "am" 
+    pm: "pm" 
+
+# Used in array.to_sentence.
+  support:
+    array:
+      sentence_connector: "et" 
+      words_connector: ', '
+      last_word_connector: ' et '
+      two_words_connector: ' et '
+
+
+  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+  datetime:
+    distance_in_words:
+      half_a_minute: "half a minute" 
+      less_than_x_seconds:
+        one:  "moins d'une seconde" 
+        many: "moins de {{count}} secondes" 
+      x_seconds:
+        one:  "1 seconde" 
+        many: "{{count}} secondes" 
+      less_than_x_minutes:
+        one:  "less than a minute" 
+        many: "less than {{count}} minutes" 
+      x_minutes:
+        one:  "1 minute" 
+        many: "{{count}} minutes" 
+      about_x_hours:
+        one:  "about 1 hour" 
+        many: "about {{count}} hours" 
+      x_days:
+        one:  "1 day" 
+        many: "{{count}} days" 
+      about_x_months:
+        one:  "about 1 month" 
+        many: "about {{count}} months" 
+      x_months:
+        one:  "1 month" 
+        many: "{{count}} months" 
+      about_x_years:
+        one:  "about 1 year" 
+        many: "about {{count}} years" 
+      over_x_years:
+        one:  "over 1 year" 
+        many: "over {{count}} years" 
+
+
+  # ActiveRecord
+  activerecord:
+    errors:
+      template:
+        header:
+          one:   "1 erreur a empêché l'enregistrement ({{model}})" 
+          other:  "{{count}} erreurs ont empéché l'enregistrement ({{model}})" 
+        # The variable :count is also available
+        body: "Il y a eu des problèmes avec les champs suivants :" 
+      # The values :model, :attribute and :value are always available for interpolation
+      # The value :count is available when applicable. Can be used for pluralization.
+      messages:
+        inclusion: "n'est pas inclus dans la liste" 
+        exclusion: "est reservé" 
+        invalid: "est invalide" 
+        confirmation: "est différent du champ de confirmation" 
+        accepted: "doit être accepté" 
+        empty: "ne peut pas être vide" 
+        blank: "ne peut pas être vide" 
+        too_long: "is too long (maximum is {{count}} characters)" 
+        too_short: "is too short (minimum is {{count}} characters)" 
+        wrong_length: "is the wrong length (should be {{count}} characters)" 
+        taken: "a déjà été pris"
+        not_a_number: "n'est pas un nombre" 
+        greater_than: "must be greater than {{count}}" 
+        greater_than_or_equal_to: "must be greater than or equal to {{count}}" 
+        equal_to: "must be equal to {{count}}" 
+        less_than: "must be less than {{count}}" 
+        less_than_or_equal_to: "must be less than or equal to {{count}}" 
+        odd: "must be odd" 
+        even: "must be even"
+        # Append your own errors here or at the model/attributes scope.
+        record_invalid: 'Validations echouées : {{errors}}'
+    models:
+      article: Article
+      mandate: Mandat
+      period: Période
+      person: Personne
+      subscription: Cotisation
+    
+    attributes:
+      article:
+        id: ID
+        author_id: Auteur
+        title: Titre
+        done_on: A lieu le
+        natures: Natures
+        body: Contenu
+        intro: Introduction
+        rubric_id: Rubrique
+        status: S.
+        updated_at: Modifié le
+      answer:
+        person_id: Personne
+      folder:
+        arrival_country_id: Arrivée
+        begun_on: Commencé le
+        departure_country_id: Départ
+        finished_on: Fini le
+        person_id: Étudiant
+        promotion_id: Promotion
+        proposer_zone_id: Origine
+      mandate:
+        begun_on: Du
+        finished_on: Au
+        nature_id: Nature
+        zone_id: Zone
+      period:
+        begun_on: Date de début
+        finished_on: Date de fin
+      person:
+        patronymic_name: Nom de naissance
+        family_name: Nom de famille
+        first_name: Prénom
+        second_name: Deuxième prénom
+        system: Compte système
+        sex: Sexe
+        born_on: Né(e) le
+        address: Adresse
+        phone: Téléphone (domicile)
+        phone2: Téléphone (travail)
+        fax: Fax
+        mobile: Mobile
+        user_name: 'Nom d''utilisateur'
+        is_validated: Val.
+        is_locked: Verr.
+        email: E-mail
+        test_password: Mot de passe actuel
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        terms_of_use: L'ensemble des termes d'utilisation
+        hashed_password: Mot de passe crypté
+        salt: Grain de sel
+        rotex_email: E-mail Rotex
+        photo: Photo
+        country_id: Nationalité
+        role_id: Rôle
+        student: SE
+        id: ID
+
+        arrival_country_id: Arrivée
+        started_on: Commencé le
+        departure_country_id: Départ
+        stopped_on: Fini le
+        person_id: Étudiant
+        promotion_id: Promotion
+        proposer_zone_id: Origine
+      payment:
+        payer_id: Payeur
+
+      promotion:
+        name: Promo
+      question:
+        position: Numéro
+        name: Nom
+        explanation: Explication
+        theme_id: Thème
+      questionnaire:
+        active: Actif
+        answers_size: Nb. Rép.
+        name: Nom
+        promotion_id: Promotion
+        started_on: Lancé le
+        stopped_on: Arrêté le
+        questions_size: Nb. Quest.
+      rubric:
+        parent_id: Parent
+      sale:
+        client_id: Client
+      subscription:
+        begun_on: Du
+        finished_on: Au
+        amount: Montant (€)
+        note: Note
+        payment_mode: Mode Regl.
+        payment_mode_label: Mode Regl.
+        number: Numéro
+        sale_id: Vente
+        state_label: État
+        state: État
+        person_id: Adhérent
+        created_at: Créée le
+
+  rights:
+    __admin__: Réservé aux administrateurs
+    __not_used__: Actions sans droits
+    __private__: Réservé aux membres en règle
+    __protected__: Réservé à tous les membres (en règle ou pas)
+    __public__: Accès public sans restrictions
+    mandates: Gérer les mandats
+    promotions: Gérer les promotions
+    subscribing: Gérer les adhésions
+    publishing: Gérer la publication
+    users: Gérer les personnes/utilisateurs
+
+
+    
+  app:
+    no_records: 'Pas d''enregistrements'    
+    
+  general:
+    are_you_sure: 'Etes-vous sûr(e) ?'
+    export: 'Exporter en CSV'
+    create: Créer
+    update: Modifier
+    years:
+      zero: 'Aucune année ({{amount}})'
+      one: '1 année : du {{start}} au {{finish}} ({{amount}})'
+      other: '{{count}} années : du {{start}} au {{finish}} ({{amount}})'
+
+
+  labels:
+    x_articles_of_author:
+      zero: 'Aucun article de {{author}}'
+      one: 'Un article de {{author}}'
+      other: '{{count}} articles de {{author}}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nu-LL:
+  
+  about:
+    language: Français
+    author: Sylvain OBEGI
+    comment:  Fichier de traduction en Français pour simple_localization (premier jet, les pays manquent, n'hésitez pas à envoyer des commentaires ou des patchs).
+    website: none
+    email: katios@nolabel.net
+    date: 2007-04-29
+  
+  active_record_messages:
+    inclusion: n'est pas inclu dans la liste
+    exclusion: est réservé
+    invalid: est invalide
+    confirmation: ne correspond pas à la confirmation
+    accepted: doit être accepté
+    empty: ne peut être vide
+    blank: ne peut être vide
+    too_long: est trop long (le maximum est de %d caractères)
+    too_short: est trop court (le minimum est de %d caractères)
+    wrong_length: est de la mauvaise taille (devrait être de %d caractères)
+    taken: a déjà été utilisé
+    not_a_number: 'n''est pas un nombre'
+  
+  dates:
+    monthnames: [Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre]
+    daynames: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
+    abbr_monthnames: [Jan, Fév, Mar, Avr, Mai, Juin, Juil, Aoû, Sep, Oct, Nov, Dec]
+    abbr_daynames: [Dim, Lun, Mar, Mer, Jeu, Ven, Sam]
+    date_formats:
+      parse: '%d/%m/%Y'
+      db0: '%m/%d/%Y'
+      db1: '%d/%m/%Y %H:%M:%S'
+      db: '%d/%m/%Y'
+      dbx: '%Y-%m-%d'
+      default: '%d/%m/%Y'
+      short: '%d %b %y'
+      medium: '%d %B %Y'
+      long: '%A %d %B %Y'
+      month: '%B %Y'
+    time_formats:
+      db1: '%m/%d/%Y %H:%M:%S'
+      db: '%d/%m/%Y %H:%M:%S'
+      dbx: '%Y-%m-%d %H:%M:%S'
+      default: '%A %d %B %Y à %H:%M:%S'
+      short: '%e %b %H:%M'
+      long: '%e %B %Y à %H:%M'
+  
+  numbers:
+    separator: ','
+    delimiter: ' '
+    precision: 3
+  
+  arrays:
+    to_sentence:
+      connector: et
+      skip_last_comma: false
+  
+  countries:
+    Argentina: Argentine
+    Brazil: Brésil
+    Cuba: Cuba
+    England: Angleterre
+    Espana: Espagne
+    Finland: Finlande
+    France: France
+    Germany: Allemagne
+    Italy: Italie
+    Japan: Japon
+  
+  
+  helpers:
+    error_messages_for:
+      heading:
+        1: 'Une erreur a empêché l''enregistrement'
+        n: '%d erreurs ont empêché l''enregistrement'
+        1o: '1 erreur a empêché ce %2$s d''être enregistré'
+        no: '%d erreurs ont empêché ce %s d''être enregistré'
+      description: 'Il y a eu des problèmes avec les champs suivants&nbsp;:'
+    number_to_currency:
+      precision: 2
+      unit: ' €'
+      order: [main, separator, fraction, unit]
+    number_to_phone:
+      area_code: false
+      delimiter: '-'
+      extension: 
+      country_code: 
+    date_select:
+      order: [:year, :month, :day]
+    distance_of_time_in_words:
+      less than 5 seconds: moins de 5 secondes
+      less than 10 seconds: moins de 10 secondes
+      less than 20 seconds: moins de 20 secondes
+      less than a minute: moins d''une minute
+      1 minute: 1 minute
+      half a minute: 30 seconds
+      n minutes: %i minutes
+      about 1 hour: environ 1 heure
+      about n hours: environ %i heures
+      1 day: 1 jour
+      n days: %i jours
+      about 1 month: environ 1 mois
+      n months: %i mois
+      about 1 year: environ 1 an
+      over n years: plus de %i ans
+
+  dyta:
+    export:
+      title: Exporter
+      csv: CSV
+      xcsv: CSV Excel
+
+
+  
+  # Add your the model translations as descriped in the
+  # localized_models_by_lang_file feature to the model section.
+  # 
+  # Example:
+  # 
+  # models:
+  #   my_model:
+  #     name: Localized model name
+  #     attributes:
+  #       name: Localized name
+  #       description: Localized description
+  
+
+  models:
+    article:
+      name: Article
+      attributes:
+        id: ID
+        author_id: Auteur
+        title: Titre
+        done_on: A lieu le
+        natures: Natures
+        body: Contenu
+        intro: Introduction
+        status: S.
+        updated_at: Modifié le
+    mandate:
+      name: Mandat
+      attributes:
+        begun_on: Du
+        finished_on: Au
+        nature_id: Nature
+    period:
+      name: Période
+      attributes:
+        begun_on: Date de début
+        finished_on: Date de fin
+    person:
+      name: Personne
+      attributes:
+        patronymic_name: Nom de naissance
+        family_name: Nom de famille
+        first_name: Prénom
+        second_name: Deuxième prénom
+        system: Compte système
+        sex: Sexe
+        born_on: Né(e) le
+        address: Adresse
+        phone: Téléphone (domicile)
+        phone2: Téléphone (travail)
+        fax: Fax
+        mobile: Mobile
+        user_name: Login
+        is_validated: Val.
+        is_locked: Verr.
+        email: E-mail
+        test_password: Mot de passe actuel
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        terms_of_use: L'ensemble des termes d'utilisation
+        hashed_password: Mot de passe crypté
+        salt: Grain de sel
+        rotex_email: E-mail Rotex
+        photo: Photo
+        country_id: Nationalité
+        role_id: Rôle
+        id: ID
+    subscription:
+      name: Cotisation
+      attributes:
+        begun_on: Du
+        finished_on: Au
+        amount: Montant (€)
+        note: Note
+        payment_mode: Mode Regl.
+        
