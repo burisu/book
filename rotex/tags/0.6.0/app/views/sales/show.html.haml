@@ -1,8 +1,0 @@
-%h1="Vente #{@sale.number} (#{@sale.state_label})"
--if @sale.state = 'P'
-  %h3="Mode paiement : #{@sale.payment_mode_label}"
-
-=dyta :sale_lines
-
-%h3="Total : #{@sale.amount}€"
-

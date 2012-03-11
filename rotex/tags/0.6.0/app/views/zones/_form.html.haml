@@ -1,6 +1,0 @@
-=error_messages_for 'zone'
-%table.formu.flex
-  =tl "Nom", text_field(:zone, :name)
-  =tl "Numéro", text_field(:zone, :number, :size=>6)
-  =tl "Pays", select(:zone, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] })
-  =tl "Nature", select(:zone, :nature_id, @zone.natures.collect {|p| [ p.name, p.id ] })

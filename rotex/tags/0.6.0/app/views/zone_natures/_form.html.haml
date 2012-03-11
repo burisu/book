@@ -1,7 +1,0 @@
-= error_messages_for "zone_nature"
-
-%table.form
-  =tl "Parent", select(:zone_nature, :parent_id, ZoneNature.find(:all, :conditions=>["id!=?", @zone_nature.id||0], :order=>:name).collect {|p| [ p.name, p.id ] })
-  =tl "Nom", text_field(:zone_nature, :name)
-
-

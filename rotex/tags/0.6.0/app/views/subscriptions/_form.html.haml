@@ -1,6 +1,0 @@
-= error_messages_for "subscription"
-
-%table.formu.flex
-  =tl("Personne", dyli(:subscription, :person_id, :people))
-  =tl("Du", date_select(:subscription, :begun_on, {:order => [:day, :month, :year], :start_year=>1970}))
-  =tl("Au", date_select(:subscription, :finished_on, {:order => [:day, :month, :year], :start_year=>1970}))

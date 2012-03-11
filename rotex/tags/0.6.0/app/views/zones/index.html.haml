@@ -1,7 +1,0 @@
-%h1 Zones
-
-%ul.aclist
-  %li=link_to "Mettre à jour les codes zones", refresh_zones_url, :method=>:post
-  %li=link_to("Ajouter une zone", new_zone_url)
-
-=render :partial=>"zones", :object=>Zone.roots

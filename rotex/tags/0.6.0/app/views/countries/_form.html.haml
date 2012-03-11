@@ -1,9 +1,0 @@
-= error_messages_for "country"
-
-%table.form
-  =tl "Nom", text_field(:country, :name)
-  =tl "Nom natif", text_field(:country, :native_name)
-  =tl "Code ISO 3166", text_field(:country, :iso3166, :size=>2, :maxlength=>2)
-  =tl "Langue", select(:country, :language_id, Language.find(:all, :order=>:name).collect{|l| [l.name, l.id]})
-
-
