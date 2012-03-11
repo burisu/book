@@ -1,4 +1,6 @@
 =error_messages_for 'zone'
+-if @zone.new_record?
+  =hidden_field :zone, :parent_id
 %table.formu.flex
   =tl "Nom", text_field(:zone, :name)
   =tl "Numéro", text_field(:zone, :number, :size=>6)

@@ -20,7 +20,7 @@ module ApplicationHelper
 
   def flash_tag(key=:error)
     if flash[key]
-      content_tag :div, flash[key], :class=>'flash '+key.to_s
+      content_tag :div, h(flash[key]), :class=>'flash '+key.to_s
     else
       ''
     end

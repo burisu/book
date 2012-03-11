@@ -6,6 +6,11 @@ class PeopleController < ApplicationController
     code += "\n"
     code += "if session[:person_mode]=='not_approved'\n"
     code += "  c[0]+=' AND NOT approved'\n"
+    code += "elsif session[:person_mode]=='not_validated'\n"
+    code += "  c[0]+=' AND NOT is_validated'\n"
+    code += "elsif session[:person_mode]=='not_validated_two_days'\n"
+    code += "  c[0]+=' AND NOT is_validated AND CURRENT_TIMESTAMP - created_at > ?::INTERVAL'\n"
+    code += "  c << '48 hours'\n"
     code += "elsif session[:person_mode]=='student'\n"
     code += "  c[0]+=' AND student'\n"
     code += "elsif session[:person_mode]=='not_student'\n"
@@ -14,12 +19,12 @@ class PeopleController < ApplicationController
     code += "  c[0]+=' AND is_locked'\n"
     code += "end\n"
     code += "if session[:person_state]=='valid'\n"
-    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
+    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
     code += "elsif session[:person_state]=='not'\n"
-    code += "  c[0]+=\" AND NOT id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
+    code += "  c[0]+=\" AND NOT id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
     code += "elsif session[:person_state]=='end'\n"
     code += "  conf = Configuration.the_one\n"
-    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions WHERE state='P' AND CURRENT_DATE - finished_on BETWEEN \#\{conf.first_chasing_up\} AND \#\{conf.last_chasing_up\}) AND NOT id IN (SELECT person_id FROM subscriptions WHERE state='P' AND finished_on > CURRENT_DATE + '\#\{conf.last_chasing_up\} days'::INTERVAL)\"\n"
+    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE - finished_on BETWEEN \#\{conf.first_chasing_up\} AND \#\{conf.last_chasing_up\}) AND NOT id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND finished_on > CURRENT_DATE + '\#\{conf.last_chasing_up\} days'::INTERVAL)\"\n"
     code += "end\n"
     code += "if session[:person_proposer_zone_id] > 0\n"
     code += "  c[0]+=' AND proposer_zone_id=?'\n"
@@ -164,7 +169,7 @@ class PeopleController < ApplicationController
     begin
       Person.find(params[:id]).destroy 
     rescue Exception => e
-      flash[:warning] = "La personne n'a pas pu être supprimée (#{e.message})"
+      flash[:warning] = "La personne n'a pas pu être supprimée (#{e.class.name}: #{e.message}\n #{e.backtrace[0]})"
     end
     redirect_to people_url
   end 
@@ -241,12 +246,16 @@ class PeopleController < ApplicationController
         end
       end
     else
-      @person = Person.new(:country=>Country.find_by_iso3166('FR'))
+      @person = Person.new()
     end
   end
   
   def activate
-    @person = Person.find_by_validation params[:validation]
+    unless @person = Person.find_by_validation(params[:key])
+      flash[:error] = "Personne introuvable"
+      redirect_to root_url
+      return
+    end
     @person.forced = true
     @activation = 0
     unless @person.nil?

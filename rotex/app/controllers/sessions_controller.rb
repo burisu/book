@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   # ssl_only
 
   def new
-    clean_people
+    # clean_people
     if session[:current_person_id]
       redirect_to myself_url
     end

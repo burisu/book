@@ -85,7 +85,10 @@ class SalesController < ApplicationController
   end
   
   def pay
-    @sale = Sale.find_by_number(params[:id])
+    unless @sale = Sale.find_by_number(params[:id])
+      redirect_to new_sale_url
+      return
+    end
     if @sale.state != "C"
       redirect_to (@sale.state == "P" ? sale_url(@sale) : fill_sale_url(@sale))
       return
@@ -98,7 +101,8 @@ class SalesController < ApplicationController
           Maily.deliver_notification(:waiting_payment, @sale.client || @sale)
           redirect_to sale_url(@sale)
         when :card
-          redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.client_email, :PBX_RETOUR=>Sale.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>finish_sale_url(@sale), :PBX_REFUSE=>refuse_sale_url(@sale), :PBX_ANNULE=>cancel_sale_url(@sale)
+          # redirect_to :controller=>"modulev3.cgi", :PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.client_email, :PBX_RETOUR=>Sale.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>finish_sale_url(@sale), :PBX_REFUSE=>refuse_sale_url(@sale), :PBX_ANNULE=>cancel_sale_url(@sale)
+          redirect_to URI.encode("https://www.rotex1690.org/site/modulev3.cgi?"+{:PBX_MODE=>1, :PBX_SITE=>"0840363", :PBX_RANG=>"01", :PBX_IDENTIFIANT=>"315034123", :PBX_TOTAL=>(@sale.amount*100).to_i, :PBX_DEVISE=>978, :PBX_CMD=>@sale.number, :PBX_PORTEUR=>@sale.client_email, :PBX_RETOUR=>Sale.transaction_columns.collect{|k,v| "#{v}:#{v}"}.join(";"), :PBX_LANGUE=>"FRA", :PBX_EFFECTUE=>finish_sale_url(@sale), :PBX_REFUSE=>refuse_sale_url(@sale), :PBX_ANNULE=>cancel_sale_url(@sale)}.collect{|k,v| "#{k}=#{v.to_s}"}.join('&'))
         end
       end
     end
