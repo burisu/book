@@ -20,6 +20,7 @@ class App < ActiveRecord::Migration
       t.column :native_name,       :string
       t.column :iso639,            :string, :limit=>2, :null=>false
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :countries do |t|
@@ -28,6 +29,7 @@ class App < ActiveRecord::Migration
       t.column :iso3166,           :string, :limit=>2, :null=>false
       t.column :language_id,       :integer, :null=>false , :references=>:languages, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :countries, :iso3166, :unique=>true
     add_index :countries, :name, :unique=>true
@@ -36,6 +38,7 @@ class App < ActiveRecord::Migration
       t.column :name,              :string,  :null=>false
       t.column :parent_id,         :integer, :references=>:zone_natures, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :zone_natures, :name, :unique=>true
 
@@ -45,6 +48,7 @@ class App < ActiveRecord::Migration
       t.column :zone_nature_id,    :integer, :references=>:zone_natures, :on_delete=>:restrict, :on_update=>:restrict
       t.column :parent_id,         :integer, :references=>:mandate_natures, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :mandate_natures, :name, :unique=>true
     add_index :mandate_natures, :code, :unique=>true
@@ -57,6 +61,7 @@ class App < ActiveRecord::Migration
       t.column :parent_id,         :integer, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
       t.column :country_id,        :integer, :references=>:countries, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :zones, :name, :unique=>true
     add_index :zones, [:number, :parent_id], :unique=>true
@@ -67,6 +72,7 @@ class App < ActiveRecord::Migration
       t.column :code,              :string,  :null=>false
       t.column :rights,            :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :roles, :code, :unique=>true
     add_index :roles, :name, :unique=>true
@@ -80,6 +86,7 @@ class App < ActiveRecord::Migration
       t.column :is_outbound,       :boolean,  :null=>false, :default=>true # sortant
       t.column :from_code,         :string,   :null=>false, :default=>'N' # venant de l'hemisphère nord
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :promotions, :name, :unique=>true
 
@@ -93,6 +100,7 @@ class App < ActiveRecord::Migration
       t.column :comment,           :text
       t.column :photo,             :string
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :families, :title, :unique=>true
 
@@ -130,6 +138,7 @@ class App < ActiveRecord::Migration
       t.column :is_user,           :boolean, :null=>false, :default=>false # peut se connecter ?
       t.column :role_id,           :integer, :null=>false, :references=>:roles, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :people, :user_name, :unique=>true
     add_index :people, :rotex_email, :unique=>true
@@ -146,6 +155,7 @@ class App < ActiveRecord::Migration
       t.column :person_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
       t.column :zone_id,           :integer, :null=>false, :references=>:zones, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :folders do |t| # dossier S_Exch de départ ou de retour
@@ -162,6 +172,7 @@ class App < ActiveRecord::Migration
       t.column :arrival_person_id,    :integer, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict # YEO arrivee
       t.column :comment, :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :folders, :person_id
     add_index :folders, :departure_country_id
@@ -178,6 +189,7 @@ class App < ActiveRecord::Migration
       t.column :family_id,         :integer, :null=>false, :references=>:families, :on_delete=>:restrict, :on_update=>:restrict
       t.column :comment,           :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :articles do |t|
@@ -195,6 +207,7 @@ class App < ActiveRecord::Migration
       t.column :author_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
       t.column :language_id,       :integer, :null=>false, :references=>:languages, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :articles, :status
     add_index :articles, :author_id
@@ -207,6 +220,7 @@ class App < ActiveRecord::Migration
       t.column :document,          :string,  :null=>false
       t.column :person_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :emails do |t|
@@ -226,6 +240,7 @@ class App < ActiveRecord::Migration
       t.column :sent_at,           :datetime
       t.column :message,           :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :emails, :identifier
     
@@ -234,6 +249,7 @@ class App < ActiveRecord::Migration
       t.string :key, :limit => 40
       t.string :value, :limit => 6
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :subscriptions do |t|
@@ -244,6 +260,7 @@ class App < ActiveRecord::Migration
       t.column :note,              :text
       t.column :person_id,         :integer, :null=>false, :references=>:people, :on_delete=>:restrict, :on_update=>:restrict
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
   end

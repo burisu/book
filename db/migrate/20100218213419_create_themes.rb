@@ -6,6 +6,7 @@ class CreateThemes < ActiveRecord::Migration
       t.column :color,   :string, :null=>false, :default=>"#808080"
       t.column :comment, :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     execute "INSERT INTO themes(name, created_at, updated_at) SELECT 'Par défaut', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP"
 

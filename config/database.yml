@@ -12,7 +12,7 @@ development:
   adapter: postgresql
   encoding: unicode
   schema_search_path: public
-  database: rotex_development
+  database: book_development
   username: rails
   password: R4|L5
   host: 127.0.0.1
@@ -39,7 +39,7 @@ test:
   adapter: postgresql
   encoding: unicode
   schema_search_path: public
-  database: rotex_test
+  database: book_test
   username: rails
   password: R4|L5
   host: 127.0.0.1
@@ -47,7 +47,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: rotex_production
+  database: book_production
   username: rails
   password: R4|L5
   host: 127.0.0.1

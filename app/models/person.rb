@@ -1,74 +1,95 @@
-# -*- coding: utf-8 -*-
-# == Schema Information
+# coding: utf-8
+# = Informations
+# 
+# == License
+# 
+# Ekylibre - Simple ERP
+# Copyright (C) 2009-2012 Brice Texier, Thibaud Merigon
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see http://www.gnu.org/licenses.
+# 
+# == Table: people
 #
-# Table name: people
-#
-#  address              :text          not null
-#  approved             :boolean       not null
-#  arrival_country_id   :integer       
-#  arrival_person_id    :integer       
-#  born_on              :date          not null
-#  comment              :text          
-#  country_id           :integer       not null
-#  created_at           :datetime      not null
-#  departure_country_id :integer       
-#  departure_person_id  :integer       
-#  email                :string(255)   not null
-#  family_id            :integer       
-#  family_name          :string(255)   not null
-#  fax                  :string(32)    
-#  first_name           :string(255)   not null
-#  hashed_password      :string(255)   
-#  host_zone_id         :integer       
-#  id                   :integer       not null, primary key
-#  is_locked            :boolean       not null
-#  is_user              :boolean       not null
-#  is_validated         :boolean       not null
-#  latitude             :float         
-#  lock_version         :integer       default(0), not null
-#  longitude            :float         
-#  mobile               :string(32)    
-#  patronymic_name      :string(255)   not null
-#  phone                :string(32)    
-#  phone2               :string(32)    
-#  photo                :string(255)   
-#  promotion_id         :integer       
-#  proposer_zone_id     :integer       
-#  replacement_email    :string(255)   
-#  rotex_email          :string(255)   
-#  salt                 :string(255)   
-#  second_name          :string(255)   
-#  sex                  :string(1)     not null
-#  sponsor_zone_id      :integer       
-#  started_on           :date          
-#  stopped_on           :date          
-#  student              :boolean       not null
-#  updated_at           :datetime      not null
-#  user_name            :string(32)    not null
-#  validation           :string(255)   
+#  address             :text             not null
+#  approved            :boolean          not null
+#  arrival_country     :string(2)        
+#  arrival_person_id   :integer          
+#  born_on             :date             not null
+#  comment             :text             
+#  country             :string(2)        
+#  created_at          :datetime         not null
+#  departure_country   :string(2)        
+#  departure_person_id :integer          
+#  email               :string(255)      not null
+#  family_id           :integer          
+#  family_name         :string(255)      not null
+#  fax                 :string(32)       
+#  first_name          :string(255)      not null
+#  hashed_password     :string(255)      
+#  host_zone_id        :integer          
+#  id                  :integer          not null, primary key
+#  is_locked           :boolean          not null
+#  is_user             :boolean          not null
+#  is_validated        :boolean          not null
+#  language            :string(2)        
+#  latitude            :float            
+#  lock_version        :integer          default(0), not null
+#  longitude           :float            
+#  mobile              :string(32)       
+#  patronymic_name     :string(255)      not null
+#  phone               :string(32)       
+#  phone2              :string(32)       
+#  photo               :string(255)      
+#  promotion_id        :integer          
+#  proposer_zone_id    :integer          
+#  replacement_email   :string(255)      
+#  rotex_email         :string(255)      
+#  salt                :string(255)      
+#  second_name         :string(255)      
+#  sex                 :string(1)        not null
+#  sponsor_zone_id     :integer          
+#  started_on          :date             
+#  stopped_on          :date             
+#  student             :boolean          not null
+#  updated_at          :datetime         not null
+#  user_name           :string(32)       not null
+#  validation          :string(255)      
 #
 
 # -*- coding: utf-8 -*-
+# encoding: utf-8
 require 'digest/sha2'
 
 class Person < ActiveRecord::Base
-  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
+  # apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   attr_accessor :password_confirmation
   attr_accessor :test_password
   attr_accessor :terms_of_use
   attr_accessor :forced
   attr_protected :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
-  file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
-  belongs_to :arrival_country, :class_name=>Country.name
-  belongs_to :arrival_person, :class_name=>Person.name
+  # TODO: Convert to paperclip
+  # file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
+  belongs_to :arrival_country, :class_name=>"Country"
+  belongs_to :arrival_person, :class_name=>"Person"
   belongs_to :country
-  belongs_to :departure_country, :class_name=>Country.name
-  belongs_to :departure_person, :class_name=>Person.name
+  belongs_to :departure_country, :class_name=>"Country"
+  belongs_to :departure_person, :class_name=>"Person"
   # belongs_to :family
-  belongs_to :host_zone, :class_name=>Zone.name
+  belongs_to :host_zone, :class_name=>"Group"
   belongs_to :promotion
-  belongs_to :proposer_zone, :class_name=>Zone.name
-  belongs_to :sponsor_zone, :class_name=>Zone.name
+  belongs_to :proposer_zone, :class_name=>"Group"
+  belongs_to :sponsor_zone, :class_name=>"Group"
   has_many :answers
   has_many :articles, :foreign_key=>:author_id
   has_many :images
@@ -76,9 +97,9 @@ class Person < ActiveRecord::Base
   has_many :periods
   has_many :sales, :foreign_key=>"client_id"
   has_many :subscriptions
-  has_many :orders, :class_name=>Sale.name, :conditions=>{:state=>'C'}
+  has_many :orders, :class_name=>"Sale", :conditions=>{:state=>'C'}
   has_many :mandates
-  has_many :versions, :class_name=>PersonVersion.name, :dependent=>:delete_all
+  has_many :versions, :class_name=>"PersonVersion", :dependent=>:delete_all
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9\_]{4,32}/

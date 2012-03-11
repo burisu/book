@@ -28,12 +28,16 @@ class NewPeriods < ActiveRecord::Migration
       t.column :email,             :string,  :null=>false    
       t.column :comment,           :text
       t.column :person_id,         :integer, :null=>false, :references=>:people
+      t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :members, :person_id
 
     create_table :members_periods do |t|
       t.column :member_id,         :integer, :null=>false, :references=>:members
       t.column :period_id,         :integer, :null=>false, :references=>:periods
+      t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :members_periods, [:member_id, :period_id], :unique=>true
     add_index :members_periods, :member_id

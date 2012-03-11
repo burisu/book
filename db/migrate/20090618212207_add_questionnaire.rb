@@ -6,6 +6,7 @@ class AddQuestionnaire < ActiveRecord::Migration
       t.column :intro,       :text
       t.column :comment,     :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :questionnaires, :name, :unique=>true
 
@@ -15,6 +16,7 @@ class AddQuestionnaire < ActiveRecord::Migration
       t.column :position,          :integer
       t.column :questionnaire_id,  :integer, :references=>:questionnaires
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :questions, :questionnaire_id
 
@@ -22,6 +24,7 @@ class AddQuestionnaire < ActiveRecord::Migration
       t.column :launched_on,       :date,    :null=>false
       t.column :questionnaire_id,  :integer, :null=>false, :references=>:questionnaires
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :quarters, :questionnaire_id
 
@@ -32,6 +35,7 @@ class AddQuestionnaire < ActiveRecord::Migration
       t.column :person_id,         :integer, :null=>false, :references=>:people
       t.column :questionnaire_id,  :integer, :null=>false, :references=>:questionnaires
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :answers, :person_id
     add_index :answers, :questionnaire_id
@@ -41,6 +45,7 @@ class AddQuestionnaire < ActiveRecord::Migration
       t.column :answer_id,         :integer, :null=>false, :references=>:answers
       t.column :question_id,       :integer, :null=>false, :references=>:questions
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :answer_items, :answer_id
     add_index :answer_items, :question_id

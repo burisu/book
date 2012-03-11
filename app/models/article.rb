@@ -1,25 +1,44 @@
+# coding: utf-8
 # -*- coding: utf-8 -*-
-# == Schema Information
+# = Informations
+# 
+# == License
+# 
+# Ekylibre - Simple ERP
+# Copyright (C) 2009-2012 Brice Texier, Thibaud Merigon
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see http://www.gnu.org/licenses.
+# 
+# == Table: articles
 #
-# Table name: articles
-#
-#  author_id    :integer       not null
-#  bad_natures  :text          
-#  body         :text          not null
-#  created_at   :datetime      not null
-#  document     :string(255)   
-#  done_on      :date          
-#  id           :integer       not null, primary key
-#  intro        :string(512)   not null
-#  language_id  :integer       not null
-#  lock_version :integer       default(0), not null
-#  rubric_id    :integer       
-#  status       :string(255)   default("W"), not null
-#  title        :string(255)   not null
-#  updated_at   :datetime      not null
+#  author_id    :integer          not null
+#  bad_natures  :text             
+#  body         :text             not null
+#  created_at   :datetime         not null
+#  document     :string(255)      
+#  done_on      :date             
+#  id           :integer          not null, primary key
+#  intro        :string(512)      not null
+#  language     :string(2)        
+#  lock_version :integer          default(0), not null
+#  rubric_id    :integer          
+#  status       :string(255)      default("W"), not null
+#  title        :string(255)      not null
+#  updated_at   :datetime         not null
 #
 
-
+# coding: utf-8
 class Article < ActiveRecord::Base
   belongs_to :author, :class_name=>Person.name
   belongs_to :language

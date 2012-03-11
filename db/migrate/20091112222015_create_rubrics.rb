@@ -9,6 +9,7 @@ class CreateRubrics < ActiveRecord::Migration
       t.column :parent_id,     :integer, :references=>:rubrics
       t.column :rubrics_count, :integer, :null=>false, :default=>0
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :rubrics, :parent_id
 
@@ -20,12 +21,14 @@ class CreateRubrics < ActiveRecord::Migration
       t.column :news_rubric_id,      :integer,  :references=>:rubrics
       t.column :agenda_rubric_id,    :integer,  :references=>:rubrics
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :articles_mandate_natures, :id=>false do |t|
       t.column :article_id,              :integer, :references=>:articles
       t.column :mandate_nature_id,       :integer, :references=>:mandate_natures
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     config = {}

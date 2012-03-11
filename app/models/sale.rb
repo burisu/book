@@ -1,34 +1,53 @@
-# -*- coding: utf-8 -*-
-# == Schema Information
+# encoding: utf-8
+# = Informations
+# 
+# == License
+# 
+# Ekylibre - Simple ERP
+# Copyright (C) 2009-2012 Brice Texier, Thibaud Merigon
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see http://www.gnu.org/licenses.
+# 
+# == Table: sales
 #
-# Table name: sales
-#
-#  amount               :decimal(16, 2 
-#  authorization_number :string(255)   
-#  bin6                 :string(255)   
-#  card_expired_on      :date          
-#  card_type            :string(255)   
-#  client_email         :string(255)   not null
-#  client_id            :integer       
-#  comment              :text          
-#  country              :string(255)   
-#  created_at           :datetime      
-#  created_on           :date          not null
-#  error_code           :string(255)   
-#  id                   :integer       not null, primary key
-#  lock_version         :integer       default(0)
-#  number               :string(255)   not null
-#  payer_country        :string(255)   
-#  payment_mode         :string(255)   
-#  payment_number       :string(255)   
-#  payment_type         :string(255)   
-#  sequential_number    :string(255)   
-#  signature            :string(255)   
-#  state                :string(255)   not null
-#  transaction_number   :string(255)   
-#  updated_at           :datetime      
+#  amount               :decimal(16, 2)   
+#  authorization_number :string(255)      
+#  bin6                 :string(255)      
+#  card_expired_on      :date             
+#  card_type            :string(255)      
+#  client_email         :string(255)      not null
+#  client_id            :integer          
+#  comment              :text             
+#  country              :string(255)      
+#  created_at           :datetime         not null
+#  created_on           :date             not null
+#  error_code           :string(255)      
+#  id                   :integer          not null, primary key
+#  lock_version         :integer          default(0), not null
+#  number               :string(255)      not null
+#  payer_country        :string(255)      
+#  payment_mode         :string(255)      default("none"), not null
+#  payment_number       :string(255)      
+#  payment_type         :string(255)      
+#  sequential_number    :string(255)      
+#  signature            :string(255)      
+#  state                :string(255)      not null
+#  transaction_number   :string(255)      
+#  updated_at           :datetime         not null
 #
 
+# encoding: utf-8
 class Sale < ActiveRecord::Base
   PAYMENT_MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"], ["A payer", "none"]]
   ERROR_CODES = {
@@ -98,7 +117,8 @@ class Sale < ActiveRecord::Base
   has_many :lines, :class_name=>SaleLine.name, :dependent=>:destroy
   has_many :passworded_lines, :class_name=>SaleLine.name, :conditions=>["products.passworded AND quantity>0"], :include=>:product
   has_many :subscriptions, :dependent=>:destroy
-  apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
+  # TODO: Restore Simple Captcha
+  # apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   validates_uniqueness_of :number
   attr_readonly :number
   attr_accessor :client_email_confirmation

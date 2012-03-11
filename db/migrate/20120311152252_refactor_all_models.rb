@@ -21,6 +21,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.text :description
       t.text :comment
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :group_natures do |t|
@@ -28,6 +29,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.references :organization
       t.references :zone_nature
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :group_natures, :organization_id
     add_index :group_natures, :zone_nature_id
@@ -36,6 +38,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.references :group_nature
       t.references :group
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :group_natures_groups, :group_nature_id
     add_index :group_natures_groups, :group_id
@@ -45,6 +48,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.references :children
       t.references :organization
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :group_kinships, :parent_id
     add_index :group_kinships, :children_id
@@ -59,6 +63,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.datetime :started_at
       t.datetime :stopped_at
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :group_intervention_natures do |t|
@@ -66,6 +71,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.text :description
       t.text :comment
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :group_interventions do |t|
@@ -77,6 +83,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.text :description
       t.text :comment
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :group_interventions, :nature_id 
     add_index :group_interventions, :group_id 
@@ -87,6 +94,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.text :description
       t.text :comment
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
 
     create_table :person_interventions do |t|
@@ -99,6 +107,7 @@ class RefactorAllModels < ActiveRecord::Migration
       t.text :description
       t.text :comment
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :person_interventions, :nature_id 
     add_index :person_interventions, :person_id 

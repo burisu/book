@@ -21,6 +21,7 @@ class CreateProduct < ActiveRecord::Migration
       t.column :subscribing_stopped_on, :date
       t.column :personal,         :boolean, :null=>false, :default=>false
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :products, :name
 
@@ -44,6 +45,7 @@ class CreateProduct < ActiveRecord::Migration
       t.column :bin6,                 :string
       t.column :sid,                  :integer
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :payments, :number
     add_index :payments, :payer_id
@@ -70,6 +72,7 @@ class CreateProduct < ActiveRecord::Migration
       t.column :payment_id,   :integer, :references=>:payments
       t.column :sid,                  :integer
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :sales, :number
     add_index :sales, :client_id
@@ -92,6 +95,7 @@ class CreateProduct < ActiveRecord::Migration
       t.column :amount,        :decimal, :precision=>16, :scale=>2, :null=>false, :default=>0
       t.column :sid,                  :integer
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :sale_lines, :sale_id
     add_index :sale_lines, :product_id
@@ -118,6 +122,7 @@ class CreateProduct < ActiveRecord::Migration
       t.column :zone_id,      :integer, :references=>:zones
       t.column :annotation,   :text
       t.timestamps
+      t.integer :lock_version, :null=>false, :default=>0
     end
     add_index :guests, :sale_line_id
     add_index :guests, :sale_id

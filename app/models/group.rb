@@ -1,28 +1,47 @@
-# -*- coding: utf-8 -*-
-# == Schema Information
+# encoding: utf-8
+# = Informations
+# 
+# == License
+# 
+# Ekylibre - Simple ERP
+# Copyright (C) 2009-2012 Brice Texier, Thibaud Merigon
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see http://www.gnu.org/licenses.
+# 
+# == Table: groups
 #
-# Table name: zones
-#
-#  code         :text          not null
-#  country_id   :integer       
-#  created_at   :datetime      not null
-#  id           :integer       not null, primary key
-#  lock_version :integer       default(0), not null
-#  name         :string(255)   not null
-#  nature_id    :integer       
-#  number       :integer       not null
-#  parent_id    :integer       
-#  updated_at   :datetime      not null
+#  code           :text             not null
+#  country        :string(2)        
+#  created_at     :datetime         not null
+#  id             :integer          not null, primary key
+#  lock_version   :integer          default(0), not null
+#  name           :string(255)      not null
+#  number         :integer          not null
+#  parent_id      :integer          
+#  updated_at     :datetime         not null
+#  zone_nature_id :integer          
 #
 
 # -*- coding: utf-8 -*-
+# encoding: utf-8
 class Group < ActiveRecord::Base
   belongs_to :country
-  belongs_to :nature, :class_name=>ZoneNature.name
-  belongs_to :parent, :class_name=>Zone.name
+  belongs_to :nature, :class_name=>"ZoneNature"
+  belongs_to :parent, :class_name=>"Group"
 
   # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
-  named_scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name
+  scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name
   
   def before_validation
     self.code = self.parent ? self.parent.code : ''
@@ -39,7 +58,7 @@ class Group < ActiveRecord::Base
   end
 
   def after_save
-    Zone.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
+    Group.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
       zone.save
     end    
   end
@@ -79,7 +98,7 @@ class Group < ActiveRecord::Base
     if conditions.is_a?(String) and nature = ZoneNature.find(:first, :conditions=>["LOWER(name) LIKE ?", conditions])
       conditions = ["zones.nature_id = ? ", nature.id]
     end
-    Zone.find(:all, 
+    Group.find(:all, 
               :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", 
               :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", 
               :conditions=>conditions, 
