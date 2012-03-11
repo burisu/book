@@ -1,0 +1,2 @@
+class GroupInterventionsController < ApplicationController
+end

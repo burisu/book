@@ -1,0 +1,2 @@
+class GroupNaturesController < ApplicationController
+end

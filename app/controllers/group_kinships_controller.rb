@@ -1,0 +1,2 @@
+class GroupKinshipsController < ApplicationController
+end

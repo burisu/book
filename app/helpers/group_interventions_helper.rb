@@ -1,0 +1,2 @@
+module GroupInterventionsHelper
+end

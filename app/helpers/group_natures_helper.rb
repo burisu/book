@@ -1,0 +1,2 @@
+module GroupNaturesHelper
+end
