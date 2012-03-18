@@ -41,14 +41,15 @@ class Image < ActiveRecord::Base
   belongs_to :person
   # TODO: Use paperclip
   # file_column :document, :magick => {:versions => { "thumb" => "128x128", "medium" => "600x450>", "big"=>"1024x768>" } }
+  has_attached_file :document, :styles => { :thumb => "128x128", :medium => "600x450>", :big => "1024x768>"}
 
   validates_uniqueness_of :name
 
-  def before_validation
+  before_validation do
     self.title_h = self.title.to_s
   end
 
-  def before_validation_on_create
+  before_validation(:on=>:create) do
     self.name = self.title.to_s.lower_ascii.gsub(/\W/, '').to_s
     # while Image.find(:first, :conditions=>['id!=? AND name=?', self.id||0, self.name])
     while Image.find_by_name(self.name)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120313063612) do
+ActiveRecord::Schema.define(:version => 20120318094349) do
 
   create_table "answer_items", :force => true do |t|
     t.text     "content"
@@ -216,19 +216,22 @@ ActiveRecord::Schema.define(:version => 20120313063612) do
   add_index "guests", ["zone_id"], :name => "index_guests_on_zone_id"
 
   create_table "images", :force => true do |t|
-    t.string   "title",                           :null => false
-    t.text     "title_h",                         :null => false
+    t.string   "title",                                    :null => false
+    t.text     "title_h",                                  :null => false
     t.string   "desc"
     t.text     "desc_h"
-    t.string   "document",                        :null => false
-    t.integer  "person_id",                       :null => false
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.integer  "lock_version", :default => 0,     :null => false
-    t.string   "name",                            :null => false
-    t.boolean  "locked",       :default => false, :null => false
-    t.boolean  "deleted",      :default => false, :null => false
-    t.boolean  "published",    :default => true,  :null => false
+    t.string   "document_file_name",                       :null => false
+    t.integer  "person_id",                                :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.integer  "lock_version",          :default => 0,     :null => false
+    t.string   "name",                                     :null => false
+    t.boolean  "locked",                :default => false, :null => false
+    t.boolean  "deleted",               :default => false, :null => false
+    t.boolean  "published",             :default => true,  :null => false
+    t.integer  "document_file_size"
+    t.string   "document_content_type"
+    t.datetime "document_updated_at"
   end
 
   create_table "mandate_natures", :force => true do |t|
@@ -302,7 +305,7 @@ ActiveRecord::Schema.define(:version => 20120313063612) do
     t.string   "first_name",                                           :null => false
     t.string   "second_name"
     t.string   "user_name",           :limit => 32,                    :null => false
-    t.string   "photo"
+    t.string   "photo_file_name"
     t.string   "sex",                 :limit => 1,                     :null => false
     t.date     "born_on",                                              :null => false
     t.text     "address",                                              :null => false
@@ -339,6 +342,9 @@ ActiveRecord::Schema.define(:version => 20120313063612) do
     t.string   "country",             :limit => 2
     t.string   "arrival_country",     :limit => 2
     t.string   "departure_country",   :limit => 2
+    t.integer  "photo_file_size"
+    t.string   "photo_content_type"
+    t.datetime "photo_updated_at"
   end
 
   add_index "people", ["arrival_country"], :name => "index_people_on_arrival_country"

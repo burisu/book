@@ -80,6 +80,7 @@ class Person < ActiveRecord::Base
   attr_protected :replacement_email, :is_locked, :is_validated, :validation, :salt, :hashed_password, :forced, :is_user
   # TODO: Convert to paperclip
   # file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
+  has_attached_file :photo, :styles => { :thumb => "100x150", :portrait => "300x450#", :medium => "600x900>", :big => "1200x1800>" }
   belongs_to :arrival_country, :class_name=>"Country"
   belongs_to :arrival_person, :class_name=>"Person"
   belongs_to :country
