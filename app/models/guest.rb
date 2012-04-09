@@ -41,18 +41,18 @@ class Guest < ActiveRecord::Base
   belongs_to :sale_line
   belongs_to :zone
 
-  def before_validation
+  before_validation do
     if self.sale_line
       self.sale = self.sale_line.sale 
       self.product = self.sale_line.product
     end
   end
 
-  def after_save
+  after_save do
     self.sale_line.save
   end
 
-  def after_destroy
+  after_destroy do
     self.sale_line.save
   end
 

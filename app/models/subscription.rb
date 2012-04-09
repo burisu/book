@@ -40,7 +40,7 @@ class Subscription < ActiveRecord::Base
   belongs_to :sale_line
   validates_uniqueness_of :number
 
-  def before_validation_on_create
+  before_validation(:on => :create) do
     last = self.class.find(:first, :order=>"id DESC")
     self.number = Time.now.to_i.to_s(36)+(last ? last.id+1 : 0).to_s(36).rjust(6, '0')
     self.number.upcase!

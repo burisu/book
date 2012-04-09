@@ -1,0 +1,8 @@
+* Ajouter les tables decorations(name, abbreviation, position, family_id), decoration_natures(name) et decorations_people
+* Ajouter une table activity_sectors(name) et un champ people#activty_sector_id
+* Ajouter une table professions(name) et un champ people#profession_id
+* Ajouter une table contacts(line_2, line_3, line_4, line_5, line_6, postcode, city) qui va contenir les coordonnées des différentes adresses
+* Éclater l'adresse au format AFNOR XPZ 01-110
+* Renommer people#country => people#birth_country
+* [ANNULÉ] Ajouter un champ people#mobile2
+* Ajouter une table person_emails(address, receiving?, sending?, by_default?)

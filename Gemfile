@@ -1,16 +1,19 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
 
+gem 'haml'
 gem 'acts_as_list'
 gem 'paperclip'
-gem "acts_as_audited", "2.0.0"
-gem "recaptcha"
+gem 'acts_as_audited', '2.0.0'
+gem 'recaptcha'
+gem 'will_paginate'
+gem 'formtastic'
 
 # Gems used only for assets and not required
 # in production environments by default.

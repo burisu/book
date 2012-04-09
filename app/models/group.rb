@@ -43,12 +43,12 @@ class Group < ActiveRecord::Base
   # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
   scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name
   
-  def before_validation
+  before_validation do
     self.code = self.parent ? self.parent.code : ''
     self.code += '/'+self.number.to_s.rjust(6, "0")
   end
 
-  def validate 
+  validate do
     if self.nature and !self.nature.parent.nil?
       errors.add(:parent_id, "doit être du type \""+self.nature.parent.name+"\" ") if self.parent and self.parent.nature != self.nature.parent
       errors.add(:parent_id, "doit être renseigné") if self.parent.nil? and !self.nature.parent.nil?
@@ -57,7 +57,7 @@ class Group < ActiveRecord::Base
     end
   end
 
-  def after_save
+  after_save do
     Group.find(:all, :conditions=>{:parent_id=>self.id}).each do |zone| 
       zone.save
     end    
@@ -99,10 +99,10 @@ class Group < ActiveRecord::Base
       conditions = ["zones.nature_id = ? ", nature.id]
     end
     Group.find(:all, 
-              :select=>"co.name||' - '||district.name||' - '||zones.name AS long_name, zones.id AS zid", 
-              :joins=>" join zones as zse on (zones.parent_id=zse.id) join zones as district on (zse.parent_id=district.id) join countries AS co ON (zones.country_id=co.id)", 
+              :select=>"district.name||' - '||groups.name AS long_name, groups.id AS zid", 
+              :joins=>" join groups as zse on (groups.parent_id=zse.id) join groups as district on (zse.parent_id=district.id)", 
               :conditions=>conditions, 
-              :order=>"co.iso3166, district.name, zones.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
+              :order=>"district.name, groups.name").collect {|p| [ p[:long_name], p[:zid].to_i ] }||[]
   end
   
 end

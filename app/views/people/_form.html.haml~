@@ -1,0 +1,53 @@
+=semantic_form_for @person do |f|
+  =f.inputs :name => "Identité" do
+    =f.input :patronymic_name
+    =f.input :family_name
+    =f.input :first_name
+    =f.input :second_name
+    =f.input :sex, :collection => [['Homme', 'h'], ['Femme', 'f']]
+    =f.input :born_on
+    =f.input :country, :collection => countries, :as => :select
+    =f.input :photo
+  =f.inputs :contact do
+    =f.input :address
+    =f.input :phone
+    =f.input :mobile
+    =f.input :phone2
+    =f.input :fax
+    =f.input :email
+-#   =tt "Identité"
+-#   =tl "Nom de naissance", text_field(:person, :patronymic_name), :hint=>"Ex.&nbsp;: MARTIN"
+-#   =tl "Nom de famille", text_field(:person, :family_name)
+-#   =tl "Prénom", text_field(:person, :first_name), :hint=>"Ex.&nbsp;: Jean"
+-#   =tl "Deuxième prénom", text_field(:person, :second_name)
+-#   =tl "Sexe", select(:person, :sex, [['Homme','h'],['Femme','f']])
+-#   =tl "Date de naissance", date_select(:person, :born_on, {:order => [:day, :month, :year], :start_year=>1901})
+-#     =tl "Pays de naissance", select(:person, :country_id, Country.find(:all, :order=>:name).collect {|p| [ p.name, p.id ] })
+-#     =tl "Student Exchange", check_box(:person, :student)
+-#     =# tl "Mon club est", select(:person, :proposer_zone_id, zones)
+-#   -else
+-#     =tt "Coordonnées"
+-#   =tl "Photo", file_column_field("person", "photo"), :hint=>"Photo qui apparait sur la carte de visite. PNG ou JPEG seulement !"
+-#   =tl "Adresse", text_area(:person, :address, :cols=>20, :rows=>4), :hint=>"Ex.&nbsp;:<br/> 17 rue de la Révolution<br/>33000 BORDEAUX"
+-#   =tl "Téléphone (domicile)", text_field(:person, :phone)
+-#   =tl "Mobile", text_field(:person, :mobile)
+-#   =tl "Téléphone (travail)", text_field(:person, :phone2)
+-#   =tl "Fax", text_field(:person, :fax)
+-#   
+-#   =tt "Compte"
+-#   -if @self_subscribing or @admin
+-#     =tl "E-mail", text_field(:person, :email)
+-#   -else
+-#     =tl "E-mail", link_to("Changer d'e-mail", change_email_myself_url, :confirm=>"Attention vos modifications ne sont pas enregistrées. Cliquez sur OK si vous souhaitez quand même continuer.")
+-# 
+-#   =tl "Nom d'utilisateur", text_field(:person, :user_name), :hint=>"Seuls les caractères en minuscule non accentués ainsi que les chiffres sont autorisés pour composer le nom d'utilisateur"
+-#   -if @self_subscribing or @admin
+-#     =tl "Mot de passe", password_field(:person, :password)
+-#     =tl "Confirmation du mot de passe", password_field(:person, :password_confirmation)
+-#   -if @self_subscribing
+-#     %tr=show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label=>"Recopiez le code"
+-#     %tr
+-#       %td{:colspan=>"3", :align=>:center}
+-#         =check_box :person, :terms_of_use
+-#         %label{:for=>'person_terms_of_use'} J'accepte les termes d'utilisation des sites du District 1690
+-# 

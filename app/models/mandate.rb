@@ -40,7 +40,7 @@ class Mandate < ActiveRecord::Base
   belongs_to :person
   belongs_to :zone
 
-  def validate
+  validate do
     if self.nature and self.zone
       if self.nature.zone_nature_id.nil?
         errors.add(:zone_id, "ne doit pas être renseigné") unless self.zone.nature_id.nil?

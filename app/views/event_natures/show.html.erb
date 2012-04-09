@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @event_nature.name %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @event_nature.comment %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_nature_path(@event_nature) %> |
+<%= link_to 'Back', event_natures_path %>

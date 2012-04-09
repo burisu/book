@@ -38,7 +38,7 @@ class Rubric < ActiveRecord::Base
   has_many :articles
   validates_uniqueness_of :code
 
-  def before_validation
+  before_validation do
     self.code = self.name if self.code.blank?
     self.code = self.code.to_s.parameterize
   end

@@ -35,7 +35,7 @@ class AnswerItem < ActiveRecord::Base
   belongs_to :answer
   belongs_to :question
 
-  def validate
+  validate do
     if self.answer
       errors.add_to_base("Une réponse validée ne peut plus être modifiée.") if self.answer.locked?
     end

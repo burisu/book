@@ -131,8 +131,7 @@ class Sale < ActiveRecord::Base
   end
 
 
-
-  def before_validation_on_create
+  before_validation(:on => :create) do
     self.amount ||= 0.0
     self.state ||= STATES[0][1]
     if self.client
@@ -144,17 +143,17 @@ class Sale < ActiveRecord::Base
     return true
   end
 
-  def before_validation
+  before_validation do
     self.payment_mode ||= 'none'
     self.amount = self.lines.sum(:amount)
   end
 
   
-  def validate
+  validate do
     errors.add(:payment_mode, :invalid) unless PAYMENT_MODES.collect{|x| x[1]}.include?(self.payment_mode)
   end
 
-  def before_save
+  before_save do
     @deliver_mail = false
     old_self = self.class.find_by_id(self.id.to_i)
     if (old_self.nil? or (old_self.is_a?(self.class) and old_self.state != self.state)) and self.state == "P"
@@ -162,7 +161,7 @@ class Sale < ActiveRecord::Base
     end
   end
   
-  def after_save
+  after_save do
     if @deliver_mail and self.client
       Maily.deliver_has_subscribed(self.client, self)
       Maily.deliver_notification(:has_subscribed, self.client)

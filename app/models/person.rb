@@ -83,7 +83,7 @@ class Person < ActiveRecord::Base
   has_attached_file :photo, :styles => { :thumb => "100x150", :portrait => "300x450#", :medium => "600x900>", :big => "1200x1800>" }
   belongs_to :arrival_country, :class_name=>"Country"
   belongs_to :arrival_person, :class_name=>"Person"
-  belongs_to :country
+  # belongs_to :country
   belongs_to :departure_country, :class_name=>"Country"
   belongs_to :departure_person, :class_name=>"Person"
   # belongs_to :family
@@ -109,7 +109,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :proposer_zone_id, :sponsor_zone_id, :if=>Proc.new{|x| !x.started_on.nil?}
   validates_presence_of :host_zone_id, :if=>Proc.new{|x| !x.stopped_on.nil?}
 
-  def before_validation
+  before_validation do
     # self.user_name = self.user_name.lower.gsub(/\W+/, '')
     self.patronymic_name = self.patronymic_name.to_s.upcase
     self.family_name = self.family_name.to_s.upcase
@@ -144,11 +144,11 @@ class Person < ActiveRecord::Base
     
   end
 
-  def validate_on_update
+  validate(:on => :update) do
     errors.add(:test_password, "est incorrect") unless self.forced or Person.authenticate(self.user_name, self.test_password) # self.confirm(self.test_password)
   end
 
-  def validate
+  validate do
     errors.add(:password, "ne peut être vide") if self.hashed_password.blank?
     if self.proposer_zone and self.host_zone and self.student
       errors.add_to_base("Le club d'origine et le club hôte ne peuvent pas être tous les deux en France") if self.proposer_zone.country.iso3166.lower == 'fr' and self.host_zone.country.iso3166.lower == 'fr'
@@ -157,11 +157,11 @@ class Person < ActiveRecord::Base
 
   end
   
-  def after_save
+  after_save do
     PersonVersion.create!(self.attributes.merge(:person_id=>self.id))
   end
 
-  def before_destroy
+  before_destroy do
     total = 0
     # MandateNature.find(:all,:conditions=>"' '||rights||' ' ilike '% all %'").each{|x| total+=x.people.size}
     raise Exception.new("Vous ne pouvez pas supprimer un administrateur dans l'exercice de sa fonction") if self.rights.include? :all

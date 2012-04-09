@@ -58,7 +58,7 @@ class Configuration < ActiveRecord::Base
   end
 
   def chasing_up_days_array
-    self.chasing_up_days.split(/[\,\s]+/).collect{|x| x.to_i}.sort
+    self.chasing_up_days.to_s.split(/[\,\s]+/).collect{|x| x.to_i}.sort
   end
 
   def first_chasing_up

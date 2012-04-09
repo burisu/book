@@ -1,0 +1,2 @@
+module EventNaturesHelper
+end

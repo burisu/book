@@ -40,7 +40,7 @@ class Question < ActiveRecord::Base
   has_many :answer_items
   validates_presence_of :theme_id
 
-  def validate
+  validate do
     if self.questionnaire
       errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.questionnaire.started_on<=Date.today and Date.today<=self.questionnaire.stopped_on
     end

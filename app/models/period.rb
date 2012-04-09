@@ -49,7 +49,7 @@ class Period < ActiveRecord::Base
   
   attr_readonly :person_id
 
-  def validate
+  validate do
     if self.begun_on and self.finished_on
       errors.add(:begun_on, "ne doit pas être supérieure à la date de fin") if self.begun_on>self.finished_on
       
@@ -84,7 +84,7 @@ class Period < ActiveRecord::Base
     end
   end
 
-  def before_update
+  before_update do
 #    old_period = Period.find(self.id)
 #    Period.update_all({:finished_on=>self.begun_on-1}, ["person_id=? AND finished_on BETWEEN ? AND ?", self.person_id, old_period.begun_on-1])
 #    Period.find_all_by_finished_on(self.begun_on-1).each{|p| p.update_attributes(:person_id=>self.person_id, :finished_on=>old_period.begun_on-1) }

@@ -42,7 +42,7 @@ class SaleLine < ActiveRecord::Base
   has_one :subscription
 
 
-  def before_validation
+  before_validation do
     if self.product
       self.unit_amount = self.product.amount
       self.name ||= self.product.name
@@ -54,17 +54,17 @@ class SaleLine < ActiveRecord::Base
     self.amount = self.quantity * self.unit_amount
   end
   
-  def validate
+  validate do
     if self.product.storable?
       errors.add(:quantity, :less_than_or_equal_to, :count=>self.product.current_quantity) if self.quantity > self.product.current_quantity
     end
   end 
 
-  def after_save
+  after_save do
     self.sale.save
   end
 
-  def after_destroy
+  after_destroy do
     self.sale.save
   end
 

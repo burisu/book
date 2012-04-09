@@ -129,7 +129,7 @@ class MandateNature < ActiveRecord::Base
 
   list_column :rights, RIGHTS
 
-  def before_validation
+  before_validation do
     self.rights = self.rights_string
   end
 

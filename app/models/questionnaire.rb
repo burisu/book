@@ -41,7 +41,7 @@ class Questionnaire < ActiveRecord::Base
   validates_presence_of :started_on, :stopped_on, :promotion_id
   
 
-  def before_validation
+  before_validation do
     self.name
     while self.class.find(:first, :conditions=>["name LIKE ? AND id!=?", self.name, self.id||0])
       self.name.succ!
@@ -50,11 +50,11 @@ class Questionnaire < ActiveRecord::Base
     self.stopped_on ||= self.started_on
   end
 
-  def before_destroy
+  before_destroy do
     self.questions.clear
   end
 
-  def validate
+  validate do
     errors.add(:stopped_on, "doit être posterieure à la date de début") if self.started_on>self.stopped_on
     # errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.started_on<=Date.today and Date.today<=self.stopped_on
   end

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # = Informations
 # 
 # == License
@@ -57,8 +58,8 @@ class Product < ActiveRecord::Base
 
   scope :unusable, :conditions=>["NOT active OR (deadlined AND NOT CURRENT_DATE BETWEEN started_on AND stopped_on)"], :order=>:name
 
-
-  def before_validation
+  
+  before_validation do
     self.personal = false if self.subscribing?
     return true
   end

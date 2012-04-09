@@ -1,0 +1,13 @@
+%h1 Nom d'utilisateur perdu ?
+
+.login
+  %p Saisissez votre adresse e-mail et validez. 
+  %p Vous recevrez votre nom d'utilisateur par e-mail.
+  -form_tag do
+    %table.formu
+      %tr
+        %td.label E-mail
+        %td.value=text_field :person, :email
+        %td.hint Ex.&nbsp;: nom@domaine.tld
+      %tr
+        %td{:colspan=>3, :align=>"center"}=submit_tag "Envoyez-moi mon nom d'utilisateur"
