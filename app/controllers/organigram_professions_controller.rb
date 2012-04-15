@@ -1,0 +1,2 @@
+class OrganigramProfessionsController < ApplicationController
+end

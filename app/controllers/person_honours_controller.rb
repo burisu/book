@@ -1,0 +1,2 @@
+class PersonHonoursController < ApplicationController
+end

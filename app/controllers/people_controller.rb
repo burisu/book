@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class PeopleController < ApplicationController
+  manage_restfully
 
   def self.people_conditions
     code = search_conditions(:people, [:family_name, :first_name, :patronymic_name, :email, :comment, :address, :second_name, :user_name])

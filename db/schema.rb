@@ -11,33 +11,53 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120318094349) do
+ActiveRecord::Schema.define(:version => 20120414074244) do
 
-  create_table "answer_items", :force => true do |t|
-    t.text     "content"
-    t.integer  "answer_id",                   :null => false
-    t.integer  "question_id",                 :null => false
+  create_table "activities", :force => true do |t|
+    t.integer  "sector_id",                   :null => false
+    t.string   "label"
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.integer  "lock_version", :default => 0, :null => false
   end
 
+  add_index "activities", ["sector_id"], :name => "index_activities_on_sector_id"
+
+  create_table "activities_organigrams", :id => false, :force => true do |t|
+    t.integer "activity_id",   :null => false
+    t.integer "organigram_id", :null => false
+  end
+
+  add_index "activities_organigrams", ["activity_id"], :name => "index_activities_organigrams_on_activity_id"
+  add_index "activities_organigrams", ["organigram_id"], :name => "index_activities_organigrams_on_organigram_id"
+
+  create_table "answer_items", :force => true do |t|
+    t.text     "content"
+    t.integer  "answer_id",                       :null => false
+    t.integer  "question_item_id",                :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "lock_version",     :default => 0, :null => false
+  end
+
   add_index "answer_items", ["answer_id"], :name => "index_answer_items_on_answer_id"
-  add_index "answer_items", ["question_id"], :name => "index_answer_items_on_question_id"
+  add_index "answer_items", ["question_item_id"], :name => "index_answer_items_on_question_id"
 
   create_table "answers", :force => true do |t|
     t.date     "created_on"
-    t.boolean  "ready",            :default => false, :null => false
-    t.boolean  "locked",           :default => false, :null => false
-    t.integer  "person_id",                           :null => false
-    t.integer  "questionnaire_id",                    :null => false
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.integer  "lock_version",     :default => 0,     :null => false
+    t.boolean  "ready",        :default => false, :null => false
+    t.boolean  "locked",       :default => false, :null => false
+    t.integer  "person_id",                       :null => false
+    t.integer  "question_id",                     :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "lock_version", :default => 0,     :null => false
   end
 
   add_index "answers", ["person_id"], :name => "index_answers_on_person_id"
-  add_index "answers", ["questionnaire_id"], :name => "index_answers_on_questionnaire_id"
+  add_index "answers", ["question_id"], :name => "index_answers_on_questionnaire_id"
 
   create_table "articles", :force => true do |t|
     t.string   "title",                                        :null => false
@@ -62,9 +82,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
   create_table "articles_mandate_natures", :id => false, :force => true do |t|
     t.integer  "article_id"
     t.integer  "mandate_nature_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "lock_version",      :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",      :default => 0
   end
 
   create_table "audits", :force => true do |t|
@@ -95,15 +115,22 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.integer  "home_rubric_id"
     t.integer  "news_rubric_id"
     t.integer  "agenda_rubric_id"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
-    t.integer  "lock_version",                        :default => 0,   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                        :default => 0
     t.decimal  "subscription_price",                  :default => 0.0, :null => false
     t.text     "store_introduction"
     t.integer  "help_article_id"
     t.string   "chasing_up_days"
     t.text     "chasing_up_letter_before_expiration"
     t.text     "chasing_up_letter_after_expiration"
+  end
+
+  create_table "event_natures", :force => true do |t|
+    t.string   "name"
+    t.text     "comment"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "events", :force => true do |t|
@@ -116,6 +143,11 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.integer  "lock_version", :default => 0, :null => false
+  end
+
+  create_table "extra_emails", :id => false, :force => true do |t|
+    t.string "email_liste"
+    t.string "email"
   end
 
   create_table "group_intervention_natures", :force => true do |t|
@@ -205,15 +237,36 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.string   "email"
     t.integer  "zone_id"
     t.text     "annotation"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
-    t.integer  "lock_version", :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version", :default => 0
   end
 
   add_index "guests", ["product_id"], :name => "index_guests_on_product_id"
   add_index "guests", ["sale_id"], :name => "index_guests_on_sale_id"
   add_index "guests", ["sale_line_id"], :name => "index_guests_on_sale_line_id"
   add_index "guests", ["zone_id"], :name => "index_guests_on_zone_id"
+
+  create_table "honour_natures", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "comment"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
+  create_table "honours", :force => true do |t|
+    t.integer  "nature_id"
+    t.string   "name"
+    t.string   "abbreviation"
+    t.integer  "position"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
+  add_index "honours", ["nature_id"], :name => "index_honours_on_nature_id"
 
   create_table "images", :force => true do |t|
     t.string   "title",                                    :null => false
@@ -289,6 +342,26 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
   add_index "members_periods", ["member_id"], :name => "index_members_periods_on_member_id"
   add_index "members_periods", ["period_id"], :name => "index_members_periods_on_period_id"
 
+  create_table "organigram_professions", :force => true do |t|
+    t.integer  "organigram_id"
+    t.string   "name"
+    t.boolean  "printed",       :default => false, :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "lock_version",  :default => 0,     :null => false
+  end
+
+  add_index "organigram_professions", ["organigram_id"], :name => "index_organigram_professions_on_organigram_id"
+
+  create_table "organigrams", :force => true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.text     "description"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -308,13 +381,8 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.string   "photo_file_name"
     t.string   "sex",                 :limit => 1,                     :null => false
     t.date     "born_on",                                              :null => false
-    t.text     "address",                                              :null => false
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "phone",               :limit => 32
-    t.string   "phone2",              :limit => 32
-    t.string   "fax",                 :limit => 32
-    t.string   "mobile",              :limit => 32
     t.string   "email",                                                :null => false
     t.string   "replacement_email"
     t.string   "hashed_password"
@@ -339,16 +407,18 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.integer  "sponsor_zone_id"
     t.boolean  "approved",                          :default => false, :null => false
     t.string   "language",            :limit => 2
-    t.string   "country",             :limit => 2
+    t.string   "birth_country",       :limit => 2
     t.string   "arrival_country",     :limit => 2
     t.string   "departure_country",   :limit => 2
     t.integer  "photo_file_size"
     t.string   "photo_content_type"
     t.datetime "photo_updated_at"
+    t.integer  "activity_id"
+    t.integer  "profession_id"
   end
 
   add_index "people", ["arrival_country"], :name => "index_people_on_arrival_country"
-  add_index "people", ["country"], :name => "index_people_on_country"
+  add_index "people", ["birth_country"], :name => "index_people_on_country"
   add_index "people", ["departure_country"], :name => "index_people_on_departure_country"
   add_index "people", ["host_zone_id"], :name => "index_people_on_host_zone_id"
   add_index "people", ["is_user"], :name => "index_people_on_is_user"
@@ -384,6 +454,55 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
   end
 
   add_index "periods", ["country"], :name => "index_periods_on_country"
+
+  create_table "person_contact_natures", :force => true do |t|
+    t.string   "name",                        :null => false
+    t.string   "canal",                       :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
+  add_index "person_contact_natures", ["canal"], :name => "index_person_contact_natures_on_canal"
+
+  create_table "person_contacts", :force => true do |t|
+    t.integer  "person_id",                       :null => false
+    t.integer  "nature_id",                       :null => false
+    t.string   "canal",                           :null => false
+    t.string   "address",                         :null => false
+    t.string   "line_2"
+    t.string   "string"
+    t.string   "line_3"
+    t.string   "line_4"
+    t.string   "line_5"
+    t.string   "line_6"
+    t.string   "postcode"
+    t.string   "city"
+    t.string   "country"
+    t.boolean  "receiving",    :default => false, :null => false
+    t.boolean  "sending",      :default => false, :null => false
+    t.boolean  "by_default",   :default => false, :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "lock_version", :default => 0,     :null => false
+  end
+
+  add_index "person_contacts", ["canal"], :name => "index_person_contacts_on_canal"
+  add_index "person_contacts", ["nature_id"], :name => "index_person_contacts_on_nature_id"
+  add_index "person_contacts", ["person_id"], :name => "index_person_contacts_on_person_id"
+
+  create_table "person_honours", :force => true do |t|
+    t.integer  "person_id",                   :null => false
+    t.integer  "nature_id",                   :null => false
+    t.date     "given_on"
+    t.text     "comment"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
+  add_index "person_honours", ["nature_id"], :name => "index_person_honours_on_nature_id"
+  add_index "person_honours", ["person_id"], :name => "index_person_honours_on_person_id"
 
   create_table "person_intervention_natures", :force => true do |t|
     t.string   "name"
@@ -428,9 +547,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.date     "subscribing_started_on"
     t.date     "subscribing_stopped_on"
     t.boolean  "personal",                                              :default => false,    :null => false
-    t.datetime "created_at",                                                                  :null => false
-    t.datetime "updated_at",                                                                  :null => false
-    t.integer  "lock_version",                                          :default => 0,        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                          :default => 0
     t.boolean  "active",                                                :default => false,    :null => false
     t.boolean  "passworded",                                            :default => false,    :null => false
     t.string   "password"
@@ -449,7 +568,20 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
 
   add_index "promotions", ["name"], :name => "index_promotions_on_name", :unique => true
 
-  create_table "questionnaires", :force => true do |t|
+  create_table "question_items", :force => true do |t|
+    t.string   "name",                        :null => false
+    t.text     "explanation"
+    t.integer  "position"
+    t.integer  "question_id"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+    t.integer  "theme_id"
+  end
+
+  add_index "question_items", ["question_id"], :name => "index_questions_on_questionnaire_id"
+
+  create_table "questions", :force => true do |t|
     t.string   "name",         :limit => 64,                :null => false
     t.text     "intro"
     t.text     "comment"
@@ -461,22 +593,14 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.integer  "promotion_id"
   end
 
-  add_index "questionnaires", ["name"], :name => "index_questionnaires_on_name", :unique => true
-  add_index "questionnaires", ["started_on"], :name => "index_questionnaires_on_started_on"
-  add_index "questionnaires", ["stopped_on"], :name => "index_questionnaires_on_stopped_on"
+  add_index "questions", ["name"], :name => "index_questionnaires_on_name", :unique => true
+  add_index "questions", ["started_on"], :name => "index_questionnaires_on_started_on"
+  add_index "questions", ["stopped_on"], :name => "index_questionnaires_on_stopped_on"
 
-  create_table "questions", :force => true do |t|
-    t.string   "name",                            :null => false
-    t.text     "explanation"
-    t.integer  "position"
-    t.integer  "questionnaire_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.integer  "lock_version",     :default => 0, :null => false
-    t.integer  "theme_id"
+  create_table "redirection_virtuals", :id => false, :force => true do |t|
+    t.string "virtual_email"
+    t.string "email"
   end
-
-  add_index "questions", ["questionnaire_id"], :name => "index_questions_on_questionnaire_id"
 
   create_table "rubrics", :force => true do |t|
     t.string   "name",                         :null => false
@@ -485,9 +609,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.text     "description"
     t.integer  "parent_id"
     t.integer  "rubrics_count", :default => 0, :null => false
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.integer  "lock_version",  :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",  :default => 0
   end
 
   add_index "rubrics", ["parent_id"], :name => "index_rubrics_on_parent_id"
@@ -500,9 +624,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.decimal  "unit_amount",  :precision => 16, :scale => 2, :default => 0.0, :null => false
     t.decimal  "quantity",     :precision => 16, :scale => 2, :default => 0.0, :null => false
     t.decimal  "amount",       :precision => 16, :scale => 2, :default => 0.0, :null => false
-    t.datetime "created_at",                                                   :null => false
-    t.datetime "updated_at",                                                   :null => false
-    t.integer  "lock_version",                                :default => 0,   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                :default => 0
   end
 
   add_index "sale_lines", ["product_id"], :name => "index_sale_lines_on_product_id"
@@ -516,9 +640,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.string   "client_email",                                                            :null => false
     t.decimal  "amount",               :precision => 16, :scale => 2
     t.date     "created_on",                                                              :null => false
-    t.datetime "created_at",                                                              :null => false
-    t.datetime "updated_at",                                                              :null => false
-    t.integer  "lock_version",                                        :default => 0,      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                        :default => 0
     t.string   "sequential_number"
     t.string   "authorization_number"
     t.string   "payment_type"
@@ -539,6 +663,15 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
   add_index "sales", ["number"], :name => "index_sales_on_number"
   add_index "sales", ["payment_mode"], :name => "index_sales_on_payment_mode"
 
+  create_table "sectors", :force => true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.text     "description"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
+  end
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
     t.text     "data"
@@ -547,14 +680,6 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
-
-  create_table "simple_captcha_data", :force => true do |t|
-    t.string   "key",          :limit => 40
-    t.string   "value",        :limit => 6
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.integer  "lock_version",               :default => 0, :null => false
-  end
 
   create_table "subscriptions", :force => true do |t|
     t.date     "begun_on",                                  :null => false
@@ -572,9 +697,9 @@ ActiveRecord::Schema.define(:version => 20120318094349) do
     t.string   "name",                                :null => false
     t.string   "color",        :default => "#808080", :null => false
     t.text     "comment"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.integer  "lock_version", :default => 0,         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version", :default => 0
   end
 
   create_table "zone_natures", :force => true do |t|

@@ -1,0 +1,2 @@
+class MandateNaturesController < ApplicationController
+end

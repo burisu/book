@@ -1,0 +1,2 @@
+class ZoneNaturesController < ApplicationController
+end

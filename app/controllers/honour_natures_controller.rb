@@ -1,0 +1,2 @@
+class HonourNaturesController < ApplicationController
+end

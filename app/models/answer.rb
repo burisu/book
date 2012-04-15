@@ -35,9 +35,9 @@
 # coding: utf-8
 class Answer < ActiveRecord::Base
   belongs_to :person
-  belongs_to :questionnaire
-  has_many :items, :class_name=>AnswerItem.name, :dependent=>:destroy
-  validates_uniqueness_of :person_id, :scope=>:questionnaire_id
+  belongs_to :question
+  has_many :items, :class_name=>"AnswerItem", :dependent=>:destroy
+  validates_uniqueness_of :person_id, :scope=>:question_id
 
   before_validation do
     self.created_on ||= Date.today

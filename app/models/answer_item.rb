@@ -33,7 +33,7 @@
 # coding: utf-8
 class AnswerItem < ActiveRecord::Base
   belongs_to :answer
-  belongs_to :question
+  belongs_to :question_item
 
   validate do
     if self.answer

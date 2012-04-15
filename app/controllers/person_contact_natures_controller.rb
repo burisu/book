@@ -1,0 +1,2 @@
+class PersonContactNaturesController < ApplicationController
+end

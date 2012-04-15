@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class App < ActiveRecord::Migration
+class CreateBasicTables < ActiveRecord::Migration
   def self.up
 
 #                    S U P E R   A D M I N I S T R A T O R

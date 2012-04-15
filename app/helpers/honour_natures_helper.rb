@@ -1,0 +1,2 @@
+module HonourNaturesHelper
+end

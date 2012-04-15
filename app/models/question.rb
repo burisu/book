@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 # = Informations
 # 
 # == License
@@ -21,39 +21,90 @@
 # 
 # == Table: questions
 #
-#  created_at       :datetime         not null
-#  explanation      :text             
-#  id               :integer          not null, primary key
-#  lock_version     :integer          default(0), not null
-#  name             :string(255)      not null
-#  position         :integer          
-#  questionnaire_id :integer          
-#  theme_id         :integer          
-#  updated_at       :datetime         not null
+#  comment      :text             
+#  created_at   :datetime         not null
+#  id           :integer          not null, primary key
+#  intro        :text             
+#  lock_version :integer          default(0), not null
+#  name         :string(64)       not null
+#  promotion_id :integer          
+#  started_on   :date             
+#  stopped_on   :date             
+#  updated_at   :datetime         not null
 #
 
-# encoding: utf-8
+# coding: utf-8
 class Question < ActiveRecord::Base
-  acts_as_list :scope=>:questionnaire
-  belongs_to :questionnaire
-  belongs_to :theme
-  has_many :answer_items
-  validates_presence_of :theme_id
+  belongs_to :promotion
+  has_many :answers
+  has_many :items, :class_name=>"QuestionItem", :dependent => :destroy, :order=>:position
+  validates_presence_of :started_on, :stopped_on, :promotion_id
+  
+
+  before_validation do
+    self.name
+    while self.class.find(:first, :conditions=>["name LIKE ? AND id!=?", self.name, self.id||0])
+      self.name.succ!
+    end
+    self.started_on ||= Date.today-1
+    self.stopped_on ||= self.started_on
+  end
+
+  before_destroy do
+    self.items.clear
+  end
 
   validate do
-    if self.questionnaire
-      errors.add_to_base("Un questionnaire en ligne ne peut être modifié") if self.questionnaire.started_on<=Date.today and Date.today<=self.questionnaire.stopped_on
+    errors.add(:stopped_on, "doit être posterieure à la date de début") if self.started_on>self.stopped_on
+    # errors.add_to_base("Un question en ligne ne peut être modifié") if self.started_on<=Date.today and Date.today<=self.stopped_on
+  end
+
+
+  def duplicate
+    question = self.class.new
+    question.name = ('Copie de '+self.name.to_s)[0..63]
+    question.intro = self.intro
+    if question.save
+      for question in self.items.find(:all, :order=>:position)
+        question.duplicate(:question_id=>question.id)
+      end
+      return question
+    else
+      return nil
     end
   end
 
-  def duplicate(attributes={})
-    question = self.class.new({:name=>self.name, :explanation=>self.explanation, :theme_id=>self.theme_id}.merge(attributes))
-    question.save!
-    question
+  def items_size
+    QuestionItem.count(:conditions=>{:question_id=>self.id})
   end
 
-  def answer(person)
-    "tot"
+  def answers_size
+    Answer.count(:conditions=>{:question_id=>self.id, :ready=>true})
+  end
+
+  def active(active_on=Date.today)
+    b = self.started_on||(active_on+1)
+    e = self.stopped_on||(active_on+1)
+    b <= active_on and active_on <= e
+  end
+
+  def promotion_name
+    self.promotion ? self.promotion.name : ""
+  end
+
+  def state_for(person)
+    answers = Answer.find_all_by_question_id_and_person_id(self.id, person.id)
+    if answers.size == 0
+      :empty
+    elsif answers.size == 1
+      if answers[0].locked or answers[0].ready
+        :locked
+      else
+        :editable
+      end
+    else
+      :error
+    end
   end
 
 end

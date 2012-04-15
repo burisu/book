@@ -1,5 +1,22 @@
 Book::Application.routes.draw do
-  resources :event_natures
+
+  resources :person_honours
+
+  resources :honours
+
+  resources :honour_natures
+
+  resources :organigram_professions
+
+  resources :organigrams
+
+  resources :activities
+
+  resources :sectors
+
+  resources :person_contacts
+
+  resources :person_contact_natures
 
   match 'nom-utilisateur-perdu' => 'people#lost_login', :as => :lost_login
   match 'mot-de-passe-perdu' => 'people#lost_password', :as => :lost_password
@@ -14,6 +31,7 @@ Book::Application.routes.draw do
   resources :group_natures
   resources :organizations
   resources :events
+  resources :event_natures
 
   root :to => 'people#index'
 end
