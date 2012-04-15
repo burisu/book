@@ -1,0 +1,13 @@
+!!! XML utf-8
+%html{:dir=>"ltr"}
+  %head
+    %title Book
+    =stylesheet_link_tag    "application", :media => "all"
+    =javascript_include_tag "application"
+    =csrf_meta_tags
+  %body
+    #page
+      #header Rotannuaire
+      =page_title
+      #main=yield
+      #footer Un pied de page...

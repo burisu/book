@@ -63,8 +63,6 @@ fra:
     # Don't forget the nil at the beginning; there's no such thing as a 0th month
     month_names: [~, Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre]
     abbr_month_names: [~, Janv, Févr, Mars, Avr, Mai, Juin, Juil, Août, Sept, Oct, Nov, Déc]
-    # Used in date_select and datime_select.
-    order: [ :day, :month, :year ]
 
   time:
     formats:
@@ -274,11 +272,16 @@ fra:
 
 
   labels:
+    account: Compte
+    cancel: Annuler
+    create: Créer
+    identity: Identité
+    update: Modifier
     x_articles_of_author:
       zero: 'Aucun article de {{author}}'
       one: 'Un article de {{author}}'
       other: '{{count}} articles de {{author}}'
-
+  
 
 
 
@@ -366,43 +369,7 @@ nu-LL:
     Italy: Italie
     Japan: Japon
   
-  
-  helpers:
-    error_messages_for:
-      heading:
-        1: 'Une erreur a empêché l''enregistrement'
-        n: '%d erreurs ont empêché l''enregistrement'
-        1o: '1 erreur a empêché ce %2$s d''être enregistré'
-        no: '%d erreurs ont empêché ce %s d''être enregistré'
-      description: 'Il y a eu des problèmes avec les champs suivants&nbsp;:'
-    number_to_currency:
-      precision: 2
-      unit: ' €'
-      order: [main, separator, fraction, unit]
-    number_to_phone:
-      area_code: false
-      delimiter: '-'
-      extension: 
-      country_code: 
-    date_select:
-      order: [:year, :month, :day]
-    distance_of_time_in_words:
-      less than 5 seconds: moins de 5 secondes
-      less than 10 seconds: moins de 10 secondes
-      less than 20 seconds: moins de 20 secondes
-      less than a minute: moins d''une minute
-      1 minute: 1 minute
-      half a minute: 30 seconds
-      n minutes: %i minutes
-      about 1 hour: environ 1 heure
-      about n hours: environ %i heures
-      1 day: 1 jour
-      n days: %i jours
-      about 1 month: environ 1 mois
-      n months: %i mois
-      about 1 year: environ 1 an
-      over n years: plus de %i ans
-  
+    
   # Add your the model translations as descriped in the
   # localized_models_by_lang_file feature to the model section.
   # 

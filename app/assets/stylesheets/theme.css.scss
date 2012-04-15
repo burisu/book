@@ -1,0 +1,88 @@
+$dark: #6677AA;
+$comp: #BA9832;
+$radius: 5px;
+$blmargin: 2*$radius;
+@import "compass/css3";
+@import "compass/utilities";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+a, abbr, address, area, article, aside, audio, b, base, bdi, bdo, blockquote, body, br, button, canvas, caption, cite, code, col, colgroup, command, datalist, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, map, mark, menu, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, textarea, tfoot, th, thead, time, title, tr, track, u, ul, var, video, wbr {padding: 0; margin: 0; font-family: "Open Sans", sans-serif; font-size: 13px;}
+
+a:link, a:visited { color: $dark }
+a:hover { color: $comp; text-decoration: none; }
+input[type='submit'] { padding: 0.2em 0.4em; }
+
+#page {
+  margin: 0 auto;
+  width: 80%;
+  #header, #footer, #title { 
+    @include background-image(linear-gradient(lighten($dark, 15%), $dark)); 
+    color: white; 
+    padding: 0.6em 1em; 
+    text-shadow: 0 0 0.1em #000
+  }
+  #header { 
+    font-size: 2em; 
+    font-weight: bold; 
+    @include border-bottom-radius($radius);
+  }
+  #title { 
+    margin: $blmargin 0;
+    font-size: 1.5em; 
+    font-weight: normal; 
+    background: lighten($dark, 20%);
+    @include border-radius($radius);
+    @include background-image(linear-gradient(lighten($comp, 35%), lighten($comp, 20%))); 
+  }
+  #main { 
+    background: #FFF;
+    /*padding: 1em 0;*/
+  }
+  #footer { 
+    margin-top: $blmargin;
+    @include border-top-radius($radius);
+  }
+}
+
+form.search { 
+  padding: 0.5em 1em;
+  margin: $blmargin 0;
+  @include border-radius($radius);
+  @include background-image(linear-gradient(lighten($comp, 40%), lighten($comp, 30%))); 
+  table { 
+    width: 100%;
+  }
+}
+
+ul { padding: 0.2em 2em; }
+fieldset { 
+  padding: 1em;
+  margin: $blmargin 0;
+  border: 1px solid #CCC;
+  @include border-radius($radius);
+  legend, legend * { 
+    padding: 0 0.5ex; 
+    font-weight: bold; 
+    font-size: 1.1em; 
+    color: $dark;
+  }
+  .input { 
+    padding: 2px;
+  }
+  .input > label { 
+ 
+    width: 200px;
+    text-align: right;
+    display: inline-block;
+    margin-right: 1ex;
+  }
+}
+
+.actions { 
+  margin: $blmargin 0;
+  text-align: center;
+  * { 
+    margin: 0 $blmargin;
+  }
+}
+
+h2 { margin: $blmargin 0 $blmargin/2 0; font-size: 1.2em; }

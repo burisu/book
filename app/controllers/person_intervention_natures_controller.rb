@@ -1,2 +1,3 @@
 class PersonInterventionNaturesController < ApplicationController
+  manage_restfully
 end

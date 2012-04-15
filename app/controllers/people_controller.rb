@@ -3,7 +3,7 @@ class PeopleController < ApplicationController
   manage_restfully
 
   def self.people_conditions
-    code = search_conditions(:people, [:family_name, :first_name, :patronymic_name, :email, :comment, :address, :second_name, :user_name])
+    code = search_conditions(:people, [:family_name, :first_name, :patronymic_name, :email, :comment, :second_name, :user_name])
     code += "\n"
     code += "if session[:person_mode]=='not_approved'\n"
     code += "  c[0]+=' AND NOT approved'\n"
@@ -44,7 +44,6 @@ class PeopleController < ApplicationController
     t.column :family_name, :url=>{:action=>:show}
     t.column :first_name, :url=>{:action=>:show}
     t.column :user_name
-    t.column :address
     t.column :student
     t.action :is_locked, :actions=>{"true"=>{:action=>:unlock}, "false"=>{:action=>:lock}}, :method=>:post
     t.action :edit
@@ -89,6 +88,7 @@ class PeopleController < ApplicationController
     @person = Person.find_by_id(params[:id])
     session[:person_id] = @person.id    
     redirect_to people_url if @person.nil?
+    @title = @person.label
     @subscriptions = @person.subscriptions
     @mandates = @person.mandates
     @articles = @person.articles

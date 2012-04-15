@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
 
     code += "def create\n"
     code += "  @#{record_name} = #{model.name}.new(params[:#{record_name}])\n"
-    code += "  @#{record_name}.company_id = @current_company.id\n"
+    # code += "  @#{record_name}.company_id = @current_company.id\n"
     code += "  return if save_and_redirect(@#{record_name}#{',  :url=>'+url if url})\n"
     code += "  render_restfully_form#{partial}\n"
     code += "end\n"
@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
     code += "def update\n"
     code += "  return unless @#{record_name} = find_and_check(:#{record_name})\n"
     code += "  t3e(@#{record_name}.attributes"+(t3e ? ".merge("+t3e.collect{|k,v| ":#{k}=>(#{v})"}.join(", ")+")" : "")+")\n"
-    raise Exception.new("You must put :company_id in attr_readonly of #{model.name} (#{model.readonly_attributes.inspect})") if model.readonly_attributes.nil? or not model.readonly_attributes.to_a.join.match(/company_id/)
+    # raise Exception.new("You must put :company_id in attr_readonly of #{model.name} (#{model.readonly_attributes.inspect})") if model.readonly_attributes.nil? or not model.readonly_attributes.to_a.join.match(/company_id/)
     code += "  @#{record_name}.attributes = params[:#{record_name}]\n"
     code += "  return if save_and_redirect(@#{record_name}#{', :url=>('+url+')' if url})\n"
     code += "  render_restfully_form#{partial}\n"

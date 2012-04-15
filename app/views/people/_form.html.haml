@@ -1,41 +1,14 @@
-=semantic_fields_for @person do |f|
-  =f.inputs :name => tg(:identity) do
+=simple_fields_for @person do |f|
+  =fieldset :identity do
     =f.input :patronymic_name, :required=>true
     =f.input :family_name
     =f.input :first_name, :required=>true
     =f.input :second_name
     =f.input :sex, :collection => [['Homme', 'h'], ['Femme', 'f']], :as => :radio
-    =f.input :born_on
-    =f.input :country, :collection => countries, :as => :select
+    =f.input :born_on, :start_year => Date.today.year - 100, :end_year => Date.today.year - 12, :order => [:day, :month, :year]
+    =f.input :birth_country, :collection => countries, :as => :select
     =f.input :photo
-  =f.inputs :name => tg(:contact) do
-    =f.input :address
-    =f.input :phone
-    =f.input :mobile
-    =f.input :phone2
-    =f.input :fax
-    =f.input :email
-  =f.inputs :name => tg(:account) do
+  =fieldset :account do
     =f.input :user_name
     =f.input :password
     =f.input :password_confirmation
-
-
--#   
--#   =tt "Compte"
--#   -if @self_subscribing or @admin
--#     =tl "E-mail", text_field(:person, :email)
--#   -else
--#     =tl "E-mail", link_to("Changer d'e-mail", change_email_myself_url, :confirm=>"Attention vos modifications ne sont pas enregistrées. Cliquez sur OK si vous souhaitez quand même continuer.")
--# 
--#   =tl "Nom d'utilisateur", text_field(:person, :user_name), :hint=>"Seuls les caractères en minuscule non accentués ainsi que les chiffres sont autorisés pour composer le nom d'utilisateur"
--#   -if @self_subscribing or @admin
--#     =tl "Mot de passe", password_field(:person, :password)
--#     =tl "Confirmation du mot de passe", password_field(:person, :password_confirmation)
--#   -if @self_subscribing
--#     %tr=show_simple_captcha :object => 'person', :image_style=>'random', :distortion=>'medium', :label=>"Recopiez le code"
--#     %tr
--#       %td{:colspan=>"3", :align=>:center}
--#         =check_box :person, :terms_of_use
--#         %label{:for=>'person_terms_of_use'} J'accepte les termes d'utilisation des sites du District 1690
--# 
