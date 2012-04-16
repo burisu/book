@@ -1,0 +1,19 @@
+@mixin table-line-div-background($base, $class) { 
+  tr.#{$class} td { 
+    background: $base; }
+  tr.#{$class} td:hover { background: $base; }
+}
+
+
+@mixin table-line-background($base, $class) { 
+  tr.#{$class} td { 
+    background: $base; }
+  tr.#{$class} td:hover { background: $base; }
+}
+
+table.list { 
+  @include table-line-background(#FFFFFF, default);
+  @include table-line-background(red, important);
+}
+
+

@@ -1,11 +1,15 @@
 $dark: #6677AA;
-$comp: #BA9832;
+$comp: #ED8721;
 $radius: 5px;
 $blmargin: 2*$radius;
+$butshadow: 0.5px;
+$butopacity: 0.3;
+@import "compass/reset";
 @import "compass/css3";
 @import "compass/utilities";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-a, abbr, address, area, article, aside, audio, b, base, bdi, bdo, blockquote, body, br, button, canvas, caption, cite, code, col, colgroup, command, datalist, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, map, mark, menu, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, textarea, tfoot, th, thead, time, title, tr, track, u, ul, var, video, wbr {padding: 0; margin: 0; font-family: "Open Sans", sans-serif; font-size: 13px;}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {padding: 0; margin: 0; font-family: "Open Sans", sans-serif; font-size: 13px;}
+
 
 a:link, a:visited { color: $dark }
 a:hover { color: $comp; text-decoration: none; }
@@ -14,7 +18,7 @@ input[type='submit'] { padding: 0.2em 0.4em; }
 #page {
   margin: 0 auto;
   width: 80%;
-  #header, #footer, #title { 
+  #header, #title { 
     @include background-image(linear-gradient(lighten($dark, 15%), $dark)); 
     color: white; 
     padding: 0.6em 1em; 
@@ -37,10 +41,15 @@ input[type='submit'] { padding: 0.2em 0.4em; }
     background: #FFF;
     /*padding: 1em 0;*/
   }
-  #footer { 
-    margin-top: $blmargin;
-    @include border-top-radius($radius);
-  }
+}
+
+#footer { 
+  @include background-image(linear-gradient($dark, lighten($dark, 15%))); 
+  color: white; 
+  padding: 0.6em 1em; 
+  text-shadow: 0 0 0.1em #000;
+  margin-top: $blmargin;
+  @include border-top-radius($radius);
 }
 
 form.search { 
@@ -86,3 +95,26 @@ fieldset {
 }
 
 h2 { margin: $blmargin 0 $blmargin/2 0; font-size: 1.2em; }
+
+.toolbar { 
+  margin: $blmargin 0;
+  padding: $radius;
+  @include background-image(linear-gradient(#E0E0E0, #D0D0D0));
+  @include border-radius($radius);
+  .tool a {
+    @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset);
+    padding: 1.5*$radius;
+    @include border-radius($radius);
+    @include inline-block;
+    color: #555;
+    font-weight: bold;
+    text-decoration: none;
+    @include text-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+  }
+  .tool a:hover { 
+     @include box-shadow(-1*$butshadow -1*$butshadow 5px rgba(0, 0, 0, $butopacity) inset, $butshadow $butshadow 5px rgba(255, 255, 255, $butopacity) inset);
+  }
+}
+table th, table td { 
+  @include background-image(linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.8)));
+}

@@ -30,9 +30,12 @@ module ApplicationHelper
     return content_tag(:fieldset, html.html_safe, html_options)
   end
 
+  def authorized?(url={})
+    true
+  end
 
   def theme_button(name)
-    "nop"
+    "buttons/#{name}.png"
   end
 
   # TOOLBAR

@@ -1,5 +1,5 @@
 -conf = Configuration.the_one
-=form_tag(people_url, :method=>:get, :class=>"search") do 
+-#form_tag(people_url, :method=>:get, :class=>"search") do 
   %table.search
     %tr
       %td Filtrer sur
@@ -17,8 +17,8 @@
       %td{:colspan=>3}=select_tag("proposer_zone_id", options_for_select([[]]+Group.list, session[:person_proposer_zone_id]))
   
 
-%ul.aclist
-  %li=link_to "Ajouter une personne", new_person_url
+=toolbar do |t|
+  -t.link :new
 
 =list
 
