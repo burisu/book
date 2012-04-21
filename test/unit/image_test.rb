@@ -20,19 +20,22 @@
 # 
 # == Table: images
 #
-#  created_at   :datetime         not null
-#  deleted      :boolean          not null
-#  desc         :string(255)      
-#  desc_h       :text             
-#  document     :string(255)      not null
-#  id           :integer          not null, primary key
-#  lock_version :integer          default(0), not null
-#  locked       :boolean          not null
-#  name         :string(255)      not null
-#  person_id    :integer          not null
-#  published    :boolean          default(TRUE), not null
-#  title        :string(255)      not null
-#  title_h      :text             not null
-#  updated_at   :datetime         not null
+#  created_at            :datetime         not null
+#  deleted               :boolean          not null
+#  desc                  :string(255)      
+#  desc_h                :text             
+#  document_content_type :string(255)      
+#  document_file_name    :string(255)      not null
+#  document_file_size    :integer          
+#  document_updated_at   :datetime         
+#  id                    :integer          not null, primary key
+#  lock_version          :integer          default(0), not null
+#  locked                :boolean          not null
+#  name                  :string(255)      not null
+#  person_id             :integer          not null
+#  published             :boolean          default(TRUE), not null
+#  title                 :string(255)      not null
+#  title_h               :text             not null
+#  updated_at            :datetime         not null
 #
 

@@ -20,20 +20,19 @@
 # 
 # == Table: people
 #
-#  address             :text             not null
+#  activity_id         :integer          
 #  approved            :boolean          not null
 #  arrival_country     :string(2)        
 #  arrival_person_id   :integer          
+#  birth_country       :string(2)        
 #  born_on             :date             not null
 #  comment             :text             
-#  country             :string(2)        
 #  created_at          :datetime         not null
 #  departure_country   :string(2)        
 #  departure_person_id :integer          
 #  email               :string(255)      not null
 #  family_id           :integer          
 #  family_name         :string(255)      not null
-#  fax                 :string(32)       
 #  first_name          :string(255)      not null
 #  hashed_password     :string(255)      
 #  host_zone_id        :integer          
@@ -45,11 +44,12 @@
 #  latitude            :float            
 #  lock_version        :integer          default(0), not null
 #  longitude           :float            
-#  mobile              :string(32)       
 #  patronymic_name     :string(255)      not null
-#  phone               :string(32)       
-#  phone2              :string(32)       
-#  photo               :string(255)      
+#  photo_content_type  :string(255)      
+#  photo_file_name     :string(255)      
+#  photo_file_size     :integer          
+#  photo_updated_at    :datetime         
+#  profession_id       :integer          
 #  promotion_id        :integer          
 #  proposer_zone_id    :integer          
 #  replacement_email   :string(255)      
@@ -69,7 +69,6 @@
 # == Fixture: people
 #
 # people_001:
-#   address: "Lorem ipsum"
 #   approved: true
 #   born_on: 2009-07-19
 #   created_at: 2009-07-19 19:13:59 +02:00

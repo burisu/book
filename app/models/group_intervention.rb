@@ -35,4 +35,7 @@
 
 # encoding: utf-8
 class GroupIntervention < ActiveRecord::Base
+  belongs_to :nature, :class_name => "GroupInterventionNature"
+  belongs_to :event
+  belongs_to :group
 end

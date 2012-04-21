@@ -36,9 +36,9 @@
 # -*- coding: utf-8 -*-
 # encoding: utf-8
 class Group < ActiveRecord::Base
-  belongs_to :country
-  belongs_to :nature, :class_name=>"ZoneNature"
-  belongs_to :parent, :class_name=>"Group"
+  belongs_to :zone_nature
+  belongs_to :nature, :class_name=>"GroupNature"
+  # belongs_to :parent, :class_name=>"Group"
 
   # has_many :children, :class_name=>self.class.name, :foreign_key=>:parent_id
   scope :roots, :conditions=>["parent_id IS NULL"], :order=>:name

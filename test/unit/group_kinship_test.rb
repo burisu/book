@@ -20,7 +20,7 @@
 # 
 # == Table: group_kinships
 #
-#  children_id     :integer          
+#  child_id        :integer          
 #  created_at      :datetime         not null
 #  id              :integer          not null, primary key
 #  lock_version    :integer          default(0), not null

@@ -19,17 +19,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses.
 # 
-# == Table: questions
+# == Table: question_items
 #
-#  created_at       :datetime         not null
-#  explanation      :text             
-#  id               :integer          not null, primary key
-#  lock_version     :integer          default(0), not null
-#  name             :string(255)      not null
-#  position         :integer          
-#  question_id :integer          
-#  theme_id         :integer          
-#  updated_at       :datetime         not null
+#  created_at   :datetime         not null
+#  explanation  :text             
+#  id           :integer          not null, primary key
+#  lock_version :integer          default(0), not null
+#  name         :string(255)      not null
+#  position     :integer          
+#  question_id  :integer          
+#  theme_id     :integer          
+#  updated_at   :datetime         not null
 #
 
 # encoding: utf-8

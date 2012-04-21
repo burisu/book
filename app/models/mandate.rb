@@ -36,9 +36,11 @@
 # -*- coding: utf-8 -*-
 # coding: utf-8
 class Mandate < ActiveRecord::Base
-  belongs_to :nature, :class_name=>MandateNature.name
+  belongs_to :nature, :class_name=>"MandateNature"
   belongs_to :person
+  belongs_to :group
   belongs_to :zone
+  validates_presence_of :group, :nature, :person
 
   validate do
     if self.nature and self.zone

@@ -32,4 +32,7 @@
 
 # encoding: utf-8
 class GroupNature < ActiveRecord::Base
+  has_many :groups
+  belongs_to :organization
+  belongs_to :zone_nature
 end

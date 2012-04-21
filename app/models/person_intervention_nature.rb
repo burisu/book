@@ -32,4 +32,5 @@
 
 # encoding: utf-8
 class PersonInterventionNature < ActiveRecord::Base
+  has_many :person_interventions
 end

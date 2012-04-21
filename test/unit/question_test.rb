@@ -20,14 +20,15 @@
 # 
 # == Table: questions
 #
-#  created_at       :datetime         not null
-#  explanation      :text             
-#  id               :integer          not null, primary key
-#  lock_version     :integer          default(0), not null
-#  name             :string(255)      not null
-#  position         :integer          
-#  questionnaire_id :integer          
-#  theme_id         :integer          
-#  updated_at       :datetime         not null
+#  comment      :text             
+#  created_at   :datetime         not null
+#  id           :integer          not null, primary key
+#  intro        :text             
+#  lock_version :integer          default(0), not null
+#  name         :string(64)       not null
+#  promotion_id :integer          
+#  started_on   :date             
+#  stopped_on   :date             
+#  updated_at   :datetime         not null
 #
 

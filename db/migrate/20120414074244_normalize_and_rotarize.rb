@@ -32,14 +32,14 @@ class NormalizeAndRotarize < ActiveRecord::Migration
       t.belongs_to :nature, :null=>false
       t.string :canal, :null=>false
       t.string :address, :null=>false
-      t.string :line_2, :string   #, :limit => 38
-      t.string :line_3, :string   #, :limit => 38
-      t.string :line_4, :string   #, :limit => 38
-      t.string :line_5, :string   #, :limit => 38
-      t.string :line_6, :string   #, :limit => 38
-      t.string :postcode, :string #, :limit => 38
-      t.string :city, :string     #, :limit => 38
-      t.string :country, :string  #, :limit => 38
+      t.string :line_2   #, :limit => 38
+      t.string :line_3   #, :limit => 38
+      t.string :line_4   #, :limit => 38
+      t.string :line_5   #, :limit => 38
+      t.string :line_6   #, :limit => 38
+      t.string :postcode #, :limit => 38
+      t.string :city     #, :limit => 38
+      t.string :country  #, :limit => 38
       t.boolean :receiving, :null=>false, :default=>false
       t.boolean :sending, :null=>false, :default=>false
       t.boolean :by_default, :null=>false, :default=>false
@@ -127,14 +127,14 @@ class NormalizeAndRotarize < ActiveRecord::Migration
 
     create_table :person_honours do |t|
       t.belongs_to :person, :null=>false
-      t.belongs_to :nature, :null=>false
+      t.belongs_to :honour, :null=>false
       t.date :given_on
       t.text :comment
       t.timestamps
       t.integer :lock_version, :null=>false, :default=>0      
     end
     add_index :person_honours, :person_id
-    add_index :person_honours, :nature_id
+    add_index :person_honours, :honour_id
 
     drop_table :simple_captcha_data
 
@@ -143,9 +143,13 @@ class NormalizeAndRotarize < ActiveRecord::Migration
     rename_column :question_items, :questionnaire_id, :question_id
     rename_column :answers, :questionnaire_id, :question_id
     rename_column :answer_items, :question_id, :question_item_id
+
+    rename_column :group_kinships, :children_id, :child_id
   end
 
   def down
+    rename_column :group_kinships, :child_id, :children_id
+
     rename_column :answer_items, :question_item_id, :question_id
     rename_column :answers, :question_id, :questionnaire_id
     rename_column :question_items, :question_id, :questionnaire_id

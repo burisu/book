@@ -20,7 +20,7 @@
 # 
 # == Table: group_kinships
 #
-#  children_id     :integer          
+#  child_id        :integer          
 #  created_at      :datetime         not null
 #  id              :integer          not null, primary key
 #  lock_version    :integer          default(0), not null
@@ -32,4 +32,7 @@
 
 # encoding: utf-8
 class GroupKinship < ActiveRecord::Base
+  belongs_to :organization
+  belongs_to :parent, :class_name => "GroupKinship"
+  belongs_to :child, :class_name => "GroupKinship"
 end

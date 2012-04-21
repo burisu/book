@@ -20,12 +20,12 @@
 # 
 # == Table: answer_items
 #
-#  answer_id    :integer          not null
-#  content      :text             
-#  created_at   :datetime         not null
-#  id           :integer          not null, primary key
-#  lock_version :integer          default(0), not null
-#  question_id  :integer          not null
-#  updated_at   :datetime         not null
+#  answer_id        :integer          not null
+#  content          :text             
+#  created_at       :datetime         not null
+#  id               :integer          not null, primary key
+#  lock_version     :integer          default(0), not null
+#  question_item_id :integer          not null
+#  updated_at       :datetime         not null
 #
 

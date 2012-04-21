@@ -31,4 +31,6 @@
 
 # encoding: utf-8
 class Organization < ActiveRecord::Base
+  has_many :group_natures
+  has_many :group_kinships
 end

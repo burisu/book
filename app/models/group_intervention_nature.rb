@@ -32,4 +32,6 @@
 
 # encoding: utf-8
 class GroupInterventionNature < ActiveRecord::Base
+  attr_accessible :name, :description, :comment
+  has_many :group_interventions
 end

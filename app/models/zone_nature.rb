@@ -32,6 +32,5 @@
 class ZoneNature < ActiveRecord::Base
   belongs_to :parent, :class_name=>ZoneNature.name
   has_many :children, :class_name=>ZoneNature.name, :foreign_key=>:parent_id
-  has_many :zones, :foreign_key=>"nature_id"
 
 end
