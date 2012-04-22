@@ -1,3 +1,116 @@
+# encoding: UTF-8
+def substitute(tag, file, text, options = {})
+  return if text.blank?
+
+  # Get content
+  content = nil
+  File.open(file, "rb:UTF-8") do |f|
+    content = f.read
+  end
+  
+  # Look for tag
+  tag_start = "#[#{tag}["
+  tag_end = "#]#{tag}]"
+  
+  regexp = /\ *#{Regexp.escape(tag_start)}[^漢字]*#{Regexp.escape(tag_end)}\ */
+  tag = !regexp.match(content).nil?
+  
+  # Check if usable
+  return if text.blank? and not tag
+  
+  # Create tag if it's necessary
+  unless tag
+    if options[:after]
+      content.sub!(/(#{options[:after]})/, '\1'+"\n  #{tag_start}\n  #{tag_end}\n\n")
+    else
+      content = "#{tag_start}\n#{tag_end}\n\n" + content
+    end
+  end
+  
+  # Update tag
+  deepness = (options.has_key?(:deepness) ? options[:deepness].to_i : options[:after] ? 1 : 0)
+  new_text  = tag_start + " Do not edit these lines directly.\n"
+  new_text << text.to_s.strip+"\n"
+  new_text << tag_end
+  content.gsub!(regexp, new_text.strip.gsub(/^/, "  "*deepness))
+  
+  # Save file
+  File.open(file, "wb") do |f|
+    f.write content
+  end
+end
+
+
+def list_column_code(model, attr)
+  code = ""
+  columns = [:label, :name, :code, :number, :description, :comment, :id]
+  column = columns.detect{|c| model.new.respond_to?(c)}
+
+  if attr.name.match(/\_id$/)
+    refs = model.reflections.values.select{|r| r.macro == :belongs_to and r.foreign_key.to_s == attr.name}
+    if refs.size == 1
+      belongs_to = refs[0]
+      m = belongs_to.class_name.constantize.new
+      c = columns.detect{|c| m.respond_to?(c)}
+      code << "  t.column :#{c}, :through => :#{belongs_to.name}, :url => true\n"
+    elsif refs.size == 0
+      code << "  t.column :#{attr.name} # No reflection found\n"
+    else
+      code << "  # Too many :belongs_to for the :#{attr_name} column ("+refs.collect{|r| r.name}.to_sentence+")\n"
+    end
+  else
+    code << "  t.column :#{attr.name}"
+    code << ", :url => true" if column.to_s == attr.name.to_s
+    code << "\n"
+  end
+  return code
+end
+
+def list_attribute_code(model, attr)
+  code = ""
+  columns = [:label, :name, :code, :number, :description, :comment, :id]
+
+  if attr.name.match(/\_id$/)
+    refs = model.reflections.values.select{|r| r.macro == :belongs_to and r.foreign_key.to_s == attr.name}
+    if refs.size == 1
+      belongs_to = refs[0]
+      m = belongs_to.class_name.constantize.new
+      c = columns.detect{|c| m.respond_to?(c)}
+      code << "-l.attribute :#{belongs_to.name}, :label => :#{c}, :url => true\n"
+    elsif refs.size == 0
+      code << "-l.attribute :#{attr.name} # No reflection found\n"
+    else
+      code << "  # Too many :belongs_to for the :#{attr_name} column ("+refs.collect{|r| r.name}.to_sentence+")\n"
+    end
+  else
+    code << "-l.attribute :#{attr.name}\n"
+  end
+  return code
+end
+
+def existing_method?(method, file)
+  content = nil
+  File.open(file, "rb:UTF-8") do |f|
+    content = f.read
+  end
+
+  content.gsub!(/\ *#\[ACTIONS\[.*\]ACTIONS\]\ */, '')
+
+  return !content.match(/^\ \ def\ +#{method}\s+/).nil?
+end
+
+def existing_macro?(macro, file)
+  content = nil
+  File.open(file, "rb:UTF-8") do |f|
+    content = f.read
+  end
+
+  content.gsub!(/\ *#\[ACTIONS\[.*\]ACTIONS\]\ */, '')
+
+  return !content.match(/^\ \ #{macro}[\(\s]+/).nil?
+end
+
+
 
 desc "Generate view code for main views"
 task :scaff => :environment do
@@ -9,27 +122,169 @@ task :scaff => :environment do
     models = Dir["*.rb"].collect{|f| f[0..-4]}
   end
   models = models.delete_if{|x| ["person"].include?(x)}.sort
+  routes = ""
   for model_name in models
     controller_name = model_name.pluralize
     model = model_name.classify.constantize
-    
+    has_manies = model.reflections.values.select{|r| r.macro == :has_many}
     attributes = model.columns
+
     form_attributes = {}
-    form_attributes[:general] = attributes.select{|x| !meta_columns.include?(x.name)}
+    accessibles = model.accessible_attributes.to_a
+    if accessibles.size > 0
+      form_attributes[:general] = attributes.select{|x| accessibles.include?(x.name.to_s)}
+    else
+      form_attributes[:general] = attributes.select{|x| !meta_columns.include?(x.name.to_s)}
+    end
 
     show_attributes = {}
-    show_attributes[:general] = attributes.select{|x| !meta_columns.include?(x.name)}
-    show_attributes[:meta] = attributes.select{|x| meta_columns.include?(x.name)}
+    show_attributes[:general] = attributes.select{|x| !meta_columns.include?(x.name.to_s)}
+    show_attributes[:meta] = attributes.select{|x| meta_columns.include?(x.name.to_s)}
 
     # print "Generate views for #{controller_name}"
-    print ":"
+    print model_name.split("_").collect{|w| w[0..0].upcase+w[1..-1].gsub(/[aeiouy]+/, '')[0..1].downcase}.join
+    controller_file = Rails.root.join("app", "controllers", "#{controller_name}_controller.rb")
+    unless false # controller_file.exist?
+      File.open(controller_file, "wb:utf-8") do |f|
+        f.write "# encoding: UTF-8\n"
+        f.write "class #{controller_name.camelize}Controller < ApplicationController\n"
+        f.write "end\n"
+      end
+    end
+    if controller_file.exist?
+      routes << "resources :#{controller_name} do\n"
+      code = ""
+
+      find_and_check = ""
+      find_and_check << "  @#{model_name} = #{model_name.camelize}.find(params[:id])\n"
+
+      routes << "  get :list, :on => :collection\n"
+      code << "# List all #{controller_name}\n"
+      code << "list(:conditions => light_search_conditions(:#{controller_name} => " + form_attributes[:general].collect{|c| c.name.to_sym}.inspect + ")) do |t|\n"
+      for attr in form_attributes[:general]
+        code << list_column_code(model, attr)
+      end
+      code << "  t.action :edit\n"
+      code << "  t.action :destroy, :method => :delete, :confirm => :are_you_sure\n"
+      code << "end\n\n"
+      
+      # controller = "#{controller_name}_controller".classify.constantize.new
+      
+      unless existing_method?(:index, controller_file)
+        code << "def index\n"
+        code << "end\n\n"
+        print "."
+      end
+      
+
+      for reflection in has_manies
+        routes << "  get :list_#{reflection.name}, :on => :collection\n"
+        code << "# List all #{reflection.name} of one #{model_name}\n"
+        code << "list(:#{reflection.name}"
+        code << ", :model => '#{reflection.class_name}'" unless reflection.class_name.tableize.to_s == reflection.name.to_s
+        code << ", :conditions => ['#{reflection.foreign_key} = ?', ['session[:current_#{model_name}_id]']]"
+        code << ") do |t|\n"
+        excluded_columns = meta_columns + [reflection.foreign_key.to_s]
+        ref_model = reflection.class_name.constantize
+        for attr in ref_model.columns.select{|x| !excluded_columns.include?(x.name.to_s)}
+          code << list_column_code(ref_model, attr)
+        end
+        code << "  t.action :edit\n"
+        code << "  t.action :destroy, :method => :delete, :confirm => :are_you_sure\n"
+        code << "end\n\n"
+      end
+
+      unless existing_method?(:show, controller_file)
+        code << "def show\n"
+        code << find_and_check
+        code << "  session[:current_#{model_name}_id] = @#{model_name}.id\n"
+        code << "end\n\n"
+        print "."
+      end
+
+      unless existing_macro?(:manage_restfully, controller_file) or existing_method?(:new, controller_file)
+        code << "def new\n"
+        code << "  @#{model_name} = #{model_name.camelize}.new\n"
+        code << "  respond_to do |format|\n"
+        code << "    format.html { render_restfully_form}\n"
+        code << "    format.json { render :json => @#{model_name} }\n"
+        code << "    format.xml  { render :xml => @#{model_name} }\n"
+        code << "  end\n"
+        code << "end\n\n"
+        print "."
+      end
+
+      unless existing_macro?(:manage_restfully, controller_file) or existing_method?(:create, controller_file)
+        code << "def create\n"
+        code << "  @#{model_name} = #{model_name.camelize}.new(params[:#{model_name}])\n"
+        code << "  respond_to do |format|\n"
+        code << "    if @#{model_name}.save\n"
+        code << "      format.html { redirect_to @#{model_name} }\n"
+        code << "      format.json { render json => @#{model_name}, :status => :created, :location => @#{model_name} }\n"
+        code << "    else\n"
+        code << "      format.html { render :action => 'new' }\n"
+        code << "      format.json { render :json => @#{model_name}.errors, :status => :unprocessable_entity }\n"
+        code << "    end\n"
+        code << "  end\n"
+        code << "end\n\n"
+        print "."
+      end
+
+      unless existing_macro?(:manage_restfully, controller_file) or existing_method?(:edit, controller_file)
+        code << "def edit\n"
+        code << find_and_check
+        code << "  respond_to do |format|\n"
+        code << "    format.html { render_restfully_form }\n"
+        code << "  end\n"
+        code << "end\n\n"
+        print "."
+      end
+
+      unless existing_macro?(:manage_restfully, controller_file) or existing_method?(:update, controller_file)
+        code << "def update\n"
+        code << find_and_check
+        code << "  respond_to do |format|\n"
+        code << "    if @#{model_name}.update_attributes(params[:#{model_name}])\n"
+        code << "      format.html { redirect_to @#{model_name} }\n"
+        code << "      format.json { head :no_content }\n"
+        code << "    else\n"
+        code << "      format.html { render :action => 'edit' }\n"
+        code << "      format.json { render :json => @#{model_name}.errors, :status => :unprocessable_entity }\n"
+        code << "    end\n"
+        code << "  end\n"
+        code << "end\n\n"
+        print "."
+      end
+
+      unless existing_macro?(:manage_restfully, controller_file) or existing_method?(:destroy, controller_file)
+        code << "def destroy\n"
+        code << find_and_check
+        code << "  @#{model_name}.destroy\n"
+        code << "  respond_to do |format|\n"
+        code << "    format.html { redirect_to #{controller_name}_url }\n"
+        code << "    format.json { head :no_content }\n"
+        code << "  end\n"
+        code << "end\n\n"
+        print "."
+      end
+
+
+
+
+      substitute("ACTIONS", controller_file, code, :after=> "#{controller_name.camelize}Controller\\s*<\\s*ApplicationController")
+      routes << "end\n"
+      print "."
+    else
+      print "?"
+    end
+
     views_dir = Rails.root.join("app", "views", controller_name)
     FileUtils.mkdir_p(views_dir)
     # Index
     File.open(views_dir.join("index.html.haml"), "wb:utf-8") do |f|
       f.write "-# #{preamble}\n"
       f.write "=toolbar do |t|\n"
-      f.write "  -t.new\n"
+      f.write "  -t.link :new\n"
       f.write "=list\n"
     end
     print "."
@@ -40,8 +295,14 @@ task :scaff => :environment do
         f.write "=fieldset :#{name} do\n"
         f.write "  =attributes_list do |l|\n"
         for attribute in attrs
-          f.write "    -l.attribute :#{attribute.name}\n"
+          f.write list_attribute_code(model, attribute).strip.gsub(/^/, '    ')+"\n"
         end
+      end
+      for has_many in has_manies
+        f.write("\n%h2=tg(:x_#{has_many.name}, :count => @#{model_name}.#{has_many.name}.count, :default => #{model_name.camelize}.human_attribute_name('#{has_many.name}'))\n")
+        f.write("=toolbar do |t|\n")
+        f.write("  -t.link :new, :controller => :#{has_many.class_name.tableize}, :#{has_many.foreign_key} => @#{model_name}.id\n")
+        f.write("=list(:#{has_many.name})\n")
       end
     end
     print "."
@@ -51,30 +312,42 @@ task :scaff => :environment do
       f.write "=simple_fields_for @#{model_name} do |f|\n"
       for name, attrs in form_attributes
         f.write "  =fieldset :#{name} do\n"
-        for attribute in attrs
-          validators = model.validators_on(attribute.name)
-          f.write "    =f."
-          if attribute.name.match(/\_id$/)
-            f.write "association :#{attribute.name[0..-4]}"
+        for attr in attrs
+          validators = model.validators_on(attr.name)
+          required = ((!attr.null or validators.detect{|v| v.is_a?(ActiveModel::Validations::PresenceValidator)}) ? ", :required => true" : "")
+          if attr.name.match(/\_id$/)
+            ref = model.reflections.values.select{|r| r.macro == :belongs_to and r.foreign_key.to_s == attr.name}[0]
+            raise Exception.new("belongs_to not found for #{model_name}##{attr.name}") if ref.nil?
+            collection = "#{model_name}_#{ref.class_name.tableize}"
+            # c = [:label, :name, :code, :number, :description, :comment, :id].detect{|c| model.new.respond_to?(c)}
+            f.write "    -#{collection} = #{ref.class_name}.all\n"
+            f.write "    -if #{collection}.count > 7\n"
+            f.write "      =f.association :#{ref.name}, :collection => #{collection}, :as => :select#{required}\n"
+            f.write "    -else\n"
+            f.write "      =f.association :#{ref.name}, :collection => #{collection}, :as => :radio_buttons#{required}\n"
           else
-            f.write "input :#{attribute.name}"
-            if attribute.type == :boolean
+            f.write "    =f.input :#{attr.name}#{required}"
+            if attr.type == :boolean
               f.write ", :collection => [['Oui', 1], ['Non', 0]], :as => :radio"
-            elsif attribute.name.match(/(^|\_)country$/)
+            elsif attr.name.match(/(^|\_)country$/)
               f.write ", :collection => countries, :as => :select"
-            elsif attribute.name.match(/(^|\_)language$/)
+            elsif attr.name.match(/(^|\_)language$/)
               f.write ", :collection => countries, :as => :select"
             end
+            if attr.type == :text
+              f.write ", :input_html => {:rows => 5, :cols => 60}"
+            end
+            f.write "\n"
           end
-          if !attribute.null or validators.detect{|v| v.is_a?(ActiveModel::Validations::PresenceValidator)}
-            f.write ", :required => true"
-          end
-          f.write "\n"
+
         end
       end
     end
     print "."
     # Finished
   end
-  puts ""
+
+  substitute("ROUTES", Rails.root.join("config", "routes.rb"), routes, :deepness => 1)
+
+  puts "!"
 end

@@ -10,3 +10,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_activities, :count => @sector.activities.count, :default => Sector.human_attribute_name('activities'))
+=toolbar do |t|
+  -t.link :new, :controller => :activities, :sector_id => @sector.id
+=list(:activities)

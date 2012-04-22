@@ -8,3 +8,9 @@
     -l.attribute :id
     -l.attribute :created_at
     -l.attribute :updated_at
+    -l.attribute :lock_version
+
+%h2=tg(:x_events, :count => @event_nature.events.count, :default => EventNature.human_attribute_name('events'))
+=toolbar do |t|
+  -t.link :new, :controller => :events, :event_nature_id => @event_nature.id
+=list(:events)

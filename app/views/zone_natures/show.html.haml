@@ -2,10 +2,20 @@
 =fieldset :general do
   =attributes_list do |l|
     -l.attribute :name
-    -l.attribute :parent_id
+    -l.attribute :parent, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_children, :count => @zone_nature.children.count, :default => ZoneNature.human_attribute_name('children'))
+=toolbar do |t|
+  -t.link :new, :controller => :zone_natures, :parent_id => @zone_nature.id
+=list(:children)
+
+%h2=tg(:x_groups, :count => @zone_nature.groups.count, :default => ZoneNature.human_attribute_name('groups'))
+=toolbar do |t|
+  -t.link :new, :controller => :groups, :zone_nature_id => @zone_nature.id
+=list(:groups)

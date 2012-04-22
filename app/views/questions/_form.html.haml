@@ -2,8 +2,12 @@
 =simple_fields_for @question do |f|
   =fieldset :general do
     =f.input :name, :required => true
-    =f.input :intro
-    =f.input :comment
+    =f.input :intro, :input_html => {:rows => 5, :cols => 60}
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}
     =f.input :started_on, :required => true
     =f.input :stopped_on, :required => true
-    =f.association :promotion, :required => true
+    -question_promotions = Promotion.all
+    -if question_promotions.count > 7
+      =f.association :promotion, :collection => question_promotions, :as => :select, :required => true
+    -else
+      =f.association :promotion, :collection => question_promotions, :as => :radio_buttons, :required => true

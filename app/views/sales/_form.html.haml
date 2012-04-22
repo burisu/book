@@ -3,8 +3,12 @@
   =fieldset :general do
     =f.input :number, :required => true
     =f.input :state, :required => true
-    =f.input :comment
-    =f.association :client
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}
+    -sale_people = Person.all
+    -if sale_people.count > 7
+      =f.association :client, :collection => sale_people, :as => :select
+    -else
+      =f.association :client, :collection => sale_people, :as => :radio_buttons
     =f.input :client_email, :required => true
     =f.input :amount, :required => true
     =f.input :created_on, :required => true

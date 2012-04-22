@@ -2,19 +2,19 @@
 =simple_fields_for @product do |f|
   =fieldset :general do
     =f.input :name, :required => true
-    =f.input :description
+    =f.input :description, :input_html => {:rows => 5, :cols => 60}
     =f.input :amount, :required => true
     =f.input :unit, :required => true
-    =f.input :deadlined, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
+    =f.input :deadlined, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
     =f.input :started_on
     =f.input :stopped_on
-    =f.input :storable, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
+    =f.input :storable, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
     =f.input :initial_quantity, :required => true
     =f.input :current_quantity, :required => true
-    =f.input :subscribing, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
+    =f.input :subscribing, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
     =f.input :subscribing_started_on
     =f.input :subscribing_stopped_on
-    =f.input :personal, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.input :active, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.input :passworded, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
+    =f.input :personal, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    =f.input :active, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    =f.input :passworded, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
     =f.input :password

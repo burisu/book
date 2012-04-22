@@ -2,15 +2,19 @@
 =simple_fields_for @image do |f|
   =fieldset :general do
     =f.input :title, :required => true
-    =f.input :title_h, :required => true
+    =f.input :title_h, :required => true, :input_html => {:rows => 5, :cols => 60}
     =f.input :desc
-    =f.input :desc_h
+    =f.input :desc_h, :input_html => {:rows => 5, :cols => 60}
     =f.input :document_file_name, :required => true
-    =f.association :person, :required => true
+    -image_people = Person.all
+    -if image_people.count > 7
+      =f.association :person, :collection => image_people, :as => :select, :required => true
+    -else
+      =f.association :person, :collection => image_people, :as => :radio_buttons, :required => true
     =f.input :name, :required => true
-    =f.input :locked, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.input :deleted, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.input :published, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
+    =f.input :locked, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    =f.input :deleted, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    =f.input :published, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
     =f.input :document_file_size
     =f.input :document_content_type
     =f.input :document_updated_at

@@ -24,3 +24,18 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_guests, :count => @product.guests.count, :default => Product.human_attribute_name('guests'))
+=toolbar do |t|
+  -t.link :new, :controller => :guests, :product_id => @product.id
+=list(:guests)
+
+%h2=tg(:x_sale_lines, :count => @product.sale_lines.count, :default => Product.human_attribute_name('sale_lines'))
+=toolbar do |t|
+  -t.link :new, :controller => :sale_lines, :product_id => @product.id
+=list(:sale_lines)
+
+%h2=tg(:x_order_lines, :count => @product.order_lines.count, :default => Product.human_attribute_name('order_lines'))
+=toolbar do |t|
+  -t.link :new, :controller => :sale_lines, :product_id => @product.id
+=list(:order_lines)

@@ -6,10 +6,20 @@
     -l.attribute :comment
     -l.attribute :started_on
     -l.attribute :stopped_on
-    -l.attribute :promotion_id
+    -l.attribute :promotion, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_answers, :count => @question.answers.count, :default => Question.human_attribute_name('answers'))
+=toolbar do |t|
+  -t.link :new, :controller => :answers, :question_id => @question.id
+=list(:answers)
+
+%h2=tg(:x_items, :count => @question.items.count, :default => Question.human_attribute_name('items'))
+=toolbar do |t|
+  -t.link :new, :controller => :question_items, :question_id => @question.id
+=list(:items)

@@ -3,7 +3,19 @@
   =fieldset :general do
     =f.input :begun_on, :required => true
     =f.input :finished_on, :required => true
-    =f.association :person, :required => true
+    -subscription_people = Person.all
+    -if subscription_people.count > 7
+      =f.association :person, :collection => subscription_people, :as => :select, :required => true
+    -else
+      =f.association :person, :collection => subscription_people, :as => :radio_buttons, :required => true
     =f.input :number
-    =f.association :sale
-    =f.association :sale_line
+    -subscription_sales = Sale.all
+    -if subscription_sales.count > 7
+      =f.association :sale, :collection => subscription_sales, :as => :select
+    -else
+      =f.association :sale, :collection => subscription_sales, :as => :radio_buttons
+    -subscription_sale_lines = SaleLine.all
+    -if subscription_sale_lines.count > 7
+      =f.association :sale_line, :collection => subscription_sale_lines, :as => :select
+    -else
+      =f.association :sale_line, :collection => subscription_sale_lines, :as => :radio_buttons

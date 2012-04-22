@@ -2,7 +2,15 @@
 =simple_fields_for @question_item do |f|
   =fieldset :general do
     =f.input :name, :required => true
-    =f.input :explanation
+    =f.input :explanation, :input_html => {:rows => 5, :cols => 60}
     =f.input :position
-    =f.association :question
-    =f.association :theme, :required => true
+    -question_item_questions = Question.all
+    -if question_item_questions.count > 7
+      =f.association :question, :collection => question_item_questions, :as => :select
+    -else
+      =f.association :question, :collection => question_item_questions, :as => :radio_buttons
+    -question_item_themes = Theme.all
+    -if question_item_themes.count > 7
+      =f.association :theme, :collection => question_item_themes, :as => :select, :required => true
+    -else
+      =f.association :theme, :collection => question_item_themes, :as => :radio_buttons, :required => true

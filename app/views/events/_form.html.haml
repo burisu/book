@@ -2,8 +2,13 @@
 =simple_fields_for @event do |f|
   =fieldset :general do
     =f.input :name
-    =f.input :place
-    =f.input :description
-    =f.input :comment
+    =f.input :place, :input_html => {:rows => 5, :cols => 60}
+    =f.input :description, :input_html => {:rows => 5, :cols => 60}
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}
     =f.input :started_at
     =f.input :stopped_at
+    -event_event_natures = EventNature.all
+    -if event_event_natures.count > 7
+      =f.association :nature, :collection => event_event_natures, :as => :select, :required => true
+    -else
+      =f.association :nature, :collection => event_event_natures, :as => :radio_buttons, :required => true

@@ -10,3 +10,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_honours, :count => @honour_nature.honours.count, :default => HonourNature.human_attribute_name('honours'))
+=toolbar do |t|
+  -t.link :new, :controller => :honours, :honour_nature_id => @honour_nature.id
+=list(:honours)

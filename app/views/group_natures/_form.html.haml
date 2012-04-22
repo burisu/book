@@ -2,5 +2,13 @@
 =simple_fields_for @group_nature do |f|
   =fieldset :general do
     =f.input :name
-    =f.association :organization
-    =f.association :zone_nature
+    -group_nature_organizations = Organization.all
+    -if group_nature_organizations.count > 7
+      =f.association :organization, :collection => group_nature_organizations, :as => :select
+    -else
+      =f.association :organization, :collection => group_nature_organizations, :as => :radio_buttons
+    -group_nature_zone_natures = ZoneNature.all
+    -if group_nature_zone_natures.count > 7
+      =f.association :zone_nature, :collection => group_nature_zone_natures, :as => :select
+    -else
+      =f.association :zone_nature, :collection => group_nature_zone_natures, :as => :radio_buttons

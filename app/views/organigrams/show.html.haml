@@ -10,3 +10,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_professions, :count => @organigram.professions.count, :default => Organigram.human_attribute_name('professions'))
+=toolbar do |t|
+  -t.link :new, :controller => :organigram_professions, :organigram_id => @organigram.id
+=list(:professions)

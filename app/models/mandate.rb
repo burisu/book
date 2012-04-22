@@ -39,15 +39,14 @@ class Mandate < ActiveRecord::Base
   belongs_to :nature, :class_name=>"MandateNature"
   belongs_to :person
   belongs_to :group
-  belongs_to :zone
   validates_presence_of :group, :nature, :person
 
   validate do
-    if self.nature and self.zone
+    if self.nature and self.group
       if self.nature.zone_nature_id.nil?
-        errors.add(:zone_id, "ne doit pas être renseigné") unless self.zone.nature_id.nil?
-      elsif self.zone.nature_id != self.nature.zone_nature_id
-        errors.add(:zone_id, "doit être du type #{self.nature.zone_nature.inspect}")
+        errors.add(:group_id, "ne doit pas être renseigné") unless self.group.nature_id.nil?
+      elsif self.group.nature_id != self.nature.zone_nature_id
+        errors.add(:group_id, "doit être du type #{self.nature.zone_nature.inspect}")
       end
     end
   end

@@ -100,14 +100,13 @@ class Person < ActiveRecord::Base
   has_many :subscriptions
   has_many :orders, :class_name=>"Sale", :conditions=>{:state=>'C'}
   has_many :mandates
-  has_many :versions, :class_name=>"PersonVersion", :dependent=>:delete_all
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password
   validates_format_of :user_name, :with=>/[a-z0-9\_]{4,32}/
   validates_length_of :user_name, :in=>4..32
   validates_uniqueness_of :email, :user_name  #, :if=>Proc.new {|p| !p.system }
-  validates_presence_of :proposer_zone_id, :sponsor_zone_id, :if=>Proc.new{|x| !x.started_on.nil?}
-  validates_presence_of :host_zone_id, :if=>Proc.new{|x| !x.stopped_on.nil?}
+  validates_presence_of :proposer_zone, :sponsor_zone, :if=>Proc.new{|x| !x.started_on.nil?}
+  validates_presence_of :host_zone, :if=>Proc.new{|x| !x.stopped_on.nil?}
 
   before_validation do
     # self.user_name = self.user_name.lower.gsub(/\W+/, '')
@@ -214,8 +213,8 @@ class Person < ActiveRecord::Base
     self.mandates.find(:first, :joins=>"JOIN mandate_natures mn ON (mn.id=nature_id)", :conditions=>["(dont_expire OR ? BETWEEN begun_on AND COALESCE(finished_on, CURRENT_DATE)) AND code=?", active_on, nature], :order=>:begun_on)
   end
   
-  def questionnaires
-    Questionnaire.find(:all, :conditions=>["id IN (SELECT questionnaire_id FROM answers WHERE person_id=?) OR (CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL) AND promotion_id=?)", self.id, self.promotion_id])
+  def questions
+    Question.find(:all, :conditions=>["id IN (SELECT question_id FROM answers WHERE person_id=?) OR (CURRENT_DATE BETWEEN COALESCE(started_on, CURRENT_DATE+'1 day'::INTERVAL) AND COALESCE(stopped_on, CURRENT_DATE+'1 day'::INTERVAL) AND promotion_id=?)", self.id, self.promotion_id])
   end
 
 
@@ -323,8 +322,8 @@ class Person < ActiveRecord::Base
     "À l'écriture"
   end
   
-  def state_for(questionnaire_id)
-    if answer = Answer.find_by_questionnaire_id_and_person_id(questionnaire_id, self.id)
+  def state_for(question_id)
+    if answer = Answer.find_by_question_id_and_person_id(question_id, self.id)
       return answer.status.to_sym
     else
       return :empty

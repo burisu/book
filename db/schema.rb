@@ -82,9 +82,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
   create_table "articles_mandate_natures", :id => false, :force => true do |t|
     t.integer  "article_id"
     t.integer  "mandate_nature_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "lock_version",      :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",      :default => 0
   end
 
   create_table "audits", :force => true do |t|
@@ -115,9 +115,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.integer  "home_rubric_id"
     t.integer  "news_rubric_id"
     t.integer  "agenda_rubric_id"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
-    t.integer  "lock_version",                        :default => 0,   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                        :default => 0
     t.decimal  "subscription_price",                  :default => 0.0, :null => false
     t.text     "store_introduction"
     t.integer  "help_article_id"
@@ -145,6 +145,11 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.datetime "updated_at",                  :null => false
     t.integer  "lock_version", :default => 0, :null => false
     t.integer  "nature_id",                   :null => false
+  end
+
+  create_table "extra_emails", :id => false, :force => true do |t|
+    t.string "email_liste"
+    t.string "email"
   end
 
   create_table "group_intervention_natures", :force => true do |t|
@@ -234,9 +239,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.string   "email"
     t.integer  "zone_id"
     t.text     "annotation"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
-    t.integer  "lock_version", :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version", :default => 0
   end
 
   add_index "guests", ["product_id"], :name => "index_guests_on_product_id"
@@ -543,9 +548,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.date     "subscribing_started_on"
     t.date     "subscribing_stopped_on"
     t.boolean  "personal",                                              :default => false,    :null => false
-    t.datetime "created_at",                                                                  :null => false
-    t.datetime "updated_at",                                                                  :null => false
-    t.integer  "lock_version",                                          :default => 0,        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                          :default => 0
     t.boolean  "active",                                                :default => false,    :null => false
     t.boolean  "passworded",                                            :default => false,    :null => false
     t.string   "password"
@@ -593,6 +598,11 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
   add_index "questions", ["started_on"], :name => "index_questionnaires_on_started_on"
   add_index "questions", ["stopped_on"], :name => "index_questionnaires_on_stopped_on"
 
+  create_table "redirection_virtuals", :id => false, :force => true do |t|
+    t.string "virtual_email"
+    t.string "email"
+  end
+
   create_table "rubrics", :force => true do |t|
     t.string   "name",                         :null => false
     t.string   "code",                         :null => false
@@ -600,9 +610,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.text     "description"
     t.integer  "parent_id"
     t.integer  "rubrics_count", :default => 0, :null => false
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.integer  "lock_version",  :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",  :default => 0
   end
 
   add_index "rubrics", ["parent_id"], :name => "index_rubrics_on_parent_id"
@@ -615,9 +625,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.decimal  "unit_amount",  :precision => 16, :scale => 2, :default => 0.0, :null => false
     t.decimal  "quantity",     :precision => 16, :scale => 2, :default => 0.0, :null => false
     t.decimal  "amount",       :precision => 16, :scale => 2, :default => 0.0, :null => false
-    t.datetime "created_at",                                                   :null => false
-    t.datetime "updated_at",                                                   :null => false
-    t.integer  "lock_version",                                :default => 0,   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                :default => 0
   end
 
   add_index "sale_lines", ["product_id"], :name => "index_sale_lines_on_product_id"
@@ -631,9 +641,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.string   "client_email",                                                            :null => false
     t.decimal  "amount",               :precision => 16, :scale => 2
     t.date     "created_on",                                                              :null => false
-    t.datetime "created_at",                                                              :null => false
-    t.datetime "updated_at",                                                              :null => false
-    t.integer  "lock_version",                                        :default => 0,      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",                                        :default => 0
     t.string   "sequential_number"
     t.string   "authorization_number"
     t.string   "payment_type"
@@ -688,9 +698,9 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
     t.string   "name",                                :null => false
     t.string   "color",        :default => "#808080", :null => false
     t.text     "comment"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.integer  "lock_version", :default => 0,         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version", :default => 0
   end
 
   create_table "zone_natures", :force => true do |t|

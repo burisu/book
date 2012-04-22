@@ -28,31 +28,38 @@ class ApplicationController < ActionController::Base
     return false
   end
  
-
-
   protected
 
-
-  def self.search_conditions(model_name, columns)
-    model = model_name.to_s.classify.constantize
-    columns = [columns] if [String, Symbol].include? columns.class 
-    columns = columns.collect{|k,v| v.collect{|x| "#{k}.#{x}"}} if columns.is_a? Hash
-    columns.flatten!
-    raise Exception.new("Bad columns: "+columns.inspect) unless columns.is_a? Array
-    code = ""
-    code+="c=['true']\n"
-    code+="session[:#{model.name.underscore}_key].to_s.lower.split(/\\s+/).each{|kw| kw='%'+kw+'%';"
-    # This line is incompatible with MySQL...
-    # code+="c[0]+=' AND (#{columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS TEXT)) LIKE ?'}.join(' OR ')})';c+=[#{(['kw']*columns.size).join(',')}]}\n"
-    if ActiveRecord::Base.connection.adapter_name == "MySQL"
-      code+="c[0]+=' AND ("+columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS CHAR)) LIKE ?'}.join(' OR ')+")';\n"
-    else
-      code+="c[0]+=' AND ("+columns.collect{|x| 'LOWER(CAST('+x.to_s+' AS VARCHAR)) LIKE ?'}.join(' OR ')+")';\n"
+  def self.light_search_conditions(search={}, options={})
+    conditions = options[:conditions] || 'c'
+    options[:except] ||= []
+    options[:filters] ||= {}
+    variable ||= options[:variable] || "params[:q]"
+    tables = search.keys.select{|t| !options[:except].include? t}
+    # code = "\n#{conditions} = ['"+tables.collect{|t| "#{ActiveRecord::Base.connection.quote_table_name(t.is_a?(Symbol) ? t.to_s.classify.constantize.table_name : t)}.company_id=?"}.join(' AND ')+"'"+", @current_company.id"*tables.size+"]\n"
+    code = "\n#{conditions} = ['']\n"
+    columns = search.collect{|t, cs| cs.collect{|c| "#{ActiveRecord::Base.connection.quote_table_name(t.is_a?(Symbol) ? t.to_s.classify.constantize.table_name : t)}.#{ActiveRecord::Base.connection.quote_column_name(c)}"}}.flatten
+    code += "for kw in #{variable}.to_s.lower.split(/\\s+/)\n"
+    code += "  kw = '%'+kw+'%'\n"
+    filters = columns.collect do |x| 
+      # This line is incompatible with MySQL...
+      if ActiveRecord::Base.connection.adapter_name.match(/^mysql/i)
+        'LOWER(CAST('+x.to_s+' AS CHAR)) LIKE ?'
+      else
+        'LOWER(CAST('+x.to_s+' AS VARCHAR)) LIKE ?'
+      end
     end
-    code+="c+=[#{(['kw']*columns.size).join(',')}]"
-    code+="}\n"
-    code+="c"
-    code
+    values = '['+(['kw']*columns.size).join(', ')+']'
+    for k, v in options[:filters]
+      filters << k
+      v = '['+v.join(', ')+']' if v.is_a? Array
+      values += "+"+v
+    end
+    code += "  #{conditions}[0] += ' AND (#{filters.join(' OR ')})'\n"
+    code += "  #{conditions} += #{values}\n"
+    code += "end\n"
+    code += "#{conditions}"
+    return code
   end
 
 

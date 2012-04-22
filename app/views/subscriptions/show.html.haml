@@ -3,10 +3,10 @@
   =attributes_list do |l|
     -l.attribute :begun_on
     -l.attribute :finished_on
-    -l.attribute :person_id
+    -l.attribute :person, :label => :label, :url => true
     -l.attribute :number
-    -l.attribute :sale_id
-    -l.attribute :sale_line_id
+    -l.attribute :sale, :label => :number, :url => true
+    -l.attribute :sale_line, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id

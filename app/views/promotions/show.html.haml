@@ -10,3 +10,13 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_people, :count => @promotion.people.count, :default => Promotion.human_attribute_name('people'))
+=toolbar do |t|
+  -t.link :new, :controller => :people, :promotion_id => @promotion.id
+=list(:people)
+
+%h2=tg(:x_questions, :count => @promotion.questions.count, :default => Promotion.human_attribute_name('questions'))
+=toolbar do |t|
+  -t.link :new, :controller => :questions, :promotion_id => @promotion.id
+=list(:questions)

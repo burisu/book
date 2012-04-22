@@ -8,8 +8,8 @@
     -l.attribute :bad_natures
     -l.attribute :status
     -l.attribute :document
-    -l.attribute :author_id
-    -l.attribute :rubric_id
+    -l.attribute :author, :label => :label, :url => true
+    -l.attribute :rubric, :label => :name, :url => true
     -l.attribute :language
 =fieldset :meta do
   =attributes_list do |l|

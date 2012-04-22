@@ -3,7 +3,14 @@
   =fieldset :general do
     =f.input :name, :required => true
     =f.input :number, :required => true
-    =f.input :code, :required => true
-    =f.association :zone_nature
-    =f.association :parent
+    -group_zone_natures = ZoneNature.all
+    -if group_zone_natures.count > 7
+      =f.association :zone_nature, :collection => group_zone_natures, :as => :select
+    -else
+      =f.association :zone_nature, :collection => group_zone_natures, :as => :radio_buttons
+    -group_groups = Group.all
+    -if group_groups.count > 7
+      =f.association :parent, :collection => group_groups, :as => :select
+    -else
+      =f.association :parent, :collection => group_groups, :as => :radio_buttons
     =f.input :country, :collection => countries, :as => :select

@@ -2,4 +2,8 @@
 =simple_fields_for @zone_nature do |f|
   =fieldset :general do
     =f.input :name, :required => true
-    =f.association :parent
+    -zone_nature_zone_natures = ZoneNature.all
+    -if zone_nature_zone_natures.count > 7
+      =f.association :parent, :collection => zone_nature_zone_natures, :as => :select
+    -else
+      =f.association :parent, :collection => zone_nature_zone_natures, :as => :radio_buttons

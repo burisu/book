@@ -2,7 +2,15 @@
 =simple_fields_for @answer do |f|
   =fieldset :general do
     =f.input :created_on
-    =f.input :ready, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.input :locked, :collection => [['Oui', 1], ['Non', 0]], :as => :radio, :required => true
-    =f.association :person, :required => true
-    =f.association :question, :required => true
+    =f.input :ready, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    =f.input :locked, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio
+    -answer_people = Person.all
+    -if answer_people.count > 7
+      =f.association :person, :collection => answer_people, :as => :select, :required => true
+    -else
+      =f.association :person, :collection => answer_people, :as => :radio_buttons, :required => true
+    -answer_questions = Question.all
+    -if answer_questions.count > 7
+      =f.association :question, :collection => answer_questions, :as => :select, :required => true
+    -else
+      =f.association :question, :collection => answer_questions, :as => :radio_buttons, :required => true

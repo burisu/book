@@ -3,11 +3,19 @@
   =fieldset :general do
     =f.input :title, :required => true
     =f.input :intro, :required => true
-    =f.input :body, :required => true
+    =f.input :body, :required => true, :input_html => {:rows => 5, :cols => 60}
     =f.input :done_on
-    =f.input :bad_natures
+    =f.input :bad_natures, :input_html => {:rows => 5, :cols => 60}
     =f.input :status, :required => true
     =f.input :document
-    =f.association :author, :required => true
-    =f.association :rubric, :required => true
+    -article_people = Person.all
+    -if article_people.count > 7
+      =f.association :author, :collection => article_people, :as => :select, :required => true
+    -else
+      =f.association :author, :collection => article_people, :as => :radio_buttons, :required => true
+    -article_rubrics = Rubric.all
+    -if article_rubrics.count > 7
+      =f.association :rubric, :collection => article_rubrics, :as => :select, :required => true
+    -else
+      =f.association :rubric, :collection => article_rubrics, :as => :radio_buttons, :required => true
     =f.input :language, :collection => countries, :as => :select

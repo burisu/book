@@ -2,5 +2,5 @@
 =simple_fields_for @group_intervention_nature do |f|
   =fieldset :general do
     =f.input :name
-    =f.input :description
-    =f.input :comment
+    =f.input :description, :input_html => {:rows => 5, :cols => 60}
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}

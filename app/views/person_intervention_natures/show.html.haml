@@ -10,3 +10,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_person_interventions, :count => @person_intervention_nature.person_interventions.count, :default => PersonInterventionNature.human_attribute_name('person_interventions'))
+=toolbar do |t|
+  -t.link :new, :controller => :person_interventions, :nature_id => @person_intervention_nature.id
+=list(:person_interventions)

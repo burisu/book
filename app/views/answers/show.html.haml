@@ -4,11 +4,16 @@
     -l.attribute :created_on
     -l.attribute :ready
     -l.attribute :locked
-    -l.attribute :person_id
-    -l.attribute :question_id
+    -l.attribute :person, :label => :label, :url => true
+    -l.attribute :question, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_items, :count => @answer.items.count, :default => Answer.human_attribute_name('items'))
+=toolbar do |t|
+  -t.link :new, :controller => :answer_items, :answer_id => @answer.id
+=list(:items)

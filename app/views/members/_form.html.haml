@@ -10,6 +10,10 @@
     =f.input :phone
     =f.input :fax
     =f.input :mobile
-    =f.input :comment
-    =f.association :person, :required => true
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}
+    -member_people = Person.all
+    -if member_people.count > 7
+      =f.association :person, :collection => member_people, :as => :select, :required => true
+    -else
+      =f.association :person, :collection => member_people, :as => :radio_buttons, :required => true
     =f.input :email

@@ -2,5 +2,9 @@
 =simple_fields_for @mandate_nature do |f|
   =fieldset :general do
     =f.input :name, :required => true
-    =f.input :rights
-    =f.association :group_nature
+    =f.input :rights, :input_html => {:rows => 5, :cols => 60}
+    -mandate_nature_group_natures = GroupNature.all
+    -if mandate_nature_group_natures.count > 7
+      =f.association :group_nature, :collection => mandate_nature_group_natures, :as => :select
+    -else
+      =f.association :group_nature, :collection => mandate_nature_group_natures, :as => :radio_buttons

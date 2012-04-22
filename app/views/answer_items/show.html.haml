@@ -2,8 +2,8 @@
 =fieldset :general do
   =attributes_list do |l|
     -l.attribute :content
-    -l.attribute :answer_id
-    -l.attribute :question_item_id
+    -l.attribute :answer, :label => :id, :url => true
+    -l.attribute :question_item, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id

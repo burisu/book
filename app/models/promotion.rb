@@ -32,7 +32,7 @@
 # encoding: utf-8
 class Promotion < ActiveRecord::Base
   has_many :people
-  has_many :questionnaires
+  has_many :questions
   
   def code
     self.name.gsub(/\s+/,'')

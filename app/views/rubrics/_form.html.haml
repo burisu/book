@@ -4,6 +4,10 @@
     =f.input :name, :required => true
     =f.input :code, :required => true
     =f.input :logo
-    =f.input :description
-    =f.association :parent
+    =f.input :description, :input_html => {:rows => 5, :cols => 60}
+    -rubric_rubrics = Rubric.all
+    -if rubric_rubrics.count > 7
+      =f.association :parent, :collection => rubric_rubrics, :as => :select
+    -else
+      =f.association :parent, :collection => rubric_rubrics, :as => :radio_buttons
     =f.input :rubrics_count, :required => true

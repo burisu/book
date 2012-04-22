@@ -39,7 +39,7 @@ class Guest < ActiveRecord::Base
   belongs_to :product
   belongs_to :sale
   belongs_to :sale_line
-  belongs_to :zone
+  belongs_to :zone, :class_name => "Group"
 
   before_validation do
     if self.sale_line

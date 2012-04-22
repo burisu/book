@@ -3,10 +3,15 @@
   =attributes_list do |l|
     -l.attribute :name
     -l.attribute :rights
-    -l.attribute :group_nature_id
+    -l.attribute :group_nature, :label => :name, :url => true
 =fieldset :meta do
   =attributes_list do |l|
     -l.attribute :id
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_mandate, :count => @mandate_nature.mandate.count, :default => MandateNature.human_attribute_name('mandate'))
+=toolbar do |t|
+  -t.link :new, :controller => :mandates, :mandate_nature_id => @mandate_nature.id
+=list(:mandate)

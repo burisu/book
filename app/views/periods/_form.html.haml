@@ -3,8 +3,12 @@
   =fieldset :general do
     =f.input :begun_on, :required => true
     =f.input :finished_on, :required => true
-    =f.association :person, :required => true
-    =f.input :comment
+    -period_people = Person.all
+    -if period_people.count > 7
+      =f.association :person, :collection => period_people, :as => :select, :required => true
+    -else
+      =f.association :person, :collection => period_people, :as => :radio_buttons, :required => true
+    =f.input :comment, :input_html => {:rows => 5, :cols => 60}
     =f.input :family_name, :required => true
     =f.input :address, :required => true
     =f.input :latitude

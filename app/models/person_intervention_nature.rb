@@ -32,5 +32,5 @@
 
 # encoding: utf-8
 class PersonInterventionNature < ActiveRecord::Base
-  has_many :person_interventions
+  has_many :person_interventions, :foreign_key => :nature_id
 end

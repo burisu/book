@@ -5,7 +5,7 @@
     -l.attribute :code
     -l.attribute :logo
     -l.attribute :description
-    -l.attribute :parent_id
+    -l.attribute :parent, :label => :name, :url => true
     -l.attribute :rubrics_count
 =fieldset :meta do
   =attributes_list do |l|
@@ -13,3 +13,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_articles, :count => @rubric.articles.count, :default => Rubric.human_attribute_name('articles'))
+=toolbar do |t|
+  -t.link :new, :controller => :articles, :rubric_id => @rubric.id
+=list(:articles)

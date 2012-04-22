@@ -98,6 +98,7 @@ class NormalizeAndRotarize < ActiveRecord::Migration
     create_table :organigram_professions do |t|
       t.belongs_to :organigram
       t.string :name
+      t.string :code
       t.boolean :printed, :null=>false, :default=>false
       t.timestamps
       t.integer :lock_version, :null=>false, :default=>0
@@ -109,6 +110,7 @@ class NormalizeAndRotarize < ActiveRecord::Migration
 
     create_table :honour_natures do |t|
       t.string :name
+      t.string :code
       t.text :description
       t.text :comment
       t.timestamps
@@ -118,6 +120,7 @@ class NormalizeAndRotarize < ActiveRecord::Migration
     create_table :honours do |t|
       t.belongs_to :nature
       t.string :name
+      t.string :code
       t.string :abbreviation
       t.integer :position
       t.timestamps

@@ -4,7 +4,7 @@
     -l.attribute :number
     -l.attribute :state
     -l.attribute :comment
-    -l.attribute :client_id
+    -l.attribute :client, :label => :label, :url => true
     -l.attribute :client_email
     -l.attribute :amount
     -l.attribute :created_on
@@ -27,3 +27,23 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_guests, :count => @sale.guests.count, :default => Sale.human_attribute_name('guests'))
+=toolbar do |t|
+  -t.link :new, :controller => :guests, :sale_id => @sale.id
+=list(:guests)
+
+%h2=tg(:x_lines, :count => @sale.lines.count, :default => Sale.human_attribute_name('lines'))
+=toolbar do |t|
+  -t.link :new, :controller => :sale_lines, :sale_id => @sale.id
+=list(:lines)
+
+%h2=tg(:x_passworded_lines, :count => @sale.passworded_lines.count, :default => Sale.human_attribute_name('passworded_lines'))
+=toolbar do |t|
+  -t.link :new, :controller => :sale_lines, :sale_id => @sale.id
+=list(:passworded_lines)
+
+%h2=tg(:x_subscriptions, :count => @sale.subscriptions.count, :default => Sale.human_attribute_name('subscriptions'))
+=toolbar do |t|
+  -t.link :new, :controller => :subscriptions, :sale_id => @sale.id
+=list(:subscriptions)

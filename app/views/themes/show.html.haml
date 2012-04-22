@@ -10,3 +10,8 @@
     -l.attribute :created_at
     -l.attribute :updated_at
     -l.attribute :lock_version
+
+%h2=tg(:x_questions, :count => @theme.questions.count, :default => Theme.human_attribute_name('questions'))
+=toolbar do |t|
+  -t.link :new, :controller => :questions, :theme_id => @theme.id
+=list(:questions)
