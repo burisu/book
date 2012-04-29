@@ -2,25 +2,12 @@
 class SalesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all sales
-  list :conditions => light_search_conditions(:sales => [:number, :state, :comment, :client_id, :client_email, :amount, :created_on, :sequential_number, :authorization_number, :payment_type, :card_type, :transaction_number, :country, :error_code, :card_expired_on, :payer_country, :signature, :bin6, :payment_mode, :payment_number]) do |t|
+  list(:conditions => light_search_conditions(:sales => [:number, :comment, :client_id, :client_email, :amount, :payment_mode, :payment_number])) do |t|
     t.column :number, :url => true
-    t.column :state
     t.column :comment
     t.column :label, :through => :client, :url => true
     t.column :client_email
     t.column :amount
-    t.column :created_on
-    t.column :sequential_number
-    t.column :authorization_number
-    t.column :payment_type
-    t.column :card_type
-    t.column :transaction_number
-    t.column :country
-    t.column :error_code
-    t.column :card_expired_on
-    t.column :payer_country
-    t.column :signature
-    t.column :bin6
     t.column :payment_mode
     t.column :payment_number
     t.action :edit
@@ -39,8 +26,8 @@ class SalesController < ApplicationController
     t.column :email
     t.column :name, :through => :zone, :url => true
     t.column :annotation
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   # List all lines of one sale
@@ -51,8 +38,8 @@ class SalesController < ApplicationController
     t.column :unit_amount
     t.column :quantity
     t.column :amount
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   # List all passworded_lines of one sale
@@ -63,8 +50,8 @@ class SalesController < ApplicationController
     t.column :unit_amount
     t.column :quantity
     t.column :amount
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   # List all subscriptions of one sale
@@ -74,8 +61,8 @@ class SalesController < ApplicationController
     t.column :label, :through => :person, :url => true
     t.column :number, :url => true
     t.column :name, :through => :sale_line, :url => true
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -84,7 +71,7 @@ class SalesController < ApplicationController
   end
   
   def new
-    @sale = Sale.new
+    @sale = Sale.new(:client_id => params[:client_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @sale }
@@ -96,7 +83,7 @@ class SalesController < ApplicationController
     @sale = Sale.new(params[:sale])
     respond_to do |format|
       if @sale.save
-        format.html { redirect_to @sale }
+        format.html { redirect_to (params[:redirect] || @sale) }
         format.json { render json => @sale, :status => :created, :location => @sale }
       else
         format.html { render :action => 'new' }
@@ -116,7 +103,7 @@ class SalesController < ApplicationController
     @sale = Sale.find(params[:id])
     respond_to do |format|
       if @sale.update_attributes(params[:sale])
-        format.html { redirect_to @sale }
+        format.html { redirect_to (params[:redirect] || @sale) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -129,7 +116,7 @@ class SalesController < ApplicationController
     @sale = Sale.find(params[:id])
     @sale.destroy
     respond_to do |format|
-      format.html { redirect_to sales_url }
+      format.html { redirect_to (params[:redirect] || sales_url) }
       format.json { head :no_content }
     end
   end

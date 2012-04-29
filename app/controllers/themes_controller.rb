@@ -2,7 +2,7 @@
 class ThemesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all themes
-  list :conditions => light_search_conditions(:themes => [:name, :color, :comment]) do |t|
+  list(:conditions => light_search_conditions(:themes => [:name, :color, :comment])) do |t|
     t.column :name, :url => true
     t.column :color
     t.column :comment
@@ -21,8 +21,8 @@ class ThemesController < ApplicationController
     t.column :started_on
     t.column :stopped_on
     t.column :name, :through => :promotion, :url => true
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -31,7 +31,7 @@ class ThemesController < ApplicationController
   end
   
   def new
-    @theme = Theme.new
+    @theme = Theme.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @theme }
@@ -43,7 +43,7 @@ class ThemesController < ApplicationController
     @theme = Theme.new(params[:theme])
     respond_to do |format|
       if @theme.save
-        format.html { redirect_to @theme }
+        format.html { redirect_to (params[:redirect] || @theme) }
         format.json { render json => @theme, :status => :created, :location => @theme }
       else
         format.html { render :action => 'new' }
@@ -63,7 +63,7 @@ class ThemesController < ApplicationController
     @theme = Theme.find(params[:id])
     respond_to do |format|
       if @theme.update_attributes(params[:theme])
-        format.html { redirect_to @theme }
+        format.html { redirect_to (params[:redirect] || @theme) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -76,7 +76,7 @@ class ThemesController < ApplicationController
     @theme = Theme.find(params[:id])
     @theme.destroy
     respond_to do |format|
-      format.html { redirect_to themes_url }
+      format.html { redirect_to (params[:redirect] || themes_url) }
       format.json { head :no_content }
     end
   end

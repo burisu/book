@@ -1,4 +1,5 @@
 .fields.flex
-  =hidden_field_tag(:redirect, params[:redirect]||back_url)
+  -if !params[:redirect].blank? # and params[:redirect].to_s != 'back'
+    =hidden_field_tag(:redirect, params[:redirect])
   =render :partial=>partial
   .end

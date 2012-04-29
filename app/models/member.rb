@@ -42,6 +42,7 @@
 class Member < ActiveRecord::Base
   belongs_to :person
   has_and_belongs_to_many :periods
+  depends_on :person
 
   def name
     self.first_name+' '+self.last_name

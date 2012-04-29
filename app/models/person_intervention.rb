@@ -40,4 +40,5 @@ class PersonIntervention < ActiveRecord::Base
   belongs_to :group_intervention
   belongs_to :nature, :class_name => "PersonInterventionNature"
   belongs_to :person
+  depends_on :event
 end

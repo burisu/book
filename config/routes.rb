@@ -63,7 +63,7 @@ Book::Application.routes.draw do
   end
   resources :mandate_natures do
     get :list, :on => :collection
-    get :list_mandate, :on => :collection
+    get :list_mandates, :on => :collection
   end
   resources :members do
     get :list, :on => :collection
@@ -82,6 +82,17 @@ Book::Application.routes.draw do
   end
   resources :periods do
     get :list, :on => :collection
+  end
+  resources :people do
+    get :list, :on => :collection
+    get :list_answers, :on => :collection
+    get :list_articles, :on => :collection
+    get :list_images, :on => :collection
+    get :list_members, :on => :collection
+    get :list_periods, :on => :collection
+    get :list_sales, :on => :collection
+    get :list_subscriptions, :on => :collection
+    get :list_mandates, :on => :collection
   end
   resources :person_contacts do
     get :list, :on => :collection

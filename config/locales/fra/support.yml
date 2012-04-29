@@ -275,6 +275,7 @@ fra:
     account: Compte
     cancel: Annuler
     create: Créer
+    general: Général
     identity: Identité
     update: Modifier
     x_articles_of_author:

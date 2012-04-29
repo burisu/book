@@ -2,8 +2,9 @@
 class HonourNaturesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all honour_natures
-  list :conditions => light_search_conditions(:honour_natures => [:name, :description, :comment]) do |t|
+  list(:conditions => light_search_conditions(:honour_natures => [:name, :code, :description, :comment])) do |t|
     t.column :name, :url => true
+    t.column :code
     t.column :description
     t.column :comment
     t.action :edit
@@ -17,10 +18,11 @@ class HonourNaturesController < ApplicationController
   list(:honours, :conditions => ['honour_nature_id = ?', ['session[:current_honour_nature_id]']]) do |t|
     t.column :name, :through => :nature, :url => true
     t.column :name, :url => true
+    t.column :code
     t.column :abbreviation
     t.column :position
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -29,7 +31,7 @@ class HonourNaturesController < ApplicationController
   end
   
   def new
-    @honour_nature = HonourNature.new
+    @honour_nature = HonourNature.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @honour_nature }
@@ -41,7 +43,7 @@ class HonourNaturesController < ApplicationController
     @honour_nature = HonourNature.new(params[:honour_nature])
     respond_to do |format|
       if @honour_nature.save
-        format.html { redirect_to @honour_nature }
+        format.html { redirect_to (params[:redirect] || @honour_nature) }
         format.json { render json => @honour_nature, :status => :created, :location => @honour_nature }
       else
         format.html { render :action => 'new' }
@@ -61,7 +63,7 @@ class HonourNaturesController < ApplicationController
     @honour_nature = HonourNature.find(params[:id])
     respond_to do |format|
       if @honour_nature.update_attributes(params[:honour_nature])
-        format.html { redirect_to @honour_nature }
+        format.html { redirect_to (params[:redirect] || @honour_nature) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -74,7 +76,7 @@ class HonourNaturesController < ApplicationController
     @honour_nature = HonourNature.find(params[:id])
     @honour_nature.destroy
     respond_to do |format|
-      format.html { redirect_to honour_natures_url }
+      format.html { redirect_to (params[:redirect] || honour_natures_url) }
       format.json { head :no_content }
     end
   end

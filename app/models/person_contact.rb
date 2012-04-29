@@ -44,4 +44,5 @@ class PersonContact < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :nature, :class_name => "PersonContactNature"
   belongs_to :person
+  depends_on :person
 end

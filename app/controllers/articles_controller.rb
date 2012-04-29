@@ -2,7 +2,7 @@
 class ArticlesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all articles
-  list :conditions => light_search_conditions(:articles => [:title, :intro, :body, :done_on, :bad_natures, :status, :document, :author_id, :rubric_id, :language]) do |t|
+  list(:conditions => light_search_conditions(:articles => [:title, :intro, :body, :done_on, :bad_natures, :status, :document, :author_id, :rubric_id, :language])) do |t|
     t.column :title
     t.column :intro
     t.column :body
@@ -26,7 +26,7 @@ class ArticlesController < ApplicationController
   end
   
   def new
-    @article = Article.new
+    @article = Article.new(:author_id => params[:author_id].to_i, :rubric_id => params[:rubric_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @article }
@@ -38,7 +38,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(params[:article])
     respond_to do |format|
       if @article.save
-        format.html { redirect_to @article }
+        format.html { redirect_to (params[:redirect] || @article) }
         format.json { render json => @article, :status => :created, :location => @article }
       else
         format.html { render :action => 'new' }
@@ -58,7 +58,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     respond_to do |format|
       if @article.update_attributes(params[:article])
-        format.html { redirect_to @article }
+        format.html { redirect_to (params[:redirect] || @article) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -71,7 +71,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @article.destroy
     respond_to do |format|
-      format.html { redirect_to articles_url }
+      format.html { redirect_to (params[:redirect] || articles_url) }
       format.json { head :no_content }
     end
   end

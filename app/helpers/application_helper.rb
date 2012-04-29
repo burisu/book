@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ApplicationHelper
   # Fournit la liste des pays
   def countries
@@ -9,6 +10,8 @@ module ApplicationHelper
   end
 
   def page_title
+    return content_tag(:h1, I18n.translate("actions.#{controller_name}.#{action_name}"), :id=>:title)
+    
     if @title
       return content_tag(:h1, @title, :id=>:title)
     end
@@ -38,7 +41,150 @@ module ApplicationHelper
     "buttons/#{name}.png"
   end
 
+
+
+
+
+
+
+
+
+  def attribute_item(object, attribute, options={})
+    value_class = 'value'
+    if object.is_a? String
+      label = object
+      value = attribute
+      value = value.to_s unless [String, TrueClass, FalseClass].include? value.class
+    else
+      #     label = object.class.human_attribute_name(attribute.to_s)
+      value = object.send(attribute)
+      model_name = object.class.name.underscore
+      default = ["activerecord.attributes.#{model_name}.#{attribute.to_s}_id".to_sym]
+      default << "activerecord.attributes.#{model_name}.#{attribute.to_s[0..-7]}".to_sym if attribute.to_s.match(/_label$/)
+      default << "attributes.#{attribute.to_s}".to_sym
+      default << "attributes.#{attribute.to_s}_id".to_sym
+      label = ::I18n.translate("activerecord.attributes.#{model_name}.#{attribute.to_s}".to_sym, :default=>default)
+      if value.is_a? ActiveRecord::Base
+        record = value
+        value = record.send(options[:label]||[:label, :name, :code, :number, :inspect].detect{|x| record.respond_to?(x)})
+        options[:url] = {:action=>:show} if options[:url].is_a? TrueClass
+        if options[:url].is_a? Hash
+          options[:url][:id] ||= record.id
+          # raise [model_name.pluralize, record, record.class.name.underscore.pluralize].inspect
+          options[:url][:controller] ||= record.class.name.underscore.pluralize
+        end
+      else
+        options[:url] = {:action=>:show} if options[:url].is_a? TrueClass
+        if options[:url].is_a? Hash
+          options[:url][:controller] ||= object.class.name.underscore.pluralize
+          options[:url][:id] ||= object.id
+        end
+      end
+      value_class  <<  ' code' if attribute.to_s == "code"
+    end
+    if [TrueClass, FalseClass].include? value.class
+      value = content_tag(:div, "", :class=>"checkbox-#{value}")
+    elsif attribute.match(/(^|_)currency$/)
+      value = ::Numisma[value].label
+    elsif options[:currency] and value.is_a?(Numeric)
+      value = ::I18n.localize(value, :currency=>options[:currency])
+      value = link_to(value.to_s, options[:url]) if options[:url]
+    elsif value.respond_to?(:strftime) or value.is_a?(Numeric)
+      value = ::I18n.localize(value)
+      value = link_to(value.to_s, options[:url]) if options[:url]
+    elsif options[:duration]
+      duration = value
+      duration = duration*60 if options[:duration]==:minutes
+      duration = duration*3600 if options[:duration]==:hours
+      hours = (duration/3600).floor.to_i
+      minutes = (duration/60-60*hours).floor.to_i
+      seconds = (duration - 60*minutes - 3600*hours).round.to_i
+      value = tg(:duration_in_hours_and_minutes, :hours=>hours, :minutes=>minutes, :seconds=>seconds)
+      value = link_to(value.to_s, options[:url]) if options[:url]
+    elsif value.is_a? String
+      classes = []
+      classes << "code" if attribute.to_s == "code"
+      classes << value.class.name.underscore
+      value = link_to(value.to_s, options[:url]) if options[:url]
+      value = content_tag(:div, value.html_safe, :class=>classes.join(" "))
+    end
+    return label, value
+  end
+
+
+  def attributes_list(record, options={}, &block)
+    columns = options[:columns] || 3
+    attribute_list = AttributesList.new
+    raise ArgumentError.new("One parameter needed") unless block.arity == 1
+    yield attribute_list if block_given?
+    code = ""
+    size = attribute_list.items.size
+    if size > 0
+      column_height = (size.to_f/columns.to_f).ceil
+
+      column_height.times do |c|
+        line = ""
+        columns.times do |i|
+          args = attribute_list.items[i*column_height+c] # [c*columns+i]
+          next if args.nil?
+          label, value = if args[0] == :custom
+                           attribute_item(*args[1])
+                         elsif args[0] == :attribute
+                           attribute_item(record, *args[1])
+                         end
+          line << content_tag(:td, label, :class=>:label) << content_tag(:td, value, :class=>:value)
+        end
+        code << content_tag(:tr, line.html_safe)
+      end
+      code = content_tag(:table, code.html_safe, :class=>"attributes-list")
+    end
+    return code.html_safe
+  end
+
+  class AttributesList
+    attr_reader :items
+    def initialize()
+      @items = []
+    end
+
+    def attribute(*args)
+      @items << [:attribute, args]
+    end
+
+    def custom(*args)
+      @items << [:custom, args]
+    end
+
+  end    
+
+
+
+
+
   # TOOLBAR
+
+  def menu_to(name, url, options={})
+    raise ArgumentError.new("##{__method__} cannot use blocks") if block_given?
+    icon = (options.has_key?(:menu) ? options.delete(:menu) : url.is_a?(Hash) ? url[:action] : nil)
+    sprite = options.delete(:sprite) || "icons-16"
+    options[:class] = (options[:class].blank? ? 'mn' : options[:class]+' mn')
+    options[:class] += ' '+icon.to_s if icon
+    link_to(url, options) do
+      (icon ? content_tag(:span, '', :class=>"icon")+content_tag(:span, name, :class=>"text") : content_tag(:span, name, :class=>"text"))
+    end
+  end
+
+
+  def tool_to(name, url, options={})
+    raise ArgumentError.new("##{__method__} cannot use blocks") if block_given?
+    icon = (options.has_key?(:tool) ? options.delete(:tool) : url.is_a?(Hash) ? url[:action] : nil)
+    sprite = options.delete(:sprite) || "icons-16"
+    options[:class] = (options[:class].blank? ? 'btn' : options[:class]+' btn')
+    options[:class] += ' '+icon.to_s if icon
+    link_to(url, options) do
+      (icon ? content_tag(:span, '', :class=>"icon")+content_tag(:span, name, :class=>"text") : content_tag(:span, name, :class=>"text"))
+    end
+  end
 
   def toolbar(options={}, &block)
     code = '[EmptyToolbarError]'
@@ -64,36 +210,36 @@ module ApplicationHelper
           name = args[0]
           args[1] ||= {}
           args[2] ||= {}
-          # args[2][:class] ||= "icon im-" + name.to_s.split('_')[-1]
           args[0] = ::I18n.t("actions.#{args[1][:controller]||controller_name}.#{name}".to_sym, {:default=>["labels.#{name}".to_sym]}.merge(args[2].delete(:i18n)||{})) if name.is_a? Symbol
           if name.is_a? Symbol and name!=:back
             args[1][:action] ||= name
-            args[2][:class] = "icon im-" + args[1][:action].to_s if args[1][:action]
-          else
-            args[2][:class] = "icon im-" + args[1][:action].to_s.split('_')[-1] if args[1][:action]
           end
-          code << content_tag(:div, link_to(*args), :class=>:tool) if authorized?(args[1])
+          code << tool_to(*args) if authorized?(args[1])
         elsif nature == :print
           dn, args, url = tool[1], tool[2], tool[3]
           url[:controller] ||= controller_name
           for dt in @current_company.document_templates.find(:all, :conditions=>{:nature=>dn.to_s, :active=>true}, :order=>:name)
-            code << content_tag(:div, link_to(tc(:print_with_template, :name=>dt.name), url.merge(:template=>dt.code), :class=>"icon im-print"), :class=>:tool) if authorized?(url)
+            code << tool_to(tc(:print_with_template, :name=>dt.name), url.merge(:template=>dt.code), :tool=>:print) if authorized?(url)
           end
         elsif nature == :mail
           args[2] ||= {}
-          args[2][:class] = "icon im-mail"
-          code << content_tag(:div, mail_to(*args), :class=>:tool)
+          email_address = ERB::Util.html_escape(args[0])
+          extras = %w{ cc bcc body subject }.map { |item|
+            option = args[2].delete(item) || next
+            "#{item}=#{Rack::Utils.escape(option).gsub("+", "%20")}"
+          }.compact
+          extras = extras.empty? ? '' : '?' + ERB::Util.html_escape(extras.join('&'))
+          # code << content_tag(:div, mail_to(*args), :class=>:tool)
+          code << tool_to(args[1], "mailto:#{email_address}#{extras}".html_safe, :tool=>:mail)
         elsif nature == :missing
-          verb, record, tag_options = tool[1], tool[2], tool[3]
-          action = verb # "#{record.class.name.underscore}_#{verb}"
+          action, record, tag_options = tool[1], tool[2], tool[3]
           tag_options = {} unless tag_options.is_a? Hash
-          tag_options[:class] = "icon im-#{verb}"
           url = {}
           url.update(tag_options.delete(:params)) if tag_options[:params].is_a? Hash
-          url[:controller] ||= controller_name
+          url[:controller] ||= record.class.name.underscore.pluralize # controller_name
           url[:action] = action
           url[:id] = record.id
-          code << content_tag(:div, link_to(t("actions.#{url[:controller]}.#{action}", record.attributes.symbolize_keys), url, tag_options), :class=>:tool) if authorized?(url)
+          code << tool_to(t("actions.#{url[:controller]}.#{action}", record.attributes.symbolize_keys), url, tag_options) if authorized?(url)
         end
       end
       if code.strip.length>0
@@ -122,6 +268,15 @@ module ApplicationHelper
       @tools << [:mail, args]
     end
     
+    def print(*args)
+      # TODO reactive print
+      # @tools << [:print, args]
+    end
+
+    #     def update(record, url={})
+    #       @tools << [:update, record, url]
+    #     end
+
     def method_missing(method_name, *args, &block)
       raise ArgumentError.new("Block can not be accepted") if block_given?
       if method_name.to_s.match(/^print_\w+$/)
@@ -144,6 +299,5 @@ module ApplicationHelper
       end
     end
   end
-
 
 end

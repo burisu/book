@@ -148,9 +148,13 @@ class NormalizeAndRotarize < ActiveRecord::Migration
     rename_column :answer_items, :question_id, :question_item_id
 
     rename_column :group_kinships, :children_id, :child_id
+    
+    remove_column :people, :family_id
   end
 
   def down
+    add_column :people, :family_id, :integer
+
     rename_column :group_kinships, :child_id, :children_id
 
     rename_column :answer_items, :question_item_id, :question_id

@@ -37,4 +37,5 @@
 # encoding: utf-8
 class Event < ActiveRecord::Base
   belongs_to :nature, :class_name => "EventNature"
+  validates_presence_of :name
 end

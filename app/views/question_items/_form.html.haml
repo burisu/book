@@ -11,6 +11,6 @@
       =f.association :question, :collection => question_item_questions, :as => :radio_buttons
     -question_item_themes = Theme.all
     -if question_item_themes.count > 7
-      =f.association :theme, :collection => question_item_themes, :as => :select, :required => true
+      =f.association :theme, :collection => question_item_themes, :as => :select
     -else
-      =f.association :theme, :collection => question_item_themes, :as => :radio_buttons, :required => true
+      =f.association :theme, :collection => question_item_themes, :as => :radio_buttons

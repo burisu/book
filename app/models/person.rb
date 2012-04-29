@@ -73,6 +73,7 @@ require 'digest/sha2'
 
 class Person < ActiveRecord::Base
   # apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
+  attr_protected :latitude, :longitude, :arrival_person_id, :started_on, :stopped_on, :departure_person_id, :host_zone_id, :proposer_zone_id, :sponsor_zone_id, :approved, :arrival_country, :departure_country
   attr_accessor :password_confirmation
   attr_accessor :test_password
   attr_accessor :terms_of_use
@@ -81,13 +82,15 @@ class Person < ActiveRecord::Base
   # TODO: Convert to paperclip
   # file_column :photo, :magick => {:versions => { "thumb"=> "100x150", "portrait" => {:crop=>"2:3", :size=>"300x450"}, "medium" => "600x900>", "big"=>"1200x1800>" } }
   has_attached_file :photo, :styles => { :thumb => "100x150", :portrait => "300x450#", :medium => "600x900>", :big => "1200x1800>" }
-  belongs_to :arrival_country, :class_name=>"Country"
+  belongs_to :activity
+  # belongs_to :arrival_country, :class_name=>"Country"
   belongs_to :arrival_person, :class_name=>"Person"
   # belongs_to :country
-  belongs_to :departure_country, :class_name=>"Country"
+  # belongs_to :departure_country, :class_name=>"Country"
   belongs_to :departure_person, :class_name=>"Person"
-  # belongs_to :family
+  # belongs_to :family_id
   belongs_to :host_zone, :class_name=>"Group"
+  belongs_to :profession, :class_name => "OrganigramProfession"
   belongs_to :promotion
   belongs_to :proposer_zone, :class_name=>"Group"
   belongs_to :sponsor_zone, :class_name=>"Group"
@@ -96,9 +99,9 @@ class Person < ActiveRecord::Base
   has_many :images
   has_many :members, :order=>"last_name, first_name"
   has_many :periods
-  has_many :sales, :foreign_key=>"client_id"
+  has_many :sales, :foreign_key=>:client_id
   has_many :subscriptions
-  has_many :orders, :class_name=>"Sale", :conditions=>{:state=>'C'}
+  # has_many :orders, :foreign_key=>:client_id, :class_name=>"Sale", :conditions=>{:state=>'C'}
   has_many :mandates
   validates_acceptance_of :terms_of_use
   validates_confirmation_of :password

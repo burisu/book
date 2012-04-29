@@ -2,7 +2,7 @@
 class RubricsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all rubrics
-  list :conditions => light_search_conditions(:rubrics => [:name, :code, :logo, :description, :parent_id, :rubrics_count]) do |t|
+  list(:conditions => light_search_conditions(:rubrics => [:name, :code, :logo, :description, :parent_id, :rubrics_count])) do |t|
     t.column :name, :url => true
     t.column :code
     t.column :logo
@@ -27,8 +27,8 @@ class RubricsController < ApplicationController
     t.column :document
     t.column :label, :through => :author, :url => true
     t.column :language
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -37,7 +37,7 @@ class RubricsController < ApplicationController
   end
   
   def new
-    @rubric = Rubric.new
+    @rubric = Rubric.new(:parent_id => params[:parent_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @rubric }
@@ -49,7 +49,7 @@ class RubricsController < ApplicationController
     @rubric = Rubric.new(params[:rubric])
     respond_to do |format|
       if @rubric.save
-        format.html { redirect_to @rubric }
+        format.html { redirect_to (params[:redirect] || @rubric) }
         format.json { render json => @rubric, :status => :created, :location => @rubric }
       else
         format.html { render :action => 'new' }
@@ -69,7 +69,7 @@ class RubricsController < ApplicationController
     @rubric = Rubric.find(params[:id])
     respond_to do |format|
       if @rubric.update_attributes(params[:rubric])
-        format.html { redirect_to @rubric }
+        format.html { redirect_to (params[:redirect] || @rubric) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -82,7 +82,7 @@ class RubricsController < ApplicationController
     @rubric = Rubric.find(params[:id])
     @rubric.destroy
     respond_to do |format|
-      format.html { redirect_to rubrics_url }
+      format.html { redirect_to (params[:redirect] || rubrics_url) }
       format.json { head :no_content }
     end
   end

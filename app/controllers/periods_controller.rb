@@ -2,7 +2,7 @@
 class PeriodsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all periods
-  list :conditions => light_search_conditions(:periods => [:begun_on, :finished_on, :person_id, :comment, :family_name, :address, :latitude, :longitude, :photo, :phone, :fax, :email, :mobile, :country]) do |t|
+  list(:conditions => light_search_conditions(:periods => [:begun_on, :finished_on, :person_id, :comment, :family_name, :address, :latitude, :longitude, :photo, :phone, :fax, :email, :mobile, :country])) do |t|
     t.column :begun_on
     t.column :finished_on
     t.column :label, :through => :person, :url => true
@@ -30,7 +30,7 @@ class PeriodsController < ApplicationController
   end
   
   def new
-    @period = Period.new
+    @period = Period.new(:person_id => params[:person_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @period }
@@ -42,7 +42,7 @@ class PeriodsController < ApplicationController
     @period = Period.new(params[:period])
     respond_to do |format|
       if @period.save
-        format.html { redirect_to @period }
+        format.html { redirect_to (params[:redirect] || @period) }
         format.json { render json => @period, :status => :created, :location => @period }
       else
         format.html { render :action => 'new' }
@@ -62,7 +62,7 @@ class PeriodsController < ApplicationController
     @period = Period.find(params[:id])
     respond_to do |format|
       if @period.update_attributes(params[:period])
-        format.html { redirect_to @period }
+        format.html { redirect_to (params[:redirect] || @period) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -75,7 +75,7 @@ class PeriodsController < ApplicationController
     @period = Period.find(params[:id])
     @period.destroy
     respond_to do |format|
-      format.html { redirect_to periods_url }
+      format.html { redirect_to (params[:redirect] || periods_url) }
       format.json { head :no_content }
     end
   end

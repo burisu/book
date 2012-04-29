@@ -33,4 +33,5 @@ class PersonHonour < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :honour
   belongs_to :person
+  depends_on :person, :honour
 end

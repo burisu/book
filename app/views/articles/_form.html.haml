@@ -15,7 +15,7 @@
       =f.association :author, :collection => article_people, :as => :radio_buttons, :required => true
     -article_rubrics = Rubric.all
     -if article_rubrics.count > 7
-      =f.association :rubric, :collection => article_rubrics, :as => :select, :required => true
+      =f.association :rubric, :collection => article_rubrics, :as => :select
     -else
-      =f.association :rubric, :collection => article_rubrics, :as => :radio_buttons, :required => true
+      =f.association :rubric, :collection => article_rubrics, :as => :radio_buttons
     =f.input :language, :collection => countries, :as => :select

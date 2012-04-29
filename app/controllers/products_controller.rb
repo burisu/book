@@ -2,7 +2,7 @@
 class ProductsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all products
-  list :conditions => light_search_conditions(:products => [:name, :description, :amount, :unit, :deadlined, :started_on, :stopped_on, :storable, :initial_quantity, :current_quantity, :subscribing, :subscribing_started_on, :subscribing_stopped_on, :personal, :active, :passworded, :password]) do |t|
+  list(:conditions => light_search_conditions(:products => [:name, :description, :amount, :unit, :deadlined, :started_on, :stopped_on, :storable, :initial_quantity, :current_quantity, :subscribing, :subscribing_started_on, :subscribing_stopped_on, :personal, :active, :passworded, :password])) do |t|
     t.column :name, :url => true
     t.column :description
     t.column :amount
@@ -36,8 +36,8 @@ class ProductsController < ApplicationController
     t.column :email
     t.column :name, :through => :zone, :url => true
     t.column :annotation
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   # List all sale_lines of one product
@@ -48,8 +48,8 @@ class ProductsController < ApplicationController
     t.column :unit_amount
     t.column :quantity
     t.column :amount
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   # List all order_lines of one product
@@ -60,8 +60,8 @@ class ProductsController < ApplicationController
     t.column :unit_amount
     t.column :quantity
     t.column :amount
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -70,7 +70,7 @@ class ProductsController < ApplicationController
   end
   
   def new
-    @product = Product.new
+    @product = Product.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @product }
@@ -82,7 +82,7 @@ class ProductsController < ApplicationController
     @product = Product.new(params[:product])
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product }
+        format.html { redirect_to (params[:redirect] || @product) }
         format.json { render json => @product, :status => :created, :location => @product }
       else
         format.html { render :action => 'new' }
@@ -102,7 +102,7 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     respond_to do |format|
       if @product.update_attributes(params[:product])
-        format.html { redirect_to @product }
+        format.html { redirect_to (params[:redirect] || @product) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -115,7 +115,7 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url }
+      format.html { redirect_to (params[:redirect] || products_url) }
       format.json { head :no_content }
     end
   end

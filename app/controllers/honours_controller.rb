@@ -2,9 +2,10 @@
 class HonoursController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all honours
-  list :conditions => light_search_conditions(:honours => [:nature_id, :name, :abbreviation, :position]) do |t|
+  list(:conditions => light_search_conditions(:honours => [:nature_id, :name, :code, :abbreviation, :position])) do |t|
     t.column :name, :through => :nature, :url => true
     t.column :name, :url => true
+    t.column :code
     t.column :abbreviation
     t.column :position
     t.action :edit
@@ -20,7 +21,7 @@ class HonoursController < ApplicationController
   end
   
   def new
-    @honour = Honour.new
+    @honour = Honour.new(:nature_id => params[:nature_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @honour }
@@ -32,7 +33,7 @@ class HonoursController < ApplicationController
     @honour = Honour.new(params[:honour])
     respond_to do |format|
       if @honour.save
-        format.html { redirect_to @honour }
+        format.html { redirect_to (params[:redirect] || @honour) }
         format.json { render json => @honour, :status => :created, :location => @honour }
       else
         format.html { render :action => 'new' }
@@ -52,7 +53,7 @@ class HonoursController < ApplicationController
     @honour = Honour.find(params[:id])
     respond_to do |format|
       if @honour.update_attributes(params[:honour])
-        format.html { redirect_to @honour }
+        format.html { redirect_to (params[:redirect] || @honour) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -65,7 +66,7 @@ class HonoursController < ApplicationController
     @honour = Honour.find(params[:id])
     @honour.destroy
     respond_to do |format|
-      format.html { redirect_to honours_url }
+      format.html { redirect_to (params[:redirect] || honours_url) }
       format.json { head :no_content }
     end
   end

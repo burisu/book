@@ -2,7 +2,7 @@
 class PersonContactNaturesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all person_contact_natures
-  list :conditions => light_search_conditions(:person_contact_natures => [:name, :canal]) do |t|
+  list(:conditions => light_search_conditions(:person_contact_natures => [:name, :canal])) do |t|
     t.column :name, :url => true
     t.column :canal
     t.action :edit
@@ -29,8 +29,8 @@ class PersonContactNaturesController < ApplicationController
     t.column :receiving
     t.column :sending
     t.column :by_default
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -39,7 +39,7 @@ class PersonContactNaturesController < ApplicationController
   end
   
   def new
-    @person_contact_nature = PersonContactNature.new
+    @person_contact_nature = PersonContactNature.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @person_contact_nature }
@@ -51,7 +51,7 @@ class PersonContactNaturesController < ApplicationController
     @person_contact_nature = PersonContactNature.new(params[:person_contact_nature])
     respond_to do |format|
       if @person_contact_nature.save
-        format.html { redirect_to @person_contact_nature }
+        format.html { redirect_to (params[:redirect] || @person_contact_nature) }
         format.json { render json => @person_contact_nature, :status => :created, :location => @person_contact_nature }
       else
         format.html { render :action => 'new' }
@@ -71,7 +71,7 @@ class PersonContactNaturesController < ApplicationController
     @person_contact_nature = PersonContactNature.find(params[:id])
     respond_to do |format|
       if @person_contact_nature.update_attributes(params[:person_contact_nature])
-        format.html { redirect_to @person_contact_nature }
+        format.html { redirect_to (params[:redirect] || @person_contact_nature) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -84,7 +84,7 @@ class PersonContactNaturesController < ApplicationController
     @person_contact_nature = PersonContactNature.find(params[:id])
     @person_contact_nature.destroy
     respond_to do |format|
-      format.html { redirect_to person_contact_natures_url }
+      format.html { redirect_to (params[:redirect] || person_contact_natures_url) }
       format.json { head :no_content }
     end
   end

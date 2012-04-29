@@ -2,7 +2,7 @@
 class GuestsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all guests
-  list :conditions => light_search_conditions(:guests => [:sale_line_id, :sale_id, :product_id, :first_name, :last_name, :email, :zone_id, :annotation]) do |t|
+  list(:conditions => light_search_conditions(:guests => [:sale_line_id, :sale_id, :product_id, :first_name, :last_name, :email, :zone_id, :annotation])) do |t|
     t.column :name, :through => :sale_line, :url => true
     t.column :number, :through => :sale, :url => true
     t.column :name, :through => :product, :url => true
@@ -24,7 +24,7 @@ class GuestsController < ApplicationController
   end
   
   def new
-    @guest = Guest.new
+    @guest = Guest.new(:product_id => params[:product_id].to_i, :sale_id => params[:sale_id].to_i, :sale_line_id => params[:sale_line_id].to_i, :zone_id => params[:zone_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @guest }
@@ -36,7 +36,7 @@ class GuestsController < ApplicationController
     @guest = Guest.new(params[:guest])
     respond_to do |format|
       if @guest.save
-        format.html { redirect_to @guest }
+        format.html { redirect_to (params[:redirect] || @guest) }
         format.json { render json => @guest, :status => :created, :location => @guest }
       else
         format.html { render :action => 'new' }
@@ -56,7 +56,7 @@ class GuestsController < ApplicationController
     @guest = Guest.find(params[:id])
     respond_to do |format|
       if @guest.update_attributes(params[:guest])
-        format.html { redirect_to @guest }
+        format.html { redirect_to (params[:redirect] || @guest) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -69,7 +69,7 @@ class GuestsController < ApplicationController
     @guest = Guest.find(params[:id])
     @guest.destroy
     respond_to do |format|
-      format.html { redirect_to guests_url }
+      format.html { redirect_to (params[:redirect] || guests_url) }
       format.json { head :no_content }
     end
   end

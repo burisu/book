@@ -31,4 +31,5 @@
 class OrganigramProfession < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :organigram
+  depends_on :organigram
 end

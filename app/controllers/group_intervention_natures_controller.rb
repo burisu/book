@@ -2,7 +2,7 @@
 class GroupInterventionNaturesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all group_intervention_natures
-  list :conditions => light_search_conditions(:group_intervention_natures => [:name, :description, :comment]) do |t|
+  list(:conditions => light_search_conditions(:group_intervention_natures => [:name, :description, :comment])) do |t|
     t.column :name, :url => true
     t.column :description
     t.column :comment
@@ -21,8 +21,8 @@ class GroupInterventionNaturesController < ApplicationController
     t.column :stopped_at
     t.column :description, :url => true
     t.column :comment
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -31,7 +31,7 @@ class GroupInterventionNaturesController < ApplicationController
   end
   
   def new
-    @group_intervention_nature = GroupInterventionNature.new
+    @group_intervention_nature = GroupInterventionNature.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @group_intervention_nature }
@@ -43,7 +43,7 @@ class GroupInterventionNaturesController < ApplicationController
     @group_intervention_nature = GroupInterventionNature.new(params[:group_intervention_nature])
     respond_to do |format|
       if @group_intervention_nature.save
-        format.html { redirect_to @group_intervention_nature }
+        format.html { redirect_to (params[:redirect] || @group_intervention_nature) }
         format.json { render json => @group_intervention_nature, :status => :created, :location => @group_intervention_nature }
       else
         format.html { render :action => 'new' }
@@ -63,7 +63,7 @@ class GroupInterventionNaturesController < ApplicationController
     @group_intervention_nature = GroupInterventionNature.find(params[:id])
     respond_to do |format|
       if @group_intervention_nature.update_attributes(params[:group_intervention_nature])
-        format.html { redirect_to @group_intervention_nature }
+        format.html { redirect_to (params[:redirect] || @group_intervention_nature) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -76,7 +76,7 @@ class GroupInterventionNaturesController < ApplicationController
     @group_intervention_nature = GroupInterventionNature.find(params[:id])
     @group_intervention_nature.destroy
     respond_to do |format|
-      format.html { redirect_to group_intervention_natures_url }
+      format.html { redirect_to (params[:redirect] || group_intervention_natures_url) }
       format.json { head :no_content }
     end
   end

@@ -29,5 +29,6 @@
 #
 class EventNature < ActiveRecord::Base
   attr_accessible :comment, :name
-  has_many :events
+  has_many :events, :foreign_key => :nature_id
+  validates_presence_of :name
 end

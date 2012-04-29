@@ -2,7 +2,7 @@
 class QuestionItemsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all question_items
-  list :conditions => light_search_conditions(:question_items => [:name, :explanation, :position, :question_id, :theme_id]) do |t|
+  list(:conditions => light_search_conditions(:question_items => [:name, :explanation, :position, :question_id, :theme_id])) do |t|
     t.column :name, :url => true
     t.column :explanation
     t.column :position
@@ -19,8 +19,8 @@ class QuestionItemsController < ApplicationController
   list(:answer_items, :conditions => ['question_item_id = ?', ['session[:current_question_item_id]']]) do |t|
     t.column :content
     t.column :id, :through => :answer, :url => true
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -29,7 +29,7 @@ class QuestionItemsController < ApplicationController
   end
   
   def new
-    @question_item = QuestionItem.new
+    @question_item = QuestionItem.new(:question_id => params[:question_id].to_i, :theme_id => params[:theme_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @question_item }
@@ -41,7 +41,7 @@ class QuestionItemsController < ApplicationController
     @question_item = QuestionItem.new(params[:question_item])
     respond_to do |format|
       if @question_item.save
-        format.html { redirect_to @question_item }
+        format.html { redirect_to (params[:redirect] || @question_item) }
         format.json { render json => @question_item, :status => :created, :location => @question_item }
       else
         format.html { render :action => 'new' }
@@ -61,7 +61,7 @@ class QuestionItemsController < ApplicationController
     @question_item = QuestionItem.find(params[:id])
     respond_to do |format|
       if @question_item.update_attributes(params[:question_item])
-        format.html { redirect_to @question_item }
+        format.html { redirect_to (params[:redirect] || @question_item) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -74,7 +74,7 @@ class QuestionItemsController < ApplicationController
     @question_item = QuestionItem.find(params[:id])
     @question_item.destroy
     respond_to do |format|
-      format.html { redirect_to question_items_url }
+      format.html { redirect_to (params[:redirect] || question_items_url) }
       format.json { head :no_content }
     end
   end

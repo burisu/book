@@ -43,9 +43,10 @@
 
 # encoding: utf-8
 class Period < ActiveRecord::Base
-  belongs_to :country
+  # belongs_to :country
   belongs_to :person
   has_and_belongs_to_many :members
+  depends_on :person
   
   attr_readonly :person_id
 

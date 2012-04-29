@@ -2,7 +2,7 @@
 class MembersController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all members
-  list :conditions => light_search_conditions(:members => [:last_name, :first_name, :photo, :nature, :other_nature, :sex, :phone, :fax, :mobile, :comment, :person_id, :email]) do |t|
+  list(:conditions => light_search_conditions(:members => [:last_name, :first_name, :photo, :nature, :other_nature, :sex, :phone, :fax, :mobile, :comment, :person_id, :email])) do |t|
     t.column :last_name
     t.column :first_name
     t.column :photo
@@ -28,7 +28,7 @@ class MembersController < ApplicationController
   end
   
   def new
-    @member = Member.new
+    @member = Member.new(:person_id => params[:person_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @member }
@@ -40,7 +40,7 @@ class MembersController < ApplicationController
     @member = Member.new(params[:member])
     respond_to do |format|
       if @member.save
-        format.html { redirect_to @member }
+        format.html { redirect_to (params[:redirect] || @member) }
         format.json { render json => @member, :status => :created, :location => @member }
       else
         format.html { render :action => 'new' }
@@ -60,7 +60,7 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     respond_to do |format|
       if @member.update_attributes(params[:member])
-        format.html { redirect_to @member }
+        format.html { redirect_to (params[:redirect] || @member) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -73,7 +73,7 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     @member.destroy
     respond_to do |format|
-      format.html { redirect_to members_url }
+      format.html { redirect_to (params[:redirect] || members_url) }
       format.json { head :no_content }
     end
   end

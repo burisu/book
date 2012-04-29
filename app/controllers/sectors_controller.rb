@@ -2,7 +2,7 @@
 class SectorsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all sectors
-  list :conditions => light_search_conditions(:sectors => [:name, :code, :description]) do |t|
+  list(:conditions => light_search_conditions(:sectors => [:name, :code, :description])) do |t|
     t.column :name, :url => true
     t.column :code
     t.column :description
@@ -18,8 +18,8 @@ class SectorsController < ApplicationController
     t.column :label, :url => true
     t.column :name
     t.column :code
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -28,7 +28,7 @@ class SectorsController < ApplicationController
   end
   
   def new
-    @sector = Sector.new
+    @sector = Sector.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @sector }
@@ -40,7 +40,7 @@ class SectorsController < ApplicationController
     @sector = Sector.new(params[:sector])
     respond_to do |format|
       if @sector.save
-        format.html { redirect_to @sector }
+        format.html { redirect_to (params[:redirect] || @sector) }
         format.json { render json => @sector, :status => :created, :location => @sector }
       else
         format.html { render :action => 'new' }
@@ -60,7 +60,7 @@ class SectorsController < ApplicationController
     @sector = Sector.find(params[:id])
     respond_to do |format|
       if @sector.update_attributes(params[:sector])
-        format.html { redirect_to @sector }
+        format.html { redirect_to (params[:redirect] || @sector) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -73,7 +73,7 @@ class SectorsController < ApplicationController
     @sector = Sector.find(params[:id])
     @sector.destroy
     respond_to do |format|
-      format.html { redirect_to sectors_url }
+      format.html { redirect_to (params[:redirect] || sectors_url) }
       format.json { head :no_content }
     end
   end

@@ -112,6 +112,7 @@ class Sale < ActiveRecord::Base
     "00199"=>"incident domaine initiateur."
   }
   STATES = [["Devis", 'I'], ["Commande","C"], ["Payée", "P"]]
+  attr_protected :authorization_number, :sequential_number, :payment_type, :card_type, :transaction_number, :country, :error_code, :card_expired_on, :payer_country, :bin6, :signature, :state, :created_on
   belongs_to :client, :class_name=>Person.name
   has_many :guests
   has_many :lines, :class_name=>SaleLine.name, :dependent=>:destroy

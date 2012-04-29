@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
 
   create_table "honour_natures", :force => true do |t|
     t.string   "name"
+    t.string   "code"
     t.text     "description"
     t.text     "comment"
     t.datetime "created_at",                  :null => false
@@ -261,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
   create_table "honours", :force => true do |t|
     t.integer  "nature_id"
     t.string   "name"
+    t.string   "code"
     t.string   "abbreviation"
     t.integer  "position"
     t.datetime "created_at",                  :null => false
@@ -347,6 +349,7 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
   create_table "organigram_professions", :force => true do |t|
     t.integer  "organigram_id"
     t.string   "name"
+    t.string   "code"
     t.boolean  "printed",       :default => false, :null => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
@@ -376,7 +379,6 @@ ActiveRecord::Schema.define(:version => 20120414074244) do
   create_table "people", :force => true do |t|
     t.string   "patronymic_name",                                      :null => false
     t.string   "family_name",                                          :null => false
-    t.integer  "family_id"
     t.string   "first_name",                                           :null => false
     t.string   "second_name"
     t.string   "user_name",           :limit => 32,                    :null => false

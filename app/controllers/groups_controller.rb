@@ -2,7 +2,7 @@
 class GroupsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all groups
-  list :conditions => light_search_conditions(:groups => [:name, :number, :zone_nature_id, :parent_id, :country]) do |t|
+  list(:conditions => light_search_conditions(:groups => [:name, :number, :zone_nature_id, :parent_id, :country])) do |t|
     t.column :name, :url => true
     t.column :number
     t.column :name, :through => :zone_nature, :url => true
@@ -23,8 +23,8 @@ class GroupsController < ApplicationController
     t.column :stopped_at
     t.column :description, :url => true
     t.column :comment
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -33,7 +33,7 @@ class GroupsController < ApplicationController
   end
   
   def new
-    @group = Group.new
+    @group = Group.new(:nature_id => params[:nature_id].to_i, :parent_id => params[:parent_id].to_i, :zone_nature_id => params[:zone_nature_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @group }
@@ -45,7 +45,7 @@ class GroupsController < ApplicationController
     @group = Group.new(params[:group])
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group }
+        format.html { redirect_to (params[:redirect] || @group) }
         format.json { render json => @group, :status => :created, :location => @group }
       else
         format.html { render :action => 'new' }
@@ -65,7 +65,7 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        format.html { redirect_to @group }
+        format.html { redirect_to (params[:redirect] || @group) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -78,7 +78,7 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     @group.destroy
     respond_to do |format|
-      format.html { redirect_to groups_url }
+      format.html { redirect_to (params[:redirect] || groups_url) }
       format.json { head :no_content }
     end
   end

@@ -2,7 +2,7 @@
 class GroupNaturesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all group_natures
-  list :conditions => light_search_conditions(:group_natures => [:name, :organization_id, :zone_nature_id]) do |t|
+  list(:conditions => light_search_conditions(:group_natures => [:name, :organization_id, :zone_nature_id])) do |t|
     t.column :name, :url => true
     t.column :name, :through => :organization, :url => true
     t.column :name, :through => :zone_nature, :url => true
@@ -17,12 +17,11 @@ class GroupNaturesController < ApplicationController
   list(:groups, :conditions => ['group_nature_id = ?', ['session[:current_group_nature_id]']]) do |t|
     t.column :name, :url => true
     t.column :number
-    t.column :code
     t.column :name, :through => :zone_nature, :url => true
     t.column :name, :through => :parent, :url => true
     t.column :country
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -31,7 +30,7 @@ class GroupNaturesController < ApplicationController
   end
   
   def new
-    @group_nature = GroupNature.new
+    @group_nature = GroupNature.new(:organization_id => params[:organization_id].to_i, :zone_nature_id => params[:zone_nature_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @group_nature }
@@ -43,7 +42,7 @@ class GroupNaturesController < ApplicationController
     @group_nature = GroupNature.new(params[:group_nature])
     respond_to do |format|
       if @group_nature.save
-        format.html { redirect_to @group_nature }
+        format.html { redirect_to (params[:redirect] || @group_nature) }
         format.json { render json => @group_nature, :status => :created, :location => @group_nature }
       else
         format.html { render :action => 'new' }
@@ -63,7 +62,7 @@ class GroupNaturesController < ApplicationController
     @group_nature = GroupNature.find(params[:id])
     respond_to do |format|
       if @group_nature.update_attributes(params[:group_nature])
-        format.html { redirect_to @group_nature }
+        format.html { redirect_to (params[:redirect] || @group_nature) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -76,7 +75,7 @@ class GroupNaturesController < ApplicationController
     @group_nature = GroupNature.find(params[:id])
     @group_nature.destroy
     respond_to do |format|
-      format.html { redirect_to group_natures_url }
+      format.html { redirect_to (params[:redirect] || group_natures_url) }
       format.json { head :no_content }
     end
   end

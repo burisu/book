@@ -33,6 +33,7 @@
 # encoding: utf-8
 class GroupKinship < ActiveRecord::Base
   belongs_to :organization
-  belongs_to :parent, :class_name => "GroupKinship"
-  belongs_to :child, :class_name => "GroupKinship"
+  belongs_to :parent, :class_name => "Group"
+  belongs_to :child, :class_name => "Group"
+  depends_on :parent, :child
 end

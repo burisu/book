@@ -33,4 +33,5 @@ class Honour < ActiveRecord::Base
   acts_as_list :scope => :nature_id
   belongs_to :nature, :class_name => "HonourNature"
   validates_presence_of :name, :abbreviation
+  depends_on :nature
 end

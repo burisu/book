@@ -42,6 +42,7 @@
 # encoding: utf-8
 class Image < ActiveRecord::Base
   belongs_to :person
+  depends_on :person
   # TODO: Use paperclip
   # file_column :document, :magick => {:versions => { "thumb" => "128x128", "medium" => "600x450>", "big"=>"1024x768>" } }
   has_attached_file :document, :styles => { :thumb => "128x128", :medium => "600x450>", :big => "1024x768>"}

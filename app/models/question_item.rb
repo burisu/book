@@ -38,7 +38,8 @@ class QuestionItem < ActiveRecord::Base
   belongs_to :question
   belongs_to :theme
   has_many :answer_items
-  validates_presence_of :theme_id
+  validates_presence_of :theme
+  depends_on :question
 
   validate do
     if self.question

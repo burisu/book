@@ -2,7 +2,7 @@
 class OrganigramsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all organigrams
-  list :conditions => light_search_conditions(:organigrams => [:name, :code, :description]) do |t|
+  list(:conditions => light_search_conditions(:organigrams => [:name, :code, :description])) do |t|
     t.column :name, :url => true
     t.column :code
     t.column :description
@@ -16,9 +16,10 @@ class OrganigramsController < ApplicationController
   # List all professions of one organigram
   list(:professions, :model => 'OrganigramProfession', :conditions => ['organigram_id = ?', ['session[:current_organigram_id]']]) do |t|
     t.column :name, :url => true
+    t.column :code
     t.column :printed
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -27,7 +28,7 @@ class OrganigramsController < ApplicationController
   end
   
   def new
-    @organigram = Organigram.new
+    @organigram = Organigram.new()
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @organigram }
@@ -39,7 +40,7 @@ class OrganigramsController < ApplicationController
     @organigram = Organigram.new(params[:organigram])
     respond_to do |format|
       if @organigram.save
-        format.html { redirect_to @organigram }
+        format.html { redirect_to (params[:redirect] || @organigram) }
         format.json { render json => @organigram, :status => :created, :location => @organigram }
       else
         format.html { render :action => 'new' }
@@ -59,7 +60,7 @@ class OrganigramsController < ApplicationController
     @organigram = Organigram.find(params[:id])
     respond_to do |format|
       if @organigram.update_attributes(params[:organigram])
-        format.html { redirect_to @organigram }
+        format.html { redirect_to (params[:redirect] || @organigram) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -72,7 +73,7 @@ class OrganigramsController < ApplicationController
     @organigram = Organigram.find(params[:id])
     @organigram.destroy
     respond_to do |format|
-      format.html { redirect_to organigrams_url }
+      format.html { redirect_to (params[:redirect] || organigrams_url) }
       format.json { head :no_content }
     end
   end

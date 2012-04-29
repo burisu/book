@@ -1,0 +1,89 @@
+#menu
+  -if controller_name == 'configurations'
+    %span.current=I18n.translate('controllers.configurations', :default=>'Configuration')
+  -else
+    =link_to(I18n.translate('controllers.configurations', :default=>'Configuration'), configurations_url)
+  -if controller_name == 'events'
+    %span.current=I18n.translate('controllers.events', :default=>'Event')
+  -else
+    =link_to(I18n.translate('controllers.events', :default=>'Event'), events_url)
+  -if controller_name == 'event_natures'
+    %span.current=I18n.translate('controllers.event_natures', :default=>'Event nature')
+  -else
+    =link_to(I18n.translate('controllers.event_natures', :default=>'Event nature'), event_natures_url)
+  -if controller_name == 'groups'
+    %span.current=I18n.translate('controllers.groups', :default=>'Group')
+  -else
+    =link_to(I18n.translate('controllers.groups', :default=>'Group'), groups_url)
+  -if controller_name == 'group_intervention_natures'
+    %span.current=I18n.translate('controllers.group_intervention_natures', :default=>'Group intervention nature')
+  -else
+    =link_to(I18n.translate('controllers.group_intervention_natures', :default=>'Group intervention nature'), group_intervention_natures_url)
+  -if controller_name == 'group_natures'
+    %span.current=I18n.translate('controllers.group_natures', :default=>'Group nature')
+  -else
+    =link_to(I18n.translate('controllers.group_natures', :default=>'Group nature'), group_natures_url)
+  -if controller_name == 'honour_natures' or controller_name == 'honours'
+    %span.current=I18n.translate('controllers.honour_natures', :default=>'Honour nature')
+  -else
+    =link_to(I18n.translate('controllers.honour_natures', :default=>'Honour nature'), honour_natures_url)
+  -if controller_name == 'mandate_natures'
+    %span.current=I18n.translate('controllers.mandate_natures', :default=>'Mandate nature')
+  -else
+    =link_to(I18n.translate('controllers.mandate_natures', :default=>'Mandate nature'), mandate_natures_url)
+  -if controller_name == 'organigrams' or controller_name == 'organigram_professions'
+    %span.current=I18n.translate('controllers.organigrams', :default=>'Organigram')
+  -else
+    =link_to(I18n.translate('controllers.organigrams', :default=>'Organigram'), organigrams_url)
+  -if controller_name == 'organizations'
+    %span.current=I18n.translate('controllers.organizations', :default=>'Organization')
+  -else
+    =link_to(I18n.translate('controllers.organizations', :default=>'Organization'), organizations_url)
+  -if controller_name == 'people' or controller_name == 'images' or controller_name == 'members' or controller_name == 'periods' or controller_name == 'mandates'
+    %span.current=I18n.translate('controllers.people', :default=>'Personne')
+  -else
+    =link_to(I18n.translate('controllers.people', :default=>'Personne'), people_url)
+  -if controller_name == 'person_contact_natures'
+    %span.current=I18n.translate('controllers.person_contact_natures', :default=>'Person contact nature')
+  -else
+    =link_to(I18n.translate('controllers.person_contact_natures', :default=>'Person contact nature'), person_contact_natures_url)
+  -if controller_name == 'person_intervention_natures'
+    %span.current=I18n.translate('controllers.person_intervention_natures', :default=>'Person intervention nature')
+  -else
+    =link_to(I18n.translate('controllers.person_intervention_natures', :default=>'Person intervention nature'), person_intervention_natures_url)
+  -if controller_name == 'products'
+    %span.current=I18n.translate('controllers.products', :default=>'Product')
+  -else
+    =link_to(I18n.translate('controllers.products', :default=>'Product'), products_url)
+  -if controller_name == 'promotions'
+    %span.current=I18n.translate('controllers.promotions', :default=>'Promotion')
+  -else
+    =link_to(I18n.translate('controllers.promotions', :default=>'Promotion'), promotions_url)
+  -if controller_name == 'questions' or controller_name == 'answers' or controller_name == 'question_items'
+    %span.current=I18n.translate('controllers.questions', :default=>'Question')
+  -else
+    =link_to(I18n.translate('controllers.questions', :default=>'Question'), questions_url)
+  -if controller_name == 'rubrics' or controller_name == 'articles'
+    %span.current=I18n.translate('controllers.rubrics', :default=>'Rubric')
+  -else
+    =link_to(I18n.translate('controllers.rubrics', :default=>'Rubric'), rubrics_url)
+  -if controller_name == 'sales' or controller_name == 'sale_lines' or controller_name == 'sale_lines'
+    %span.current=I18n.translate('controllers.sales', :default=>'Sale')
+  -else
+    =link_to(I18n.translate('controllers.sales', :default=>'Sale'), sales_url)
+  -if controller_name == 'sectors' or controller_name == 'activities'
+    %span.current=I18n.translate('controllers.sectors', :default=>'Sector')
+  -else
+    =link_to(I18n.translate('controllers.sectors', :default=>'Sector'), sectors_url)
+  -if controller_name == 'subscriptions'
+    %span.current=I18n.translate('controllers.subscriptions', :default=>'Cotisation')
+  -else
+    =link_to(I18n.translate('controllers.subscriptions', :default=>'Cotisation'), subscriptions_url)
+  -if controller_name == 'themes'
+    %span.current=I18n.translate('controllers.themes', :default=>'Theme')
+  -else
+    =link_to(I18n.translate('controllers.themes', :default=>'Theme'), themes_url)
+  -if controller_name == 'zone_natures'
+    %span.current=I18n.translate('controllers.zone_natures', :default=>'Zone nature')
+  -else
+    =link_to(I18n.translate('controllers.zone_natures', :default=>'Zone nature'), zone_natures_url)

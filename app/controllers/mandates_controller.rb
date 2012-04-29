@@ -2,7 +2,7 @@
 class MandatesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all mandates
-  list :conditions => light_search_conditions(:mandates => [:dont_expire, :started_on, :stopped_on, :nature_id, :person_id, :group_id]) do |t|
+  list(:conditions => light_search_conditions(:mandates => [:dont_expire, :started_on, :stopped_on, :nature_id, :person_id, :group_id])) do |t|
     t.column :dont_expire
     t.column :started_on
     t.column :stopped_on
@@ -22,7 +22,7 @@ class MandatesController < ApplicationController
   end
   
   def new
-    @mandate = Mandate.new
+    @mandate = Mandate.new(:nature_id => params[:nature_id].to_i, :person_id => params[:person_id].to_i, :group_id => params[:group_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @mandate }
@@ -34,7 +34,7 @@ class MandatesController < ApplicationController
     @mandate = Mandate.new(params[:mandate])
     respond_to do |format|
       if @mandate.save
-        format.html { redirect_to @mandate }
+        format.html { redirect_to (params[:redirect] || @mandate) }
         format.json { render json => @mandate, :status => :created, :location => @mandate }
       else
         format.html { render :action => 'new' }
@@ -54,7 +54,7 @@ class MandatesController < ApplicationController
     @mandate = Mandate.find(params[:id])
     respond_to do |format|
       if @mandate.update_attributes(params[:mandate])
-        format.html { redirect_to @mandate }
+        format.html { redirect_to (params[:redirect] || @mandate) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -67,7 +67,7 @@ class MandatesController < ApplicationController
     @mandate = Mandate.find(params[:id])
     @mandate.destroy
     respond_to do |format|
-      format.html { redirect_to mandates_url }
+      format.html { redirect_to (params[:redirect] || mandates_url) }
       format.json { head :no_content }
     end
   end

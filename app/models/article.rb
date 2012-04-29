@@ -41,11 +41,12 @@
 # coding: utf-8
 class Article < ActiveRecord::Base
   belongs_to :author, :class_name=>Person.name
-  belongs_to :language
+  # belongs_to :language
   belongs_to :rubric
   has_and_belongs_to_many :mandate_natures
+  depends_on :rubric
     
-  validates_presence_of :rubric_id
+  validates_presence_of :rubric
 
   STATUS = {:W=>"À l'écriture", :R=>"Prêt", :P=>"Publié", :C=>"À la correction", :U=>"Dépublié"}
   

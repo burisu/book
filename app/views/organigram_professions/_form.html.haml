@@ -7,4 +7,5 @@
     -else
       =f.association :organigram, :collection => organigram_profession_organigrams, :as => :radio_buttons
     =f.input :name
+    =f.input :code
     =f.input :printed, :required => true, :collection => [['Oui', 1], ['Non', 0]], :as => :radio

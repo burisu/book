@@ -2,7 +2,7 @@
 class MandateNaturesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all mandate_natures
-  list :conditions => light_search_conditions(:mandate_natures => [:name, :rights, :group_nature_id]) do |t|
+  list(:conditions => light_search_conditions(:mandate_natures => [:name, :rights, :group_nature_id])) do |t|
     t.column :name, :url => true
     t.column :rights
     t.column :name, :through => :group_nature, :url => true
@@ -13,16 +13,15 @@ class MandateNaturesController < ApplicationController
   def index
   end
   
-  # List all mandate of one mandate_nature
-  list(:mandate, :model => 'Mandate', :conditions => ['mandate_nature_id = ?', ['session[:current_mandate_nature_id]']]) do |t|
+  # List all mandates of one mandate_nature
+  list(:mandates, :conditions => ['nature_id = ?', ['session[:current_mandate_nature_id]']]) do |t|
     t.column :dont_expire
     t.column :started_on
     t.column :stopped_on
-    t.column :name, :through => :nature, :url => true
     t.column :label, :through => :person, :url => true
     t.column :name, :through => :group, :url => true
-    t.action :edit
-    t.action :destroy, :method => :delete, :confirm => :are_you_sure
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
   
   def show
@@ -31,7 +30,7 @@ class MandateNaturesController < ApplicationController
   end
   
   def new
-    @mandate_nature = MandateNature.new
+    @mandate_nature = MandateNature.new(:group_nature_id => params[:group_nature_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @mandate_nature }
@@ -43,7 +42,7 @@ class MandateNaturesController < ApplicationController
     @mandate_nature = MandateNature.new(params[:mandate_nature])
     respond_to do |format|
       if @mandate_nature.save
-        format.html { redirect_to @mandate_nature }
+        format.html { redirect_to (params[:redirect] || @mandate_nature) }
         format.json { render json => @mandate_nature, :status => :created, :location => @mandate_nature }
       else
         format.html { render :action => 'new' }
@@ -63,7 +62,7 @@ class MandateNaturesController < ApplicationController
     @mandate_nature = MandateNature.find(params[:id])
     respond_to do |format|
       if @mandate_nature.update_attributes(params[:mandate_nature])
-        format.html { redirect_to @mandate_nature }
+        format.html { redirect_to (params[:redirect] || @mandate_nature) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -76,7 +75,7 @@ class MandateNaturesController < ApplicationController
     @mandate_nature = MandateNature.find(params[:id])
     @mandate_nature.destroy
     respond_to do |format|
-      format.html { redirect_to mandate_natures_url }
+      format.html { redirect_to (params[:redirect] || mandate_natures_url) }
       format.json { head :no_content }
     end
   end

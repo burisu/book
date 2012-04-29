@@ -35,7 +35,7 @@ class MandateNature < ActiveRecord::Base
   # belongs_to :parent, :class_name=>MandateNature.name
   
   belongs_to :group_nature
-  has_many :mandate
+  has_many :mandates, :foreign_key => :nature_id
   has_and_belongs_to_many :articles
 
   RIGHTS = {:all=>"Administrator", 

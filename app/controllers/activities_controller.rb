@@ -2,7 +2,7 @@
 class ActivitiesController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all activities
-  list :conditions => light_search_conditions(:activities => [:sector_id, :label, :name, :code]) do |t|
+  list(:conditions => light_search_conditions(:activities => [:sector_id, :label, :name, :code])) do |t|
     t.column :name, :through => :sector, :url => true
     t.column :label, :url => true
     t.column :name
@@ -20,7 +20,7 @@ class ActivitiesController < ApplicationController
   end
   
   def new
-    @activity = Activity.new
+    @activity = Activity.new(:sector_id => params[:sector_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @activity }
@@ -32,7 +32,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.new(params[:activity])
     respond_to do |format|
       if @activity.save
-        format.html { redirect_to @activity }
+        format.html { redirect_to (params[:redirect] || @activity) }
         format.json { render json => @activity, :status => :created, :location => @activity }
       else
         format.html { render :action => 'new' }
@@ -52,7 +52,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
     respond_to do |format|
       if @activity.update_attributes(params[:activity])
-        format.html { redirect_to @activity }
+        format.html { redirect_to (params[:redirect] || @activity) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -65,7 +65,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
     @activity.destroy
     respond_to do |format|
-      format.html { redirect_to activities_url }
+      format.html { redirect_to (params[:redirect] || activities_url) }
       format.json { head :no_content }
     end
   end

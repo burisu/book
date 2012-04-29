@@ -2,7 +2,7 @@
 class SubscriptionsController < ApplicationController
   #[ACTIONS[ Do not edit these lines directly.
   # List all subscriptions
-  list :conditions => light_search_conditions(:subscriptions => [:begun_on, :finished_on, :person_id, :number, :sale_id, :sale_line_id]) do |t|
+  list(:conditions => light_search_conditions(:subscriptions => [:begun_on, :finished_on, :person_id, :number, :sale_id, :sale_line_id])) do |t|
     t.column :begun_on
     t.column :finished_on
     t.column :label, :through => :person, :url => true
@@ -22,7 +22,7 @@ class SubscriptionsController < ApplicationController
   end
   
   def new
-    @subscription = Subscription.new
+    @subscription = Subscription.new(:person_id => params[:person_id].to_i, :sale_id => params[:sale_id].to_i, :sale_line_id => params[:sale_line_id].to_i)
     respond_to do |format|
       format.html { render_restfully_form}
       format.json { render :json => @subscription }
@@ -34,7 +34,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.new(params[:subscription])
     respond_to do |format|
       if @subscription.save
-        format.html { redirect_to @subscription }
+        format.html { redirect_to (params[:redirect] || @subscription) }
         format.json { render json => @subscription, :status => :created, :location => @subscription }
       else
         format.html { render :action => 'new' }
@@ -54,7 +54,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.find(params[:id])
     respond_to do |format|
       if @subscription.update_attributes(params[:subscription])
-        format.html { redirect_to @subscription }
+        format.html { redirect_to (params[:redirect] || @subscription) }
         format.json { head :no_content }
       else
         format.html { render :action => 'edit' }
@@ -67,7 +67,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.find(params[:id])
     @subscription.destroy
     respond_to do |format|
-      format.html { redirect_to subscriptions_url }
+      format.html { redirect_to (params[:redirect] || subscriptions_url) }
       format.json { head :no_content }
     end
   end

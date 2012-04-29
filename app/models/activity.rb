@@ -33,4 +33,5 @@ class Activity < ActiveRecord::Base
   attr_accessible :code, :label, :name, :sector_id
   has_and_belongs_to_many :organigrams
   belongs_to :sector
+  depends_on :sector
 end

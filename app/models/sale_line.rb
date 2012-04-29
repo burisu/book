@@ -40,6 +40,7 @@ class SaleLine < ActiveRecord::Base
   belongs_to :sale
   has_many :guests
   has_one :subscription
+  depends_on :sale
 
 
   before_validation do

@@ -37,6 +37,7 @@ class Answer < ActiveRecord::Base
   belongs_to :person
   belongs_to :question
   has_many :items, :class_name=>"AnswerItem", :dependent=>:destroy
+  depends_on :question
   validates_uniqueness_of :person_id, :scope=>:question_id
 
   before_validation do

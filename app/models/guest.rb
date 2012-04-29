@@ -40,6 +40,7 @@ class Guest < ActiveRecord::Base
   belongs_to :sale
   belongs_to :sale_line
   belongs_to :zone, :class_name => "Group"
+  depends_on :sale_line
 
   before_validation do
     if self.sale_line

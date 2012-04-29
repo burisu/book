@@ -34,6 +34,7 @@
 class AnswerItem < ActiveRecord::Base
   belongs_to :answer
   belongs_to :question_item
+  depends_on :answer
 
   validate do
     if self.answer

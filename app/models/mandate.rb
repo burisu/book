@@ -39,6 +39,7 @@ class Mandate < ActiveRecord::Base
   belongs_to :nature, :class_name=>"MandateNature"
   belongs_to :person
   belongs_to :group
+  depends_on :person
   validates_presence_of :group, :nature, :person
 
   validate do

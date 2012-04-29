@@ -1,300 +1,204 @@
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
 class PeopleController < ApplicationController
-  manage_restfully
-
-  def self.people_conditions
-    code = search_conditions(:people, [:family_name, :first_name, :patronymic_name, :email, :comment, :second_name, :user_name])
-    code += "\n"
-    code += "if session[:person_mode]=='not_approved'\n"
-    code += "  c[0]+=' AND NOT approved'\n"
-    code += "elsif session[:person_mode]=='not_validated'\n"
-    code += "  c[0]+=' AND NOT is_validated'\n"
-    code += "elsif session[:person_mode]=='not_validated_two_days'\n"
-    code += "  c[0]+=' AND NOT is_validated AND CURRENT_TIMESTAMP - created_at > ?::INTERVAL'\n"
-    code += "  c << '48 hours'\n"
-    code += "elsif session[:person_mode]=='student'\n"
-    code += "  c[0]+=' AND student'\n"
-    code += "elsif session[:person_mode]=='not_student'\n"
-    code += "  c[0]+=' AND NOT student'\n"
-    code += "elsif session[:person_mode]=='locked'\n"
-    code += "  c[0]+=' AND is_locked'\n"
-    code += "end\n"
-    code += "if session[:person_state]=='valid'\n"
-    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
-    code += "elsif session[:person_state]=='not'\n"
-    code += "  c[0]+=\" AND NOT id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE BETWEEN begun_on AND finished_on)\"\n"
-    code += "elsif session[:person_state]=='end'\n"
-    code += "  conf = Configuration.the_one\n"
-    code += "  c[0]+=\" AND id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND CURRENT_DATE - finished_on BETWEEN \#\{conf.first_chasing_up\} AND \#\{conf.last_chasing_up\}) AND NOT id IN (SELECT person_id FROM subscriptions JOIN sales ON (sale_id=sales.id) WHERE state='P' AND finished_on > CURRENT_DATE + '\#\{conf.last_chasing_up\} days'::INTERVAL)\"\n"
-    code += "end\n"
-    code += "if session[:person_proposer_zone_id] > 0\n"
-    code += "  c[0]+=' AND proposer_zone_id=?'\n"
-    code += "  c << session[:person_proposer_zone_id]\n"
-    code += "end\n"
-    code += "if session[:person_arrival_country_id] > 0\n"
-    code += "  c[0]+=' AND arrival_country_id=?'\n"
-    code += "  c << session[:person_arrival_country_id]\n"
-    code += "end\n"
-    code += "c"
-    return code
-  end
-
-
-  list(:conditions=>people_conditions, :order=>"family_name, first_name", :per_page=>20, :line_class=>"(RECORD.is_locked ? 'error' : (RECORD.has_subscribed? ? 'notice' : (RECORD.has_subscribed_on? ? 'warning' : '')))") do |t|
-    t.column :family_name, :url=>{:action=>:show}
-    t.column :first_name, :url=>{:action=>:show}
+  #[ACTIONS[ Do not edit these lines directly.
+  # List all people
+  list(:conditions => light_search_conditions(:people => [:patronymic_name, :family_name, :first_name, :second_name, :user_name, :photo_file_name, :sex, :born_on, :email, :rotex_email, :student, :comment, :promotion_id, :language, :birth_country, :photo_file_size, :photo_content_type, :photo_updated_at, :activity_id, :profession_id])) do |t|
+    t.column :patronymic_name
+    t.column :family_name
+    t.column :first_name
+    t.column :second_name
     t.column :user_name
+    t.column :photo_file_name
+    t.column :sex
+    t.column :born_on
+    t.column :email
+    t.column :rotex_email
     t.column :student
-    t.action :is_locked, :actions=>{"true"=>{:action=>:unlock}, "false"=>{:action=>:lock}}, :method=>:post
+    t.column :comment
+    t.column :name, :through => :promotion, :url => true
+    t.column :language
+    t.column :birth_country
+    t.column :photo_file_size
+    t.column :photo_content_type
+    t.column :photo_updated_at
+    t.column :label, :through => :activity, :url => true
+    t.column :name, :through => :profession, :url => true
     t.action :edit
-    t.action :destroy, :method=>:delete, :confirm=>:are_you_sure
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure
   end
-
-
+  
   def index
-    @title = "Liste des personnes"
-    session[:person_key] = params[:person_key]||params[:key]
-    session[:person_mode] = params[:mode]
-    session[:person_state] = params[:state]
-    session[:person_proposer_zone_id] = params[:proposer_zone_id].to_i
-    session[:person_arrival_country_id] = params[:arrival_country_id].to_i
-    # @people = Person.paginate(:all, :order=>"family_name, first_name", :page=>params[:page], :per_page=>50)
   end
-
-  list(:articles, :model=>:articles, :conditions=>{:author_id=>['session[:person_id]']}, :order=>"created_at DESC", :per_page=>10, :line_class=>"(RECORD.status.to_s == 'R' ? 'warning' : (Time.now-RECORD.updated_at <= 3600*24*30 ? 'notice' : ''))", :export=>false) do |t|
-    t.column :title, :url=>{:controller=>:articles, :action=>:show}
-    t.column :name, :through=>:rubric, :url=>{:controller=>:rubrics, :action=>:show}
-    t.column :updated_at
-    t.action :edit, :controller=>:articles, :if=>"not RECORD.locked\?"
-    t.action :destroy, :controller=>:articles, :method=>:delete,  :confirm=>"Sûr(e)\?"
+  
+  # List all answers of one person
+  list(:answers, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :created_on
+    t.column :ready
+    t.column :locked
+    t.column :name, :through => :question, :url => true
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
-
-  list(:mandates, :model=>:mandates, :conditions=>{:person_id=>['session[:person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
-    t.column :name, :through=>:nature
+  
+  # List all articles of one person
+  list(:articles, :conditions => ['author_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :title
+    t.column :intro
+    t.column :body
+    t.column :done_on
+    t.column :bad_natures
+    t.column :status
+    t.column :document
+    t.column :name, :through => :rubric, :url => true
+    t.column :language
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
+  end
+  
+  # List all images of one person
+  list(:images, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :title
+    t.column :title_h
+    t.column :desc
+    t.column :desc_h
+    t.column :document_file_name
+    t.column :name, :url => true
+    t.column :locked
+    t.column :deleted
+    t.column :published
+    t.column :document_file_size
+    t.column :document_content_type
+    t.column :document_updated_at
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
+  end
+  
+  # List all members of one person
+  list(:members, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :last_name
+    t.column :first_name
+    t.column :photo
+    t.column :nature
+    t.column :other_nature
+    t.column :sex
+    t.column :phone
+    t.column :fax
+    t.column :mobile
+    t.column :comment
+    t.column :email
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
+  end
+  
+  # List all periods of one person
+  list(:periods, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
     t.column :begun_on
     t.column :finished_on
+    t.column :comment
+    t.column :family_name
+    t.column :address
+    t.column :latitude
+    t.column :longitude
+    t.column :photo
+    t.column :phone
+    t.column :fax
+    t.column :email
+    t.column :mobile
+    t.column :country
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
-
-  list(:subscriptions, :model=>:subscriptions, :conditions=>{:person_id=>['session[:person_id]']}, :order=>"begun_on DESC", :export=>false, :per_page=>5) do |t|
-    t.column :number, :class=>"code"
+  
+  # List all sales of one person
+  list(:sales, :conditions => ['client_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :number, :url => true
+    t.column :comment
+    t.column :client_email
+    t.column :amount
+    t.column :payment_mode
+    t.column :payment_number
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
+  end
+  
+  # List all subscriptions of one person
+  list(:subscriptions, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
     t.column :begun_on
     t.column :finished_on
-    # t.column :payment_mode_label
-    # t.column :state_label
+    t.column :number, :url => true
+    t.column :number, :through => :sale, :url => true
+    t.column :name, :through => :sale_line, :url => true
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
   end
-
-
+  
+  # List all mandates of one person
+  list(:mandates, :conditions => ['person_id = ?', ['session[:current_person_id]']]) do |t|
+    t.column :dont_expire
+    t.column :started_on
+    t.column :stopped_on
+    t.column :name, :through => :nature, :url => true
+    t.column :name, :through => :group, :url => true
+    t.action :edit, :url=>{:redirect => 'request.url'}
+    t.action :destroy, :method => :delete, :confirm => :are_you_sure, :url=>{:redirect => 'request.url'}
+  end
+  
   def show
-    @person = Person.find_by_id(params[:id])
-    session[:person_id] = @person.id    
-    redirect_to people_url if @person.nil?
-    @title = @person.label
-    @subscriptions = @person.subscriptions
-    @mandates = @person.mandates
-    @articles = @person.articles
+    @person = Person.find(params[:id])
+    session[:current_person_id] = @person.id
   end
   
   def new
-    @person = Person.new
-    render_restfully_form
+    @person = Person.new(:activity_id => params[:activity_id].to_i, :arrival_person_id => params[:arrival_person_id].to_i, :departure_person_id => params[:departure_person_id].to_i, :host_zone_id => params[:host_zone_id].to_i, :profession_id => params[:profession_id].to_i, :promotion_id => params[:promotion_id].to_i, :proposer_zone_id => params[:proposer_zone_id].to_i, :sponsor_zone_id => params[:sponsor_zone_id].to_i)
+    respond_to do |format|
+      format.html { render_restfully_form}
+      format.json { render :json => @person }
+      format.xml  { render :xml => @person }
+    end
   end
   
   def create
-    @person = Person.new params[:person]
-    @person.email = params[:person][:email]
-    @person.email = Digest::MD5.hexdigest(@person.label)+'@'+rand.to_s if @person.email.blank?
-    @person.user_name = @person.patronymic_name.downcase.gsub(/[^a-z0-9\_\.]/,'') if @person.user_name.blank?
-    @person.is_validated = true
-    @person.is_locked = false
-    @person.is_user   = true
-    password = Person.generate_password
-    @person.password = password
-    @person.password_confirmation = password
-    if @person.save
-      begin
-        Maily.deliver_password(@person, password) if Rails.env.development?
-      rescue
-        flash[:warning] = "L'e-mail de confirmation n'a pas pu être envoyé."
+    @person = Person.new(params[:person])
+    respond_to do |format|
+      if @person.save
+        format.html { redirect_to (params[:redirect] || @person) }
+        format.json { render json => @person, :status => :created, :location => @person }
+      else
+        format.html { render :action => 'new' }
+        format.json { render :json => @person.errors, :status => :unprocessable_entity }
       end
-      flash[:notice] = 'La personne '+@person.label+' a été créée'
-      redirect_to people_url
     end
-    render_restfully_form
   end
   
   def edit
     @person = Person.find(params[:id])
-    render_restfully_form
+    respond_to do |format|
+      format.html { render_restfully_form }
+    end
   end
   
   def update
     @person = Person.find(params[:id])
-    unless access? :all 
-      params[:person][:password] = ''
-      params[:person][:password_confirmation] = ''
+    respond_to do |format|
+      if @person.update_attributes(params[:person])
+        format.html { redirect_to (params[:redirect] || @person) }
+        format.json { head :no_content }
+      else
+        format.html { render :action => 'edit' }
+        format.json { render :json => @person.errors, :status => :unprocessable_entity }
+      end
     end
-    @person.attributes = params[:person]
-    @person.forced = true
-    @person.email = params[:person][:email]
-    if @person.save
-      flash[:notice] = 'La personne '+@person.label+' a été modifiée'
-      redirect_to people_url
-    end
-    render_restfully_form
-  end
-  
-
-  
-  def lock
-    # >> :users
-    p = Person.find(params[:id])
-    p.is_locked = true
-    p.forced    = true
-    p.save!
-    redirect_to people_url
-  end
-  
-  def unlock
-    # >> :users
-    p = Person.find(params[:id])
-    p.is_locked = false
-    p.forced    = true
-    p.save!
-    redirect_to people_url
   end
   
   def destroy
-    begin
-      Person.find(params[:id]).destroy 
-    rescue Exception => e
-      flash[:warning] = "La personne n'a pas pu être supprimée (#{e.class.name}: #{e.message}\n #{e.backtrace[0]})"
-    end
-    redirect_to people_url
-  end 
-
-
-
-  def approve
-    @person = Person.find_by_id(params[:id])
-    if @person and @person.hashed_salt==params[:xid]
-      @person.approve!
-      flash[:notice] = "La personne a été acceptée."
-    else
-      flash[:error] = "Vous n'avez pas le droit de faire cela."
-    end
-    redirect_to :action=>:index
-  end
-
-  def disapprove
-    @person = Person.find_by_id(params[:id])
-    if @person and @person.hashed_salt==params[:xid]
-      @person.disapprove!
-      flash[:notice] = "La personne a été verrouillée."
-    else
-      flash[:error] = "Vous n'avez pas le droit de faire cela."
-    end
-    redirect_to :action=>:index
-  end
-
-
-  def story
-    person_id = session[:current_person_id]
-    person_id = params[:id] if params[:id] # and access?
-    @author = Person.find_by_id(person_id)
-    @reports = @author.reports
-    expire_fragment(:controller=>:people, :action=>:story, :id=>@author.id)
-  end
-
-
-
-
-
-
-
-
-
-
-
-
-
-  def subscribe
-    if @current_person
-      redirect_to root_url
-      return
-    end
-    @register = true
-    @self_subscribing = true
-    if request.post?
-      @person = Person.new params[:person]
-      @person.email = params[:person][:email]
-      @person.is_validated = false
-      @person.approved  = false
-      @person.is_locked = true
-      @person.is_user   = true
-      if @person.save_with_captcha
-        @register = false
-        begin
-          Maily.deliver_confirmation(@person)
-          Maily.deliver_notification(:subscription, @person)
-          Maily.deliver_notification(:approval, @person)
-        rescue Object=>e
-          @register = true
-          Person.destroy(@person.id)
-          @person.errors.add_to_base("Votre adresse e-mail est invalide : "+e.message)
-        end
-      end
-    else
-      @person = Person.new()
+    @person = Person.find(params[:id])
+    @person.destroy
+    respond_to do |format|
+      format.html { redirect_to (params[:redirect] || people_url) }
+      format.json { head :no_content }
     end
   end
-  
-  def activate
-    unless @person = Person.find_by_validation(params[:key])
-      flash[:error] = "Personne introuvable"
-      redirect_to root_url
-      return
-    end
-    @person.forced = true
-    @activation = 0
-    unless @person.nil?
-      unless @person.is_validated
-        @person.is_validated = true
-        @person.is_locked = false
-        @person.save!
-        @activation = 1
-        Maily.deliver_notification(:activation, @person)
-      end
-      unless @person.replacement_email.blank?
-        @person.email = @person.replacement_email
-        @person.replacement_email = nil
-        @person.save!
-        @activation = 2
-      end
-    end
-  end
+  #]ACTIONS]
 
-  def lost_password
-    if request.post?
-      @person = Person.find_by_user_name params[:person][:user_name]
-      if @person
-        Maily.deliver_lost_password(@person)
-        flash.now[:notice] = 'Votre nouveau mot de passe vous a été envoyé à l\'adresse '+@person.email
-      else
-        flash.now[:notice] = 'Votre nom d\'utilisateur est inconnu'
-      end
-    end
-  end
-  
-  def lost_login
-    if request.post?
-      @person = Person.find_by_email params[:person][:email]
-      if @person
-        Maily.deliver_lost_login @person
-        flash.now[:notice] = 'Votre nom d\'utilisateur vous a été envoyé à l\'adresse '+@person.email
-      else
-        flash.now[:notice] = 'Votre e-mail est inconnu'
-      end
-    end
-  end
 
 end
