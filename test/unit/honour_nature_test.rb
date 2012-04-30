@@ -20,6 +20,7 @@
 # 
 # == Table: honour_natures
 #
+#  code         :string(255)      
 #  comment      :text             
 #  created_at   :datetime         not null
 #  description  :text             

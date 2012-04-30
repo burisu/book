@@ -1,112 +1,423 @@
-# translation missing: fr-FR, rights, __admin__
+# Unused actions in rights
+#   - "activities::create"
+#   - "activities::destroy"
+#   - "activities::edit"
+#   - "activities::index"
+#   - "activities::list"
+#   - "activities::new"
+#   - "activities::show"
+#   - "activities::update"
+#   - "answer_items::create"
+#   - "answer_items::destroy"
+#   - "answer_items::edit"
+#   - "answer_items::index"
+#   - "answer_items::list"
+#   - "answer_items::new"
+#   - "answer_items::show"
+#   - "answer_items::update"
+#   - "answers::create"
+#   - "answers::destroy"
+#   - "answers::edit"
+#   - "answers::index"
+#   - "answers::list"
+#   - "answers::list_items"
+#   - "answers::new"
+#   - "answers::show"
+#   - "answers::update"
+#   - "articles::list"
+#   - "configurations::create"
+#   - "configurations::destroy"
+#   - "configurations::index"
+#   - "configurations::list"
+#   - "configurations::new"
+#   - "configurations::show"
+#   - "event_natures::create"
+#   - "event_natures::destroy"
+#   - "event_natures::edit"
+#   - "event_natures::index"
+#   - "event_natures::list"
+#   - "event_natures::list_events"
+#   - "event_natures::new"
+#   - "event_natures::show"
+#   - "event_natures::update"
+#   - "events::create"
+#   - "events::destroy"
+#   - "events::edit"
+#   - "events::index"
+#   - "events::list"
+#   - "events::new"
+#   - "events::show"
+#   - "events::update"
+#   - "group_intervention_natures::create"
+#   - "group_intervention_natures::destroy"
+#   - "group_intervention_natures::edit"
+#   - "group_intervention_natures::index"
+#   - "group_intervention_natures::list"
+#   - "group_intervention_natures::list_group_interventions"
+#   - "group_intervention_natures::new"
+#   - "group_intervention_natures::show"
+#   - "group_intervention_natures::update"
+#   - "group_interventions::create"
+#   - "group_interventions::destroy"
+#   - "group_interventions::edit"
+#   - "group_interventions::index"
+#   - "group_interventions::list"
+#   - "group_interventions::new"
+#   - "group_interventions::show"
+#   - "group_interventions::update"
+#   - "group_kinships::create"
+#   - "group_kinships::destroy"
+#   - "group_kinships::edit"
+#   - "group_kinships::index"
+#   - "group_kinships::list"
+#   - "group_kinships::new"
+#   - "group_kinships::show"
+#   - "group_kinships::update"
+#   - "group_natures::create"
+#   - "group_natures::destroy"
+#   - "group_natures::edit"
+#   - "group_natures::index"
+#   - "group_natures::list"
+#   - "group_natures::list_groups"
+#   - "group_natures::new"
+#   - "group_natures::show"
+#   - "group_natures::update"
+#   - "groups::create"
+#   - "groups::destroy"
+#   - "groups::edit"
+#   - "groups::index"
+#   - "groups::list"
+#   - "groups::list_interventions"
+#   - "groups::new"
+#   - "groups::show"
+#   - "groups::update"
+#   - "guests::create"
+#   - "guests::destroy"
+#   - "guests::edit"
+#   - "guests::index"
+#   - "guests::list"
+#   - "guests::new"
+#   - "guests::show"
+#   - "guests::update"
+#   - "honour_natures::create"
+#   - "honour_natures::destroy"
+#   - "honour_natures::edit"
+#   - "honour_natures::index"
+#   - "honour_natures::list"
+#   - "honour_natures::list_honours"
+#   - "honour_natures::new"
+#   - "honour_natures::show"
+#   - "honour_natures::update"
+#   - "honours::create"
+#   - "honours::destroy"
+#   - "honours::edit"
+#   - "honours::index"
+#   - "honours::list"
+#   - "honours::new"
+#   - "honours::show"
+#   - "honours::update"
+#   - "images::list"
+#   - "mandate_natures::list"
+#   - "mandate_natures::list_mandates"
+#   - "mandate_natures::show"
+#   - "mandates::list"
+#   - "mandates::show"
+#   - "members::create"
+#   - "members::destroy"
+#   - "members::edit"
+#   - "members::index"
+#   - "members::list"
+#   - "members::new"
+#   - "members::show"
+#   - "members::update"
+#   - "organigram_professions::create"
+#   - "organigram_professions::destroy"
+#   - "organigram_professions::edit"
+#   - "organigram_professions::index"
+#   - "organigram_professions::list"
+#   - "organigram_professions::new"
+#   - "organigram_professions::show"
+#   - "organigram_professions::update"
+#   - "organigrams::create"
+#   - "organigrams::destroy"
+#   - "organigrams::edit"
+#   - "organigrams::index"
+#   - "organigrams::list"
+#   - "organigrams::list_professions"
+#   - "organigrams::new"
+#   - "organigrams::show"
+#   - "organigrams::update"
+#   - "organizations::create"
+#   - "organizations::destroy"
+#   - "organizations::edit"
+#   - "organizations::index"
+#   - "organizations::list"
+#   - "organizations::list_group_kinships"
+#   - "organizations::list_group_natures"
+#   - "organizations::new"
+#   - "organizations::show"
+#   - "organizations::update"
+#   - "people::list"
+#   - "people::list_answers"
+#   - "people::list_articles"
+#   - "people::list_images"
+#   - "people::list_mandates"
+#   - "people::list_members"
+#   - "people::list_periods"
+#   - "people::list_sales"
+#   - "people::list_subscriptions"
+#   - "periods::create"
+#   - "periods::destroy"
+#   - "periods::edit"
+#   - "periods::index"
+#   - "periods::list"
+#   - "periods::new"
+#   - "periods::show"
+#   - "periods::update"
+#   - "person_contact_natures::create"
+#   - "person_contact_natures::destroy"
+#   - "person_contact_natures::edit"
+#   - "person_contact_natures::index"
+#   - "person_contact_natures::list"
+#   - "person_contact_natures::list_person_contacts"
+#   - "person_contact_natures::new"
+#   - "person_contact_natures::show"
+#   - "person_contact_natures::update"
+#   - "person_contacts::create"
+#   - "person_contacts::destroy"
+#   - "person_contacts::edit"
+#   - "person_contacts::index"
+#   - "person_contacts::list"
+#   - "person_contacts::new"
+#   - "person_contacts::show"
+#   - "person_contacts::update"
+#   - "person_honours::create"
+#   - "person_honours::destroy"
+#   - "person_honours::edit"
+#   - "person_honours::index"
+#   - "person_honours::list"
+#   - "person_honours::new"
+#   - "person_honours::show"
+#   - "person_honours::update"
+#   - "person_intervention_natures::create"
+#   - "person_intervention_natures::destroy"
+#   - "person_intervention_natures::edit"
+#   - "person_intervention_natures::index"
+#   - "person_intervention_natures::list"
+#   - "person_intervention_natures::list_person_interventions"
+#   - "person_intervention_natures::new"
+#   - "person_intervention_natures::show"
+#   - "person_intervention_natures::update"
+#   - "person_interventions::create"
+#   - "person_interventions::destroy"
+#   - "person_interventions::edit"
+#   - "person_interventions::index"
+#   - "person_interventions::list"
+#   - "person_interventions::new"
+#   - "person_interventions::show"
+#   - "person_interventions::update"
+#   - "products::create"
+#   - "products::destroy"
+#   - "products::edit"
+#   - "products::index"
+#   - "products::list"
+#   - "products::list_guests"
+#   - "products::list_order_lines"
+#   - "products::list_sale_lines"
+#   - "products::new"
+#   - "products::show"
+#   - "products::update"
+#   - "promotions::create"
+#   - "promotions::destroy"
+#   - "promotions::edit"
+#   - "promotions::index"
+#   - "promotions::list"
+#   - "promotions::list_people"
+#   - "promotions::list_questions"
+#   - "promotions::new"
+#   - "promotions::show"
+#   - "promotions::update"
+#   - "question_items::create"
+#   - "question_items::destroy"
+#   - "question_items::edit"
+#   - "question_items::index"
+#   - "question_items::list"
+#   - "question_items::list_answer_items"
+#   - "question_items::new"
+#   - "question_items::show"
+#   - "question_items::update"
+#   - "questions::create"
+#   - "questions::destroy"
+#   - "questions::edit"
+#   - "questions::index"
+#   - "questions::list"
+#   - "questions::list_answers"
+#   - "questions::list_items"
+#   - "questions::new"
+#   - "questions::show"
+#   - "questions::update"
+#   - "rubrics::list"
+#   - "rubrics::list_articles"
+#   - "sale_lines::create"
+#   - "sale_lines::destroy"
+#   - "sale_lines::edit"
+#   - "sale_lines::index"
+#   - "sale_lines::list"
+#   - "sale_lines::list_guests"
+#   - "sale_lines::new"
+#   - "sale_lines::show"
+#   - "sale_lines::update"
+#   - "sales::create"
+#   - "sales::destroy"
+#   - "sales::edit"
+#   - "sales::index"
+#   - "sales::list"
+#   - "sales::list_guests"
+#   - "sales::list_lines"
+#   - "sales::list_passworded_lines"
+#   - "sales::list_subscriptions"
+#   - "sales::new"
+#   - "sales::show"
+#   - "sales::update"
+#   - "sectors::create"
+#   - "sectors::destroy"
+#   - "sectors::edit"
+#   - "sectors::index"
+#   - "sectors::list"
+#   - "sectors::list_activities"
+#   - "sectors::new"
+#   - "sectors::show"
+#   - "sectors::update"
+#   - "subscriptions::create"
+#   - "subscriptions::destroy"
+#   - "subscriptions::edit"
+#   - "subscriptions::index"
+#   - "subscriptions::list"
+#   - "subscriptions::new"
+#   - "subscriptions::show"
+#   - "subscriptions::update"
+#   - "themes::create"
+#   - "themes::destroy"
+#   - "themes::edit"
+#   - "themes::index"
+#   - "themes::list"
+#   - "themes::list_questions"
+#   - "themes::new"
+#   - "themes::show"
+#   - "themes::update"
+#   - "zone_natures::list"
+#   - "zone_natures::list_children"
+#   - "zone_natures::list_groups"
+#   - "zone_natures::show"
+# translation missing: fra.rights.__admin__
 __admin__:
   actions:
-  - articles::activate
-  - articles::articles_dyta
-  - articles::authors_dyli
-  - articles::create
-  - articles::deactivate
-  - articles::destroy
-  - articles::edit
-  - articles::help
-  - articles::index
-  - articles::new
-  - articles::preview
-  - articles::publish
-  - articles::show
-  - articles::update
-  - configurations::edit
-  - configurations::update
-  - countries::create
-  - countries::destroy
-  - countries::edit
-  - countries::index
-  - countries::new
-  - countries::update
-  - images::create
-  - images::destroy
-  - images::edit
-  - images::index
-  - images::new
-  - images::show
-  - images::update
-  - languages::create
-  - languages::destroy
-  - languages::edit
-  - languages::index
-  - languages::new
-  - languages::update
-  - mandate_natures::create
-  - mandate_natures::destroy
-  - mandate_natures::edit
-  - mandate_natures::index
-  - mandate_natures::new
-  - mandate_natures::update
-  - mandates::create
-  - mandates::destroy
-  - mandates::edit
-  - mandates::index
-  - mandates::mandates_dyta
-  - mandates::new
-  - mandates::people_dyli
-  - mandates::update
-  - people::activate
-  - people::approve
-  - people::create
-  - people::destroy
-  - people::disapprove
-  - people::edit
-  - people::index
-  - people::lock
-  - people::new
-  - people::people_dyta
-  - people::person_articles_dyta
-  - people::person_mandates_dyta
-  - people::person_subscriptions_dyta
-  - people::show
-  - people::story
-  - people::unlock
-  - people::update
-  - rubrics::create
-  - rubrics::destroy
-  - rubrics::edit
-  - rubrics::index
-  - rubrics::new
-  - rubrics::rubric_articles_dyta
-  - rubrics::rubrics_dyta
-  - rubrics::show
-  - rubrics::update
-  - zone_natures::create
-  - zone_natures::destroy
-  - zone_natures::edit
-  - zone_natures::index
-  - zone_natures::new
-  - zone_natures::update
-  - zones::create
-  - zones::destroy
-  - zones::edit
-  - zones::index
-  - zones::new
-  - zones::refresh
-  - zones::show
-  - zones::update
-# translation missing: fr-FR, rights, __private__
+  - "articles::activate # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::articles_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::authors_dyli # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::create"
+  - "articles::deactivate # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::destroy"
+  - "articles::edit"
+  - "articles::help # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::index"
+  - "articles::new"
+  - "articles::preview # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::publish # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "articles::show"
+  - "articles::update"
+  - "configurations::edit"
+  - "configurations::update"
+  - "countries::create # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "countries::destroy # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "countries::edit # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "countries::index # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "countries::new # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "countries::update # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "images::create"
+  - "images::destroy"
+  - "images::edit"
+  - "images::index"
+  - "images::new"
+  - "images::show"
+  - "images::update"
+  - "languages::create # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "languages::destroy # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "languages::edit # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "languages::index # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "languages::new # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "languages::update # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "mandate_natures::create"
+  - "mandate_natures::destroy"
+  - "mandate_natures::edit"
+  - "mandate_natures::index"
+  - "mandate_natures::new"
+  - "mandate_natures::update"
+  - "mandates::create"
+  - "mandates::destroy"
+  - "mandates::edit"
+  - "mandates::index"
+  - "mandates::mandates_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "mandates::new"
+  - "mandates::people_dyli # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "mandates::update"
+  - "people::activate # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::approve # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::create"
+  - "people::destroy"
+  - "people::disapprove # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::edit"
+  - "people::index"
+  - "people::lock # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::new"
+  - "people::people_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::person_articles_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::person_mandates_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::person_subscriptions_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::show"
+  - "people::story # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::unlock # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::update"
+  - "rubrics::create"
+  - "rubrics::destroy"
+  - "rubrics::edit"
+  - "rubrics::index"
+  - "rubrics::new"
+  - "rubrics::rubric_articles_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "rubrics::rubrics_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "rubrics::show"
+  - "rubrics::update"
+  - "zone_natures::create"
+  - "zone_natures::destroy"
+  - "zone_natures::edit"
+  - "zone_natures::index"
+  - "zone_natures::new"
+  - "zone_natures::update"
+  - "zones::create # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::destroy # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::edit # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::index # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::new # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::refresh # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::show # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "zones::update # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+# translation missing: fra.rights.__private__
 __private__:
   actions:
-  - myselves::change_email
-  - myselves::change_password
-  - myselves::edit
-  - myselves::person_articles_dyta
-  - myselves::person_mandates_dyta
-  - myselves::person_subscriptions_dyta
-  - myselves::show
-  - myselves::update
-# translation missing: fr-FR, rights, __public__
+  - "myselves::change_email # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::change_password # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::edit # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::person_articles_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::person_mandates_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::person_subscriptions_dyta # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::show # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "myselves::update # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+# translation missing: fra.rights.__public__
 __public__:
-  actions: 
-  - people::lost_login
-  - people::lost_password
-  - sessions::create
-  - sessions::destroy
-  - sessions::new
-  - people::subscribe
+  actions:
+  - "people::lost_login # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::lost_password # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "people::subscribe # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!! # NONEXISTENT ACTION !!!"
+  - "sessions::create"
+  - "sessions::destroy"
+  - "sessions::new"

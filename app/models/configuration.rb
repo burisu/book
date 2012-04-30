@@ -26,20 +26,25 @@
 #  chasing_up_letter_after_expiration  :text             
 #  chasing_up_letter_before_expiration :text             
 #  contact_article_id                  :integer          
-#  created_at                          :datetime         not null
+#  created_at                          :datetime         
 #  help_article_id                     :integer          
 #  home_rubric_id                      :integer          
 #  id                                  :integer          not null, primary key
 #  legals_article_id                   :integer          
-#  lock_version                        :integer          default(0), not null
+#  lock_version                        :integer          default(0)
 #  news_rubric_id                      :integer          
 #  store_introduction                  :text             
 #  subscription_price                  :decimal(, )      default(0.0), not null
-#  updated_at                          :datetime         not null
+#  updated_at                          :datetime         
 #
 
 # encoding: utf-8
 class Configuration < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :subscription_price, :allow_nil => true
+  validates_length_of :chasing_up_days, :allow_nil => true, :maximum => 255
+  validates_presence_of :subscription_price
+  #]VALIDATORS]
   belongs_to :about_article, :class_name=>Article.name
   belongs_to :agenda_rubric, :class_name=>Rubric.name
   belongs_to :contact_article, :class_name=>Article.name

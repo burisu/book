@@ -5,9 +5,11 @@ task :locales => :environment do
 
   missing_prompt = "# "
 
+  rights_file = MandateNature.rights_file
+
   # Load of actions
   all_actions = {}
-  for right, attributes in YAML.load_file(User.rights_file)
+  for right, attributes in YAML.load_file(rights_file)
     for full_action in attributes['actions']
       controller, action = (full_action.match(/\:\:/) ? full_action.split(/\W+/)[0..1] : [attributes['controller'].to_s, full_action])
       all_actions[controller] ||= []
@@ -129,41 +131,41 @@ task :locales => :environment do
   acount += count
 
   # Currencies
-  currencies_ref = YAML.load_file(Numisma.currencies_file)
-  currencies = YAML.load_file(locale_dir.join("currencies.yml"))[locale.to_s]
-  translation  = locale.to_s+":\n"
-  translation << "  currencies:\n"
-  to_translate, untranslated = 0, 0
-  for currency, details in currencies_ref.sort 
-    to_translate += 1
-    if currencies["currencies"][currency].blank?
-      translation << "    #{missing_prompt}#{currency}: #{yaml_value(details['iso_name'])}\n"
-      untranslated += 1
-    else
-      translation << "    #{currency}: "+yaml_value(::I18n.translate("currencies.#{currency}"))+"\n"
-    end
-  end
-  translation << "  # Override here default formatting options for each currency IF NEEDED\n"
-  translation << "  # Ex.: number.currency.formats.XXX.format\n"
-  translation << "  number:\n"
-  translation << "    currency:\n"
-  translation << "      formats:\n"
-  for currency, details in currencies_ref.sort 
-    x = hash_count(::I18n.hardtranslate("number.currency.formats.#{currency}")||{})
-    to_translate += x
-    if x > 0
-      translation << "        #{currency}:"+hash_to_yaml(::I18n.hardtranslate("number.currency.formats.#{currency}")||{}, 5)+"\n"
-#    else
-#      translation << "        #{missing_prompt}#{currency}:\n"
-    end
-  end
-  File.open(locale_dir.join("currencies.yml"), "wb") do |file|
-    file.write translation
-  end
-  total = to_translate
-  log.write "  - #{'currencies.yml:'.ljust(16)} #{(100*(total-untranslated)/total).round.to_s.rjust(3)}% (#{total-untranslated}/#{total})\n"
-  atotal += total
-  acount += total-untranslated
+#   currencies_ref = YAML.load_file(Numisma.currencies_file)
+#   currencies = YAML.load_file(locale_dir.join("currencies.yml"))[locale.to_s]
+#   translation  = locale.to_s+":\n"
+#   translation << "  currencies:\n"
+#   to_translate, untranslated = 0, 0
+#   for currency, details in currencies_ref.sort 
+#     to_translate += 1
+#     if currencies["currencies"][currency].blank?
+#       translation << "    #{missing_prompt}#{currency}: #{yaml_value(details['iso_name'])}\n"
+#       untranslated += 1
+#     else
+#       translation << "    #{currency}: "+yaml_value(::I18n.translate("currencies.#{currency}"))+"\n"
+#     end
+#   end
+#   translation << "  # Override here default formatting options for each currency IF NEEDED\n"
+#   translation << "  # Ex.: number.currency.formats.XXX.format\n"
+#   translation << "  number:\n"
+#   translation << "    currency:\n"
+#   translation << "      formats:\n"
+#   for currency, details in currencies_ref.sort 
+#     x = hash_count(::I18n.hardtranslate("number.currency.formats.#{currency}")||{})
+#     to_translate += x
+#     if x > 0
+#       translation << "        #{currency}:"+hash_to_yaml(::I18n.hardtranslate("number.currency.formats.#{currency}")||{}, 5)+"\n"
+# #    else
+# #      translation << "        #{missing_prompt}#{currency}:\n"
+#     end
+#   end
+#   File.open(locale_dir.join("currencies.yml"), "wb") do |file|
+#     file.write translation
+#   end
+#   total = to_translate
+#   log.write "  - #{'currencies.yml:'.ljust(16)} #{(100*(total-untranslated)/total).round.to_s.rjust(3)}% (#{total-untranslated}/#{total})\n"
+#   atotal += total
+#   acount += total-untranslated
 
       
 
@@ -248,14 +250,18 @@ task :locales => :environment do
 
 
   # Rights
-  rights = YAML.load_file(User.rights_file)
+  rights = YAML.load_file(rights_file)
   translation  = locale.to_s+":\n"
-  translation += "  rights:\n"
+  translation << "  rights:\n"
   untranslated = 0
   for right in rights.keys.sort
-    trans = ::I18n.pretranslate("rights.#{right}")
-    untranslated += 1 if trans.match(/^\(\(\(.*\)\)\)$/)
-    translation += "    #{right}: "+trans+"\n"
+    name = ::I18n.hardtranslate("rights.#{right}")
+    if name.blank?
+      untranslated += 1
+      translation << "    #{missing_prompt}#{right}: #{yaml_value(right.humanize, 2)}\n"
+    else
+      translation << "    #{right}: #{yaml_value(name, 2)}\n"
+    end
   end
   File.open(locale_dir.join("rights.yml"), "wb") do |file|
     file.write translation

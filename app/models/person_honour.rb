@@ -30,6 +30,9 @@
 #  updated_at   :datetime         not null
 #
 class PersonHonour < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_presence_of :honour, :person
+  #]VALIDATORS]
   # attr_accessible :title, :body
   belongs_to :honour
   belongs_to :person

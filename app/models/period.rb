@@ -43,6 +43,13 @@
 
 # encoding: utf-8
 class Period < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :latitude, :longitude, :allow_nil => true
+  validates_length_of :country, :allow_nil => true, :maximum => 2
+  validates_length_of :email, :fax, :mobile, :phone, :allow_nil => true, :maximum => 32
+  validates_length_of :address, :family_name, :photo, :allow_nil => true, :maximum => 255
+  validates_presence_of :address, :begun_on, :family_name, :finished_on, :person
+  #]VALIDATORS]
   # belongs_to :country
   belongs_to :person
   has_and_belongs_to_many :members

@@ -30,11 +30,11 @@
 #  client_id            :integer          
 #  comment              :text             
 #  country              :string(255)      
-#  created_at           :datetime         not null
+#  created_at           :datetime         
 #  created_on           :date             not null
 #  error_code           :string(255)      
 #  id                   :integer          not null, primary key
-#  lock_version         :integer          default(0), not null
+#  lock_version         :integer          default(0)
 #  number               :string(255)      not null
 #  payer_country        :string(255)      
 #  payment_mode         :string(255)      default("none"), not null
@@ -44,11 +44,16 @@
 #  signature            :string(255)      
 #  state                :string(255)      not null
 #  transaction_number   :string(255)      
-#  updated_at           :datetime         not null
+#  updated_at           :datetime         
 #
 
 # encoding: utf-8
 class Sale < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :amount, :allow_nil => true
+  validates_length_of :authorization_number, :bin6, :card_type, :client_email, :country, :error_code, :number, :payer_country, :payment_mode, :payment_number, :payment_type, :sequential_number, :signature, :state, :transaction_number, :allow_nil => true, :maximum => 255
+  validates_presence_of :client_email, :created_on, :number, :payment_mode, :state
+  #]VALIDATORS]
   PAYMENT_MODES = [["Chèque", 'check'], ["Espèce","cash"], ["Carte bancaire", "card"], ["A payer", "none"]]
   ERROR_CODES = {
     "00000"=>"opération réussie.",

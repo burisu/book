@@ -34,6 +34,10 @@
 
 # coding: utf-8
 class Answer < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_inclusion_of :locked, :ready, :in => [true, false]
+  validates_presence_of :person, :question
+  #]VALIDATORS]
   belongs_to :person
   belongs_to :question
   has_many :items, :class_name=>"AnswerItem", :dependent=>:destroy

@@ -21,6 +21,7 @@
 # == Table: honours
 #
 #  abbreviation :string(255)      
+#  code         :string(255)      
 #  created_at   :datetime         not null
 #  id           :integer          not null, primary key
 #  lock_version :integer          default(0), not null

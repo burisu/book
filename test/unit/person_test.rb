@@ -31,7 +31,6 @@
 #  departure_country   :string(2)        
 #  departure_person_id :integer          
 #  email               :string(255)      not null
-#  family_id           :integer          
 #  family_name         :string(255)      not null
 #  first_name          :string(255)      not null
 #  hashed_password     :string(255)      

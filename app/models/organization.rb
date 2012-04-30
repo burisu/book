@@ -31,6 +31,9 @@
 
 # encoding: utf-8
 class Organization < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   has_many :group_natures
   has_many :group_kinships
 end

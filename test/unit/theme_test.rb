@@ -22,10 +22,10 @@
 #
 #  color        :string(255)      default("#808080"), not null
 #  comment      :text             
-#  created_at   :datetime         not null
+#  created_at   :datetime         
 #  id           :integer          not null, primary key
-#  lock_version :integer          default(0), not null
+#  lock_version :integer          default(0)
 #  name         :string(255)      not null
-#  updated_at   :datetime         not null
+#  updated_at   :datetime         
 #
 

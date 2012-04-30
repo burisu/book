@@ -32,6 +32,9 @@
 
 # encoding: utf-8
 class GroupInterventionNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   attr_accessible :name, :description, :comment
   has_many :group_interventions, :foreign_key => :nature_id
 end

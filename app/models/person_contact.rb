@@ -41,6 +41,11 @@
 #  updated_at   :datetime         not null
 #
 class PersonContact < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :address, :canal, :city, :country, :line_2, :line_3, :line_4, :line_5, :line_6, :postcode, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :by_default, :receiving, :sending, :in => [true, false]
+  validates_presence_of :address, :canal, :nature, :person
+  #]VALIDATORS]
   # attr_accessible :title, :body
   belongs_to :nature, :class_name => "PersonContactNature"
   belongs_to :person

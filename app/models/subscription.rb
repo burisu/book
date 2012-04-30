@@ -34,6 +34,10 @@
 
 # encoding: utf-8
 class Subscription < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :number, :allow_nil => true, :maximum => 64
+  validates_presence_of :begun_on, :finished_on, :person
+  #]VALIDATORS]
   attr_readonly :number
   belongs_to :person
   belongs_to :sale

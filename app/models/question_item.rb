@@ -34,6 +34,10 @@
 
 # encoding: utf-8
 class QuestionItem < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :name
+  #]VALIDATORS]
   acts_as_list :scope=>:question
   belongs_to :question
   belongs_to :theme

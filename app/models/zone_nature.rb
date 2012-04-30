@@ -30,6 +30,10 @@
 
 # encoding: utf-8
 class ZoneNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :name
+  #]VALIDATORS]
   belongs_to :parent, :class_name=>ZoneNature.name
   has_many :children, :class_name=>ZoneNature.name, :foreign_key=>:parent_id
   has_many :groups

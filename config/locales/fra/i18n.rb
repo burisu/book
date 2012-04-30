@@ -1,8 +1,16 @@
-{:fra => {
+# -*- coding: utf-8 -*-
+{ :fra=>{
+    :i18n=>{
+      :dir=>'ltr',
+      :iso2=>'fr',
+      :name=>'Français',
+      :plural=>{
+        :keys=> [:one, :other],
+        :rule=> lambda { |n| n<2 ? :one : :other }
+      }
+    },
     :date => {
-      # Used in date_select and datime_select.
       :order => [:day, :month, :year]
     }
-
   }
 }

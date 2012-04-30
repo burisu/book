@@ -32,7 +32,6 @@
 #  departure_country   :string(2)        
 #  departure_person_id :integer          
 #  email               :string(255)      not null
-#  family_id           :integer          
 #  family_name         :string(255)      not null
 #  first_name          :string(255)      not null
 #  hashed_password     :string(255)      
@@ -72,6 +71,16 @@
 require 'digest/sha2'
 
 class Person < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :photo_file_size, :allow_nil => true, :only_integer => true
+  validates_numericality_of :latitude, :longitude, :allow_nil => true
+  validates_length_of :sex, :allow_nil => true, :maximum => 1
+  validates_length_of :arrival_country, :birth_country, :departure_country, :language, :allow_nil => true, :maximum => 2
+  validates_length_of :user_name, :allow_nil => true, :maximum => 32
+  validates_length_of :email, :family_name, :first_name, :hashed_password, :patronymic_name, :photo_content_type, :photo_file_name, :replacement_email, :rotex_email, :salt, :second_name, :validation, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :approved, :is_locked, :is_user, :is_validated, :student, :in => [true, false]
+  validates_presence_of :born_on, :email, :family_name, :first_name, :patronymic_name, :sex, :user_name
+  #]VALIDATORS]
   # apply_simple_captcha :message => "Le texte est différent de l'image de vérification", :add_to_base => true
   attr_protected :latitude, :longitude, :arrival_person_id, :started_on, :stopped_on, :departure_person_id, :host_zone_id, :proposer_zone_id, :sponsor_zone_id, :approved, :arrival_country, :departure_country
   attr_accessor :password_confirmation

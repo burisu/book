@@ -32,6 +32,9 @@
 
 # coding: utf-8
 class AnswerItem < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_presence_of :answer, :question_item
+  #]VALIDATORS]
   belongs_to :answer
   belongs_to :question_item
   depends_on :answer

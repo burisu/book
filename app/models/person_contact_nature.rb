@@ -28,6 +28,10 @@
 #  updated_at   :datetime         not null
 #
 class PersonContactNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :canal, :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :canal, :name
+  #]VALIDATORS]
   # attr_accessible :title, :body
   has_many :person_contacts
   

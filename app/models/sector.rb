@@ -29,6 +29,9 @@
 #  updated_at   :datetime         not null
 #
 class Sector < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :code, :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   attr_accessible :code, :description, :name
   has_many :activities
 end

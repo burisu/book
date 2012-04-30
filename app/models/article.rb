@@ -40,6 +40,12 @@
 
 # coding: utf-8
 class Article < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :language, :allow_nil => true, :maximum => 2
+  validates_length_of :document, :status, :title, :allow_nil => true, :maximum => 255
+  validates_length_of :intro, :allow_nil => true, :maximum => 512
+  validates_presence_of :author, :body, :intro, :status, :title
+  #]VALIDATORS]
   belongs_to :author, :class_name=>Person.name
   # belongs_to :language
   belongs_to :rubric

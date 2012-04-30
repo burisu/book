@@ -35,6 +35,10 @@
 
 # coding: utf-8
 class Question < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 64
+  validates_presence_of :name
+  #]VALIDATORS]
   belongs_to :promotion
   has_many :answers
   has_many :items, :class_name=>"QuestionItem", :dependent => :destroy, :order=>:position

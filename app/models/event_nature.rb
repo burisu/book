@@ -28,6 +28,9 @@
 #  updated_at   :datetime         not null
 #
 class EventNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   attr_accessible :comment, :name
   has_many :events, :foreign_key => :nature_id
   validates_presence_of :name

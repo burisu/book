@@ -23,13 +23,13 @@
 #
 #  active                 :boolean          not null
 #  amount                 :decimal(16, 2)   default(0.0), not null
-#  created_at             :datetime         not null
+#  created_at             :datetime         
 #  current_quantity       :decimal(16, 2)   default(0.0), not null
 #  deadlined              :boolean          not null
 #  description            :text             
 #  id                     :integer          not null, primary key
 #  initial_quantity       :decimal(16, 2)   default(0.0), not null
-#  lock_version           :integer          default(0), not null
+#  lock_version           :integer          default(0)
 #  name                   :string(255)      not null
 #  password               :string(255)      
 #  passworded             :boolean          not null
@@ -41,11 +41,17 @@
 #  subscribing_started_on :date             
 #  subscribing_stopped_on :date             
 #  unit                   :string(255)      default("unités"), not null
-#  updated_at             :datetime         not null
+#  updated_at             :datetime         
 #
 
 # encoding: utf-8
 class Product < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :amount, :current_quantity, :initial_quantity, :allow_nil => true
+  validates_length_of :name, :password, :unit, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :active, :deadlined, :passworded, :personal, :storable, :subscribing, :in => [true, false]
+  validates_presence_of :amount, :current_quantity, :initial_quantity, :name, :unit
+  #]VALIDATORS]
   has_many :guests
   has_many :sale_lines
   has_many :order_lines, :class_name=>SaleLine.name, :include=>:sale, :conditions=>["sales.state IN (?)", ["C", "P"]]

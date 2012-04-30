@@ -26,15 +26,15 @@
 #  chasing_up_letter_after_expiration  :text             
 #  chasing_up_letter_before_expiration :text             
 #  contact_article_id                  :integer          
-#  created_at                          :datetime         not null
+#  created_at                          :datetime         
 #  help_article_id                     :integer          
 #  home_rubric_id                      :integer          
 #  id                                  :integer          not null, primary key
 #  legals_article_id                   :integer          
-#  lock_version                        :integer          default(0), not null
+#  lock_version                        :integer          default(0)
 #  news_rubric_id                      :integer          
 #  store_introduction                  :text             
 #  subscription_price                  :decimal(, )      default(0.0), not null
-#  updated_at                          :datetime         not null
+#  updated_at                          :datetime         
 #
 

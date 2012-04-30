@@ -21,20 +21,25 @@
 # == Table: sale_lines
 #
 #  amount       :decimal(16, 2)   default(0.0), not null
-#  created_at   :datetime         not null
+#  created_at   :datetime         
 #  description  :text             
 #  id           :integer          not null, primary key
-#  lock_version :integer          default(0), not null
+#  lock_version :integer          default(0)
 #  name         :string(255)      not null
 #  product_id   :integer          not null
 #  quantity     :decimal(16, 2)   default(0.0), not null
 #  sale_id      :integer          not null
 #  unit_amount  :decimal(16, 2)   default(0.0), not null
-#  updated_at   :datetime         not null
+#  updated_at   :datetime         
 #
 
 # encoding: utf-8
 class SaleLine < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :amount, :quantity, :unit_amount, :allow_nil => true
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :amount, :name, :product, :quantity, :sale, :unit_amount
+  #]VALIDATORS]
   attr_accessor :password
   belongs_to :product
   belongs_to :sale

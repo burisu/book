@@ -29,6 +29,9 @@
 #  updated_at   :datetime         not null
 #
 class Organigram < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :code, :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   # attr_accessible :title, :body
   has_and_belongs_to_many :activities
   has_many :professions, :class_name => "OrganigramProfession"

@@ -41,6 +41,12 @@
 
 # encoding: utf-8
 class Image < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_numericality_of :document_file_size, :allow_nil => true, :only_integer => true
+  validates_length_of :desc, :document_content_type, :document_file_name, :name, :title, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :deleted, :locked, :published, :in => [true, false]
+  validates_presence_of :document_file_name, :name, :person, :title, :title_h
+  #]VALIDATORS]
   belongs_to :person
   depends_on :person
   # TODO: Use paperclip

@@ -40,6 +40,13 @@
 
 # encoding: utf-8
 class Member < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :sex, :allow_nil => true, :maximum => 1
+  validates_length_of :nature, :allow_nil => true, :maximum => 8
+  validates_length_of :fax, :mobile, :phone, :allow_nil => true, :maximum => 32
+  validates_length_of :email, :first_name, :last_name, :other_nature, :photo, :allow_nil => true, :maximum => 255
+  validates_presence_of :first_name, :last_name, :nature, :person, :sex
+  #]VALIDATORS]
   belongs_to :person
   has_and_belongs_to_many :periods
   depends_on :person

@@ -20,6 +20,7 @@
 # 
 # == Table: organigram_professions
 #
+#  code          :string(255)      
 #  created_at    :datetime         not null
 #  id            :integer          not null, primary key
 #  lock_version  :integer          default(0), not null
@@ -29,6 +30,10 @@
 #  updated_at    :datetime         not null
 #
 class OrganigramProfession < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :code, :name, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :printed, :in => [true, false]
+  #]VALIDATORS]
   # attr_accessible :title, :body
   belongs_to :organigram
   depends_on :organigram

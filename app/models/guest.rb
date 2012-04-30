@@ -21,21 +21,24 @@
 # == Table: guests
 #
 #  annotation   :text             
-#  created_at   :datetime         not null
+#  created_at   :datetime         
 #  email        :string(255)      
 #  first_name   :string(255)      
 #  id           :integer          not null, primary key
 #  last_name    :string(255)      
-#  lock_version :integer          default(0), not null
+#  lock_version :integer          default(0)
 #  product_id   :integer          
 #  sale_id      :integer          
 #  sale_line_id :integer          
-#  updated_at   :datetime         not null
+#  updated_at   :datetime         
 #  zone_id      :integer          
 #
 
 # encoding: utf-8
 class Guest < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :email, :first_name, :last_name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   belongs_to :product
   belongs_to :sale
   belongs_to :sale_line

@@ -21,6 +21,7 @@
 # == Table: honours
 #
 #  abbreviation :string(255)      
+#  code         :string(255)      
 #  created_at   :datetime         not null
 #  id           :integer          not null, primary key
 #  lock_version :integer          default(0), not null
@@ -30,6 +31,9 @@
 #  updated_at   :datetime         not null
 #
 class Honour < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :abbreviation, :code, :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   acts_as_list :scope => :nature_id
   belongs_to :nature, :class_name => "HonourNature"
   validates_presence_of :name, :abbreviation

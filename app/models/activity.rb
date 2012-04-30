@@ -30,6 +30,10 @@
 #  updated_at   :datetime         not null
 #
 class Activity < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :code, :label, :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :sector
+  #]VALIDATORS]
   attr_accessible :code, :label, :name, :sector_id
   has_and_belongs_to_many :organigrams
   belongs_to :sector

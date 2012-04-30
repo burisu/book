@@ -31,6 +31,11 @@
 
 # encoding: utf-8
 class Promotion < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :from_code, :name, :allow_nil => true, :maximum => 255
+  validates_inclusion_of :is_outbound, :in => [true, false]
+  validates_presence_of :from_code, :name
+  #]VALIDATORS]
   has_many :people
   has_many :questions
   

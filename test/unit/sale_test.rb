@@ -29,11 +29,11 @@
 #  client_id            :integer          
 #  comment              :text             
 #  country              :string(255)      
-#  created_at           :datetime         not null
+#  created_at           :datetime         
 #  created_on           :date             not null
 #  error_code           :string(255)      
 #  id                   :integer          not null, primary key
-#  lock_version         :integer          default(0), not null
+#  lock_version         :integer          default(0)
 #  number               :string(255)      not null
 #  payer_country        :string(255)      
 #  payment_mode         :string(255)      default("none"), not null
@@ -43,6 +43,6 @@
 #  signature            :string(255)      
 #  state                :string(255)      not null
 #  transaction_number   :string(255)      
-#  updated_at           :datetime         not null
+#  updated_at           :datetime         
 #
 

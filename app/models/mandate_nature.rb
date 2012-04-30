@@ -32,25 +32,28 @@
 
 
 class MandateNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  validates_presence_of :name
+  #]VALIDATORS]
   # belongs_to :parent, :class_name=>MandateNature.name
-  
   belongs_to :group_nature
   has_many :mandates, :foreign_key => :nature_id
   has_and_belongs_to_many :articles
 
-  RIGHTS = {:all=>"Administrator", 
-    :home=>"Manage articles of the home page",
-    :blog=>"Gérer les articles de blog",
-    :promotions=>"Gérer les promotions",
-    :suivi=>"Gérer les questionnaires et les réponses",
-    :publishing=>"Can edit and publish blog articles",
-    :users=>"Manage accounts",
-    :folders=>"Manage folders",
-    :subscribing=>"Valid or refuse subcriptions only",
-    :mandates=>"Manage mandates of people",
-    :agenda=>"Manage articles of the agenda",
-    :specials=>"Manage special articles"
-  }
+  # RIGHTS = {:all=>"Administrator", 
+  #   :home=>"Manage articles of the home page",
+  #   :blog=>"Gérer les articles de blog",
+  #   :promotions=>"Gérer les promotions",
+  #   :suivi=>"Gérer les questionnaires et les réponses",
+  #   :publishing=>"Can edit and publish blog articles",
+  #   :users=>"Manage accounts",
+  #   :folders=>"Manage folders",
+  #   :subscribing=>"Valid or refuse subcriptions only",
+  #   :mandates=>"Manage mandates of people",
+  #   :agenda=>"Manage articles of the agenda",
+  #   :specials=>"Manage special articles"
+  # }
 
   class << self
     def rights_file; Rails.root.join("config", "rights.yml"); end
@@ -74,7 +77,7 @@ class MandateNature < ActiveRecord::Base
   end
 
 
-  list_column :rights, RIGHTS
+  # list_column :rights, RIGHTS
 
   before_validation do
     self.rights = self.rights_string

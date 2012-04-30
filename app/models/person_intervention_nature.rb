@@ -32,5 +32,8 @@
 
 # encoding: utf-8
 class PersonInterventionNature < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_length_of :name, :allow_nil => true, :maximum => 255
+  #]VALIDATORS]
   has_many :person_interventions, :foreign_key => :nature_id
 end

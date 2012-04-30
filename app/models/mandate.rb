@@ -36,6 +36,10 @@
 # -*- coding: utf-8 -*-
 # coding: utf-8
 class Mandate < ActiveRecord::Base
+  #[VALIDATORS[ Do not edit these lines directly. Use `rake clean:validations`.
+  validates_inclusion_of :dont_expire, :in => [true, false]
+  validates_presence_of :nature, :person, :started_on
+  #]VALIDATORS]
   belongs_to :nature, :class_name=>"MandateNature"
   belongs_to :person
   belongs_to :group
