@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :localize
-  before_filter :authorize
+  # before_filter :authorize
 
   # @@configuration = Configuration.the_one
 
