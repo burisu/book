@@ -1,10 +1,10 @@
 fra:
   actions:
     activities:
-      # edit: 'Edit activity'
-      # index: 'Index activity'
-      # new: 'New activity'
-      # show: 'Show activity'
+      edit: 'Modifier l''activité %{name}'
+      index: 'Liste des activités'
+      new: 'Nouvelle activité'
+      show: 'Activité : %{name}'
     answer_items:
       # edit: 'Edit answer item'
       # index: 'Index answer item'
