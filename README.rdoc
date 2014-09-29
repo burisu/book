@@ -5,3 +5,6 @@ Proprietary web app to manage Rotex, Student-Exchange and Clubs of Rotary.
 == Copyright
 
 Copyright 2008-2014 Brice TEXIER
+
+All use of the app must be approved by its author: Brice TEXIER
+
