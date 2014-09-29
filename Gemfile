@@ -1,16 +1,11 @@
 source 'https://rubygems.org'
 
-<<<<<<< HEAD
 gem 'rails', '3.2.3'
-=======
-gem 'rails', '3.2.5'
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-<<<<<<< HEAD
 
 gem 'haml'
 gem 'acts_as_list'
@@ -20,11 +15,6 @@ gem 'recaptcha'
 gem 'will_paginate'
 # gem 'formtastic'
 gem 'simple_form'
-=======
-gem 'haml'
-gem 'paperclip'
-gem 'acts_as_audited'
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -34,11 +24,7 @@ group :assets do
   gem 'compass-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-<<<<<<< HEAD
   gem 'therubyracer'
-=======
-  gem 'therubyracer', :platforms => :ruby
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 
   gem 'uglifier', '>= 1.0.3'
 end
@@ -58,8 +44,4 @@ gem 'jquery-rails'
 # gem 'capistrano'
 
 # To use debugger
-<<<<<<< HEAD
 # gem 'ruby-debug19', :require => 'ruby-debug'
-=======
-# gem 'debugger'
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40

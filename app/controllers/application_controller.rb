@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 class ApplicationController < ActionController::Base
   protect_from_forgery
@@ -220,8 +219,4 @@ class ApplicationController < ActionController::Base
 
 
 
-=======
-class ApplicationController < ActionController::Base
-  protect_from_forgery
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 end

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 module ApplicationHelper
   # Fournit la liste des pays
@@ -301,7 +300,4 @@ module ApplicationHelper
     end
   end
 
-=======
-module ApplicationHelper
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 end

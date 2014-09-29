@@ -9,11 +9,6 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
-<<<<<<< HEAD
  *= require screen
  *= require_tree .
 */
-=======
- *= require_tree .
- */
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40

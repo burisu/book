@@ -20,11 +20,7 @@ Book::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
-<<<<<<< HEAD
   # Defaults to Rails.root.join("public/assets")
-=======
-  # Defaults to nil and saved in location specified by config.assets.prefix
->>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
   # config.assets.manifest = YOUR_PATH
 
   # Specifies the header that your server uses for sending files
