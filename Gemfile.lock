@@ -1,18 +1,28 @@
 GEM
   remote: https://rubygems.org/
   specs:
+<<<<<<< HEAD
     actionmailer (3.2.3)
       actionpack (= 3.2.3)
       mail (~> 2.4.4)
     actionpack (3.2.3)
       activemodel (= 3.2.3)
       activesupport (= 3.2.3)
+=======
+    actionmailer (3.2.5)
+      actionpack (= 3.2.5)
+      mail (~> 2.4.4)
+    actionpack (3.2.5)
+      activemodel (= 3.2.5)
+      activesupport (= 3.2.5)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
       builder (~> 3.0.0)
       erubis (~> 2.7.0)
       journey (~> 1.0.1)
       rack (~> 1.4.0)
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
+<<<<<<< HEAD
       sprockets (~> 2.1.2)
     activemodel (3.2.3)
       activesupport (= 3.2.3)
@@ -26,11 +36,29 @@ GEM
       activemodel (= 3.2.3)
       activesupport (= 3.2.3)
     activesupport (3.2.3)
+=======
+      sprockets (~> 2.1.3)
+    activemodel (3.2.5)
+      activesupport (= 3.2.5)
+      builder (~> 3.0.0)
+    activerecord (3.2.5)
+      activemodel (= 3.2.5)
+      activesupport (= 3.2.5)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
+    activeresource (3.2.5)
+      activemodel (= 3.2.5)
+      activesupport (= 3.2.5)
+    activesupport (3.2.5)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
       i18n (~> 0.6)
       multi_json (~> 1.0)
     acts_as_audited (2.0.0)
       rails (>= 3.0.3)
+<<<<<<< HEAD
     acts_as_list (0.1.6)
+=======
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     arel (3.0.2)
     builder (3.0.0)
     chunky_png (1.2.5)
@@ -41,11 +69,16 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
+<<<<<<< HEAD
     coffee-script-source (1.3.1)
+=======
+    coffee-script-source (1.3.3)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     compass (0.12.1)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+<<<<<<< HEAD
     compass-rails (1.0.1)
       compass (~> 0.12.0)
     erubis (2.7.0)
@@ -53,21 +86,39 @@ GEM
       multi_json (~> 1.0)
     fssm (0.2.9)
     haml (3.1.4)
+=======
+    compass-rails (1.0.2)
+      compass (>= 0.12.0, < 0.14)
+    erubis (2.7.0)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
+    fssm (0.2.9)
+    haml (3.1.6)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     hike (1.2.1)
     i18n (0.6.0)
     journey (1.0.3)
     jquery-rails (2.0.2)
       railties (>= 3.2.0, < 5.0)
       thor (~> 0.14)
+<<<<<<< HEAD
     json (1.7.0)
+=======
+    json (1.7.3)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     libv8 (3.3.10.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.18)
+<<<<<<< HEAD
     multi_json (1.3.4)
     paperclip (3.0.2)
+=======
+    multi_json (1.3.6)
+    paperclip (3.0.4)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -82,6 +133,7 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
+<<<<<<< HEAD
     rails (3.2.3)
       actionmailer (= 3.2.3)
       actionpack (= 3.2.3)
@@ -102,20 +154,48 @@ GEM
       json (~> 1.4)
     recaptcha (0.3.4)
     sass (3.1.16)
+=======
+    rails (3.2.5)
+      actionmailer (= 3.2.5)
+      actionpack (= 3.2.5)
+      activerecord (= 3.2.5)
+      activeresource (= 3.2.5)
+      activesupport (= 3.2.5)
+      bundler (~> 1.0)
+      railties (= 3.2.5)
+    railties (3.2.5)
+      actionpack (= 3.2.5)
+      activesupport (= 3.2.5)
+      rack-ssl (~> 1.3.2)
+      rake (>= 0.8.7)
+      rdoc (~> 3.4)
+      thor (>= 0.14.6, < 2.0)
+    rake (0.9.2.2)
+    rdoc (3.12)
+      json (~> 1.4)
+    sass (3.1.19)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+<<<<<<< HEAD
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+=======
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     therubyracer (0.10.1)
       libv8 (~> 3.3.10)
+<<<<<<< HEAD
     thor (0.14.6)
+=======
+    thor (0.15.2)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
     tilt (1.3.3)
     treetop (1.4.10)
       polyglot
@@ -124,20 +204,28 @@ GEM
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+<<<<<<< HEAD
     will_paginate (3.0.3)
+=======
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+<<<<<<< HEAD
   acts_as_audited (= 2.0.0)
   acts_as_list
+=======
+  acts_as_audited
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
   coffee-rails (~> 3.2.1)
   compass-rails
   haml
   jquery-rails
   paperclip
   pg
+<<<<<<< HEAD
   rails (= 3.2.3)
   recaptcha
   sass-rails (~> 3.2.3)
@@ -145,3 +233,9 @@ DEPENDENCIES
   therubyracer
   uglifier (>= 1.0.3)
   will_paginate
+=======
+  rails (= 3.2.5)
+  sass-rails (~> 3.2.3)
+  therubyracer
+  uglifier (>= 1.0.3)
+>>>>>>> 4e9b859b0b36de526142f173a52b123f63570f40
